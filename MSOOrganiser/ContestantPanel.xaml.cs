@@ -56,10 +56,10 @@ namespace MSOOrganiser
             ViewModel.PopulateDropdown();
         }
 
-        public void search_Click(object sender, RoutedEventArgs e)
+        public void clearSearch_Click(object sender, RoutedEventArgs e)
         {
             ViewModel.FilterFirstName = "";
-
+            ViewModel.FilterLastName = "";
             ViewModel.PopulateDropdown();
         }
 
