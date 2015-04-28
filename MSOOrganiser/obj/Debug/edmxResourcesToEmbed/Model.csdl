@@ -1,0 +1,387 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="DataModel" Alias="Self" p1:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:p1="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityContainer Name="DataEntities" p1:LazyLoadingEnabled="true">
+    <EntitySet Name="Badges___Misc" EntityType="DataModel.Badges___Misc" />
+    <EntitySet Name="Entrants" EntityType="DataModel.Entrant" />
+    <EntitySet Name="Event_Resources" EntityType="DataModel.Event_Resource" />
+    <EntitySet Name="Event_Sesses" EntityType="DataModel.Event_Sess" />
+    <EntitySet Name="Events" EntityType="DataModel.Event" />
+    <EntitySet Name="EventTypes" EntityType="DataModel.EventType" />
+    <EntitySet Name="Games" EntityType="DataModel.Game" />
+    <EntitySet Name="Information" EntityType="DataModel.Information" />
+    <EntitySet Name="Medal_Points" EntityType="DataModel.Medal_Point" />
+    <EntitySet Name="Contestants" EntityType="DataModel.Contestant" />
+    <EntitySet Name="National_Flags" EntityType="DataModel.National_Flag" />
+    <EntitySet Name="Olympiad_Infoes" EntityType="DataModel.Olympiad_Info" />
+    <EntitySet Name="Parings" EntityType="DataModel.Paring" />
+    <EntitySet Name="Payment_Methods" EntityType="DataModel.Payment_Method" />
+    <EntitySet Name="Payments" EntityType="DataModel.Payment" />
+    <EntitySet Name="Resources" EntityType="DataModel.Resource" />
+    <EntitySet Name="SelectedCategories" EntityType="DataModel.SelectedCategory" />
+    <EntitySet Name="SelectedPeoples" EntityType="DataModel.SelectedPeople" />
+    <EntitySet Name="Sessions" EntityType="DataModel.Session" />
+    <EntitySet Name="Users" EntityType="DataModel.User" />
+    <AssociationSet Name="Entrants_NamesEntrants" Association="DataModel.Entrants_NamesEntrants">
+      <End Role="Name" EntitySet="Contestants" />
+      <End Role="Entrant" EntitySet="Entrants" />
+    </AssociationSet>
+    <AssociationSet Name="Event_Sess_EventsEvent_Sess" Association="DataModel.Event_Sess_EventsEvent_Sess">
+      <End Role="Event" EntitySet="Events" />
+      <End Role="Event_Sess" EntitySet="Event_Sesses" />
+    </AssociationSet>
+    <AssociationSet Name="Event_Sess_SessionEvent_Sess" Association="DataModel.Event_Sess_SessionEvent_Sess">
+      <End Role="Session" EntitySet="Sessions" />
+      <End Role="Event_Sess" EntitySet="Event_Sesses" />
+    </AssociationSet>
+    <AssociationSet Name="Payments_NamesPayments" Association="DataModel.Payments_NamesPayments">
+      <End Role="Name" EntitySet="Contestants" />
+      <End Role="Payment" EntitySet="Payments" />
+    </AssociationSet>
+  </EntityContainer>
+  <EntityType Name="Badges___Misc">
+    <Key>
+      <PropertyRef Name="SSMA_TimeStamp" />
+    </Key>
+    <Property Type="String" Name="Name" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Type="String" Name="Type" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Type="Boolean" Name="Printed" />
+    <Property Type="Binary" Name="SSMA_TimeStamp" Nullable="false" MaxLength="8" FixedLength="true" annotation:StoreGeneratedPattern="Computed" />
+  </EntityType>
+  <EntityType Name="Entrant">
+    <Key>
+      <PropertyRef Name="EntryNumber" />
+    </Key>
+    <Property Type="Int32" Name="Year" />
+    <Property Type="Int32" Name="EntryNumber" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Type="Int32" Name="Mind_Sport_ID" />
+    <Property Type="String" Name="Game_Code" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Type="Boolean" Name="Receipt" />
+    <Property Type="String" Name="Partner" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Type="Decimal" Name="Fee" Precision="19" Scale="4" />
+    <Property Type="String" Name="Comment" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Type="Int32" Name="Rank" />
+    <Property Type="String" Name="Score" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Type="String" Name="Tie_break" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Type="Boolean" Name="Absent" />
+    <Property Type="String" Name="Medal" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Type="Single" Name="Penta_Score" />
+    <Property Type="Boolean" Name="MustUse" />
+    <Property Type="DateTime" Name="Date" Precision="0" />
+    <Property Type="Int32" Name="PIN" />
+    <Property Type="Binary" Name="SSMA_TimeStamp" Nullable="false" MaxLength="8" FixedLength="true" annotation:StoreGeneratedPattern="Computed" />
+    <NavigationProperty Name="Name" Relationship="DataModel.Entrants_NamesEntrants" FromRole="Entrant" ToRole="Name" />
+    <Property Type="Int32" Name="OlympiadId" />
+  </EntityType>
+  <EntityType Name="Event_Resource">
+    <Key>
+      <PropertyRef Name="INDEX" />
+    </Key>
+    <Property Type="Int32" Name="INDEX" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Type="String" Name="Event_Code" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Type="String" Name="Resource" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Type="Int32" Name="QTY" />
+    <Property Type="Int32" Name="Per" />
+  </EntityType>
+  <EntityType Name="Event_Sess">
+    <Key>
+      <PropertyRef Name="INDEX" />
+    </Key>
+    <Property Type="Int32" Name="INDEX" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Type="Int32" Name="EIN" />
+    <Property Type="DateTime" Name="Date" Precision="0" />
+    <Property Type="String" Name="Session" MaxLength="50" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="Event" Relationship="DataModel.Event_Sess_EventsEvent_Sess" FromRole="Event_Sess" ToRole="Event" />
+    <NavigationProperty Name="Session1" Relationship="DataModel.Event_Sess_SessionEvent_Sess" FromRole="Event_Sess" ToRole="Session" />
+  </EntityType>
+  <EntityType Name="Event">
+    <Key>
+      <PropertyRef Name="EIN" />
+    </Key>
+    <Property Type="Int32" Name="EIN" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Type="Int32" Name="Year" />
+    <Property Type="Int32" Name="Number" />
+    <Property Type="String" Name="Code" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Type="String" Name="Mind_Sport" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Type="String" Name="Type" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Type="Int32" Name="Number_in_Team" />
+    <Property Type="Int32" Name="MAX_Number" />
+    <Property Type="Boolean" Name="Pentamind" />
+    <Property Type="String" Name="Entry_Fee" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Type="Boolean" Name="incMaxFee" />
+    <Property Type="Single" Name="No_Sessions" />
+    <Property Type="String" Name="Sessions" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Type="String" Name="Prize_Giving" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Type="Decimal" Name="Prize_fund" Precision="19" Scale="4" />
+    <Property Type="String" Name="C1st_Prize" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Type="String" Name="C2nd_Prize" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Type="String" Name="C3rd_Prize" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Type="String" Name="Other_Prizes" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Type="Boolean" Name="JNR_Medals" />
+    <Property Type="String" Name="JNR_1st_Prize" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Type="String" Name="JNR_2nd_Prize" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Type="String" Name="JNR_3rd_Prize" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Type="String" Name="JNR_Other_Prizes" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Type="String" Name="Location" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Type="String" Name="Arbiter" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Type="String" Name="Notes" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Type="Int32" Name="X_Num" />
+    <Property Type="Boolean" Name="Display" />
+    <Property Type="Binary" Name="SSMA_TimeStamp" Nullable="false" MaxLength="8" FixedLength="true" annotation:StoreGeneratedPattern="Computed" />
+    <NavigationProperty Name="Event_Sess" Relationship="DataModel.Event_Sess_EventsEvent_Sess" FromRole="Event" ToRole="Event_Sess" />
+    <Property Type="Int32" Name="OlympiadId" />
+  </EntityType>
+  <EntityType Name="EventType">
+    <Key>
+      <PropertyRef Name="Type" />
+    </Key>
+    <Property Type="String" Name="Type" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Type="Boolean" Name="InPentamind" />
+    <Property Type="Boolean" Name="Display" />
+    <Property Type="String" Name="Extention" MaxLength="2" FixedLength="false" Unicode="true" />
+    <Property Type="Binary" Name="SSMA_TimeStamp" Nullable="false" MaxLength="8" FixedLength="true" annotation:StoreGeneratedPattern="Computed" />
+  </EntityType>
+  <EntityType Name="Game">
+    <Key>
+      <PropertyRef Name="SSMA_TimeStamp" />
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Type="String" Name="Code" MaxLength="2" FixedLength="false" Unicode="true" />
+    <Property Type="String" Name="Mind_Sport" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Type="String" Name="Contacts" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Type="String" Name="Equipment" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Type="String" Name="Rules" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Type="Binary" Name="Logo" MaxLength="Max" FixedLength="false" />
+    <Property Type="Binary" Name="SSMA_TimeStamp" Nullable="false" MaxLength="8" FixedLength="true" annotation:StoreGeneratedPattern="Computed" />
+    <Property Type="Int32" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+  </EntityType>
+  <EntityType Name="Information">
+    <Key>
+      <PropertyRef Name="SSMA_TimeStamp" />
+    </Key>
+    <Property Type="Int32" Name="Mind_Sport_ID" />
+    <Property Type="String" Name="Info" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Type="Int32" Name="Year" />
+    <Property Type="Boolean" Name="AllYears" />
+    <Property Type="Binary" Name="SSMA_TimeStamp" Nullable="false" MaxLength="8" FixedLength="true" annotation:StoreGeneratedPattern="Computed" />
+  </EntityType>
+  <EntityType Name="Medal_Point">
+    <Key>
+      <PropertyRef Name="SSMA_TimeStamp" />
+    </Key>
+    <Property Type="Single" Name="Order" />
+    <Property Type="String" Name="Colour" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Type="Int32" Name="Points" />
+    <Property Type="Binary" Name="Picture" MaxLength="Max" FixedLength="false" />
+    <Property Type="Binary" Name="SSMA_TimeStamp" Nullable="false" MaxLength="8" FixedLength="true" annotation:StoreGeneratedPattern="Computed" />
+  </EntityType>
+  <EntityType Name="Contestant">
+    <Key>
+      <PropertyRef Name="Mind_Sport_ID" />
+    </Key>
+    <Property Type="Int32" Name="Mind_Sport_ID" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Type="String" Name="Title" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Type="String" Name="Lastname" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Type="String" Name="Firstname" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Type="String" Name="Initials" MaxLength="10" FixedLength="false" Unicode="true" />
+    <Property Type="Boolean" Name="Male" />
+    <Property Type="String" Name="Nationality" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Type="String" Name="DayPhone" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Type="String" Name="EvePhone" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Type="String" Name="Fax" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Type="String" Name="email" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Type="Boolean" Name="No_News" />
+    <Property Type="DateTime" Name="DateofBirth" Precision="0" />
+    <Property Type="Boolean" Name="Concessional" />
+    <Property Type="String" Name="Address1" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Type="String" Name="Address2" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Type="String" Name="City" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Type="String" Name="County" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Type="String" Name="PostCode" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Type="String" Name="Country" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Type="String" Name="BCFCode" MaxLength="7" FixedLength="false" Unicode="true" />
+    <Property Type="String" Name="FIDECode" MaxLength="8" FixedLength="false" Unicode="true" />
+    <Property Type="String" Name="Notes" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Type="DateTime" Name="date" Precision="0" />
+    <Property Type="Binary" Name="SSMA_TimeStamp" Nullable="false" MaxLength="8" FixedLength="true" annotation:StoreGeneratedPattern="Computed" />
+    <NavigationProperty Name="Entrants" Relationship="DataModel.Entrants_NamesEntrants" FromRole="Name" ToRole="Entrant" />
+    <NavigationProperty Name="Payments" Relationship="DataModel.Payments_NamesPayments" FromRole="Name" ToRole="Payment" />
+  </EntityType>
+  <EntityType Name="National_Flag">
+    <Key>
+      <PropertyRef Name="SSMA_TimeStamp" />
+    </Key>
+    <Property Type="String" Name="Nationality" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Type="Binary" Name="Flag" MaxLength="Max" FixedLength="false" />
+    <Property Type="String" Name="Continent" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Type="String" Name="Code" MaxLength="3" FixedLength="false" Unicode="true" />
+    <Property Type="Binary" Name="SSMA_TimeStamp" Nullable="false" MaxLength="8" FixedLength="true" annotation:StoreGeneratedPattern="Computed" />
+  </EntityType>
+  <EntityType Name="Olympiad_Info">
+    <Key>
+      <PropertyRef Name="SSMA_TimeStamp" />
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Type="Int32" Name="YearOf" />
+    <Property Type="String" Name="Number" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Type="String" Name="Title" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Type="String" Name="Venue" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Type="DateTime" Name="StartDate" Precision="0" />
+    <Property Type="DateTime" Name="FinishDate" Precision="0" />
+    <Property Type="Decimal" Name="MaxFee" Precision="19" Scale="4" />
+    <Property Type="Decimal" Name="MaxCon" Precision="19" Scale="4" />
+    <Property Type="DateTime" Name="AgeDate" Precision="0" />
+    <Property Type="Int32" Name="JnrAge" />
+    <Property Type="Int32" Name="SnrAge" />
+    <Property Type="Int32" Name="PentaLong" />
+    <Property Type="Int32" Name="PentaTotal" />
+    <Property Type="Boolean" Name="Current" />
+    <Property Type="Binary" Name="SSMA_TimeStamp" Nullable="false" MaxLength="8" FixedLength="true" annotation:StoreGeneratedPattern="Computed" />
+    <Property Type="Int32" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+  </EntityType>
+  <EntityType Name="Paring">
+    <Key>
+      <PropertyRef Name="INDEX" />
+    </Key>
+    <Property Type="Int32" Name="INDEX" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Type="String" Name="Event_Code" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Type="Int32" Name="Round" />
+    <Property Type="Int32" Name="Board" />
+    <Property Type="Int32" Name="White" />
+    <Property Type="Single" Name="WScore" />
+    <Property Type="Int32" Name="Black" />
+    <Property Type="Single" Name="BScore" />
+    <Property Type="Binary" Name="SSMA_TimeStamp" Nullable="false" MaxLength="8" FixedLength="true" annotation:StoreGeneratedPattern="Computed" />
+  </EntityType>
+  <EntityType Name="Payment_Method">
+    <Key>
+      <PropertyRef Name="SSMA_TimeStamp" />
+    </Key>
+    <Property Type="String" Name="Payment_Method1" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Type="Boolean" Name="Card" />
+    <Property Type="Binary" Name="SSMA_TimeStamp" Nullable="false" MaxLength="8" FixedLength="true" annotation:StoreGeneratedPattern="Computed" />
+  </EntityType>
+  <EntityType Name="Payment">
+    <Key>
+      <PropertyRef Name="PaymentNumber" />
+    </Key>
+    <Property Type="Int32" Name="PaymentNumber" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Type="Int32" Name="MindSportsID" />
+    <Property Type="Decimal" Name="Payment1" Precision="19" Scale="4" />
+    <Property Type="String" Name="Payment_Method" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Type="Int32" Name="Banked" />
+    <Property Type="String" Name="Card_name" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Type="String" Name="Expiry_date" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Type="String" Name="Issue" MaxLength="4" FixedLength="false" Unicode="true" />
+    <Property Type="String" Name="Card_number" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Type="String" Name="Card_Address_1" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Type="String" Name="Card_Address_2" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Type="String" Name="Card_City" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Type="String" Name="Card_County" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Type="String" Name="Card_Post_code" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Type="String" Name="Card_Country" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Type="Int32" Name="Year" />
+    <NavigationProperty Name="Name" Relationship="DataModel.Payments_NamesPayments" FromRole="Payment" ToRole="Name" />
+  </EntityType>
+  <EntityType Name="Resource">
+    <Key>
+      <PropertyRef Name="INDEX" />
+    </Key>
+    <Property Type="String" Name="Resource1" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Type="Int32" Name="MSO_Stock" />
+    <Property Type="String" Name="Source" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Type="Int32" Name="Qty" />
+    <Property Type="Int32" Name="Per" />
+    <Property Type="Int32" Name="INDEX" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Type="Binary" Name="SSMA_TimeStamp" Nullable="false" MaxLength="8" FixedLength="true" annotation:StoreGeneratedPattern="Computed" />
+  </EntityType>
+  <EntityType Name="SelectedCategory">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Type="Int32" Name="ID" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Type="String" Name="Category" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Type="Boolean" Name="Current" />
+    <Property Type="Binary" Name="SSMA_TimeStamp" Nullable="false" MaxLength="8" FixedLength="true" annotation:StoreGeneratedPattern="Computed" />
+  </EntityType>
+  <EntityType Name="SelectedPeople">
+    <Key>
+      <PropertyRef Name="SSMA_TimeStamp" />
+    </Key>
+    <Property Type="Int32" Name="MSOID" />
+    <Property Type="Int32" Name="Category" />
+    <Property Type="Boolean" Name="Printed" />
+    <Property Type="Binary" Name="SSMA_TimeStamp" Nullable="false" MaxLength="8" FixedLength="true" annotation:StoreGeneratedPattern="Computed" />
+  </EntityType>
+  <EntityType Name="Session">
+    <Key>
+      <PropertyRef Name="Session1" />
+    </Key>
+    <Property Type="String" Name="Session1" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Type="String" Name="Description" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Type="DateTime" Name="Start" Precision="0" />
+    <Property Type="DateTime" Name="Finish" Precision="0" />
+    <Property Type="Single" Name="Worth" />
+    <Property Type="Binary" Name="SSMA_TimeStamp" Nullable="false" MaxLength="8" FixedLength="true" annotation:StoreGeneratedPattern="Computed" />
+    <NavigationProperty Name="Event_Sess" Relationship="DataModel.Event_Sess_SessionEvent_Sess" FromRole="Session" ToRole="Event_Sess" />
+  </EntityType>
+  <EntityType Name="User">
+    <Key>
+      <PropertyRef Name="PIN" />
+    </Key>
+    <Property Type="Int32" Name="PIN" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Type="String" Name="Name" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Type="String" Name="Password" MaxLength="50" FixedLength="false" Unicode="true" />
+  </EntityType>
+  <Association Name="Entrants_NamesEntrants">
+    <End Type="DataModel.Contestant" Role="Name" Multiplicity="0..1" />
+    <End Type="DataModel.Entrant" Role="Entrant" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Name">
+        <PropertyRef Name="Mind_Sport_ID" />
+      </Principal>
+      <Dependent Role="Entrant">
+        <PropertyRef Name="Mind_Sport_ID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="Event_Sess_EventsEvent_Sess">
+    <End Type="DataModel.Event" Role="Event" Multiplicity="0..1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Type="DataModel.Event_Sess" Role="Event_Sess" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Event">
+        <PropertyRef Name="EIN" />
+      </Principal>
+      <Dependent Role="Event_Sess">
+        <PropertyRef Name="EIN" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="Event_Sess_SessionEvent_Sess">
+    <End Type="DataModel.Session" Role="Session" Multiplicity="0..1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Type="DataModel.Event_Sess" Role="Event_Sess" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Session">
+        <PropertyRef Name="Session1" />
+      </Principal>
+      <Dependent Role="Event_Sess">
+        <PropertyRef Name="Session" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="Payments_NamesPayments">
+    <End Type="DataModel.Contestant" Role="Name" Multiplicity="0..1" />
+    <End Type="DataModel.Payment" Role="Payment" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Name">
+        <PropertyRef Name="Mind_Sport_ID" />
+      </Principal>
+      <Dependent Role="Payment">
+        <PropertyRef Name="MindSportsID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+</Schema>

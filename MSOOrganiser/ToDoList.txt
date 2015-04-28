@@ -1,0 +1,54 @@
+﻿Search for competitor very clunky - also select search result #1
+On saving new game, goes random
+Dropdowns for Mr/Mrs/etc.
+
+Save-and-create-new
+
+
+
+Forms:
+
+Badges-Misc
+Bulk Print Options
+Code Change
+Day Report
+Email Update
+Event Resource
+Event Sess
+Event, Arbiters
+Games							DONE	
+Information
+Logistic Report
+Medal Sheets Report
+MISC menu
+Names in Event Report
+Notes
+Pairing Cards Report
+Paring Printout
+Parking Report
+Penta Calc
+Penta Search
+PINList
+Poker WC
+Report Switchboard			
+-	25 buttons, all now non-functional buttons on Report menu
+	(sort this menu out)
+Res Display
+Result List
+Result Report
+Search
+SelectedCategories
+SigninSheet
+Switchboard
+-	Find a Person			-> Menu Competitors (opens person form)
+-	Edit Event Details		-> Menu (opens event form)
+-	Edit Results			-> Menu (opens results form)
+-	Display Results			-> Menu
+-	View Reports			-> Menu (opens Report Switchboard - this replaced by menus)
+-	Misc					-> Menu (opens misc switchboard - replaced by menu)
+Todays Event By Game Report
+Todays Events Report
+
+THINGS TO CONSIDER
+
+Deleting a Game - can't, breaks integrity

@@ -1,0 +1,71 @@
+﻿<UserControl x:Class="MSOOrganiser.OlympiadPanel"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             mc:Ignorable="d" 
+             d:DesignHeight="600" d:DesignWidth="600">
+    <StackPanel Orientation="Vertical">
+        <Border BorderBrush="#ff000000" BorderThickness="1" CornerRadius="8" Margin="4" Background="AliceBlue">
+            <StackPanel Orientation="Horizontal">
+                <TextBlock FontWeight="Bold" FontSize="16" Margin="10,10,10,10">Olympiads</TextBlock>
+                <ComboBox x:Name="olympiadsCombo" Width="300" Margin="0,10,0,10"
+                          ItemsSource="{Binding Olympiads}"
+                          DisplayMemberPath="Text"
+                          SelectedValuePath="Value"
+                          SelectedValue="{Binding OlympiadId}"
+                          SelectionChanged="olympiadCombo_Changed">
+                </ComboBox>
+                <Button Margin="10,10,10,10" IsEnabled="{Binding IsDirty}" Click="save_Click">Save</Button>
+                <Button Margin="10,10,10,10" IsEnabled="{Binding IsDirty}" Click="cancel_Click">Cancel</Button>
+            </StackPanel>
+        </Border>
+        <StackPanel Orientation="Horizontal" Margin="0,20,0,0">
+            <Label Width="100">Year:</Label>
+            <TextBox Text="{Binding YearOf, Mode=TwoWay}" Width="40"></TextBox>
+        </StackPanel>
+        <StackPanel Orientation="Horizontal" Margin="0,20,0,0">
+            <Label Width="100">Number:</Label>
+            <TextBox Text="{Binding Number, Mode=TwoWay}" Width="100"></TextBox>
+            <Label>Title:</Label>
+            <TextBox Text="{Binding Title, Mode=TwoWay}" Width="348"></TextBox>
+        </StackPanel>
+        <StackPanel Orientation="Horizontal" Margin="0,20,0,0">
+            <Label Width="100">Venue:</Label>
+            <TextBox Width="484" MinLines="3" MaxLines="3" Text="{Binding Venue, Mode=TwoWay}"></TextBox>
+        </StackPanel>
+        <StackPanel Orientation="Horizontal" Margin="0,20,0,0">
+            <Label Width="100">Start Date:</Label>
+            <TextBox Text="{Binding StartDate, Mode=TwoWay}" Width="100"></TextBox>
+            <Label Width="100">Finish Date:</Label>
+            <TextBox Text="{Binding FinishDate, Mode=TwoWay}" Width="100"></TextBox>
+        </StackPanel>
+        <StackPanel Orientation="Horizontal" Margin="0,20,0,0">
+            <Label Width="100">Maximum Fees:</Label>
+            <Label>Standard £</Label>
+            <TextBox Width="80" Text="{Binding MaxFee, Mode=TwoWay}"></TextBox>
+            <Label>Concession £</Label>
+            <TextBox Width="80" Text="{Binding MaxCon, Mode=TwoWay}"></TextBox>
+        </StackPanel>
+        <StackPanel Orientation="Horizontal" Margin="0,20,0,0">
+            <Label Width="100">Age Date:</Label>
+            <TextBox Text="{Binding AgeDate, Mode=TwoWay}" Width="100"></TextBox>
+            <Label>Junior Age:</Label>
+            <TextBox Text="{Binding JnrAge, Mode=TwoWay}" Width="32"></TextBox>
+            <Label>Senior Age:</Label>
+            <TextBox Text="{Binding SnrAge, Mode=TwoWay}" Width="32"></TextBox>
+        </StackPanel>
+        <GroupBox Header="Pentamind" Margin="0,20,0,0">
+            <StackPanel Orientation="Vertical">
+                <StackPanel Orientation="Horizontal" Margin="0,20,0,0">
+                    <Label Width="150">Long sessions needed:</Label>
+                    <TextBox Text="{Binding PentaLong, Mode=TwoWay}" Width="32"></TextBox>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" Margin="0,20,0,0">
+                    <Label Width="150">Total sessions needed:</Label>
+                    <TextBox Text="{Binding PentaTotal, Mode=TwoWay}" Width="32"></TextBox>
+                </StackPanel>
+            </StackPanel>
+        </GroupBox>
+    </StackPanel>
+</UserControl>

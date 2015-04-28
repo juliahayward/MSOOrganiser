@@ -1,0 +1,182 @@
+﻿<UserControl x:Class="MSOOrganiser.ContestantPanel"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+             xmlns:local="clr-namespace:MSOOrganiser.Converters"
+             mc:Ignorable="d" 
+             d:DesignHeight="600" d:DesignWidth="600">
+    <UserControl.Resources>
+        <local:ShowBlankIfZeroIntConverter x:Key="ShowBlankIfZeroIntConverter" />
+    </UserControl.Resources>
+    <StackPanel Orientation="Vertical">
+        <Border BorderBrush="#ff000000" BorderThickness="1" CornerRadius="8" Margin="4" Background="AliceBlue">
+            <StackPanel Orientation="Horizontal">
+                <TextBlock FontWeight="Bold" FontSize="16" Margin="10,10,10,10">Competitors
+                </TextBlock>
+                <ComboBox x:Name="gameCombo" Width="300" Margin="0,10,0,10"
+                          ItemsSource="{Binding Contestants}"
+                          DisplayMemberPath="Text"
+                          SelectedValuePath="Value"
+                          SelectedValue="{Binding ContestantId, Mode=TwoWay}"
+                          SelectionChanged="contestantCombo_Changed">
+                </ComboBox>
+                <Label Margin="0,10,0,0">Search for:</Label>
+                <xctk:WatermarkTextBox Watermark="First Name" Margin="10,10,10,10" Text="{Binding FilterFirstName, Mode=TwoWay}" Width="100"></xctk:WatermarkTextBox>
+                <xctk:WatermarkTextBox Watermark="Surname" Margin="0,10,10,10" Text="{Binding FilterLastName, Mode=TwoWay}" Width="100"></xctk:WatermarkTextBox>
+                <Button Margin="10,10,10,10" Click="search_Click">Search</Button>
+                <Button Margin="10,10,10,10" Click="clearSearch_Click">Clear</Button>
+                <Button Margin="10,10,10,10" IsEnabled="{Binding IsDirty}" Click="save_Click">Save</Button>
+                <Button Margin="10,10,10,10" IsEnabled="{Binding IsDirty}" Click="cancel_Click">Cancel</Button>
+            </StackPanel>
+        </Border>
+        <TextBlock FontWeight="Bold" FontSize="16" Margin="10,10,10,10" Text="{Binding Name}"/>
+        <TabControl Height="600">
+            <TabItem Header="Personal Details">
+                <StackPanel Orientation="Vertical">
+                    <StackPanel Orientation="Horizontal" Margin="0,20,0,0">
+                        <Label Width="100">Name:</Label>
+                        <ComboBox Width="60"
+                          ItemsSource="{Binding Titles}"
+                          DisplayMemberPath="Text"
+                          SelectedValuePath="Value"
+                          SelectedValue="{Binding Title}">
+                        </ComboBox>
+                        <TextBox Text="{Binding FirstName, Mode=TwoWay}" Width="100"></TextBox>
+                        <TextBox Text="{Binding Initials, Mode=TwoWay}" Width="40"></TextBox>
+                        <TextBox Text="{Binding LastName, Mode=TwoWay}" Width="160"></TextBox>
+                        <Label>Male:</Label>
+                        <CheckBox IsChecked="{Binding Male, Mode=TwoWay}"></CheckBox>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" Margin="0,20,0,0">
+                        <Label Width="100">Nationality:</Label>
+                        <TextBox Text="{Binding Nationality, Mode=TwoWay}" Width="100"></TextBox>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" Margin="0,20,0,0">
+                        <Label Width="100">Phone</Label>
+                        <Label> (day) </Label>
+                        <TextBox Text="{Binding DayPhone, Mode=TwoWay}" Width="100"></TextBox>
+                        <Label> (evening) </Label>
+                        <TextBox Text="{Binding EvePhone, Mode=TwoWay}" Width="100"></TextBox>
+                        <Label> (fax)</Label>
+                        <TextBox Text="{Binding Fax, Mode=TwoWay}" Width="100"></TextBox>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" Margin="0,20,0,0">
+                        <Label Width="100">Email:</Label>
+                        <TextBox Text="{Binding Email, Mode=TwoWay}" Width="200"></TextBox>
+                        <Label>Exclude from promotional mail:</Label>
+                        <CheckBox IsChecked="{Binding WantsNoMail, Mode=TwoWay}"></CheckBox>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" Margin="0,20,0,0">
+                        <Label Width="100">Date of Birth:</Label>
+                        <TextBox Text="{Binding DateOfBirth, Mode=TwoWay}" Width="100"></TextBox>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" Margin="0,20,0,0">
+                        <Label Width="100">Is Concession:</Label>
+                        <CheckBox IsChecked="{Binding IsConcession, Mode=TwoWay}"></CheckBox>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" Margin="0,20,0,0">
+                        <Label Width="100">Address1:</Label>
+                        <TextBox Text="{Binding Address1, Mode=TwoWay}" Width="200"></TextBox>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" Margin="0,0,0,0">
+                        <Label Width="100">Address2:</Label>
+                        <TextBox Text="{Binding Address2, Mode=TwoWay}" Width="200"></TextBox>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" Margin="0,0,0,0">
+                        <Label Width="100">City:</Label>
+                        <TextBox Text="{Binding City, Mode=TwoWay}" Width="200"></TextBox>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" Margin="0,0,0,0">
+                        <Label Width="100">County:</Label>
+                        <TextBox Text="{Binding County, Mode=TwoWay}" Width="200"></TextBox>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" Margin="0,0,0,0">
+                        <Label Width="100">Postcode:</Label>
+                        <TextBox Text="{Binding Postcode, Mode=TwoWay}" Width="100"></TextBox>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" Margin="0,0,0,0">
+                        <Label Width="100">Country:</Label>
+                        <TextBox Text="{Binding Country, Mode=TwoWay}" Width="100"></TextBox>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" Margin="0,20,0,0">
+                        <Label Width="100">Notes:</Label>
+                        <TextBox Text="{Binding Notes, Mode=TwoWay}" Width="740" MinLines="3"></TextBox>
+                    </StackPanel>
+                </StackPanel>
+            </TabItem>
+            <TabItem Header="Organisations">
+                <StackPanel Orientation="Vertical">
+                    <StackPanel Orientation="Horizontal" Margin="0,20,0,0">
+                        <Label Width="100">BCF Code:</Label>
+                        <TextBox Text="{Binding BCFCode, Mode=TwoWay}" Width="100"></TextBox>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" Margin="0,20,0,0">
+                        <Label Width="100">FIDE Code:</Label>
+                        <TextBox Text="{Binding FIDECode, Mode=TwoWay}" Width="100"></TextBox>
+                    </StackPanel>
+                </StackPanel>
+            </TabItem>
+            <TabItem Header="Events and Payments">
+                <StackPanel Orientation="Vertical">
+                    <StackPanel Orientation="Horizontal" Margin="0,20,0,0">
+                        <Label Width="100">Olympiad:</Label>
+                        <ComboBox Width="240"
+                          ItemsSource="{Binding Olympiads}"
+                          DisplayMemberPath="Text"
+                          SelectedValuePath="Value"
+                          SelectedValue="{Binding CurrentOlympiadId}"
+                          SelectionChanged="olympiadCombo_Changed">
+                        </ComboBox>
+                    </StackPanel>
+                    <DataGrid Name="dataGrid" CanUserAddRows="False" CanUserResizeColumns="True" CanUserSortColumns="True"
+                              AutoGenerateColumns="False" 
+                            Width="920" Margin="0,20,0,0" IsReadOnly="True" ItemsSource="{Binding EventsDefaultView}">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="EventId" Binding="{Binding EventId}" />
+                            <DataGridTextColumn Header="EventCode" Binding="{Binding EventCode}" />
+                            <DataGridTextColumn Header="EventName" Binding="{Binding EventName}" />
+                            <DataGridCheckBoxColumn Header="Receipt" Binding="{Binding Receipt}" />
+                            <DataGridTextColumn Header="Fee" Binding="{Binding Fee}" />
+                            <DataGridTextColumn Header="Partner" Binding="{Binding Partner}" />
+                            <DataGridTextColumn Header="Medal" Width="48" Binding="{Binding Medal}">
+                                <DataGridTextColumn.ElementStyle>
+                                    <Style TargetType="{x:Type TextBlock}">
+                                        <Style.Triggers>
+                                            <Trigger Property="Text" Value="Bronze">
+                                                <Setter Property="Background" Value="Brown"/>
+                                                <Setter Property="Foreground" Value="White"/>
+                                            </Trigger>
+                                            <Trigger Property="Text" Value="Silver">
+                                                <Setter Property="Background" Value="Silver"/>
+                                            </Trigger>
+                                            <Trigger Property="Text" Value="Gold">
+                                                <Setter Property="Background" Value="Gold"/>
+                                            </Trigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </DataGridTextColumn.ElementStyle>
+                            </DataGridTextColumn>
+                            <DataGridTextColumn Header="Rank" Binding="{Binding Rank, Converter={StaticResource ShowBlankIfZeroIntConverter}}" />
+                            <DataGridTextColumn Header="Pentamind" Binding="{Binding Penta}" />
+                            <DataGridTextColumn Header="TieBreak" Binding="{Binding TieBreak}" />
+                            <DataGridCheckBoxColumn Header="Absent" Binding="{Binding Absent}" />
+                            <DataGridTemplateColumn  MinWidth="100" Header="View">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <Button Click="event_Click">View Results</Button>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </StackPanel>
+            </TabItem>
+            <TabItem Header="Other">
+                todo: Parking permits, Max Fee Card, Players Timetable,
+                Add to Selected, Make Arbiter, Print Badge
+            </TabItem>
+        </TabControl>
+    </StackPanel>
+</UserControl>

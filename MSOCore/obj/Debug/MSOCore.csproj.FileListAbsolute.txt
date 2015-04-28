@@ -1,0 +1,4 @@
+D:\MSOOrganiser\MSOCore\bin\Debug\MSOCore.dll
+D:\MSOOrganiser\MSOCore\bin\Debug\MSOCore.pdb
+D:\MSOOrganiser\MSOCore\obj\Debug\MSOCore.dll
+D:\MSOOrganiser\MSOCore\obj\Debug\MSOCore.pdb

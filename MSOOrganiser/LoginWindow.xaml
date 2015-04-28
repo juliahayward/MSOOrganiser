@@ -1,0 +1,24 @@
+﻿<Window x:Class="MSOOrganiser.LoginWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="MSO - Log In" Height="200" Width="500">
+    <Grid>
+        <StackPanel Orientation="Horizontal">
+            <Image Source="/MSOOrganiser;component/Resources/Logo.png" />
+            <StackPanel>
+                <StackPanel Orientation="Horizontal" Margin="0,40,0,0">
+                    <Label>Username</Label>
+                    <TextBox x:Name="usernameBox" Width="160" KeyDown="usernameBox_KeyDown">
+                        Julia
+                    </TextBox>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
+                    <Label>Password</Label>
+                    <PasswordBox x:Name="passwordBox" Width="160" KeyDown="passwordBox_KeyDown">
+                    </PasswordBox>
+                </StackPanel>
+                <Button x:Name="loginButton" Margin="64,10,64,0" Click="loginButton_Click">Log In</Button>
+            </StackPanel>
+        </StackPanel>
+    </Grid>
+</Window>
