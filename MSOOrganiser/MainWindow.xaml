@@ -12,40 +12,40 @@
                 <MenuItem Header="Olympiads" Click="olympiadsMenuItem_Click"/>
                 <MenuItem Header="Games" Click="gamesMenuItem_Click"/>
                 <MenuItem Header="Competitors" Click="competitorsMenuItem_Click"/>
-                <MenuItem Header="Events"/>
+                <MenuItem Header="Events" IsEnabled="False"/>
                 <MenuItem Header="Results">
                     <MenuItem Header="Display results" Click="displayResultsMenuItem_Click"/>
                     <MenuItem Header="Edit Results" Click="resultsMenuItem_Click" />
                 </MenuItem>
                 <MenuItem Header="Reports">
-                    <MenuItem Header="Bulk Receipts"/>
-                    <MenuItem Header="View Max Fee / Penta Cards"/>
-                    <MenuItem Header="Bulk Max Fee"/>
-                    <MenuItem Header="View Contacts"/>
-                    <MenuItem Header="View Game Plan"/>
-                    <MenuItem Header="Sign In Sheets"/>
-                    <MenuItem Header="Parking Lists"/>
-                    <MenuItem Header="Logistics Report"/>
-                    <MenuItem Header="View Traffic Report"/>
-                    <MenuItem Header="View Location Use"/>
-                    <MenuItem Header="Banking"/>
-                    <MenuItem Header="Print Donations"/>
-                    <MenuItem Header="Non-Event Income"/>
-                    <MenuItem Header="Event Income"/>
-                    <MenuItem Header="View Nationalities" Click="nationalitiesMenuItem_Click"/>
-                    <MenuItem Header="Print Event Entries"/>
-                    <MenuItem Header="Entry Summary"/>
-                    <MenuItem Header="Print a Day's Report"/>
-                    <MenuItem Header="Print Today's Events"/>
-                    <MenuItem Header="Print Today's Event By Game"/>
-                    <MenuItem Header="View Medal Forms"/>
-                    <MenuItem Header="Print Named Pairing Card for an Event"/>
-                    <MenuItem Header="View Pentamind Qualifiers"/>
-                    <MenuItem Header="Print Medal Table"/>
-                    <MenuItem Header="Print Results"/>
+                    <MenuItem Header="Bulk Receipts" IsEnabled="False"/>
+                    <MenuItem Header="View Max Fee / Penta Cards" IsEnabled="False"/>
+                    <MenuItem Header="Bulk Max Fee" IsEnabled="False"/>
+                    <MenuItem Header="View Contacts" IsEnabled="False"/>
+                    <MenuItem Header="View Game Plan" IsEnabled="False"/>
+                    <MenuItem Header="Sign In Sheets" IsEnabled="False"/>
+                    <MenuItem Header="Parking Lists" IsEnabled="False"/>
+                    <MenuItem Header="Logistics Report" IsEnabled="False"/>
+                    <MenuItem Header="View Traffic Report" IsEnabled="False"/>
+                    <MenuItem Header="View Location Use" IsEnabled="False"/>
+                    <MenuItem Header="Banking" IsEnabled="False"/>
+                    <MenuItem Header="Print Donations" IsEnabled="False"/>
+                    <MenuItem Header="Non-Event Income" IsEnabled="False"/>
+                    <MenuItem Header="Event Income" IsEnabled="False"/>
+                    <MenuItem Header="View Nationalities" Click="nationalitiesMenuItem_Click" />
+                    <MenuItem Header="Print Event Entries" IsEnabled="False"/>
+                    <MenuItem Header="Entry Summary" IsEnabled="False"/>
+                    <MenuItem Header="Print a Day's Report" IsEnabled="False"/>
+                    <MenuItem Header="Print Today's Events" IsEnabled="False"/>
+                    <MenuItem Header="Print Today's Event By Game" IsEnabled="False"/>
+                    <MenuItem Header="View Medal Forms" IsEnabled="False"/>
+                    <MenuItem Header="Print Named Pairing Card for an Event" IsEnabled="False"/>
+                    <MenuItem Header="View Pentamind Qualifiers" IsEnabled="False"/>
+                    <MenuItem Header="Print Medal Table" IsEnabled="False"/>
+                    <MenuItem Header="Print Results" IsEnabled="False"/>
                 </MenuItem>
                 <MenuItem Header="Misc">
-                    <MenuItem Header="Print Misc Badges"/>
+                    <MenuItem Header="Print Misc Badges" IsEnabled="False"/>
                 </MenuItem>
             </Menu>
             <StatusBar DockPanel.Dock="Bottom">
