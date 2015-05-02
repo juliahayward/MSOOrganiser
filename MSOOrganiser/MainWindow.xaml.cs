@@ -23,6 +23,8 @@ namespace MSOOrganiser
     /// </summary>
     public partial class MainWindow : Window
     {
+        private int LoggedInUserId { get; set; }
+
         public MainWindow()
         {
             InitializeComponent();
@@ -34,11 +36,18 @@ namespace MSOOrganiser
                 MessageBox.Show("Invalid user/password");
                 this.Close();
             }
+            LoggedInUserId = loginBox.UserId;
             this.Title += " --- logged in as " + loginBox.UserName;
 
             if (dockPanel.Children.Count > 2) dockPanel.Children.RemoveAt(2);
             var panel = new StartupPanel();
             dockPanel.Children.Add(panel);
+        }
+
+        private void changePasswordMenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            var passwordDialog = new PasswordChangeWindow() { UserId = LoggedInUserId };
+            passwordDialog.ShowDialog();
         }
 
         private void exitMenuItem_Click(object sender, RoutedEventArgs e)
@@ -117,6 +126,8 @@ namespace MSOOrganiser
             var panel = new DisplayResultsPanel();
             dockPanel.Children.Add(panel);
         }
+
+        
 
     }
 }

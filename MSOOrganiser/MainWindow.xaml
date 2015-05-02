@@ -7,6 +7,7 @@
         <DockPanel x:Name="dockPanel">
             <Menu DockPanel.Dock="Top">
                 <MenuItem Header="_File">
+                    <MenuItem Header="Change Password" Click="changePasswordMenuItem_Click"/>
                     <MenuItem Header="_Exit" Click="exitMenuItem_Click"/>
                 </MenuItem>
                 <MenuItem Header="Olympiads" Click="olympiadsMenuItem_Click"/>

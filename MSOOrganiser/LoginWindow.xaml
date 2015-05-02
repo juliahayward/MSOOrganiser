@@ -7,13 +7,13 @@
             <Image Source="/MSOOrganiser;component/Resources/Logo.png" />
             <StackPanel>
                 <StackPanel Orientation="Horizontal" Margin="0,40,0,0">
-                    <Label>Username</Label>
+                    <Label Width="64">Username</Label>
                     <TextBox x:Name="usernameBox" Width="160" KeyDown="usernameBox_KeyDown">
                         Julia
                     </TextBox>
                 </StackPanel>
                 <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
-                    <Label>Password</Label>
+                    <Label Width="64">Password</Label>
                     <PasswordBox x:Name="passwordBox" Width="160" KeyDown="passwordBox_KeyDown">
                     </PasswordBox>
                 </StackPanel>
