@@ -132,7 +132,7 @@
                     </StackPanel>
                     <DataGrid Name="dataGrid" CanUserAddRows="False" CanUserResizeColumns="True" CanUserSortColumns="True"
                               AutoGenerateColumns="False" 
-                            Width="920" Margin="0,20,0,0" IsReadOnly="True" ItemsSource="{Binding EventsDefaultView}">
+                            Width="920" Margin="0,20,0,0" IsReadOnly="True" ItemsSource="{Binding Events}">
                         <DataGrid.Columns>
                             <DataGridTextColumn Header="EventId" Binding="{Binding EventId}" />
                             <DataGridTextColumn Header="EventCode" Binding="{Binding EventCode}" />

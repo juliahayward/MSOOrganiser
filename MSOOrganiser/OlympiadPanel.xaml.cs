@@ -23,33 +23,35 @@ namespace MSOOrganiser
     /// </summary>
     public partial class OlympiadPanel : UserControl
     {
-  
-
         public OlympiadPanel()
         {
             InitializeComponent();
             DataContext = new OlympiadPanelVm();
         }
 
+        public OlympiadPanelVm ViewModel
+        {
+            get { return (OlympiadPanelVm)DataContext; }
+        }
 
         public void Populate()
         {
-            ((OlympiadPanelVm)DataContext).PopulateDropdown();
+            ViewModel.PopulateDropdown();
         }
 
         private void olympiadCombo_Changed(object sender, SelectionChangedEventArgs e)
         {
-            ((OlympiadPanelVm)DataContext).PopulateGame();
+            ViewModel.PopulateGame();
         }
 
         private void cancel_Click(object sender, RoutedEventArgs e)
         {
-            ((OlympiadPanelVm)DataContext).PopulateGame();
+            ViewModel.PopulateGame();
         }
 
         private void save_Click(object sender, RoutedEventArgs e)
         {
-            ((OlympiadPanelVm)DataContext).Save();
+            ViewModel.Save();
         }
     }
 
@@ -62,9 +64,18 @@ namespace MSOOrganiser
             public string Value { get; set; }
         }
 
+        public class EventVm
+        {
+            public int Id { get; set; }
+            public string Code { get; set; }
+            public string Name { get; set; }
+        }
+
+
         #region bindable properties
         public ObservableCollection<OlympiadVm> Olympiads { get; set; }
         public string OlympiadId { get; set; }
+            public ObservableCollection<EventVm> Events { get; set; }
 
         private bool _IsDirty;
         public bool IsDirty
@@ -309,6 +320,7 @@ namespace MSOOrganiser
         public OlympiadPanelVm()
         {
             Olympiads = new ObservableCollection<OlympiadVm>();
+            Events = new ObservableCollection<EventVm>();
             OlympiadId = "0";
         }
 
@@ -331,6 +343,7 @@ namespace MSOOrganiser
                 Title = ""; Venue = ""; StartDate = ""; FinishDate = ""; MaxFee = ""; MaxCon = ""; AgeDate= "";
                 JnrAge = ""; SnrAge = "";
                 PentaLong = ""; PentaTotal = "";
+                Events.Clear();
             }
             else
             {
@@ -341,7 +354,7 @@ namespace MSOOrganiser
                 Title = o.Title;
                 Venue = o.Venue;
                 StartDate = o.StartDate.Value.ToString("dd/MM/yyyy");
-                FinishDate = o.FinishDate.Value.ToString("dd/MM/yyyy");
+                FinishDate = (o.FinishDate.HasValue) ? o.FinishDate.Value.ToString("dd/MM/yyyy") : "";
                 MaxFee = o.MaxFee.Value.ToString("F2");
                 MaxCon = o.MaxCon.Value.ToString("F2");
                 AgeDate = o.AgeDate.ToString();
@@ -349,6 +362,11 @@ namespace MSOOrganiser
                 SnrAge = o.SnrAge.ToString();
                 PentaLong = o.PentaLong.ToString();
                 PentaTotal = o.PentaTotal.ToString();
+                Events.Clear();
+                foreach (var e in context.Events.Where(x => x.OlympiadId == id).OrderBy(x => x.Code))
+                {
+                    Events.Add(new EventVm() { Id = e.EIN, Code = e.Code, Name = e.Mind_Sport });
+                }
             }
             IsDirty = false;
         }
