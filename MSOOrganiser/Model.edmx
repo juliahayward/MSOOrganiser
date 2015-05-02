@@ -426,6 +426,8 @@
           <Property Name="PIN" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
           <Property Name="Name" Type="nvarchar" MaxLength="50" />
           <Property Name="Password" Type="nvarchar" MaxLength="50" />
+          <Property Name="Salt" Type="nvarchar" MaxLength="32" />
+          <Property Name="Hash" Type="nvarchar" MaxLength="128" />
         </EntityType>
         <Association Name="Entrants$NamesEntrants">
           <End Role="Names" Type="DataModel.Store.Names" Multiplicity="0..1" />
@@ -851,6 +853,8 @@
           <Property Type="Int32" Name="PIN" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Type="String" Name="Name" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Type="String" Name="Password" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="Salt" MaxLength="32" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="Hash" MaxLength="128" FixedLength="false" Unicode="true" />
         </EntityType>
         <Association Name="Entrants_NamesEntrants">
           <End Type="DataModel.Contestant" Role="Name" Multiplicity="0..1" />
@@ -1208,6 +1212,8 @@
           <EntitySetMapping Name="Users">
             <EntityTypeMapping TypeName="DataModel.User">
               <MappingFragment StoreEntitySet="Users">
+                <ScalarProperty Name="Hash" ColumnName="Hash" />
+                <ScalarProperty Name="Salt" ColumnName="Salt" />
                 <ScalarProperty Name="Password" ColumnName="Password" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="PIN" ColumnName="PIN" />
