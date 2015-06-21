@@ -17,10 +17,18 @@ namespace MSOCore.Reports
             public string Total { get; set; }
         }
 
-        public IEnumerable<NationalityVm> GetItems()
+        public IEnumerable<NationalityVm> GetItemsForLatest()
         {
             var context = new DataEntities();
-            var contIds = context.Entrants.Where(x => x.Year == 2014) // TODO current olympiad
+            var olympiad = context.Olympiad_Infoes.OrderByDescending(x => x.StartDate).First();
+
+            return GetItems(olympiad.Id);
+        }
+
+        public IEnumerable<NationalityVm> GetItems(int olympiadId)
+        {
+            var context = new DataEntities();
+            var contIds = context.Entrants.Where(x => x.OlympiadId == olympiadId) 
                 .Select(x => x.Mind_Sport_ID).Distinct().ToList();
             var conts = context.Contestants.Where(x => contIds.Contains(x.Mind_Sport_ID))
                 .ToList();

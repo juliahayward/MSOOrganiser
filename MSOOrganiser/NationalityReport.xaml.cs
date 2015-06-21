@@ -37,7 +37,7 @@ namespace MSOOrganiser
             var generator = new NationalityReportGenerator();
 
             Items = new ObservableCollection<NationalityReportGenerator.NationalityVm>();
-            foreach (var item in generator.GetItems())
+            foreach (var item in generator.GetItemsForLatest())
                 Items.Add(item);
         }
 

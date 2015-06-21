@@ -1,0 +1,21 @@
+﻿@model IEnumerable<MSOCore.Reports.NationalityReportGenerator.NationalityVm>
+@{
+    Layout = null;
+}
+<table>
+    <tr>
+        <td>Country</td>
+        <td>Male</td>
+        <td>Female</td>
+        <td>Total</td>
+    </tr>
+    @foreach (var item in Model)
+    {    
+    <tr>
+        <td>@item.Nationality</td>
+        <td>@item.Males</td>
+        <td>@item.Females</td>
+        <td>@item.Total</td>
+    </tr>
+    }
+</table>
