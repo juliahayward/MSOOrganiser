@@ -7,17 +7,24 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace MSOOrganiser
+namespace MSOCore
 {
     using System;
     using System.Collections.Generic;
     
     public partial class User
     {
+        public User()
+        {
+            this.UserLogins = new HashSet<UserLogin>();
+        }
+    
         public int PIN { get; set; }
         public string Name { get; set; }
         public string Password { get; set; }
         public string Salt { get; set; }
         public string Hash { get; set; }
+    
+        public virtual ICollection<UserLogin> UserLogins { get; set; }
     }
 }

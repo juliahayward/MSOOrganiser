@@ -1,0 +1,30 @@
+﻿<Window x:Class="MSOOrganiser.AddEventToOlympiadWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+        Title="Add Event To Olympiad" Height="300" Width="600">
+    <Grid>
+        <StackPanel Orientation="Vertical">
+            <StackPanel Margin="10" Orientation="Horizontal">
+                <RadioButton Margin="10" IsChecked="{Binding UsePastEvent, Mode=TwoWay}"></RadioButton>
+                <Label>Existing event:</Label>
+                <ComboBox x:Name="olympiadsCombo" Width="300" Margin="0,0,0,0"
+                          ItemsSource="{Binding PastEvents}"
+                          DisplayMemberPath="Text"
+                          SelectedValuePath="Id"
+                          SelectedValue="{Binding SelectedPastEventId}">
+                </ComboBox>
+            </StackPanel>
+            <StackPanel Margin="10" Orientation="Horizontal">
+                <RadioButton Margin="10" IsChecked="{Binding UseNewEvent, Mode=TwoWay}"></RadioButton>
+                <Label>New event:</Label>
+                <xctk:WatermarkTextBox Watermark="Code" MaxLength="4" Width="40" Text="{Binding NewCode}" Margin="10,0,0,0"></xctk:WatermarkTextBox>
+                <xctk:WatermarkTextBox Watermark="Name" MaxLength="100" Width="400" Text="{Binding NewName}" Margin="10,0,0,0"></xctk:WatermarkTextBox>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal">
+            <Button Margin="10" Width="150" Click="addEvent_Click">Add Event</Button>
+            <Button Margin="10" Width="150" Click="cancel_Click">Cancel</Button>
+        </StackPanel>
+        </StackPanel>
+    </Grid>
+</Window>

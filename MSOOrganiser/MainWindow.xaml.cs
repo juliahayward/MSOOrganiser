@@ -15,6 +15,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Data.OleDb;
 using System.Data;
+using MSOCore;
 
 namespace MSOOrganiser
 {
@@ -24,6 +25,7 @@ namespace MSOOrganiser
     public partial class MainWindow : Window
     {
         private int LoggedInUserId { get; set; }
+        private int UserLoginId { get; set; }
 
         public MainWindow()
         {
@@ -37,12 +39,24 @@ namespace MSOOrganiser
                 this.Close();
             }
             LoggedInUserId = loginBox.UserId;
+            UserLoginId = loginBox.UserLoginId;
+
             this.Title += " --- logged in as " + loginBox.UserName;
 
             if (dockPanel.Children.Count > 2) dockPanel.Children.RemoveAt(2);
             var panel = new StartupPanel();
             dockPanel.Children.Add(panel);
         }
+
+        private void window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            var context = new DataEntities();
+            var user = context.Users.Find(LoggedInUserId);
+            var login = user.UserLogins.First(x => x.Id == UserLoginId);
+            login.LogOutDate = DateTime.UtcNow;
+            context.SaveChanges();
+        }
+
 
         private void changePasswordMenuItem_Click(object sender, RoutedEventArgs e)
         {
@@ -127,6 +141,7 @@ namespace MSOOrganiser
             dockPanel.Children.Add(panel);
         }
 
+        
         
 
     }

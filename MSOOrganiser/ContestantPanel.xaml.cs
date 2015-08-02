@@ -1,4 +1,5 @@
-﻿using MSOCore.Models;
+﻿using MSOCore;
+using MSOCore.Models;
 using MSOOrganiser.Events;
 using System;
 using System.Collections.Generic;

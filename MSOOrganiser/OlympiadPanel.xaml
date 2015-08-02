@@ -74,9 +74,30 @@
                 </StackPanel>
             </TabItem>
             <TabItem Header="Events">
-                <DataGrid Name="dataGrid" CanUserAddRows="False" CanUserResizeColumns="True" CanUserSortColumns="True"
-                              AutoGenerateColumns="True" 
-                            Width="920" Margin="0,20,0,0" IsReadOnly="True" ItemsSource="{Binding Events}"/>
+                <StackPanel Orientation="Vertical">
+                <Button Click="addEvent_Click">Add Event</Button>
+                    <Grid Height="400">
+                        <DataGrid Name="dataGrid" CanUserAddRows="False" CanUserResizeColumns="True" CanUserSortColumns="True"
+                            AutoGenerateColumns="False" 
+                            Width="920" Margin="0,20,0,0" IsReadOnly="True" ItemsSource="{Binding Events}">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="ID" Binding="{Binding Id}" />
+                                <DataGridTextColumn Header="Code" Binding="{Binding Code}" />
+                                <DataGridTextColumn Header="Name" Binding="{Binding Name}" />
+                                <DataGridTemplateColumn  MinWidth="100" Header="View">
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <Grid>
+                                                <Button Click="editEvent_Click">Event Details</Button>
+                                                <Button Click="deleteEvent_Click">Delete</Button>
+                                            </Grid>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
+                            </DataGrid.Columns>
+                        </DataGrid>
+                    </Grid>
+                </StackPanel>
             </TabItem>
         </TabControl>
     </StackPanel>

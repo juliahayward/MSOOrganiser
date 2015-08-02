@@ -79,6 +79,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="AddEventToOlympiadWindow.xaml.cs">
+      <DependentUpon>AddEventToOlympiadWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ContestantPanel.xaml.cs">
       <DependentUpon>ContestantPanel.xaml</DependentUpon>
     </Compile>
@@ -104,6 +107,10 @@
       <DependentUpon>StartupPanel.xaml</DependentUpon>
     </Compile>
     <Compile Include="StatusEventArgs.cs" />
+    <Page Include="AddEventToOlympiadWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="ContestantPanel.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

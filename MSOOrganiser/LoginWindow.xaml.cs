@@ -12,6 +12,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using MSOCore;
 
 namespace MSOOrganiser
 {
@@ -33,6 +34,10 @@ namespace MSOOrganiser
             {
                 UserId = user.PIN;
                 UserName = user.Name;
+                var login = new UserLogin() { LogInDate = DateTime.UtcNow, User = user };
+                user.UserLogins.Add(login);
+                context.SaveChanges();
+                UserLoginId = login.Id;
             }
             else
                 UserId = 0;
@@ -43,6 +48,7 @@ namespace MSOOrganiser
 
         public int UserId { get; set; }
         public string UserName { get; set; }
+        public int UserLoginId { get; set; }
 
         private void usernameBox_KeyDown(object sender, KeyEventArgs e)
         {

@@ -16,7 +16,7 @@
         <EntityTypeShape EntityType="DataModel.Medal_Point" Width="1.5" PointX="5.9896484808948118" PointY="4.0253626424937332" />
         <EntityTypeShape EntityType="DataModel.Contestant" Width="1.5" PointX="9.47114354068001" PointY="5.3709774489379383" />
         <EntityTypeShape EntityType="DataModel.National_Flag" Width="1.5" PointX="0.547061881305213" PointY="27.147341308718239" />
-        <EntityTypeShape EntityType="DataModel.Olympiad_Info" Width="1.5" PointX="7.4540464819660626" PointY="27.86295114264961" />
+        <EntityTypeShape EntityType="DataModel.Olympiad_Info" Width="1.5" PointX="3.875" PointY="27.625" />
         <EntityTypeShape EntityType="DataModel.Paring" Width="1.5" PointX="2.0529287392520015" PointY="16.183681629683676" />
         <EntityTypeShape EntityType="DataModel.Payment_Method" Width="1.5" PointX="2.75" PointY="13.375" />
         <EntityTypeShape EntityType="DataModel.Payment" Width="1.5" PointX="1.7981461462556134" PointY="4.8024672739219234" />
@@ -29,6 +29,8 @@
         <AssociationConnector Association="DataModel.Event_Sess_EventsEvent_Sess" />
         <AssociationConnector Association="DataModel.Event_Sess_SessionEvent_Sess" />
         <AssociationConnector Association="DataModel.Payments_NamesPayments" />
+        <EntityTypeShape EntityType="DataModel.UserLogin" Width="1.5" PointX="15.5" PointY="27.125" />
+        <AssociationConnector Association="DataModel.FK_UserLogins_Users" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

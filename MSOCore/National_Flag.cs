@@ -7,7 +7,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace MSOOrganiser
+namespace MSOCore
 {
     using System;
     using System.Collections.Generic;

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MSOOrganiser
+namespace MSOCore
 {
     public partial class Olympiad_Info
     {

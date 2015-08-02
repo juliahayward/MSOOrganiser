@@ -7,7 +7,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace MSOOrganiser
+namespace MSOCore
 {
     using System;
     using System.Data.Entity;
@@ -45,5 +45,6 @@ namespace MSOOrganiser
         public DbSet<SelectedPeople> SelectedPeoples { get; set; }
         public DbSet<Session> Sessions { get; set; }
         public DbSet<User> Users { get; set; }
+        public DbSet<UserLogin> UserLogins { get; set; }
     }
 }

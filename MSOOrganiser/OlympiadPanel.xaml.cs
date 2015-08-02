@@ -1,4 +1,5 @@
-﻿using MSOCore.Models;
+﻿using MSOCore;
+using MSOCore.Models;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -53,6 +54,34 @@ namespace MSOOrganiser
         {
             ViewModel.Save();
         }
+
+        private void deleteEvent_Click(object sender, RoutedEventArgs e)
+        {
+            var eventToDelete = ((FrameworkElement)sender).DataContext as OlympiadPanelVm.EventVm;
+            ViewModel.Events.Remove(eventToDelete);
+            ViewModel.IsDirty = true;
+        }
+
+        private void addEvent_Click(object sender, RoutedEventArgs e)
+        {
+            var dialog = new AddEventToOlympiadWindow();
+            dialog.ShowDialog();
+
+            if (dialog.DialogResult.Value)
+            {
+                var evt = dialog.SelectedEvent;
+                if (ViewModel.Events.Any(x => x.Code == evt.Code))
+                    MessageBox.Show("Olympiad already contains event " + evt.Code);
+
+                ViewModel.Events.Add(new OlympiadPanelVm.EventVm() { Code = evt.Code, Name = evt.Name, Id = 0 });
+                ViewModel.IsDirty = true;
+            }
+        }
+
+        private void editEvent_Click(object sender, RoutedEventArgs e)
+        {
+            MessageBox.Show("Not implemented yet");
+        }
     }
 
     public class OlympiadPanelVm : VmBase
@@ -71,11 +100,10 @@ namespace MSOOrganiser
             public string Name { get; set; }
         }
 
-
         #region bindable properties
         public ObservableCollection<OlympiadVm> Olympiads { get; set; }
         public string OlympiadId { get; set; }
-            public ObservableCollection<EventVm> Events { get; set; }
+        public ObservableCollection<EventVm> Events { get; set; }
 
         private bool _IsDirty;
         public bool IsDirty
@@ -157,7 +185,7 @@ namespace MSOOrganiser
                 if (_Venue != value)
                 {
                     _Venue = value;
-                    _IsDirty = true;
+                    IsDirty = true;
                     OnPropertyChanged("Venue");
                 }
             }
@@ -174,7 +202,7 @@ namespace MSOOrganiser
                 if (_StartDate != value)
                 {
                     _StartDate = value;
-                    _IsDirty = true;
+                    IsDirty = true;
                     OnPropertyChanged("StartDate");
                 }
             }
@@ -191,7 +219,7 @@ namespace MSOOrganiser
                 if (_FinishDate != value)
                 {
                     _FinishDate = value;
-                    _IsDirty = true;
+                    IsDirty = true;
                     OnPropertyChanged("FinishDate");
                 }
             }
@@ -208,7 +236,7 @@ namespace MSOOrganiser
                 if (_MaxFee != value)
                 {
                     _MaxFee = value;
-                    _IsDirty = true;
+                    IsDirty = true;
                     OnPropertyChanged("MaxFee");
                 }
             }
@@ -225,7 +253,7 @@ namespace MSOOrganiser
                 if (_MaxCon != value)
                 {
                     _MaxCon = value;
-                    _IsDirty = true;
+                    IsDirty = true;
                     OnPropertyChanged("MaxCon");
                 }
             }
@@ -242,7 +270,7 @@ namespace MSOOrganiser
                 if (_AgeDate != value)
                 {
                     _AgeDate = value;
-                    _IsDirty = true;
+                    IsDirty = true;
                     OnPropertyChanged("AgeDate");
                 }
             }
@@ -259,7 +287,7 @@ namespace MSOOrganiser
                 if (_JnrAge != value)
                 {
                     _JnrAge = value;
-                    _IsDirty = true;
+                    IsDirty = true;
                     OnPropertyChanged("JnrAge");
                 }
             }
@@ -276,7 +304,7 @@ namespace MSOOrganiser
                 if (_SnrAge != value)
                 {
                     _SnrAge = value;
-                    _IsDirty = true;
+                    IsDirty = true;
                     OnPropertyChanged("SnrAge");
                 }
             }
@@ -293,7 +321,7 @@ namespace MSOOrganiser
                 if (_PentaLong != value)
                 {
                     _PentaLong = value;
-                    _IsDirty = true;
+                    IsDirty = true;
                     OnPropertyChanged("PentaLong");
                 }
             }
@@ -310,7 +338,7 @@ namespace MSOOrganiser
                 if (_PentaTotal != value)
                 {
                     _PentaTotal = value;
-                    _IsDirty = true;
+                    IsDirty = true;
                     OnPropertyChanged("PentaTotal");
                 }
             }
@@ -394,6 +422,8 @@ namespace MSOOrganiser
                     PentaTotal = int.Parse(this.PentaTotal)
                 };
                 context.Olympiad_Infoes.Add(o);
+                // So we don't have to do a full refresh of the combo
+                Olympiads.Insert(0, new OlympiadVm() { Text = o.FullTitle(), Value = o.Id.ToString() });
                 id = o.Id;
             }
             else
@@ -414,8 +444,36 @@ namespace MSOOrganiser
                 o.PentaTotal = int.Parse(this.PentaTotal);
             }
             context.SaveChanges();
+            // Now update the events. Need to do here to have the reference back to the Olympiad
+            foreach (var existingEvent in context.Events.Where(x => x.OlympiadId == id))
+            {
+                if (!Events.Any(x => x.Id == existingEvent.EIN))
+                {
+                    context.Events.Remove(existingEvent);
+                }
+            }
+            foreach (var evm in Events)
+            {
+                if (evm.Id == 0)
+                {
+                    var evt = new Event()
+                    {
+                        Mind_Sport = evm.Name,
+                        Code = evm.Code,
+                        OlympiadId = id
+                        // TODO more stuff here
+                    };
+                    context.Events.Add(evt);
+                }
+                else
+                {
+                    var evt = context.Events.Find(evm.Id);
+                    // We're not doing any update here?
+                }
+            }
+            context.SaveChanges();
+
             IsDirty = false;
-            PopulateDropdown();
             OlympiadId = id.ToString();
         }
     }

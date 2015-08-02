@@ -1,4 +1,4 @@
-﻿using MSOOrganiser;
+﻿using MSOCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
