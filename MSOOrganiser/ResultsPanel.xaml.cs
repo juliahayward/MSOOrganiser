@@ -14,6 +14,8 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using MSOCore;
+using MSOCore.Calculators;
+using MSOCore.Models;
 
 namespace MSOOrganiser
 {
@@ -68,6 +70,48 @@ namespace MSOOrganiser
                 ContestantSelected(this, args);
             }
         }
+
+        private void calculatePenta_Click(object sender, RoutedEventArgs e)
+        {
+            var vm = (ResultsPanelVm)DataContext;
+            var calculator = new Penta2015Calculator();
+            try
+            {
+                calculator.Calculate(vm.NumberInTeam, vm.Entrants);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }
+
+        private void checkRanks_Click(object sender, RoutedEventArgs e)
+        {
+            var vm = (ResultsPanelVm)DataContext;
+            var checker = new RankChecker();
+            try
+            {
+                checker.Check(vm.NumberInTeam, vm.Entrants);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }
+
+        private void calculatePenta10_Click(object sender, RoutedEventArgs e)
+        {
+            var vm = (ResultsPanelVm)DataContext;
+            var calculator = new Penta2010Calculator();
+            try
+            {
+                calculator.Calculate(vm.NumberInTeam, vm.Entrants);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }
     }
 
 
@@ -79,7 +123,7 @@ namespace MSOOrganiser
             public string Value { get; set; }
         }
 
-        public class EntrantVm
+        public class EntrantVm : VmBase, IPentaCalculable
         {
             public int EntrantId { get; set; }
             public int ContestantId { get; set; }
@@ -90,7 +134,19 @@ namespace MSOOrganiser
             public string Score { get; set; }
             public bool Absent { get; set; }
             public string TieBreak { get; set; }
-            public string PentaScore { get; set; }
+            private string _pentaScore;
+            public string PentaScore
+            {
+                get { return _pentaScore; }
+                set
+                {
+                    if (_pentaScore != value)
+                    {
+                        _pentaScore = value;
+                        OnPropertyChanged("PentaScore");
+                    }
+                }
+            }
             public string TeamOrPair { get; set; }
             public string PIN { get; set; } // need this?
         }
@@ -101,6 +157,7 @@ namespace MSOOrganiser
             Entrants = new ObservableCollection<EntrantVm>();
             EventId = "";
 
+
             PopulateDropdown();
             PopulateEntrants();
         }
@@ -110,6 +167,7 @@ namespace MSOOrganiser
         public ObservableCollection<EntrantVm> Entrants { get; set; }
         public int CurrentOlympiadId { get; set; }
         public string EventId { get; set; }
+        public int NumberInTeam { get; set; }
 
         #endregion
 
@@ -135,12 +193,17 @@ namespace MSOOrganiser
             if (CurrentOlympiadId == null) return;
 
             var context = new DataEntities();
+            
             var olympiadId = CurrentOlympiadId;
+            var evt = context.Events.First(x => x.OlympiadId == olympiadId && x.Code == EventId);
+            NumberInTeam = evt.Number_in_Team.HasValue ? evt.Number_in_Team.Value : 1;
+
             var entrants = context.Entrants
                 .Join(context.Contestants, e => e.Mind_Sport_ID, c => c.Mind_Sport_ID, (e, c) => new { e = e, c = c })
                 .Where(x => x.e.OlympiadId == olympiadId && x.e.Game_Code == EventId)
                 .OrderBy(x => x.e.Rank)
                 .ThenBy(x => x.c.Lastname).ToList();
+
             foreach (var e in entrants)
             {
                 Entrants.Add(new EntrantVm()

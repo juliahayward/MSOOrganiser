@@ -28,48 +28,53 @@
         </Border>
         <TabControl Height="600">
             <TabItem Header="Results">
-                <DataGrid Name="dataGrid" CanUserAddRows="False" CanUserResizeColumns="True" CanUserSortColumns="True"
+                <StackPanel Orientation="Vertical">
+                    <DataGrid Name="dataGrid" CanUserAddRows="False" CanUserResizeColumns="True" CanUserSortColumns="True"
                               AutoGenerateColumns="False"
                             Width="920" Margin="0,20,0,0" IsReadOnly="True" ItemsSource="{Binding Entrants}">
-                    <DataGrid.Columns>
-                        <DataGridTextColumn Header="EntrantId" Binding="{Binding EntrantId}" />
-                        <DataGridTextColumn Header="ContestantId" Binding="{Binding ContestantId}" />
-                        <DataGridTextColumn Header="Medal" Width="48" Binding="{Binding Medal}">
-                            <DataGridTextColumn.ElementStyle>
-                                <Style TargetType="{x:Type TextBlock}">
-                                    <Style.Triggers>
-                                        <Trigger Property="Text" Value="Bronze">
-                                            <Setter Property="Background" Value="Brown"/>
-                                            <Setter Property="Foreground" Value="White"/>
-                                        </Trigger>
-                                        <Trigger Property="Text" Value="Silver">
-                                            <Setter Property="Background" Value="Silver"/>
-                                        </Trigger>
-                                        <Trigger Property="Text" Value="Gold">
-                                            <Setter Property="Background" Value="Gold"/>
-                                        </Trigger>
-                                    </Style.Triggers>
-                                </Style>
-                            </DataGridTextColumn.ElementStyle>
-                        </DataGridTextColumn>
-                        <DataGridTextColumn Header="FirstName" Binding="{Binding FirstName}" />
-                        <DataGridTextColumn Header="LastName" Binding="{Binding LastName}" />
-                        <DataGridTextColumn Header="Rank" Binding="{Binding Rank, Converter={StaticResource ShowBlankIfZeroIntConverter}}" />
-                        <DataGridTextColumn Header="Score" Binding="{Binding Score}" />
-                        <DataGridCheckBoxColumn Header="Absent" Binding="{Binding Absent}" />
-                        <DataGridTextColumn Header="TieBreak" Binding="{Binding TieBreak}" />
-                        <DataGridTextColumn Header="Pentamind" Binding="{Binding PentaScore}" />
-                        <DataGridTextColumn Header="TeamOrPair" Binding="{Binding TeamOrPair}"  />
-                        <DataGridTextColumn Header="PIN" Binding="{Binding PIN}"  />
-                        <DataGridTemplateColumn  MinWidth="100" Header="View">
-                            <DataGridTemplateColumn.CellTemplate>
-                                <DataTemplate>
-                                    <Button Click="person_Click">View Person</Button>
-                                </DataTemplate>
-                            </DataGridTemplateColumn.CellTemplate>
-                        </DataGridTemplateColumn>
-                    </DataGrid.Columns>
-                </DataGrid>
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="EntrantId" Binding="{Binding EntrantId}" />
+                            <DataGridTextColumn Header="ContestantId" Binding="{Binding ContestantId}" />
+                            <DataGridTextColumn Header="Medal" Width="48" Binding="{Binding Medal}">
+                                <DataGridTextColumn.ElementStyle>
+                                    <Style TargetType="{x:Type TextBlock}">
+                                        <Style.Triggers>
+                                            <Trigger Property="Text" Value="Bronze">
+                                                <Setter Property="Background" Value="Brown"/>
+                                                <Setter Property="Foreground" Value="White"/>
+                                            </Trigger>
+                                            <Trigger Property="Text" Value="Silver">
+                                                <Setter Property="Background" Value="Silver"/>
+                                            </Trigger>
+                                            <Trigger Property="Text" Value="Gold">
+                                                <Setter Property="Background" Value="Gold"/>
+                                            </Trigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </DataGridTextColumn.ElementStyle>
+                            </DataGridTextColumn>
+                            <DataGridTextColumn Header="FirstName" Binding="{Binding FirstName}" />
+                            <DataGridTextColumn Header="LastName" Binding="{Binding LastName}" />
+                            <DataGridTextColumn Header="Rank" Binding="{Binding Rank, Converter={StaticResource ShowBlankIfZeroIntConverter}}" />
+                            <DataGridTextColumn Header="Score" Binding="{Binding Score}" />
+                            <DataGridCheckBoxColumn Header="Absent" Binding="{Binding Absent}" />
+                            <DataGridTextColumn Header="TieBreak" Binding="{Binding TieBreak}" />
+                            <DataGridTextColumn Header="Pentamind" Binding="{Binding PentaScore}" />
+                            <DataGridTextColumn Header="TeamOrPair" Binding="{Binding TeamOrPair}"  />
+                            <DataGridTextColumn Header="PIN" Binding="{Binding PIN}"  />
+                            <DataGridTemplateColumn  MinWidth="100" Header="View">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <Button Click="person_Click">View Person</Button>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                    <Button Click="checkRanks_Click">Check Ranks</Button>
+                    <Button Click="calculatePenta_Click">Calculate Pentamind Scores</Button>
+                    <Button Click="calculatePenta10_Click">Calculate Pentamind Scores (2010 formula)</Button>
+                </StackPanel>
             </TabItem>
         </TabControl>
     </StackPanel>

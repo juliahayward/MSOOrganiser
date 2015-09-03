@@ -49,6 +49,9 @@
     <Compile Include="Badges___Misc.cs">
       <DependentUpon>Model.tt</DependentUpon>
     </Compile>
+    <Compile Include="Calculators\Penta2010Calculator.cs" />
+    <Compile Include="Calculators\Penta2015Calculator.cs" />
+    <Compile Include="Calculators\RankChecker.cs" />
     <Compile Include="Contestant.cs">
       <DependentUpon>Model.tt</DependentUpon>
     </Compile>
