@@ -1,0 +1,28 @@
+﻿@model IEnumerable<MSOCore.Reports.IndividualMedalTableGenerator.MedalTableVm>
+@{
+    Layout = null;
+}
+<h2>Individual All-Time Medal Table</h2>
+<table>
+    <tr>
+        <td></td>
+        <td>Name</td>
+        <td>Country</td>
+        <td>Gold</td>
+        <td>Silver</td>
+        <td>Bronze</td>
+    </tr>
+    @{ int index = 1; }
+    @foreach (var item in Model)
+    {    
+    <tr>
+        <td>@index</td>
+        <td>@item.Name</td>
+        <td>@item.Nationality</td>
+        <td>@item.Golds</td>
+        <td>@item.Silvers</td>
+        <td>@item.Bronzes</td>
+    </tr>
+        index++;
+    }
+</table>

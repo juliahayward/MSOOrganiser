@@ -112,6 +112,7 @@
       <DependentUpon>Model.tt</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Reports\IndividualMedalTableGenerator.cs" />
     <Compile Include="Reports\NationalityReportGenerator.cs" />
     <Compile Include="Resource.cs">
       <DependentUpon>Model.tt</DependentUpon>

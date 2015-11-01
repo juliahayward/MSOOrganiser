@@ -21,5 +21,13 @@ namespace MSOWeb.Controllers
             return View(model);
         }
 
+        public ActionResult IndividualMedals()
+        {
+            var generator = new IndividualMedalTableGenerator();
+
+            var model = generator.GetItems();
+
+            return View(model);
+        }
     }
 }
