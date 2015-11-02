@@ -29,5 +29,14 @@ namespace MSOWeb.Controllers
 
             return View(model);
         }
+
+        public ActionResult ContestantMedals(int contestantId)
+        {
+            var generator = new ContestantMedalsGenerator();
+
+            var model = generator.GetModel(contestantId);
+
+            return View(model);
+        }
     }
 }

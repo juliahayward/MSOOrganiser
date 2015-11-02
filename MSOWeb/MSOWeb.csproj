@@ -152,6 +152,7 @@
   <ItemGroup>
     <None Include="Properties\PublishProfiles\Amazon.pubxml" />
     <Content Include="Views\Report\IndividualMedals.cshtml" />
+    <Content Include="Views\Report\ContestantMedals.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

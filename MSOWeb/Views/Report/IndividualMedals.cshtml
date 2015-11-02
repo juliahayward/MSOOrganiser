@@ -5,23 +5,25 @@
 <h2>Individual All-Time Medal Table</h2>
 <table>
     <tr>
-        <td></td>
+        <td>Rank</td>
         <td>Name</td>
         <td>Country</td>
         <td>Gold</td>
         <td>Silver</td>
         <td>Bronze</td>
+        <td>Total</td>
     </tr>
     @{ int index = 1; }
     @foreach (var item in Model)
     {    
     <tr>
         <td>@index</td>
-        <td>@item.Name</td>
-        <td>@item.Nationality</td>
+        <td><a href="/Report/ContestantMedals?contestantId=@item.ContestantId">@item.Name</a></td>
+        <td><img src="@item.Flag" alt="@item.Nationality"/></td>
         <td>@item.Golds</td>
         <td>@item.Silvers</td>
         <td>@item.Bronzes</td>
+        <td>@item.Total</td>
     </tr>
         index++;
     }

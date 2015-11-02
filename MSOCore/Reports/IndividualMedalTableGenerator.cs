@@ -13,11 +13,20 @@ namespace MSOCore.Reports
             public int ContestantId { get; set; }
             public string FirstName { get; set; }
             public string LastName { get; set; }
-            public string Name { get { return FirstName + " " + LastName; } }
+            public string Name { get { return string.Format("{0} {1}", FirstName, LastName); } }
             public string Nationality { get; set; }
+            public string Flag
+            {
+                get
+                {
+                    return string.Format("http://www.boardability.com/images/flags/{0}.jpg", Nationality)
+                        .Replace(" ", "_").ToLower();
+                }
+            }
             public int Golds { get; set; }
             public int Silvers { get; set; }
             public int Bronzes { get; set; }
+            public int Total { get { return Golds + Silvers + Bronzes; } }
         }
 
         public IEnumerable<MedalTableVm> GetItems()
