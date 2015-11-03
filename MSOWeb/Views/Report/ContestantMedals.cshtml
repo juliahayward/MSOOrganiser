@@ -3,3 +3,37 @@
     Layout = null;
 }
 <h2>All time record: @Model.Name</h2>
+
+<img src="@Model.Flag" alt="@Model.Nationality"/>
+
+<p>Titles:</p>
+<p>Grandmasters</p>
+<ul>
+    @foreach (var code in Model.Grandmasters)
+    {
+    <li>@code</li>
+    }
+</ul>
+<p>International Masters</p>
+<ul>
+    @foreach (var code in Model.InternationalMasters)
+    {
+    <li>@code</li>
+    }
+</ul>
+<p>Candidate Masters</p>
+<ul>
+    @foreach (var code in Model.CandidateMasters)
+    {
+    <li>@code</li>
+    }
+</ul>
+
+<p>Medals:</p>
+<p>Gold: @Model.Golds, Silver: @Model.Silvers, Bronze: @Model.Bronzes</p>
+<ul>
+    @foreach (var medal in Model.Medals)
+    {
+    <li>@medal.Name: @medal.Medal (@medal.Year)</li>
+    }
+</ul>
