@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using MSOCore.Extensions;
 
 namespace MSOCore.Reports
 {
@@ -19,8 +20,7 @@ namespace MSOCore.Reports
             {
                 get
                 {
-                    return string.Format("http://www.boardability.com/images/flags/{0}.jpg", Nationality)
-                        .Replace(" ", "_").ToLower();
+                    return Nationality.GetFlag();
                 }
             }
             public int Golds { get; set; }

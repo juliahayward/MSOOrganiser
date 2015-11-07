@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using MSOCore.Extensions;
 
 namespace MSOCore.Reports
 {
@@ -25,8 +26,7 @@ namespace MSOCore.Reports
             {
                 get
                 {
-                    return string.Format("http://www.boardability.com/images/flags/{0}.jpg", Nationality)
-                        .Replace(" ", "_").ToLower();
+                    return Nationality.GetFlag();
                 }
             }
 
@@ -57,18 +57,20 @@ namespace MSOCore.Reports
             var cmCodes = new List<string>();
             foreach (var code in medalEvents.Select(x => x.Code).Distinct())
             {
+                var name = medalEvents.First(x => x.Code == code).Name;
+
                 var golds = medalEvents.Count(x => x.Code == code && x.Medal == "Gold");
                 var silvers = medalEvents.Count(x => x.Code == code && x.Medal == "Silver");
                 var bronzes = medalEvents.Count(x => x.Code == code && x.Medal == "Bronze");
                 if (golds >= 2 || (golds == 1 && silvers >= 2))
-                    gmCodes.Add(code);
+                    gmCodes.Add(name);
                 else if ((golds == 1 && silvers + bronzes > 0)
                     || silvers >= 2
                     || (silvers == 1 && bronzes >= 2))
-                    imCodes.Add(code);
+                    imCodes.Add(name);
                 else if ((silvers == 1 && bronzes > 0)
                     || bronzes >= 2)
-                    cmCodes.Add(code);
+                    cmCodes.Add(name);
             }
 
             var model = new ContestantVm

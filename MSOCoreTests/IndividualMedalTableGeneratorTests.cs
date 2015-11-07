@@ -20,5 +20,15 @@ namespace MSOCoreTests
 
             Assert.IsTrue(data.Any());
         }
+
+        [TestMethod]
+        public void IntegrationTest_YearMedals()
+        {
+            var generator = new YearMedalsGenerator();
+
+            var data = generator.GetModel(2014);
+
+            Assert.IsTrue(data.Medals.Any());
+        }
     }
 }

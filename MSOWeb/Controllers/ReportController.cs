@@ -38,5 +38,23 @@ namespace MSOWeb.Controllers
 
             return View(model);
         }
+
+        public ActionResult YearMedals(int year)
+        {
+            var generator = new YearMedalsGenerator();
+
+            var model = generator.GetModel(year);
+
+            return View(model);
+        }
+
+        public ActionResult GameMedals(string gameCode)
+        {
+            var generator = new GameMedalsGenerator();
+
+            var model = generator.GetModel(gameCode);
+
+            return View(model);
+        }
     }
 }
