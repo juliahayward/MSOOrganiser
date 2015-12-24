@@ -50,7 +50,9 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="Calculators\Penta2010CalculatorTests.cs" />
     <Compile Include="Calculators\Penta2015CalculatorTests.cs" />
+    <Compile Include="Calculators\RankCheckerTests.cs" />
     <Compile Include="IndividualMedalTableGeneratorTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
