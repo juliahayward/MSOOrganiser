@@ -93,6 +93,24 @@ namespace MSOOrganiser
                 EventSelected(this, args);
             }
         }
+
+        private void addEvent_Click(object sender, RoutedEventArgs e)
+        {
+            var selectedEvents = ViewModel.Events.Select(x => x.EventCode);
+            var nonEditableEvents = ViewModel.Events.Where(x => x.Rank != 0).Select(x => x.EventCode);
+            var dialog = new AddEventsToContestantWindow(int.Parse(ViewModel.CurrentOlympiadId), selectedEvents, nonEditableEvents);
+            dialog.ShowDialog();
+
+            if (dialog.DialogResult.Value)
+            {
+                var evt = dialog.SelectedEvent;
+                if (ViewModel.Events.Any(x => x.EventCode == evt.Code))
+                    MessageBox.Show("Contestant already registered for event " + evt.Code);
+
+                ViewModel.Events.Add(new ContestantPanelVm.EventVm() { EventCode = evt.Code, EventName = evt.Name, EventId = 0 });
+                ViewModel.IsDirty = true;
+            }
+        }
     }
 
     public class ContestantPanelVm : VmBase

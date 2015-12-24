@@ -86,6 +86,9 @@
       <DependentUpon>ContestantPanel.xaml</DependentUpon>
     </Compile>
     <Compile Include="Converters\ShowBlankIfZeroIntConverter.cs" />
+    <Compile Include="AddEventsToContestantWindow.xaml.cs">
+      <DependentUpon>AddEventsToContestantWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="PasswordChangeWindow.xaml.cs">
       <DependentUpon>PasswordChangeWindow.xaml</DependentUpon>
     </Compile>
@@ -112,6 +115,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="ContestantPanel.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="AddEventsToContestantWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
