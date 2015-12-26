@@ -75,6 +75,7 @@ namespace MSOOrganiser
             if (dockPanel.Children.Count > 2) dockPanel.Children.RemoveAt(2);
             var panel = new OlympiadPanel();
             panel.Populate();
+            panel.EventSelected += panel_EventSelected;
             dockPanel.Children.Add(panel);
         }
 

@@ -89,6 +89,14 @@
                                         <DataTemplate>
                                             <Grid>
                                                 <Button Click="editEvent_Click">Event Details</Button>
+                                            </Grid>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
+                                <DataGridTemplateColumn  MinWidth="100" Header="View">
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <Grid>
                                                 <Button Click="deleteEvent_Click">Delete</Button>
                                             </Grid>
                                         </DataTemplate>

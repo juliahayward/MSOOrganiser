@@ -1,5 +1,6 @@
 ﻿using MSOCore;
 using MSOCore.Models;
+using MSOOrganiser.Events;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -29,6 +30,11 @@ namespace MSOOrganiser
             InitializeComponent();
             DataContext = new OlympiadPanelVm();
         }
+
+        // A delegate type for hooking up change notifications.
+        public delegate void EventEventHandler(object sender, EventEventArgs e);
+
+        public event EventEventHandler EventSelected;
 
         public OlympiadPanelVm ViewModel
         {
@@ -79,8 +85,13 @@ namespace MSOOrganiser
         }
 
         private void editEvent_Click(object sender, RoutedEventArgs e)
-        {
-            MessageBox.Show("Not implemented yet");
+        {    
+            var evt = ((FrameworkElement)sender).DataContext as OlympiadPanelVm.EventVm;
+            if (EventSelected != null)
+            {
+                var args = new EventEventArgs() { EventCode = evt.Code };
+                EventSelected(this, args);
+            }
         }
     }
 
