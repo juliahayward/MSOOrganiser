@@ -37,11 +37,13 @@
     <Reference Include="EntityFramework">
       <HintPath>packages\EntityFramework.5.0.0\lib\net45\EntityFramework.dll</HintPath>
     </Reference>
+    <Reference Include="ReachFramework" />
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Data" />
     <Reference Include="System.Data.Entity" />
     <Reference Include="System.Data.Linq" />
+    <Reference Include="System.Printing" />
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Security" />
     <Reference Include="System.Xml" />
@@ -110,6 +112,7 @@
       <DependentUpon>OlympiadPanel.xaml</DependentUpon>
     </Compile>
     <Compile Include="Reports\PrintEventEntriesReportPrinter.cs" />
+    <Compile Include="Reports\PrintEventEntriesSummaryReportPrinter.cs" />
     <Compile Include="ResultsPanel.xaml.cs">
       <DependentUpon>ResultsPanel.xaml</DependentUpon>
     </Compile>

@@ -157,6 +157,17 @@ namespace MSOOrganiser
             }
         }
 
+        private void parkingListsMenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            MessageBox.Show("This does not appear to work in Access - please contact Julia");
+        }
+
+        private void entrySummaryMenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            var printer = new PrintEventEntriesSummaryReportPrinter();
+            printer.Print();
+        }
+
         
         
 

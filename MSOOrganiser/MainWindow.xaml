@@ -26,7 +26,7 @@
                     <MenuItem Header="View Contacts" IsEnabled="False"/>
                     <MenuItem Header="View Game Plan" IsEnabled="False"/>
                     <MenuItem Header="Sign In Sheets" IsEnabled="False"/>
-                    <MenuItem Header="Parking Lists" IsEnabled="False"/>
+                    <MenuItem Header="Parking Lists" Click="parkingListsMenuItem_Click" />
                     <MenuItem Header="Logistics Report" IsEnabled="False"/>
                     <MenuItem Header="View Traffic Report" IsEnabled="False"/>
                     <MenuItem Header="View Location Use" IsEnabled="False"/>
@@ -36,7 +36,7 @@
                     <MenuItem Header="Event Income" IsEnabled="False"/>
                     <MenuItem Header="View Nationalities" Click="nationalitiesMenuItem_Click" />
                     <MenuItem Header="Print Event Entries" Click="printEventEntriesMenuItem_Click" />
-                    <MenuItem Header="Entry Summary" IsEnabled="False"/>
+                    <MenuItem Header="Entry Summary" Click="entrySummaryMenuItem_Click"/>
                     <MenuItem Header="Print a Day's Report" IsEnabled="False"/>
                     <MenuItem Header="Print Today's Events" IsEnabled="False"/>
                     <MenuItem Header="Print Today's Event By Game" IsEnabled="False"/>
