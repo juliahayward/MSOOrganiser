@@ -103,12 +103,29 @@ namespace MSOOrganiser
 
             if (dialog.DialogResult.Value)
             {
-                var evt = dialog.SelectedEvent;
-                if (ViewModel.Events.Any(x => x.EventCode == evt.Code))
-                    MessageBox.Show("Contestant already registered for event " + evt.Code);
-
-                ViewModel.Events.Add(new ContestantPanelVm.EventVm() { EventCode = evt.Code, EventName = evt.Name, EventId = 0 });
-                ViewModel.IsDirty = true;
+                foreach (var evt in dialog.SelectedEvents)
+                {
+                    if (evt.IsSelected)
+                    {
+                        var existingEvent = ViewModel.Events.FirstOrDefault(x => x.EventCode == evt.Code);
+                        if (existingEvent == null)
+                        {
+                            MessageBox.Show("Adding " + evt.Code);
+                            ViewModel.Events.Add(new ContestantPanelVm.EventVm() { EventCode = evt.Code, EventName = evt.Name, EventId = 0 });
+                            ViewModel.IsDirty = true;
+                        }
+                    }
+                    else
+                    {
+                        var eventToDelete = ViewModel.Events.FirstOrDefault(x => x.EventCode == evt.Code);
+                        if (eventToDelete != null)
+                        {
+                            MessageBox.Show("Removing" + evt.Code);
+                            ViewModel.Events.Remove(eventToDelete);
+                            ViewModel.IsDirty = true;
+                        }
+                    }
+                }
             }
         }
     }
@@ -826,10 +843,13 @@ private string _Notes;
                     Country = this.Country,
                     BCFCode = this.BCFCode,
                     FIDECode = this.FIDECode,
-                    Notes = this.Notes,
+                    Notes = this.Notes
                 };
                 context.Contestants.Add(dbCon);
                 id = dbCon.Mind_Sport_ID;
+                dbCon.Entrants = this.Events
+                    .Select(x => Entrant.NewEntrant(x.EventCode, CurrentOlympiadId, dbCon))
+                    .ToList();
             }
             else
             {
@@ -860,6 +880,17 @@ private string _Notes;
                 dbCon.BCFCode = BCFCode;
                 dbCon.FIDECode = FIDECode;
                 dbCon.Notes = Notes;
+
+                // Add new events
+                foreach (var e in this.Events.Where(x => !dbCon.Entrants.Any(ee => ee.Game_Code == x.EventCode)))
+                {
+                 dbCon.Entrants.Add(Entrant.NewEntrant(e.EventCode, CurrentOlympiadId, dbCon));
+                }
+                // Remove unwanted events
+                foreach (var de in dbCon.Entrants.Where(x => !this.Events.Any(ee => ee.EventCode == x.Game_Code)).ToList())
+                {
+                 dbCon.Entrants.Remove(de);
+                }
             }
             context.SaveChanges();
             IsDirty = false;

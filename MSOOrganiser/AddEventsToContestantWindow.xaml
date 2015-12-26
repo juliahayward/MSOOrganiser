@@ -10,7 +10,7 @@
                 <ListBox ItemsSource="{Binding Events}" Height="400" Width="462" ScrollViewer.VerticalScrollBarVisibility="Auto">
                     <ListBox.ItemTemplate>
                         <DataTemplate>
-                            <CheckBox Content="{Binding Text}" Tag="{Binding Code}" IsChecked="{Binding IsSelected}" IsEnabled="{Binding IsEnabled}" ToolTip="{Binding ToolTip}" ToolTipService.ShowOnDisabled="True" Margin="0,5,0,0"/>
+                            <CheckBox Content="{Binding Text}" Tag="{Binding Code}" IsChecked="{Binding IsSelected, Mode=TwoWay}" IsEnabled="{Binding IsEnabled}" ToolTip="{Binding ToolTip}" ToolTipService.ShowOnDisabled="True" Margin="0,5,0,0"/>
                         </DataTemplate>
                     </ListBox.ItemTemplate>
                 </ListBox>

@@ -22,7 +22,7 @@ namespace MSOOrganiser
     /// </summary>
     public partial class AddEventsToContestantWindow : Window
     {
-        public AddEventsToContestantWindowVm.EventVm SelectedEvent { get; private set; }
+        public IEnumerable<AddEventsToContestantWindowVm.EventVm> SelectedEvents { get; private set; }
 
         public AddEventsToContestantWindow(int olympiadId, IEnumerable<string> selectedCodes, IEnumerable<string> nonEditableCodes)
         {
@@ -37,28 +37,14 @@ namespace MSOOrganiser
 
         private void ok_Click(object sender, RoutedEventArgs e)
         {
-            throw new NotImplementedException();
-            //if (ViewModel.UsePastEvent)
-            //{
-            //    if (ViewModel.SelectedPastEventId != 0)
-            //        SelectedEvent = ViewModel.PastEvents.First(x => x.Id == ViewModel.SelectedPastEventId);
-            //    else
-            //    {
-            //        MessageBox.Show("Please select a past event");
-            //        return;
-            //    }
-            //}
-            //else
-            //{
-            //    this.SelectedEvent = new AddEventsToContestantWindowVm.EventVm() {  Id = 0, Code = ViewModel.NewCode, Name = ViewModel.NewName};
-            //}
+            SelectedEvents = ViewModel.Events.ToList();
             this.DialogResult = true;
             this.Close();
         }
 
         private void cancel_Click(object sender, RoutedEventArgs e)
         {
-            this.SelectedEvent = null;
+            this.SelectedEvents = null;
             this.DialogResult = false;
             this.Close();
         }
@@ -67,7 +53,6 @@ namespace MSOOrganiser
     public class AddEventsToContestantWindowVm : VmBase
     {
         public ObservableCollection<EventVm> Events { get; set; }
-        public int SelectedPastEventId { get; set; }
 
         public AddEventsToContestantWindowVm(int olympiadId, IEnumerable<string> selectedEvents, IEnumerable<string> nonEditableCodes)
         {

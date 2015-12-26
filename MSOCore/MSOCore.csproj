@@ -55,6 +55,7 @@
     <Compile Include="Contestant.cs">
       <DependentUpon>Model.tt</DependentUpon>
     </Compile>
+    <Compile Include="Domain\Entrant.cs" />
     <Compile Include="Domain\Olympiad_Info.cs" />
     <Compile Include="Entrant.cs">
       <DependentUpon>Model.tt</DependentUpon>

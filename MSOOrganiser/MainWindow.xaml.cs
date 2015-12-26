@@ -16,6 +16,7 @@ using System.Windows.Shapes;
 using System.Data.OleDb;
 using System.Data;
 using MSOCore;
+using MSOOrganiser.Reports;
 
 namespace MSOOrganiser
 {
@@ -139,6 +140,19 @@ namespace MSOOrganiser
             if (dockPanel.Children.Count > 2) dockPanel.Children.RemoveAt(2);
             var panel = new DisplayResultsPanel();
             dockPanel.Children.Add(panel);
+        }
+
+        private void printEventEntriesMenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            var dialog = new EventEntriesReportPicker();
+            if (dialog.ShowDialog().Value)
+            {
+                var printer = new PrintEventEntriesReportPrinter();
+                if (dialog.UseEvent)
+                    printer.Print(dialog.EventCode);
+                else
+                    printer.Print(dialog.StartDate, dialog.EndDate);
+            }
         }
 
         

@@ -35,7 +35,7 @@
                     <MenuItem Header="Non-Event Income" IsEnabled="False"/>
                     <MenuItem Header="Event Income" IsEnabled="False"/>
                     <MenuItem Header="View Nationalities" Click="nationalitiesMenuItem_Click" />
-                    <MenuItem Header="Print Event Entries" IsEnabled="False"/>
+                    <MenuItem Header="Print Event Entries" Click="printEventEntriesMenuItem_Click" />
                     <MenuItem Header="Entry Summary" IsEnabled="False"/>
                     <MenuItem Header="Print a Day's Report" IsEnabled="False"/>
                     <MenuItem Header="Print Today's Events" IsEnabled="False"/>

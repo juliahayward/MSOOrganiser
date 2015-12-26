@@ -89,6 +89,9 @@
     <Compile Include="AddEventsToContestantWindow.xaml.cs">
       <DependentUpon>AddEventsToContestantWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="EventEntriesReportPicker.xaml.cs">
+      <DependentUpon>EventEntriesReportPicker.xaml</DependentUpon>
+    </Compile>
     <Compile Include="PasswordChangeWindow.xaml.cs">
       <DependentUpon>PasswordChangeWindow.xaml</DependentUpon>
     </Compile>
@@ -103,6 +106,7 @@
     <Compile Include="OlympiadPanel.xaml.cs">
       <DependentUpon>OlympiadPanel.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Reports\PrintEventEntriesReportPrinter.cs" />
     <Compile Include="ResultsPanel.xaml.cs">
       <DependentUpon>ResultsPanel.xaml</DependentUpon>
     </Compile>
@@ -121,6 +125,10 @@
     <Page Include="AddEventsToContestantWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="EventEntriesReportPicker.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="PasswordChangeWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
