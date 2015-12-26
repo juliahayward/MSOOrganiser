@@ -1,0 +1,16 @@
+﻿<Window x:Class="MSOOrganiser.Dialogs.ErrorDialog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Error" Height="328" Width="600">
+    <Grid>
+        <StackPanel Orientation="Vertical">
+            <TextBlock Margin="4" TextWrapping="Wrap">MSO Organiser encountered an error and is unable to process your request. 
+            Please mail the text below to julia@juliahayward.com with a description of what you were doing at the
+            time for the error to be diagnosed.</TextBlock>
+            <TextBox Margin="4" Height="220" x:Name="textBox"></TextBox>
+            <StackPanel Orientation="Horizontal">
+                <Button Margin="4" Width="150" Click="ok_Click">OK</Button>
+            </StackPanel>
+        </StackPanel>
+    </Grid>
+</Window>

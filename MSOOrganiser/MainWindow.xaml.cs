@@ -17,6 +17,7 @@ using System.Data.OleDb;
 using System.Data;
 using MSOCore;
 using MSOOrganiser.Reports;
+using MSOOrganiser.Dialogs;
 
 namespace MSOOrganiser
 {

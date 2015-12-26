@@ -89,6 +89,9 @@
     <Compile Include="AddEventsToContestantWindow.xaml.cs">
       <DependentUpon>AddEventsToContestantWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Dialogs\ErrorDialog.xaml.cs">
+      <DependentUpon>ErrorDialog.xaml</DependentUpon>
+    </Compile>
     <Compile Include="EventEntriesReportPicker.xaml.cs">
       <DependentUpon>EventEntriesReportPicker.xaml</DependentUpon>
     </Compile>
@@ -125,6 +128,10 @@
     <Page Include="AddEventsToContestantWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Dialogs\ErrorDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="EventEntriesReportPicker.xaml">
       <SubType>Designer</SubType>
