@@ -39,6 +39,7 @@ namespace MSOOrganiser.Reports
                 Paragraph topPara = new Paragraph();
                 topPara.TextAlignment = TextAlignment.Left;
                 topPara.FontSize = 12;
+                topPara.FontWeight = FontWeights.Bold;
                 topPara.Margin = new Thickness(4);
                 topPara.Inlines.Add(new Run("Numbers in Events"));
                 doc.Blocks.Add(topPara);

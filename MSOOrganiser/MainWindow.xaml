@@ -23,7 +23,7 @@
                     <MenuItem Header="Bulk Receipts" IsEnabled="False"/>
                     <MenuItem Header="View Max Fee / Penta Cards" IsEnabled="False"/>
                     <MenuItem Header="Bulk Max Fee" IsEnabled="False"/>
-                    <MenuItem Header="View Contacts" IsEnabled="False"/>
+                    <MenuItem Header="Contacts" Click="contactsMenuItem_Click"/>
                     <MenuItem Header="View Game Plan" IsEnabled="False"/>
                     <MenuItem Header="Sign In Sheets" IsEnabled="False"/>
                     <MenuItem Header="Parking Lists" Click="parkingListsMenuItem_Click" />

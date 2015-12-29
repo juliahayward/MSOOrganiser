@@ -168,6 +168,12 @@ namespace MSOOrganiser
             printer.Print();
         }
 
+        private void contactsMenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            var printer = new PrintContactsReportPrinter();
+            printer.Print();
+        }
+
         
         
 
