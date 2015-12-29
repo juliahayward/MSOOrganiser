@@ -19,7 +19,7 @@
         <EntityTypeShape EntityType="DataModel.Olympiad_Info" Width="1.5" PointX="3.875" PointY="27.625" />
         <EntityTypeShape EntityType="DataModel.Paring" Width="1.5" PointX="2.0529287392520015" PointY="16.183681629683676" />
         <EntityTypeShape EntityType="DataModel.Payment_Method" Width="1.5" PointX="2.75" PointY="13.375" />
-        <EntityTypeShape EntityType="DataModel.Payment" Width="1.5" PointX="1.7981461462556134" PointY="4.8024672739219234" />
+        <EntityTypeShape EntityType="DataModel.Payment" Width="1.5" PointX="1.875" PointY="5.875" />
         <EntityTypeShape EntityType="DataModel.Resource" Width="1.5" PointX="0.660779726067921" PointY="22.736927475192086" />
         <EntityTypeShape EntityType="DataModel.SelectedCategory" Width="1.5" PointX="4.4328388182599276" PointY="0.22363451133651402" />
         <EntityTypeShape EntityType="DataModel.SelectedPeople" Width="1.5" PointX="0.875" PointY="13.375" />

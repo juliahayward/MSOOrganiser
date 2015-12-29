@@ -19,17 +19,8 @@ namespace MSOCore
         public Nullable<decimal> Payment1 { get; set; }
         public string Payment_Method { get; set; }
         public Nullable<int> Banked { get; set; }
-        public string Card_name { get; set; }
-        public string Expiry_date { get; set; }
-        public string Issue { get; set; }
-        public string Card_number { get; set; }
-        public string Card_Address_1 { get; set; }
-        public string Card_Address_2 { get; set; }
-        public string Card_City { get; set; }
-        public string Card_County { get; set; }
-        public string Card_Post_code { get; set; }
-        public string Card_Country { get; set; }
         public Nullable<int> Year { get; set; }
+        public Nullable<int> OlympiadId { get; set; }
     
         public virtual Contestant Name { get; set; }
     }

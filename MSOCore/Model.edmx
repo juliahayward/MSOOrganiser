@@ -345,17 +345,8 @@
           <Property Name="Payment" Type="money" />
           <Property Name="Payment Method" Type="nvarchar" MaxLength="50" />
           <Property Name="Banked" Type="int" />
-          <Property Name="Card name" Type="nvarchar" MaxLength="50" />
-          <Property Name="Expiry date" Type="nvarchar" MaxLength="50" />
-          <Property Name="Issue" Type="nvarchar" MaxLength="4" />
-          <Property Name="Card number" Type="nvarchar" MaxLength="50" />
-          <Property Name="Card Address 1" Type="nvarchar" MaxLength="255" />
-          <Property Name="Card Address 2" Type="nvarchar" MaxLength="255" />
-          <Property Name="Card City" Type="nvarchar" MaxLength="255" />
-          <Property Name="Card County" Type="nvarchar" MaxLength="255" />
-          <Property Name="Card Post-code" Type="nvarchar" MaxLength="50" />
-          <Property Name="Card Country" Type="nvarchar" MaxLength="255" />
           <Property Name="Year" Type="int" />
+          <Property Name="OlympiadId" Type="int" />
         </EntityType>
         <EntityType Name="Resources">
           <Key>
@@ -761,18 +752,9 @@
           <Property Type="Decimal" Name="Payment1" Precision="19" Scale="4" />
           <Property Type="String" Name="Payment_Method" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Type="Int32" Name="Banked" />
-          <Property Type="String" Name="Card_name" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Type="String" Name="Expiry_date" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Type="String" Name="Issue" MaxLength="4" FixedLength="false" Unicode="true" />
-          <Property Type="String" Name="Card_number" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Type="String" Name="Card_Address_1" MaxLength="255" FixedLength="false" Unicode="true" />
-          <Property Type="String" Name="Card_Address_2" MaxLength="255" FixedLength="false" Unicode="true" />
-          <Property Type="String" Name="Card_City" MaxLength="255" FixedLength="false" Unicode="true" />
-          <Property Type="String" Name="Card_County" MaxLength="255" FixedLength="false" Unicode="true" />
-          <Property Type="String" Name="Card_Post_code" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Type="String" Name="Card_Country" MaxLength="255" FixedLength="false" Unicode="true" />
           <Property Type="Int32" Name="Year" />
           <NavigationProperty Name="Name" Relationship="DataModel.Payments_NamesPayments" FromRole="Payment" ToRole="Name" />
+          <Property Type="Int32" Name="OlympiadId" />
         </EntityType>
         <EntityType Name="Resource">
           <Key>
@@ -1138,17 +1120,8 @@
           <EntitySetMapping Name="Payments">
             <EntityTypeMapping TypeName="DataModel.Payment">
               <MappingFragment StoreEntitySet="Payments">
+                <ScalarProperty Name="OlympiadId" ColumnName="OlympiadId" />
                 <ScalarProperty Name="Year" ColumnName="Year" />
-                <ScalarProperty Name="Card_Country" ColumnName="Card Country" />
-                <ScalarProperty Name="Card_Post_code" ColumnName="Card Post-code" />
-                <ScalarProperty Name="Card_County" ColumnName="Card County" />
-                <ScalarProperty Name="Card_City" ColumnName="Card City" />
-                <ScalarProperty Name="Card_Address_2" ColumnName="Card Address 2" />
-                <ScalarProperty Name="Card_Address_1" ColumnName="Card Address 1" />
-                <ScalarProperty Name="Card_number" ColumnName="Card number" />
-                <ScalarProperty Name="Issue" ColumnName="Issue" />
-                <ScalarProperty Name="Expiry_date" ColumnName="Expiry date" />
-                <ScalarProperty Name="Card_name" ColumnName="Card name" />
                 <ScalarProperty Name="Banked" ColumnName="Banked" />
                 <ScalarProperty Name="Payment_Method" ColumnName="Payment Method" />
                 <ScalarProperty Name="Payment1" ColumnName="Payment" />
