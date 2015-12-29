@@ -87,9 +87,13 @@
     <Compile Include="ContestantPanel.xaml.cs">
       <DependentUpon>ContestantPanel.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Converters\ShowCurrencyConverter.cs" />
     <Compile Include="Converters\ShowBlankIfZeroIntConverter.cs" />
     <Compile Include="AddEventsToContestantWindow.xaml.cs">
       <DependentUpon>AddEventsToContestantWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Dialogs\AddPaymentToContestantDialog.xaml.cs">
+      <DependentUpon>AddPaymentToContestantDialog.xaml</DependentUpon>
     </Compile>
     <Compile Include="Dialogs\ErrorDialog.xaml.cs">
       <DependentUpon>ErrorDialog.xaml</DependentUpon>
@@ -131,6 +135,10 @@
     <Page Include="AddEventsToContestantWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Dialogs\AddPaymentToContestantDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Dialogs\ErrorDialog.xaml">
       <SubType>Designer</SubType>
@@ -222,9 +230,6 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Data.sdf">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
     <Content Include="Resources\Logo.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

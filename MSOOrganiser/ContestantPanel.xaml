@@ -9,6 +9,7 @@
              d:DesignHeight="600" d:DesignWidth="600">
     <UserControl.Resources>
         <local:ShowBlankIfZeroIntConverter x:Key="ShowBlankIfZeroIntConverter" />
+        <local:ShowCurrencyConverter x:Key="ShowCurrencyConverter" />
     </UserControl.Resources>
     <StackPanel Orientation="Vertical">
         <Border BorderBrush="#ff000000" BorderThickness="1" CornerRadius="8" Margin="4" Background="AliceBlue">
@@ -32,7 +33,7 @@
             </StackPanel>
         </Border>
         <TextBlock FontWeight="Bold" FontSize="16" Margin="10,10,10,10" Text="{Binding Name}"/>
-        <TabControl Height="600">
+        <TabControl Height="626">
             <TabItem Header="Personal Details">
                 <StackPanel Orientation="Vertical">
                     <StackPanel Orientation="Horizontal" Margin="0,20,0,0">
@@ -132,14 +133,14 @@
                         </ComboBox>
                     </StackPanel>
                     <DataGrid Name="dataGrid" CanUserAddRows="False" CanUserResizeColumns="True" CanUserSortColumns="True"
-                              AutoGenerateColumns="False" 
+                              AutoGenerateColumns="False" Height="360"
                             Width="920" Margin="0,20,0,0" IsReadOnly="True" ItemsSource="{Binding Events}">
                         <DataGrid.Columns>
                             <DataGridTextColumn Header="EventId" Binding="{Binding EventId}" />
                             <DataGridTextColumn Header="EventCode" Binding="{Binding EventCode}" />
                             <DataGridTextColumn Header="EventName" Binding="{Binding EventName}" />
                             <DataGridCheckBoxColumn Header="Receipt" Binding="{Binding Receipt}" />
-                            <DataGridTextColumn Header="Fee" Binding="{Binding Fee}" />
+                            <DataGridTextColumn Header="Fee" Binding="{Binding Fee, Converter={StaticResource ShowCurrencyConverter}}" />
                             <DataGridTextColumn Header="Partner" Binding="{Binding Partner}" />
                             <DataGridTextColumn Header="Medal" Width="48" Binding="{Binding Medal}">
                                 <DataGridTextColumn.ElementStyle>
@@ -170,6 +171,17 @@
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellTemplate>
                             </DataGridTemplateColumn>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                    <Button Click="addPayment_Click">Add Payment</Button>
+                    <DataGrid Name="paymentDataGrid" CanUserAddRows="False" CanUserResizeColumns="True" CanUserSortColumns="True"
+                              AutoGenerateColumns="False" 
+                            Width="920" Margin="0,20,0,0" IsReadOnly="True" ItemsSource="{Binding Payments}">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="PaymentId" Binding="{Binding PaymentId}" />
+                            <DataGridTextColumn Header="Amount" Binding="{Binding Amount, Converter={StaticResource ShowCurrencyConverter}}" />
+                            <DataGridTextColumn Header="Method" Binding="{Binding Method}" />
+                            <DataGridCheckBoxColumn Header="Banked" Binding="{Binding Banked}" />
                         </DataGrid.Columns>
                     </DataGrid>
                 </StackPanel>

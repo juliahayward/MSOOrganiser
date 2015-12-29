@@ -1,5 +1,6 @@
 ﻿using MSOCore;
 using MSOCore.Models;
+using MSOOrganiser.Dialogs;
 using MSOOrganiser.Events;
 using System;
 using System.Collections.Generic;
@@ -82,6 +83,7 @@ namespace MSOOrganiser
         private void olympiadCombo_Changed(object sender, SelectionChangedEventArgs e)
         {
             ViewModel.PopulateEvents();
+            ViewModel.PopulatePayments();
         }
 
         private void event_Click(object sender, RoutedEventArgs e)
@@ -128,6 +130,21 @@ namespace MSOOrganiser
                 }
             }
         }
+
+        private void addPayment_Click(object sender, RoutedEventArgs e)
+        {
+            var dialog = new AddPaymentToContestantDialog();
+            if (dialog.ShowDialog().Value)
+            {
+                ViewModel.Payments.Add(new ContestantPanelVm.PaymentVm()
+                {
+                    Amount = dialog.Payment.Amount,
+                    Method = dialog.Payment.PaymentMethod,
+                    Banked = dialog.Payment.Banked
+                });
+                ViewModel.IsDirty = true;
+            }
+        }
     }
 
     public class ContestantPanelVm : VmBase
@@ -165,11 +182,19 @@ namespace MSOOrganiser
             public string TieBreak { get; set; }
             public bool Absent { get; set; }
         }
-        
+
+        public class PaymentVm
+        {
+            public int PaymentId { get; set; }
+            public decimal Amount { get; set; }
+            public string Method { get; set; }
+            public bool Banked { get; set; }
+        }
 
         #region bindable properties
         public ObservableCollection<TitleVm> Titles { get; set; }
         public ObservableCollection<EventVm> Events { get; set; }
+        public ObservableCollection<PaymentVm> Payments { get; set; }
 
         public ObservableCollection<ContestantVm> Contestants { get; set; }
         public CollectionView FilteredContestants { get; set; }
@@ -654,6 +679,7 @@ private string _Notes;
             Contestants = new ObservableCollection<ContestantVm>();
             Olympiads = new ObservableCollection<OlympiadVm>();
             Events = new ObservableCollection<EventVm>();
+            Payments = new ObservableCollection<PaymentVm>();
             ContestantId = "0";
             FilterFirstName = "";
             FilterLastName = "";
@@ -667,6 +693,7 @@ private string _Notes;
             
             PopulateOlympiadDropdown();
             PopulateEvents();
+            PopulatePayments();
         }
 
         public void PopulateDropdown()
@@ -734,6 +761,29 @@ private string _Notes;
                     Rank = e.e.Rank.HasValue ? e.e.Rank.Value : 0,
                     Receipt = e.e.Receipt.Value,
                     TieBreak = e.e.Tie_break ?? ""
+                });
+            }
+        }
+
+        public void PopulatePayments()
+        {
+            Payments.Clear();
+            if (ContestantId == null) return;
+            if (CurrentOlympiadId == null) return;
+
+            var context = new DataEntities();
+            var olympiadId = int.Parse(CurrentOlympiadId);
+            var contestantId = int.Parse(ContestantId);
+            var payments = context.Payments.Where(x => x.OlympiadId == olympiadId && x.MindSportsID == contestantId)
+                .OrderBy(x => x.PaymentNumber).ToList();
+            foreach (var p in payments)
+            {
+                Payments.Add(new PaymentVm()
+                {
+                    Amount = p.Payment1.Value,
+                    Banked = (p.Banked.HasValue && p.Banked.Value == 1),
+                    Method = p.Payment_Method,
+                    PaymentId = p.PaymentNumber
                 });
             }
         }
@@ -813,6 +863,7 @@ private string _Notes;
             }
             IsDirty = false;
             PopulateEvents();
+            PopulatePayments();
         }
 
         public void Save()
@@ -849,6 +900,9 @@ private string _Notes;
                 id = dbCon.Mind_Sport_ID;
                 dbCon.Entrants = this.Events
                     .Select(x => Entrant.NewEntrant(x.EventCode, CurrentOlympiadId, dbCon))
+                    .ToList();
+                dbCon.Payments = this.Payments
+                    .Select(x => new Payment() { Payment1 = x.Amount, Payment_Method = x.Method, PaymentNumber = 0, Banked = x.Banked ? 1 : 0, MindSportsID = dbCon.Mind_Sport_ID, OlympiadId = int.Parse(CurrentOlympiadId), Name = dbCon})
                     .ToList();
             }
             else
@@ -891,6 +945,11 @@ private string _Notes;
                 {
                  dbCon.Entrants.Remove(de);
                 }
+                foreach (var p in this.Payments.Where(x => !dbCon.Payments.Any(pp => pp.PaymentNumber == x.PaymentId)))
+                {
+                    dbCon.Payments.Add(new Payment() { Payment1 = p.Amount, Payment_Method = p.Method, PaymentNumber = 0, Banked = p.Banked ? 1 : 0, MindSportsID = dbCon.Mind_Sport_ID, OlympiadId = int.Parse(CurrentOlympiadId), Name = dbCon });
+                }
+                // At the moment we can't delete payments (deliberate)
             }
             context.SaveChanges();
             IsDirty = false;
