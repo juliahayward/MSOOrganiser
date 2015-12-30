@@ -21,7 +21,7 @@
                 </MenuItem>
                 <MenuItem Header="Reports">
                     <MenuItem Header="Bulk Receipts" IsEnabled="False"/>
-                    <MenuItem Header="View Max Fee / Penta Cards" IsEnabled="False"/>
+                    <MenuItem Header="View Max Fee / Penta Cards" IsEnabled="False" Click="maxFeePentaCards_Click"/>
                     <MenuItem Header="Bulk Max Fee" IsEnabled="False"/>
                     <MenuItem Header="Contacts" Click="contactsMenuItem_Click"/>
                     <MenuItem Header="View Game Plan" IsEnabled="False"/>
@@ -43,7 +43,7 @@
                     <MenuItem Header="View Medal Forms" IsEnabled="False"/>
                     <MenuItem Header="Print Named Pairing Card for an Event" IsEnabled="False"/>
                     <MenuItem Header="View Pentamind Qualifiers" IsEnabled="False"/>
-                    <MenuItem Header="Print Medal Table" IsEnabled="False"/>
+                    <MenuItem Header="Print Medal Table" Click="medalTable_Click"/>
                     <MenuItem Header="Print Results" IsEnabled="False"/>
                 </MenuItem>
                 <MenuItem Header="Misc">

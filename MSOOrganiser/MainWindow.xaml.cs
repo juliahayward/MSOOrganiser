@@ -159,7 +159,7 @@ namespace MSOOrganiser
 
         private void parkingListsMenuItem_Click(object sender, RoutedEventArgs e)
         {
-            MessageBox.Show("This does not appear to work in Access - please contact Julia");
+            MessageBox.Show("This does not appear to work in the Access version - please contact Julia");
         }
 
         private void entrySummaryMenuItem_Click(object sender, RoutedEventArgs e)
@@ -171,6 +171,17 @@ namespace MSOOrganiser
         private void contactsMenuItem_Click(object sender, RoutedEventArgs e)
         {
             var printer = new PrintContactsReportPrinter();
+            printer.Print();
+        }
+
+        private void maxFeePentaCards_Click(object sender, RoutedEventArgs e)
+        {
+            MessageBox.Show("This does not appear to work in the Access version - please contact Julia");
+        }
+
+        private void medalTable_Click(object sender, RoutedEventArgs e)
+        {
+            var printer = new MedalTablePrinter();
             printer.Print();
         }
 
