@@ -46,5 +46,6 @@ namespace MSOCore
         public DbSet<Session> Sessions { get; set; }
         public DbSet<User> Users { get; set; }
         public DbSet<UserLogin> UserLogins { get; set; }
+        public DbSet<Fee> Fees { get; set; }
     }
 }

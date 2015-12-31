@@ -56,6 +56,7 @@
       <DependentUpon>Model.tt</DependentUpon>
     </Compile>
     <Compile Include="Domain\Entrant.cs" />
+    <Compile Include="Domain\Fee.cs" />
     <Compile Include="Domain\Olympiad_Info.cs" />
     <Compile Include="Entrant.cs">
       <DependentUpon>Model.tt</DependentUpon>
@@ -73,6 +74,9 @@
       <DependentUpon>Model.tt</DependentUpon>
     </Compile>
     <Compile Include="Extensions\StringExtensions.cs" />
+    <Compile Include="Fee.cs">
+      <DependentUpon>Model.tt</DependentUpon>
+    </Compile>
     <Compile Include="Game.cs">
       <DependentUpon>Model.tt</DependentUpon>
     </Compile>

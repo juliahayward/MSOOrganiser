@@ -19,6 +19,7 @@
           <EntitySet Name="Event Sess" EntityType="DataModel.Store.Event Sess" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="Events" EntityType="DataModel.Store.Events" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="EventType" EntityType="DataModel.Store.EventType" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="Fees" EntityType="DataModel.Store.Fees" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="Games" EntityType="DataModel.Store.Games" store:Type="Tables" store:Schema="dbo" store:Name="Games">
             <DefiningQuery>SELECT 
       [Games].[Code] AS [Code], 
@@ -203,6 +204,15 @@
           <Property Name="Display" Type="bit" />
           <Property Name="Extention" Type="nvarchar" MaxLength="2" />
           <Property Name="SSMA_TimeStamp" Type="timestamp" Nullable="false" StoreGeneratedPattern="Computed" />
+        </EntityType>
+        <EntityType Name="Fees">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Code" Type="nvarchar" MaxLength="50" />
+          <Property Name="Adult" Type="money" />
+          <Property Name="Concession" Type="money" />
+          <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
         </EntityType>
         <!--Errors Found During Generation:
       warning 6002: The table/view 'mso.dbo.Games' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.
@@ -521,6 +531,7 @@
             <End Role="User" EntitySet="Users" />
             <End Role="UserLogin" EntitySet="UserLogins" />
           </AssociationSet>
+          <EntitySet Name="Fees" EntityType="DataModel.Fee" />
         </EntityContainer>
         <EntityType Name="Badges___Misc">
           <Key>
@@ -883,6 +894,15 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="Fee">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Type="String" Name="Code" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Type="Decimal" Name="Adult" Precision="19" Scale="4" />
+          <Property Type="Decimal" Name="Concession" Precision="19" Scale="4" />
+          <Property Type="Int32" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -1193,6 +1213,16 @@
                 <ScalarProperty Name="LogInDate" ColumnName="LogInDate" />
                 <ScalarProperty Name="UserId" ColumnName="UserId" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Fees">
+            <EntityTypeMapping TypeName="DataModel.Fee">
+              <MappingFragment StoreEntitySet="Fees">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Concession" ColumnName="Concession" />
+                <ScalarProperty Name="Adult" ColumnName="Adult" />
+                <ScalarProperty Name="Code" ColumnName="Code" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

@@ -5,7 +5,7 @@
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
       <Diagram DiagramId="5487d6df391b4344ac7aa90ce97351ee" Name="Diagram1" ZoomLevel="100">
-        <EntityTypeShape EntityType="DataModel.Badges___Misc" Width="1.5" PointX="1.3318964342269564" PointY="1.9826597878628689" />
+        <EntityTypeShape EntityType="DataModel.Badges___Misc" Width="1.5" PointX="6.25" PointY="0.5" />
         <EntityTypeShape EntityType="DataModel.Entrant" Width="1.5" PointX="4.625" PointY="13.375" />
         <EntityTypeShape EntityType="DataModel.Event_Resource" Width="1.5" PointX="1.9924123818019461" PointY="3.6751010882086592" />
         <EntityTypeShape EntityType="DataModel.Event_Sess" Width="1.5" PointX="11.427347486572035" PointY="23.888502877153691" />
@@ -31,6 +31,7 @@
         <AssociationConnector Association="DataModel.Payments_NamesPayments" />
         <EntityTypeShape EntityType="DataModel.UserLogin" Width="1.5" PointX="15.5" PointY="27.125" />
         <AssociationConnector Association="DataModel.FK_UserLogins_Users" />
+        <EntityTypeShape EntityType="DataModel.Fee" Width="1.5" PointX="9.7742565450138663" PointY="26.451680821576939" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

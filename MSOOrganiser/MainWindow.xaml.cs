@@ -92,7 +92,7 @@ namespace MSOOrganiser
         void panel_EventSelected(object sender, Events.EventEventArgs e)
         {
             if (dockPanel.Children.Count > 2) dockPanel.Children.RemoveAt(2);
-            var panel = new ResultsPanel();
+            var panel = new EventPanel();
             panel.Populate(e.EventCode);
             panel.ContestantSelected += panel_ContestantSelected;
             dockPanel.Children.Add(panel);
@@ -122,7 +122,7 @@ namespace MSOOrganiser
         private void resultsMenuItem_Click(object sender, RoutedEventArgs e)
         {
             if (dockPanel.Children.Count > 2) dockPanel.Children.RemoveAt(2);
-            var panel = new ResultsPanel();
+            var panel = new EventPanel();
             panel.Populate();
             panel.ContestantSelected += panel_ContestantSelected;
             dockPanel.Children.Add(panel);

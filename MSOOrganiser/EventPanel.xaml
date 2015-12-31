@@ -1,0 +1,179 @@
+﻿<UserControl x:Class="MSOOrganiser.EventPanel"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+             xmlns:local="clr-namespace:MSOOrganiser.Converters"
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="600">
+    <UserControl.Resources>
+        <local:ShowBlankIfZeroIntConverter x:Key="ShowBlankIfZeroIntConverter" />
+        <local:ShowCurrencyConverter x:Key="ShowCurrencyConverter" />
+        <local:ShowDateOnlyConverter x:Key="ShowDateOnlyConverter" />
+    </UserControl.Resources>
+    <StackPanel Orientation="Vertical">
+        <Border BorderBrush="#ff000000" BorderThickness="1" CornerRadius="8" Margin="4" Background="AliceBlue">
+            <StackPanel Orientation="Horizontal">
+                <TextBlock FontWeight="Bold" FontSize="16" Margin="10,10,10,10">Event
+                </TextBlock>
+                <ComboBox x:Name="eventCombo" Width="300" Margin="0,10,0,10"
+                          ItemsSource="{Binding Events}"
+                          DisplayMemberPath="Text"
+                          SelectedValuePath="Value"
+                          SelectedValue="{Binding EventCode}"
+                          SelectionChanged="eventCombo_Changed">
+                </ComboBox>
+                <Button Margin="10,10,10,10" IsEnabled="{Binding IsDirty}" Click="save_Click">Save</Button>
+                <Button Margin="10,10,10,10" IsEnabled="{Binding IsDirty}" Click="cancel_Click">Cancel</Button>
+            </StackPanel>
+        </Border>
+        <TabControl Height="660">
+            <TabItem Header="Details">
+                <StackPanel Orientation="Vertical">
+                    <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
+                        <Label Width="100">Entry Fee:</Label>
+                        <ComboBox x:Name="feesCombo" Width="300" Margin="0,0,0,0"
+                          ItemsSource="{Binding Fees}"
+                          DisplayMemberPath="Text"
+                          SelectedValuePath="Value"
+                          SelectedValue="{Binding EntryFee}">
+                        </ComboBox>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
+                        <Label Width="100">Arbiter:</Label>
+                        <TextBox Text="{Binding Arbiter, Mode=TwoWay}" Width="160"></TextBox>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
+                        <Label Width="100">Location:</Label>
+                        <TextBox Text="{Binding Location, Mode=TwoWay}" Width="160"></TextBox>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
+                        <Label Width="100">Number in Team:</Label>
+                        <xctk:IntegerUpDown Value="{Binding NumberInTeam, Mode=TwoWay}" Minimum="1" Maximum="16" Width="40"></xctk:IntegerUpDown>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
+                        <Label Width="100">Expected number of participants:</Label>
+                        <xctk:IntegerUpDown Value="{Binding ExpectedNumber, Mode=TwoWay}" Minimum="0" Maximum="150" Width="40"></xctk:IntegerUpDown>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
+                        <Label Width="100">Type:</Label>
+                        <ComboBox x:Name="typesCombo" Width="300" Margin="0,0,0,0"
+                          ItemsSource="{Binding Types}"
+                          DisplayMemberPath="Text"
+                          SelectedValuePath="Value"
+                          SelectedValue="{Binding Type}">
+                        </ComboBox>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
+                        <Label Width="160">Counts towards Pentamind:</Label>
+                        <CheckBox IsChecked="{Binding Pentamind, Mode=TwoWay}" />
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
+                        <Label Width="160">Included in max Fee:</Label>
+                        <CheckBox IsChecked="{Binding IncludedInMaxFee, Mode=TwoWay}" />
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
+                        <Label Width="100">Prize Fund:</Label>
+                        <TextBox Text="{Binding PrizeFund, Mode=TwoWay, Converter={StaticResource ShowCurrencyConverter}}" Width="60"></TextBox>
+                        <Label Width="40">1st:</Label>
+                        <TextBox Text="{Binding Prize1, Mode=TwoWay, Converter={StaticResource ShowCurrencyConverter}}" Width="60"></TextBox>
+                        <Label Width="40">2nd:</Label>
+                        <TextBox Text="{Binding Prize2, Mode=TwoWay, Converter={StaticResource ShowCurrencyConverter}}" Width="60"></TextBox>
+                        <Label Width="40">3rd:</Label>
+                        <TextBox Text="{Binding Prize3, Mode=TwoWay, Converter={StaticResource ShowCurrencyConverter}}" Width="60"></TextBox>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
+                        <Label Width="160">Other prizes:</Label>
+                        <TextBox Text="{Binding OtherPrizes, Mode=TwoWay}" Width="240"></TextBox>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
+                        <Label Width="160">Junior Medals:</Label>
+                        <CheckBox IsChecked="{Binding JuniorMedals, Mode=TwoWay}" />
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
+                        <Label Width="160">Junior cash prizes:</Label>
+                        <Label Width="40">1st:</Label>
+                        <TextBox Text="{Binding JuniorPrize1, Mode=TwoWay, Converter={StaticResource ShowCurrencyConverter}}" Width="60"></TextBox>
+                        <Label Width="40">2nd:</Label>
+                        <TextBox Text="{Binding JuniorPrize2, Mode=TwoWay, Converter={StaticResource ShowCurrencyConverter}}" Width="60"></TextBox>
+                        <Label Width="40">3rd:</Label>
+                        <TextBox Text="{Binding JuniorPrize3, Mode=TwoWay, Converter={StaticResource ShowCurrencyConverter}}" Width="60"></TextBox>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
+                        <Label Width="160">Other junior prizes:</Label>
+                        <TextBox Text="{Binding JuniorOtherPrizes, Mode=TwoWay}" Width="240"></TextBox>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
+                        <Label Width="160">Notes:</Label>
+                        <TextBox Text="{Binding Notes, Mode=TwoWay}" Width="600"></TextBox>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
+                        <Label Width="100">Sessions:</Label>
+                        <xctk:IntegerUpDown Value="{Binding NumSessions, Mode=TwoWay}" Minimum="0" Maximum="10" Width="40"></xctk:IntegerUpDown>
+                        <Label Width="160">2001 style:</Label>
+                        <TextBox Text="{Binding Sessions2001, Mode=TwoWay}" Width="600"></TextBox>
+                    </StackPanel>
+                    <DataGrid CanUserAddRows="False" CanUserResizeColumns="True" CanUserSortColumns="True"
+                              AutoGenerateColumns="False"
+                            Width="920" Margin="0,20,0,0" IsReadOnly="True" ItemsSource="{Binding Sessions}">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="Id" Binding="{Binding Id}" />
+                            <DataGridTextColumn Header="Date" Binding="{Binding Date, Converter={StaticResource ShowDateOnlyConverter}}" />
+                            <DataGridTextColumn Header="Session Code" Width="48" Binding="{Binding SessionCode}"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </StackPanel>
+            </TabItem>
+            <TabItem Header="Results">
+                <StackPanel Orientation="Vertical">
+                    <DataGrid Name="dataGrid" CanUserAddRows="False" CanUserResizeColumns="True" CanUserSortColumns="True"
+                              AutoGenerateColumns="False"
+                            Width="920" Margin="0,20,0,0" IsReadOnly="True" ItemsSource="{Binding Entrants}">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="EntrantId" Binding="{Binding EntrantId}" />
+                            <DataGridTextColumn Header="ContestantId" Binding="{Binding ContestantId}" />
+                            <DataGridTextColumn Header="Medal" Width="48" Binding="{Binding Medal}">
+                                <DataGridTextColumn.ElementStyle>
+                                    <Style TargetType="{x:Type TextBlock}">
+                                        <Style.Triggers>
+                                            <Trigger Property="Text" Value="Bronze">
+                                                <Setter Property="Background" Value="Brown"/>
+                                                <Setter Property="Foreground" Value="White"/>
+                                            </Trigger>
+                                            <Trigger Property="Text" Value="Silver">
+                                                <Setter Property="Background" Value="Silver"/>
+                                            </Trigger>
+                                            <Trigger Property="Text" Value="Gold">
+                                                <Setter Property="Background" Value="Gold"/>
+                                            </Trigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </DataGridTextColumn.ElementStyle>
+                            </DataGridTextColumn>
+                            <DataGridTextColumn Header="FirstName" Binding="{Binding FirstName}" />
+                            <DataGridTextColumn Header="LastName" Binding="{Binding LastName}" />
+                            <DataGridTextColumn Header="Rank" Binding="{Binding Rank, Converter={StaticResource ShowBlankIfZeroIntConverter}}" />
+                            <DataGridTextColumn Header="Score" Binding="{Binding Score}" />
+                            <DataGridCheckBoxColumn Header="Absent" Binding="{Binding Absent}" />
+                            <DataGridTextColumn Header="TieBreak" Binding="{Binding TieBreak}" />
+                            <DataGridTextColumn Header="Pentamind" Binding="{Binding PentaScore}" />
+                            <DataGridTextColumn Header="TeamOrPair" Binding="{Binding TeamOrPair}"  />
+                            <DataGridTextColumn Header="PIN" Binding="{Binding PIN}"  />
+                            <DataGridTemplateColumn  MinWidth="100" Header="View">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <Button Click="person_Click">View Person</Button>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                    <Button Click="checkRanks_Click">Check Ranks</Button>
+                    <Button Click="calculatePenta_Click">Calculate Pentamind Scores</Button>
+                    <Button Click="calculatePenta10_Click">Calculate Pentamind Scores (2010 formula)</Button>
+                </StackPanel>
+            </TabItem>
+        </TabControl>
+    </StackPanel>
+</UserControl>
