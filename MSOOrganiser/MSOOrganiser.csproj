@@ -99,6 +99,8 @@
     <Compile Include="Dialogs\ErrorDialog.xaml.cs">
       <DependentUpon>ErrorDialog.xaml</DependentUpon>
     </Compile>
+    <Compile Include="DocumentExtensions\BorderedParagraph.cs" />
+    <Compile Include="DocumentExtensions\BorderedTableCell.cs" />
     <Compile Include="EventEntriesReportPicker.xaml.cs">
       <DependentUpon>EventEntriesReportPicker.xaml</DependentUpon>
     </Compile>
@@ -117,6 +119,7 @@
       <DependentUpon>OlympiadPanel.xaml</DependentUpon>
     </Compile>
     <Compile Include="Reports\DonationPrinter.cs" />
+    <Compile Include="Reports\MedalFormsPrinter.cs" />
     <Compile Include="Reports\MedalTablePrinter.cs" />
     <Compile Include="Reports\PrintContactsReportPrinter.cs" />
     <Compile Include="Reports\PrintEventEntriesReportPrinter.cs" />
