@@ -185,6 +185,12 @@ namespace MSOOrganiser
             printer.Print();
         }
 
+        private void donationsMenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            var printer = new DonationPrinter();
+            printer.Print();
+        }
+
         
         
 

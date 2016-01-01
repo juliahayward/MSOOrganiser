@@ -31,7 +31,7 @@
                     <MenuItem Header="View Traffic Report" IsEnabled="False"/>
                     <MenuItem Header="View Location Use" IsEnabled="False"/>
                     <MenuItem Header="Banking" IsEnabled="False"/>
-                    <MenuItem Header="Print Donations" IsEnabled="False"/>
+                    <MenuItem Header="Print Donations" Click="donationsMenuItem_Click"/>
                     <MenuItem Header="Non-Event Income" IsEnabled="False"/>
                     <MenuItem Header="Event Income" IsEnabled="False"/>
                     <MenuItem Header="View Nationalities" Click="nationalitiesMenuItem_Click" />
