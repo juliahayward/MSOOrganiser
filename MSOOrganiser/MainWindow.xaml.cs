@@ -193,8 +193,15 @@ namespace MSOOrganiser
 
         private void medalFormsMenuItem_Click(object sender, RoutedEventArgs e)
         {
-            var printer = new MedalFormsPrinter();
-            printer.Print();
+            var dialog = new EventEntriesReportPicker();
+            if (dialog.ShowDialog().Value)
+            {
+                var printer = new MedalFormsPrinter();
+                if (dialog.UseEvent)
+                    printer.Print(dialog.EventCode);
+                else
+                    printer.Print(dialog.StartDate, dialog.EndDate);
+            }
         }
 
         
