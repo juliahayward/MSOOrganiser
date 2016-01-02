@@ -629,7 +629,7 @@ namespace MSOOrganiser
             var evt = context.Events.First(x => x.OlympiadId == olympiadId && x.Code == EventCode);
 
             EventId = evt.EIN;
-            Arbiter = evt.Arbiter;
+            Arbiter = string.Join(", ", evt.Arbiters.Select(a => a.Name.FullName()));
             Location = evt.Location;
             EntryFee = evt.Entry_Fee; // nulls ok
             NumberInTeam = evt.Number_in_Team.HasValue ? evt.Number_in_Team.Value : 1;

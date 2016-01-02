@@ -24,8 +24,17 @@ namespace MSOOrganiser.Reports
 
         public void Print(DateTime fromDate, DateTime toDate)
         {
+            DateTime dt = DateTime.Now;
+
+
             var rg = new MedalFormsGenerator();
             var results = rg.GetItemsForLatest(fromDate, toDate);
+
+
+            DateTime dt2 = DateTime.Now;
+            System.Windows.MessageBox.Show(dt2.Subtract(dt).TotalMilliseconds.ToString());
+
+
             Print(results);
         }
 
@@ -274,7 +283,6 @@ namespace MSOOrganiser.Reports
                 }
 
                 DocumentPaginator paginator = ((IDocumentPaginatorSource)doc).DocumentPaginator;
-                dlg.PrintTicket.PageOrientation = System.Printing.PageOrientation.Landscape;
                 dlg.PrintDocument(paginator, "MedalForms");
             }
         }

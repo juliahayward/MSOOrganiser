@@ -71,7 +71,6 @@ namespace MSOOrganiser.Reports
 
 
                 DocumentPaginator paginator = ((IDocumentPaginatorSource)doc).DocumentPaginator;
-                dlg.PrintTicket.PageOrientation = System.Printing.PageOrientation.Landscape;
                 dlg.PrintDocument(paginator, "Donations");
             }
         }

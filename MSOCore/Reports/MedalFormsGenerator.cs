@@ -43,7 +43,7 @@ namespace MSOCore.Reports
             var context = new DataEntities();
             var currentOlympiad = context.Olympiad_Infoes.OrderByDescending(x => x.StartDate).First();
 
-            var events = context.Events.Where(x => x.OlympiadId == currentOlympiad.Id && x.Code == eventCode);
+            var events = currentOlympiad.Events.Where(x => x.Code == eventCode);
 
             var items = GetItemsForLatest(context, currentOlympiad, events); 
             items.OlympiadTitle = currentOlympiad.FullTitle();
@@ -54,8 +54,8 @@ namespace MSOCore.Reports
         {
             var context = new DataEntities();
             var currentOlympiad = context.Olympiad_Infoes.OrderByDescending(x => x.StartDate).First();
-            var events = context.Events.Where(x => x.OlympiadId == currentOlympiad.Id
-                && x.Event_Sess.Any(sess => sess.Date >= startDate && sess.Date <= endDate));
+            var events = currentOlympiad.Events
+                .Where(x => x.Event_Sess.Any(sess => sess.Date >= startDate && sess.Date <= endDate));
 
             var items = GetItemsForLatest(context, currentOlympiad, events);
             items.OlympiadTitle = currentOlympiad.FullTitle();

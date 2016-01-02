@@ -6,6 +6,7 @@
     <edmx:StorageModels>
     <Schema Namespace="DataModel.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2008" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityContainer Name="DataModelStoreContainer">
+          <EntitySet Name="Arbiters" EntityType="DataModel.Store.Arbiters" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="Badges - Misc" EntityType="DataModel.Store.Badges - Misc" store:Type="Tables" store:Schema="dbo" store:Name="Badges - Misc">
             <DefiningQuery>SELECT 
       [Badges - Misc].[Name] AS [Name], 
@@ -83,6 +84,14 @@
           <EntitySet Name="Session" EntityType="DataModel.Store.Session" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="UserLogins" EntityType="DataModel.Store.UserLogins" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="Users" EntityType="DataModel.Store.Users" store:Type="Tables" Schema="dbo" />
+          <AssociationSet Name="Arbiters$EventsArbiters" Association="DataModel.Store.Arbiters$EventsArbiters">
+            <End Role="Events" EntitySet="Events" />
+            <End Role="Arbiters" EntitySet="Arbiters" />
+          </AssociationSet>
+          <AssociationSet Name="Arbiters$NamesArbiters" Association="DataModel.Store.Arbiters$NamesArbiters">
+            <End Role="Names" EntitySet="Names" />
+            <End Role="Arbiters" EntitySet="Arbiters" />
+          </AssociationSet>
           <AssociationSet Name="Entrants$NamesEntrants" Association="DataModel.Store.Entrants$NamesEntrants">
             <End Role="Names" EntitySet="Names" />
             <End Role="Entrants" EntitySet="Entrants" />
@@ -95,6 +104,10 @@
             <End Role="Session" EntitySet="Session" />
             <End Role="Event Sess" EntitySet="Event Sess" />
           </AssociationSet>
+          <AssociationSet Name="FK__Events__Olympiad__45BE5BA9" Association="DataModel.Store.FK__Events__Olympiad__45BE5BA9">
+            <End Role="Olympiad Info" EntitySet="Olympiad Info" />
+            <End Role="Events" EntitySet="Events" />
+          </AssociationSet>
           <AssociationSet Name="FK_UserLogins_Users" Association="DataModel.Store.FK_UserLogins_Users">
             <End Role="Users" EntitySet="Users" />
             <End Role="UserLogins" EntitySet="UserLogins" />
@@ -104,6 +117,14 @@
             <End Role="Payments" EntitySet="Payments" />
           </AssociationSet>
         </EntityContainer>
+        <EntityType Name="Arbiters">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Arbiter ID" Type="int" />
+          <Property Name="EIN" Type="int" />
+          <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+        </EntityType>
         <!--Errors Found During Generation:
       warning 6002: The table/view 'mso.dbo.Badges - Misc' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.
       -->
@@ -421,6 +442,34 @@
           <Property Name="Salt" Type="nvarchar" MaxLength="32" />
           <Property Name="Hash" Type="nvarchar" MaxLength="128" />
         </EntityType>
+        <Association Name="Arbiters$EventsArbiters">
+          <End Role="Events" Type="DataModel.Store.Events" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Arbiters" Type="DataModel.Store.Arbiters" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Events">
+              <PropertyRef Name="EIN" />
+            </Principal>
+            <Dependent Role="Arbiters">
+              <PropertyRef Name="EIN" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Arbiters$NamesArbiters">
+          <End Role="Names" Type="DataModel.Store.Names" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Arbiters" Type="DataModel.Store.Arbiters" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Names">
+              <PropertyRef Name="Mind Sport ID" />
+            </Principal>
+            <Dependent Role="Arbiters">
+              <PropertyRef Name="Arbiter ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="Entrants$NamesEntrants">
           <End Role="Names" Type="DataModel.Store.Names" Multiplicity="0..1" />
           <End Role="Entrants" Type="DataModel.Store.Entrants" Multiplicity="*" />
@@ -458,6 +507,18 @@
             </Principal>
             <Dependent Role="Event Sess">
               <PropertyRef Name="Session" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Events__Olympiad__45BE5BA9">
+          <End Role="Olympiad Info" Type="DataModel.Store.Olympiad Info" Multiplicity="0..1" />
+          <End Role="Events" Type="DataModel.Store.Events" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Olympiad Info">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Events">
+              <PropertyRef Name="OlympiadId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -532,6 +593,19 @@
             <End Role="UserLogin" EntitySet="UserLogins" />
           </AssociationSet>
           <EntitySet Name="Fees" EntityType="DataModel.Fee" />
+          <EntitySet Name="Arbiters" EntityType="DataModel.Arbiter" />
+          <AssociationSet Name="Arbiters_EventsArbiters" Association="DataModel.Arbiters_EventsArbiters">
+            <End Role="Event" EntitySet="Events" />
+            <End Role="Arbiter" EntitySet="Arbiters" />
+          </AssociationSet>
+          <AssociationSet Name="Arbiters_NamesArbiters" Association="DataModel.Arbiters_NamesArbiters">
+            <End Role="Contestant" EntitySet="Contestants" />
+            <End Role="Arbiter" EntitySet="Arbiters" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Events__Olympiad__45BE5BA9" Association="DataModel.FK__Events__Olympiad__45BE5BA9">
+            <End Role="Olympiad_Info" EntitySet="Olympiad_Infoes" />
+            <End Role="Event" EntitySet="Events" />
+          </AssociationSet>
         </EntityContainer>
         <EntityType Name="Badges___Misc">
           <Key>
@@ -624,6 +698,8 @@
           <Property Type="Binary" Name="SSMA_TimeStamp" Nullable="false" MaxLength="8" FixedLength="true" annotation:StoreGeneratedPattern="Computed" />
           <NavigationProperty Name="Event_Sess" Relationship="DataModel.Event_Sess_EventsEvent_Sess" FromRole="Event" ToRole="Event_Sess" />
           <Property Type="Int32" Name="OlympiadId" />
+          <NavigationProperty Name="Arbiters" Relationship="DataModel.Arbiters_EventsArbiters" FromRole="Event" ToRole="Arbiter" />
+          <NavigationProperty Name="Olympiad_Info" Relationship="DataModel.FK__Events__Olympiad__45BE5BA9" FromRole="Event" ToRole="Olympiad_Info" />
         </EntityType>
         <EntityType Name="EventType">
           <Key>
@@ -700,6 +776,7 @@
           <Property Type="Binary" Name="SSMA_TimeStamp" Nullable="false" MaxLength="8" FixedLength="true" annotation:StoreGeneratedPattern="Computed" />
           <NavigationProperty Name="Entrants" Relationship="DataModel.Entrants_NamesEntrants" FromRole="Name" ToRole="Entrant" />
           <NavigationProperty Name="Payments" Relationship="DataModel.Payments_NamesPayments" FromRole="Name" ToRole="Payment" />
+          <NavigationProperty Name="Arbiters" Relationship="DataModel.Arbiters_NamesArbiters" FromRole="Contestant" ToRole="Arbiter" />
         </EntityType>
         <EntityType Name="National_Flag">
           <Key>
@@ -731,6 +808,7 @@
           <Property Type="Boolean" Name="Current" />
           <Property Type="Binary" Name="SSMA_TimeStamp" Nullable="false" MaxLength="8" FixedLength="true" annotation:StoreGeneratedPattern="Computed" />
           <Property Type="Int32" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <NavigationProperty Name="Events" Relationship="DataModel.FK__Events__Olympiad__45BE5BA9" FromRole="Olympiad_Info" ToRole="Event" />
         </EntityType>
         <EntityType Name="Paring">
           <Key>
@@ -903,6 +981,56 @@
           <Property Type="Decimal" Name="Concession" Precision="19" Scale="4" />
           <Property Type="Int32" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
         </EntityType>
+        <EntityType Name="Arbiter">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Type="Int32" Name="Arbiter_ID" />
+          <Property Type="Int32" Name="EIN" />
+          <Property Type="Int32" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <NavigationProperty Name="Event" Relationship="DataModel.Arbiters_EventsArbiters" FromRole="Arbiter" ToRole="Event" />
+          <NavigationProperty Name="Name" Relationship="DataModel.Arbiters_NamesArbiters" FromRole="Arbiter" ToRole="Contestant" />
+        </EntityType>
+        <Association Name="Arbiters_EventsArbiters">
+          <End Type="DataModel.Event" Role="Event" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="DataModel.Arbiter" Role="Arbiter" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Event">
+              <PropertyRef Name="EIN" />
+            </Principal>
+            <Dependent Role="Arbiter">
+              <PropertyRef Name="EIN" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Arbiters_NamesArbiters">
+          <End Type="DataModel.Contestant" Role="Contestant" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="DataModel.Arbiter" Role="Arbiter" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Contestant">
+              <PropertyRef Name="Mind_Sport_ID" />
+            </Principal>
+            <Dependent Role="Arbiter">
+              <PropertyRef Name="Arbiter_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Events__Olympiad__45BE5BA9">
+          <End Type="DataModel.Olympiad_Info" Role="Olympiad_Info" Multiplicity="0..1" />
+          <End Type="DataModel.Event" Role="Event" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Olympiad_Info">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Event">
+              <PropertyRef Name="OlympiadId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -1223,6 +1351,15 @@
                 <ScalarProperty Name="Concession" ColumnName="Concession" />
                 <ScalarProperty Name="Adult" ColumnName="Adult" />
                 <ScalarProperty Name="Code" ColumnName="Code" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Arbiters">
+            <EntityTypeMapping TypeName="DataModel.Arbiter">
+              <MappingFragment StoreEntitySet="Arbiters">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="EIN" ColumnName="EIN" />
+                <ScalarProperty Name="Arbiter_ID" ColumnName="Arbiter ID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

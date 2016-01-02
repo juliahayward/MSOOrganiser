@@ -46,6 +46,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Arbiter.cs">
+      <DependentUpon>Model.tt</DependentUpon>
+    </Compile>
     <Compile Include="Badges___Misc.cs">
       <DependentUpon>Model.tt</DependentUpon>
     </Compile>
@@ -55,6 +58,7 @@
     <Compile Include="Contestant.cs">
       <DependentUpon>Model.tt</DependentUpon>
     </Compile>
+    <Compile Include="Domain\Contestant.cs" />
     <Compile Include="Domain\Entrant.cs" />
     <Compile Include="Domain\Fee.cs" />
     <Compile Include="Domain\Olympiad_Info.cs" />

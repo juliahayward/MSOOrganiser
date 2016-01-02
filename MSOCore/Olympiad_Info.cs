@@ -14,6 +14,11 @@ namespace MSOCore
     
     public partial class Olympiad_Info
     {
+        public Olympiad_Info()
+        {
+            this.Events = new HashSet<Event>();
+        }
+    
         public Nullable<int> YearOf { get; set; }
         public string Number { get; set; }
         public string Title { get; set; }
@@ -30,5 +35,7 @@ namespace MSOCore
         public Nullable<bool> Current { get; set; }
         public byte[] SSMA_TimeStamp { get; set; }
         public int Id { get; set; }
+    
+        public virtual ICollection<Event> Events { get; set; }
     }
 }

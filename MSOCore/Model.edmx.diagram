@@ -4,34 +4,38 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="5487d6df391b4344ac7aa90ce97351ee" Name="Diagram1" ZoomLevel="100">
-        <EntityTypeShape EntityType="DataModel.Badges___Misc" Width="1.5" PointX="6.25" PointY="0.5" />
-        <EntityTypeShape EntityType="DataModel.Entrant" Width="1.5" PointX="4.625" PointY="13.375" />
-        <EntityTypeShape EntityType="DataModel.Event_Resource" Width="1.5" PointX="1.9924123818019461" PointY="3.6751010882086592" />
-        <EntityTypeShape EntityType="DataModel.Event_Sess" Width="1.5" PointX="11.427347486572035" PointY="23.888502877153691" />
-        <EntityTypeShape EntityType="DataModel.Event" Width="1.5" PointX="9.4668817620104555" PointY="27.277531919664487" />
-        <EntityTypeShape EntityType="DataModel.EventType" Width="1.5" PointX="4.930069050253401" PointY="7.8998889214824368" />
-        <EntityTypeShape EntityType="DataModel.Game" Width="1.5" PointX="4.154240466726125" PointY="9.1669707937012284" />
-        <EntityTypeShape EntityType="DataModel.Information" Width="1.5" PointX="8.0222716406091443" PointY="11.043266376034946" />
-        <EntityTypeShape EntityType="DataModel.Medal_Point" Width="1.5" PointX="5.9896484808948118" PointY="4.0253626424937332" />
-        <EntityTypeShape EntityType="DataModel.Contestant" Width="1.5" PointX="9.47114354068001" PointY="5.3709774489379383" />
+      <Diagram DiagramId="5487d6df391b4344ac7aa90ce97351ee" Name="Diagram1" ZoomLevel="86">
+        <EntityTypeShape EntityType="DataModel.Badges___Misc" Width="1.5" PointX="11.125" PointY="15.625" />
+        <EntityTypeShape EntityType="DataModel.Entrant" Width="1.5" PointX="6.875" PointY="2.625" />
+        <EntityTypeShape EntityType="DataModel.Event_Resource" Width="1.5" PointX="10.875" PointY="13.375" />
+        <EntityTypeShape EntityType="DataModel.Event_Sess" Width="1.5" PointX="2.875" PointY="8.75" />
+        <EntityTypeShape EntityType="DataModel.Event" Width="1.5" PointX="2.875" PointY="0.5" />
+        <EntityTypeShape EntityType="DataModel.EventType" Width="1.5" PointX="9.5" PointY="15.625" />
+        <EntityTypeShape EntityType="DataModel.Game" Width="1.5" PointX="7.625" PointY="8.75" />
+        <EntityTypeShape EntityType="DataModel.Information" Width="1.5" PointX="9.25" PointY="10.75" />
+        <EntityTypeShape EntityType="DataModel.Medal_Point" Width="1.5" PointX="11.125" PointY="10.625" />
+        <EntityTypeShape EntityType="DataModel.Contestant" Width="1.5" PointX="11.125" PointY="0.5" />
         <EntityTypeShape EntityType="DataModel.National_Flag" Width="1.5" PointX="0.547061881305213" PointY="27.147341308718239" />
-        <EntityTypeShape EntityType="DataModel.Olympiad_Info" Width="1.5" PointX="3.875" PointY="27.625" />
+        <EntityTypeShape EntityType="DataModel.Olympiad_Info" Width="1.5" PointX="0.5" PointY="0.5" />
         <EntityTypeShape EntityType="DataModel.Paring" Width="1.5" PointX="2.0529287392520015" PointY="16.183681629683676" />
-        <EntityTypeShape EntityType="DataModel.Payment_Method" Width="1.5" PointX="2.75" PointY="13.375" />
-        <EntityTypeShape EntityType="DataModel.Payment" Width="1.5" PointX="1.875" PointY="5.875" />
+        <EntityTypeShape EntityType="DataModel.Payment_Method" Width="1.5" PointX="7.875" PointY="13.25" />
+        <EntityTypeShape EntityType="DataModel.Payment" Width="1.5" PointX="12.125" PointY="6.625" />
         <EntityTypeShape EntityType="DataModel.Resource" Width="1.5" PointX="0.660779726067921" PointY="22.736927475192086" />
-        <EntityTypeShape EntityType="DataModel.SelectedCategory" Width="1.5" PointX="4.4328388182599276" PointY="0.22363451133651402" />
+        <EntityTypeShape EntityType="DataModel.SelectedCategory" Width="1.5" PointX="9.25" PointY="6.625" />
         <EntityTypeShape EntityType="DataModel.SelectedPeople" Width="1.5" PointX="0.875" PointY="13.375" />
-        <EntityTypeShape EntityType="DataModel.Session" Width="1.5" PointX="6.0470359577085055" PointY="26.800923732482328" />
-        <EntityTypeShape EntityType="DataModel.User" Width="1.5" PointX="1.8494341177164735" PointY="20.481604153514656" />
+        <EntityTypeShape EntityType="DataModel.Session" Width="1.5" PointX="2.875" PointY="11.5" />
+        <EntityTypeShape EntityType="DataModel.User" Width="1.5" PointX="3.75" PointY="20.625" />
         <AssociationConnector Association="DataModel.Entrants_NamesEntrants" />
         <AssociationConnector Association="DataModel.Event_Sess_EventsEvent_Sess" />
         <AssociationConnector Association="DataModel.Event_Sess_SessionEvent_Sess" />
         <AssociationConnector Association="DataModel.Payments_NamesPayments" />
-        <EntityTypeShape EntityType="DataModel.UserLogin" Width="1.5" PointX="15.5" PointY="27.125" />
+        <EntityTypeShape EntityType="DataModel.UserLogin" Width="1.5" PointX="3.875" PointY="25.25" />
         <AssociationConnector Association="DataModel.FK_UserLogins_Users" />
-        <EntityTypeShape EntityType="DataModel.Fee" Width="1.5" PointX="9.7742565450138663" PointY="26.451680821576939" />
+        <EntityTypeShape EntityType="DataModel.Fee" Width="1.5" PointX="11.25" PointY="24.125" />
+        <EntityTypeShape EntityType="DataModel.Arbiter" Width="1.5" PointX="6.875" PointY="0.5" />
+        <AssociationConnector Association="DataModel.Arbiters_EventsArbiters" />
+        <AssociationConnector Association="DataModel.Arbiters_NamesArbiters" />
+        <AssociationConnector Association="DataModel.FK__Events__Olympiad__45BE5BA9" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

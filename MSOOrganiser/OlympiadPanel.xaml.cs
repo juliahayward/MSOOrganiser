@@ -402,7 +402,7 @@ namespace MSOOrganiser
                 PentaLong = o.PentaLong.ToString();
                 PentaTotal = o.PentaTotal.ToString();
                 Events.Clear();
-                foreach (var e in context.Events.Where(x => x.OlympiadId == id).OrderBy(x => x.Code))
+                foreach (var e in o.Events.OrderBy(x => x.Code))
                 {
                     Events.Add(new EventVm() { Id = e.EIN, Code = e.Code, Name = e.Mind_Sport });
                 }
@@ -414,9 +414,10 @@ namespace MSOOrganiser
         {
             var context = new DataEntities();
             var id = int.Parse(OlympiadId);
+            Olympiad_Info o;
             if (id == 0)
             {
-                var o = new Olympiad_Info()
+                o = new Olympiad_Info()
                 {
                     YearOf = int.Parse(this.YearOf),
                     Number = this.Number,
@@ -430,7 +431,8 @@ namespace MSOOrganiser
                     JnrAge = int.Parse(this.JnrAge),
                     SnrAge = int.Parse(this.SnrAge),
                     PentaLong = int.Parse(this.PentaLong),
-                    PentaTotal = int.Parse(this.PentaTotal)
+                    PentaTotal = int.Parse(this.PentaTotal),
+                    Events = new List<Event>()
                 };
                 context.Olympiad_Infoes.Add(o);
                 // So we don't have to do a full refresh of the combo
@@ -439,7 +441,7 @@ namespace MSOOrganiser
             }
             else
             {
-                var o = context.Olympiad_Infoes.FirstOrDefault(x => x.Id == id);
+                o = context.Olympiad_Infoes.FirstOrDefault(x => x.Id == id);
                 o.YearOf = int.Parse(this.YearOf);
                 o.Number = this.Number;
                 o.Title = this.Title;
@@ -456,10 +458,11 @@ namespace MSOOrganiser
             }
             context.SaveChanges();
             // Now update the events. Need to do here to have the reference back to the Olympiad
-            foreach (var existingEvent in context.Events.Where(x => x.OlympiadId == id))
+            foreach (var existingEvent in o.Events.ToList())
             {
                 if (!Events.Any(x => x.Id == existingEvent.EIN))
                 {
+                    o.Events.Remove(existingEvent);
                     context.Events.Remove(existingEvent);
                 }
             }
@@ -471,10 +474,10 @@ namespace MSOOrganiser
                     {
                         Mind_Sport = evm.Name,
                         Code = evm.Code,
-                        OlympiadId = id
+                        Olympiad_Info = o,
                         // TODO more stuff here
                     };
-                    context.Events.Add(evt);
+                    o.Events.Add(evt);
                 }
                 else
                 {

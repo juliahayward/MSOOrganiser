@@ -17,6 +17,7 @@ namespace MSOCore
         public Event()
         {
             this.Event_Sess = new HashSet<Event_Sess>();
+            this.Arbiters = new HashSet<Arbiter>();
         }
     
         public int EIN { get; set; }
@@ -52,5 +53,7 @@ namespace MSOCore
         public Nullable<int> OlympiadId { get; set; }
     
         public virtual ICollection<Event_Sess> Event_Sess { get; set; }
+        public virtual ICollection<Arbiter> Arbiters { get; set; }
+        public virtual Olympiad_Info Olympiad_Info { get; set; }
     }
 }

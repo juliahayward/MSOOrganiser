@@ -18,6 +18,7 @@ namespace MSOCore
         {
             this.Entrants = new HashSet<Entrant>();
             this.Payments = new HashSet<Payment>();
+            this.Arbiters = new HashSet<Arbiter>();
         }
     
         public int Mind_Sport_ID { get; set; }
@@ -48,5 +49,6 @@ namespace MSOCore
     
         public virtual ICollection<Entrant> Entrants { get; set; }
         public virtual ICollection<Payment> Payments { get; set; }
+        public virtual ICollection<Arbiter> Arbiters { get; set; }
     }
 }
