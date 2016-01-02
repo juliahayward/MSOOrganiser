@@ -1,0 +1,17 @@
+﻿<Window x:Class="MSOOrganiser.Dialogs.AboutDialog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Icon="/MSOOrganiser;component/Resources/Logo.png"
+        Title="About MSO Organiser" Height="200" Width="500">
+    <Grid>
+        <StackPanel Orientation="Horizontal">
+            <Image Source="/MSOOrganiser;component/Resources/Logo.png" />
+            <StackPanel Orientation="Vertical" Width="240">
+                <TextBlock Margin="0,10,0,0">MSO Organiser</TextBlock>
+                <TextBlock Margin="0,10,0,0" x:Name="version"/>
+                <TextBlock Margin="0,10,0,0">© Julia Hayward 2014-5</TextBlock>
+                <TextBlock Margin="0,10,0,0" TextWrapping="Wrap">For help, support and feature requests contact julia@juliahayward.com. Contributors welcome, see https://github.com/juliahayward/MSOOrganiser</TextBlock>
+            </StackPanel>
+        </StackPanel>
+    </Grid>
+</Window>

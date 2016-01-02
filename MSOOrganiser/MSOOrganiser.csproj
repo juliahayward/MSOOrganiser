@@ -93,6 +93,9 @@
     <Compile Include="AddEventsToContestantWindow.xaml.cs">
       <DependentUpon>AddEventsToContestantWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Dialogs\AboutDialog.xaml.cs">
+      <DependentUpon>AboutDialog.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Dialogs\AddPaymentToContestantDialog.xaml.cs">
       <DependentUpon>AddPaymentToContestantDialog.xaml</DependentUpon>
     </Compile>
@@ -142,6 +145,10 @@
     <Page Include="AddEventsToContestantWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Dialogs\AboutDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Dialogs\AddPaymentToContestantDialog.xaml">
       <SubType>Designer</SubType>

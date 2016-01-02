@@ -204,6 +204,12 @@ namespace MSOOrganiser
             }
         }
 
+        private void about_Click(object sender, RoutedEventArgs e)
+        {
+            var dialog = new AboutDialog();
+            dialog.ShowDialog();
+        }
+
         
         
 

@@ -49,6 +49,8 @@
                 <MenuItem Header="Misc">
                     <MenuItem Header="Print Misc Badges" IsEnabled="False"/>
                 </MenuItem>
+                <MenuItem Header="About" Click="about_Click">
+                </MenuItem>
             </Menu>
             <StatusBar DockPanel.Dock="Bottom">
                 <StatusBar.ItemsPanel>
