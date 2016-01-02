@@ -32,7 +32,6 @@ namespace MSOCore
         public string Entry_Fee { get; set; }
         public Nullable<bool> incMaxFee { get; set; }
         public Nullable<float> No_Sessions { get; set; }
-        public string Sessions { get; set; }
         public string Prize_Giving { get; set; }
         public Nullable<decimal> Prize_fund { get; set; }
         public string C1st_Prize { get; set; }
@@ -45,7 +44,6 @@ namespace MSOCore
         public string JNR_3rd_Prize { get; set; }
         public string JNR_Other_Prizes { get; set; }
         public string Location { get; set; }
-        public string Arbiter { get; set; }
         public string Notes { get; set; }
         public Nullable<int> X_Num { get; set; }
         public Nullable<bool> Display { get; set; }

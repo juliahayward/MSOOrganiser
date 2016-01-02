@@ -111,8 +111,6 @@
                     <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
                         <Label Width="100">Sessions:</Label>
                         <xctk:IntegerUpDown Value="{Binding NumSessions, Mode=TwoWay}" Minimum="0" Maximum="10" Width="40"></xctk:IntegerUpDown>
-                        <Label Width="160">2001 style:</Label>
-                        <TextBox Text="{Binding Sessions2001, Mode=TwoWay}" Width="600"></TextBox>
                     </StackPanel>
                     <DataGrid CanUserAddRows="False" CanUserResizeColumns="True" CanUserSortColumns="True"
                               AutoGenerateColumns="False"

@@ -573,24 +573,6 @@ namespace MSOOrganiser
             }
         }
 
-        private string _sessions2001;
-        public string Sessions2001
-        {
-            get
-            {
-                return _sessions2001;
-            }
-            set
-            {
-                if (_sessions2001 != value)
-                {
-                    _sessions2001 = value;
-                    _IsDirty = true;
-                    OnPropertyChanged("Sessions2001");
-                }
-            }
-        }
-
         #endregion
 
         public void PopulateDropdown(string eventCode = null)
@@ -649,7 +631,6 @@ namespace MSOOrganiser
             ExpectedNumber = (evt.X_Num.HasValue) ? evt.X_Num.Value : 10;
             Notes = evt.Notes;
             NumSessions = (evt.No_Sessions.HasValue) ? (int)evt.No_Sessions : 0;
-            Sessions2001 = evt.Sessions;    // 2001 format - dates embedded in string
             // evt.Display; // appears not to be used
             var h = evt.Event_Sess; // collection
             // evt.MAX_Number // not used since 2006

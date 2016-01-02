@@ -196,7 +196,6 @@
           <Property Name="Entry Fee" Type="nvarchar" MaxLength="50" />
           <Property Name="incMaxFee" Type="bit" />
           <Property Name="No Sessions" Type="real" />
-          <Property Name="Sessions" Type="nvarchar" MaxLength="50" />
           <Property Name="Prize Giving" Type="nvarchar" MaxLength="50" />
           <Property Name="Prize fund" Type="money" />
           <Property Name="1st Prize" Type="nvarchar" MaxLength="50" />
@@ -209,7 +208,6 @@
           <Property Name="JNR 3rd Prize" Type="nvarchar" MaxLength="50" />
           <Property Name="JNR Other Prizes" Type="nvarchar(max)" />
           <Property Name="Location" Type="nvarchar" MaxLength="50" />
-          <Property Name="Arbiter" Type="nvarchar" MaxLength="255" />
           <Property Name="Notes" Type="nvarchar(max)" />
           <Property Name="X-Num" Type="int" />
           <Property Name="Display" Type="bit" />
@@ -678,7 +676,6 @@
           <Property Type="String" Name="Entry_Fee" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Type="Boolean" Name="incMaxFee" />
           <Property Type="Single" Name="No_Sessions" />
-          <Property Type="String" Name="Sessions" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Type="String" Name="Prize_Giving" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Type="Decimal" Name="Prize_fund" Precision="19" Scale="4" />
           <Property Type="String" Name="C1st_Prize" MaxLength="50" FixedLength="false" Unicode="true" />
@@ -691,7 +688,6 @@
           <Property Type="String" Name="JNR_3rd_Prize" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Type="String" Name="JNR_Other_Prizes" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Type="String" Name="Location" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Type="String" Name="Arbiter" MaxLength="255" FixedLength="false" Unicode="true" />
           <Property Type="String" Name="Notes" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Type="Int32" Name="X_Num" />
           <Property Type="Boolean" Name="Display" />
@@ -1101,7 +1097,6 @@
                 <ScalarProperty Name="Display" ColumnName="Display" />
                 <ScalarProperty Name="X_Num" ColumnName="X-Num" />
                 <ScalarProperty Name="Notes" ColumnName="Notes" />
-                <ScalarProperty Name="Arbiter" ColumnName="Arbiter" />
                 <ScalarProperty Name="Location" ColumnName="Location" />
                 <ScalarProperty Name="JNR_Other_Prizes" ColumnName="JNR Other Prizes" />
                 <ScalarProperty Name="JNR_3rd_Prize" ColumnName="JNR 3rd Prize" />
@@ -1114,7 +1109,6 @@
                 <ScalarProperty Name="C1st_Prize" ColumnName="1st Prize" />
                 <ScalarProperty Name="Prize_fund" ColumnName="Prize fund" />
                 <ScalarProperty Name="Prize_Giving" ColumnName="Prize Giving" />
-                <ScalarProperty Name="Sessions" ColumnName="Sessions" />
                 <ScalarProperty Name="No_Sessions" ColumnName="No Sessions" />
                 <ScalarProperty Name="incMaxFee" ColumnName="incMaxFee" />
                 <ScalarProperty Name="Entry_Fee" ColumnName="Entry Fee" />
