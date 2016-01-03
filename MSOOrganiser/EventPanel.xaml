@@ -33,7 +33,7 @@
                 <StackPanel Orientation="Vertical">
                     <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
                         <Label Width="100">Entry Fee:</Label>
-                        <ComboBox x:Name="feesCombo" Width="300" Margin="0,0,0,0"
+                        <ComboBox Width="240" Margin="0,0,0,0"
                           ItemsSource="{Binding Fees}"
                           DisplayMemberPath="Text"
                           SelectedValuePath="Value"
@@ -46,7 +46,12 @@
                     </StackPanel>
                     <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
                         <Label Width="100">Location:</Label>
-                        <TextBox Text="{Binding Location, Mode=TwoWay}" Width="160"></TextBox>
+                        <ComboBox Width="240" Margin="0,10,0,10"
+                          ItemsSource="{Binding Locations}"
+                          DisplayMemberPath="Text"
+                          SelectedValuePath="Value"
+                          SelectedValue="{Binding Location, Mode=TwoWay}">
+                        </ComboBox>
                     </StackPanel>
                     <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
                         <Label Width="100">Number in Team:</Label>

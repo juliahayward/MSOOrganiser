@@ -136,6 +136,12 @@ namespace MSOOrganiser
             public string Value { get; set; }
         }
 
+        public class LocationVm
+        {
+            public string Text { get; set; }
+            public string Value { get; set; }
+        }
+
         // for table
         public class SessionVm : VmBase
         {
@@ -180,6 +186,7 @@ namespace MSOOrganiser
             Entrants = new ObservableCollection<EntrantVm>();
             Sessions = new ObservableCollection<SessionVm>();
             Types = new ObservableCollection<TypeVm>();
+            Locations = new ObservableCollection<LocationVm>();
             EventCode = "";
 
             PopulateDropdown();
@@ -192,6 +199,7 @@ namespace MSOOrganiser
         public ObservableCollection<EventVm> Events { get; set; }
         public ObservableCollection<EntrantVm> Entrants { get; set; }
         public ObservableCollection<SessionVm> Sessions { get; set; }
+        public ObservableCollection<LocationVm> Locations { get; set; }
         public int CurrentOlympiadId { get; set; }
         public string EventCode { get; set; }
         public int EventId { get; set; }        // EIN in database
@@ -579,7 +587,8 @@ namespace MSOOrganiser
         {
             Events.Clear();
             var context = new DataEntities();
-            CurrentOlympiadId = context.Olympiad_Infoes.OrderByDescending(x => x.StartDate).First().Id;
+            var currentOlympiad = context.Olympiad_Infoes.OrderByDescending(x => x.StartDate).First();
+            CurrentOlympiadId = currentOlympiad.Id;
             foreach (var e in context.Events.Where(x => !x.Code.StartsWith("ZZ") && x.OlympiadId == CurrentOlympiadId)
                 .OrderBy(x => x.Code))
                 Events.Add(new EventVm { Text = e.Code + " " + e.Mind_Sport, Value = e.Code });
@@ -597,6 +606,11 @@ namespace MSOOrganiser
             Fees.Add(new EntryFeeVm() { Value = null, Text = "(none)" });
             foreach (var f in context.Fees.OrderBy(x => x.Code))
                 Fees.Add(new EntryFeeVm() { Value = f.Code, Text = f.DropdownText });
+
+            Locations.Clear();
+            Locations.Add(new LocationVm() { Value = null, Text = "(no location)" });
+            foreach (var l in currentOlympiad.Locations)
+                Locations.Add(new LocationVm() { Value = l.Location1, Text = l.Location1 });
         }
 
         public void Populate()
