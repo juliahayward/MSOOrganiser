@@ -1,5 +1,6 @@
 ﻿using MSOCore;
 using MSOCore.Models;
+using MSOOrganiser.Dialogs;
 using MSOOrganiser.Events;
 using System;
 using System.Collections.Generic;
@@ -93,6 +94,16 @@ namespace MSOOrganiser
                 EventSelected(this, args);
             }
         }
+
+        private void addLocation_Click(object sender, RoutedEventArgs e)
+        {
+            var dialog = new AddLocationDialog();
+            if (dialog.ShowDialog().Value)
+            {
+                ViewModel.Locations.Add(new OlympiadPanelVm.LocationVm() { Id = 0, Name = dialog.Name });
+                ViewModel.IsDirty = true;
+            }
+        }
     }
 
     public class OlympiadPanelVm : VmBase
@@ -111,10 +122,17 @@ namespace MSOOrganiser
             public string Name { get; set; }
         }
 
+        public class LocationVm
+        {
+            public int Id { get; set; }
+            public string Name { get; set; }
+        }
+
         #region bindable properties
         public ObservableCollection<OlympiadVm> Olympiads { get; set; }
         public string OlympiadId { get; set; }
         public ObservableCollection<EventVm> Events { get; set; }
+        public ObservableCollection<LocationVm> Locations { get; set; }
 
         private bool _IsDirty;
         public bool IsDirty
@@ -360,6 +378,7 @@ namespace MSOOrganiser
         {
             Olympiads = new ObservableCollection<OlympiadVm>();
             Events = new ObservableCollection<EventVm>();
+            Locations = new ObservableCollection<LocationVm>();
             OlympiadId = "0";
         }
 
@@ -383,6 +402,7 @@ namespace MSOOrganiser
                 JnrAge = ""; SnrAge = "";
                 PentaLong = ""; PentaTotal = "";
                 Events.Clear();
+                Locations.Clear();
             }
             else
             {
@@ -405,6 +425,11 @@ namespace MSOOrganiser
                 foreach (var e in o.Events.OrderBy(x => x.Code))
                 {
                     Events.Add(new EventVm() { Id = e.EIN, Code = e.Code, Name = e.Mind_Sport });
+                }
+                Locations.Clear();
+                foreach (var l in o.Locations.OrderBy(x => x.Location1))
+                {
+                    Locations.Add(new LocationVm() { Id = l.Id, Name = l.Location1 });
                 }
             }
             IsDirty = false;
@@ -457,13 +482,21 @@ namespace MSOOrganiser
                 o.PentaTotal = int.Parse(this.PentaTotal);
             }
             context.SaveChanges();
-            // Now update the events. Need to do here to have the reference back to the Olympiad
+            // Now update the events and locations. Need to do here to have the reference back to the Olympiad
             foreach (var existingEvent in o.Events.ToList())
             {
                 if (!Events.Any(x => x.Id == existingEvent.EIN))
                 {
                     o.Events.Remove(existingEvent);
                     context.Events.Remove(existingEvent);
+                }
+            }
+            foreach (var existingLocation in o.Locations.ToList())
+            {
+                if (!Locations.Any(x => x.Id == existingLocation.Id))
+                {
+                    o.Locations.Remove(existingLocation);
+                    context.Locations.Remove(existingLocation);
                 }
             }
             foreach (var evm in Events)
@@ -484,6 +517,14 @@ namespace MSOOrganiser
                     var evt = context.Events.Find(evm.Id);
                     // We're not doing any update here?
                 }
+            }
+            foreach (var loc in Locations)
+            {
+                if (loc.Id == 0)
+                {
+                    o.Locations.Add(new Location() { Location1 = loc.Name, Olympiad_Info = o, YEAR = o.YearOf });
+                }
+                // Not doing updates here
             }
             context.SaveChanges();
 

@@ -17,6 +17,7 @@ namespace MSOCore
         public Olympiad_Info()
         {
             this.Events = new HashSet<Event>();
+            this.Locations = new HashSet<Location>();
         }
     
         public Nullable<int> YearOf { get; set; }
@@ -37,5 +38,6 @@ namespace MSOCore
         public int Id { get; set; }
     
         public virtual ICollection<Event> Events { get; set; }
+        public virtual ICollection<Location> Locations { get; set; }
     }
 }

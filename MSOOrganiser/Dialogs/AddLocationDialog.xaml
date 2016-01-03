@@ -1,0 +1,17 @@
+﻿<Window x:Class="MSOOrganiser.Dialogs.AddLocationDialog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Add Location" Height="150" Width="400">
+    <Grid>
+        <StackPanel Orientation="Vertical">
+            <StackPanel Margin="10" Orientation="Horizontal">
+                <Label>Location:</Label>
+                <TextBox Width="240" Text="{Binding Name, Mode=TwoWay}" Margin="10,0,0,0"></TextBox>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal">
+                <Button Margin="10" Width="150" Click="add_Click">Add</Button>
+                <Button Margin="10" Width="150" Click="cancel_Click">Cancel</Button>
+            </StackPanel>
+        </StackPanel>
+    </Grid>
+</Window>

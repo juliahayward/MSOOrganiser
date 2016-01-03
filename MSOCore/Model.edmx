@@ -42,6 +42,7 @@
       [Information].[SSMA_TimeStamp] AS [SSMA_TimeStamp]
       FROM [dbo].[Information] AS [Information]</DefiningQuery>
           </EntitySet>
+          <EntitySet Name="Location" EntityType="DataModel.Store.Location" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="Medal Points" EntityType="DataModel.Store.Medal Points" store:Type="Tables" store:Schema="dbo" store:Name="Medal Points">
             <DefiningQuery>SELECT 
       [Medal Points].[Order] AS [Order], 
@@ -107,6 +108,10 @@
           <AssociationSet Name="FK__Events__Olympiad__45BE5BA9" Association="DataModel.Store.FK__Events__Olympiad__45BE5BA9">
             <End Role="Olympiad Info" EntitySet="Olympiad Info" />
             <End Role="Events" EntitySet="Events" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Location__Olympi__46B27FE2" Association="DataModel.Store.FK__Location__Olympi__46B27FE2">
+            <End Role="Olympiad Info" EntitySet="Olympiad Info" />
+            <End Role="Location" EntitySet="Location" />
           </AssociationSet>
           <AssociationSet Name="FK_UserLogins_Users" Association="DataModel.Store.FK_UserLogins_Users">
             <End Role="Users" EntitySet="Users" />
@@ -262,6 +267,15 @@
           <Property Name="Year" Type="int" />
           <Property Name="AllYears" Type="bit" />
           <Property Name="SSMA_TimeStamp" Type="timestamp" Nullable="false" StoreGeneratedPattern="Computed" />
+        </EntityType>
+        <EntityType Name="Location">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Location" Type="nvarchar" MaxLength="50" />
+          <Property Name="YEAR" Type="int" />
+          <Property Name="OlympiadId" Type="int" />
+          <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
         </EntityType>
         <!--Errors Found During Generation:
       warning 6002: The table/view 'mso.dbo.Medal Points' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.
@@ -520,6 +534,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK__Location__Olympi__46B27FE2">
+          <End Role="Olympiad Info" Type="DataModel.Store.Olympiad Info" Multiplicity="0..1" />
+          <End Role="Location" Type="DataModel.Store.Location" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Olympiad Info">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Location">
+              <PropertyRef Name="OlympiadId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_UserLogins_Users">
           <End Role="Users" Type="DataModel.Store.Users" Multiplicity="1" />
           <End Role="UserLogins" Type="DataModel.Store.UserLogins" Multiplicity="*" />
@@ -603,6 +629,11 @@
           <AssociationSet Name="FK__Events__Olympiad__45BE5BA9" Association="DataModel.FK__Events__Olympiad__45BE5BA9">
             <End Role="Olympiad_Info" EntitySet="Olympiad_Infoes" />
             <End Role="Event" EntitySet="Events" />
+          </AssociationSet>
+          <EntitySet Name="Locations" EntityType="DataModel.Location" />
+          <AssociationSet Name="FK__Location__Olympi__46B27FE2" Association="DataModel.FK__Location__Olympi__46B27FE2">
+            <End Role="Olympiad_Info" EntitySet="Olympiad_Infoes" />
+            <End Role="Location" EntitySet="Locations" />
           </AssociationSet>
         </EntityContainer>
         <EntityType Name="Badges___Misc">
@@ -805,6 +836,7 @@
           <Property Type="Binary" Name="SSMA_TimeStamp" Nullable="false" MaxLength="8" FixedLength="true" annotation:StoreGeneratedPattern="Computed" />
           <Property Type="Int32" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <NavigationProperty Name="Events" Relationship="DataModel.FK__Events__Olympiad__45BE5BA9" FromRole="Olympiad_Info" ToRole="Event" />
+          <NavigationProperty Name="Locations" Relationship="DataModel.FK__Location__Olympi__46B27FE2" FromRole="Olympiad_Info" ToRole="Location" />
         </EntityType>
         <EntityType Name="Paring">
           <Key>
@@ -1023,6 +1055,28 @@
               <PropertyRef Name="Id" />
             </Principal>
             <Dependent Role="Event">
+              <PropertyRef Name="OlympiadId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="Location">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Type="String" Name="Location1" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Type="Int32" Name="YEAR" />
+          <Property Type="Int32" Name="OlympiadId" />
+          <Property Type="Int32" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <NavigationProperty Name="Olympiad_Info" Relationship="DataModel.FK__Location__Olympi__46B27FE2" FromRole="Location" ToRole="Olympiad_Info" />
+        </EntityType>
+        <Association Name="FK__Location__Olympi__46B27FE2">
+          <End Type="DataModel.Olympiad_Info" Role="Olympiad_Info" Multiplicity="0..1" />
+          <End Type="DataModel.Location" Role="Location" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Olympiad_Info">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Location">
               <PropertyRef Name="OlympiadId" />
             </Dependent>
           </ReferentialConstraint>
@@ -1354,6 +1408,16 @@
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="EIN" ColumnName="EIN" />
                 <ScalarProperty Name="Arbiter_ID" ColumnName="Arbiter ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Locations">
+            <EntityTypeMapping TypeName="DataModel.Location">
+              <MappingFragment StoreEntitySet="Location">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="OlympiadId" ColumnName="OlympiadId" />
+                <ScalarProperty Name="YEAR" ColumnName="YEAR" />
+                <ScalarProperty Name="Location1" ColumnName="Location" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

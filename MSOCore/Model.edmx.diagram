@@ -36,6 +36,8 @@
         <AssociationConnector Association="DataModel.Arbiters_EventsArbiters" />
         <AssociationConnector Association="DataModel.Arbiters_NamesArbiters" />
         <AssociationConnector Association="DataModel.FK__Events__Olympiad__45BE5BA9" />
+        <EntityTypeShape EntityType="DataModel.Location" Width="1.5" PointX="0.5" PointY="8.75" />
+        <AssociationConnector Association="DataModel.FK__Location__Olympi__46B27FE2" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
