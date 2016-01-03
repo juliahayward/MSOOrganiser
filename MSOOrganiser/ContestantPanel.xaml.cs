@@ -843,7 +843,7 @@ private string _Notes;
                 FirstName = dbCon.Firstname;
                 LastName = dbCon.Lastname;
                 Initials = dbCon.Initials;
-                IsMale = dbCon.Male.HasValue ? dbCon.Male.Value : true;
+                IsMale = dbCon.Male;
                 Nationality = dbCon.Nationality;
                 DayPhone = dbCon.DayPhone;
                 EvePhone = dbCon.EvePhone;

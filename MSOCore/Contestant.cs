@@ -26,7 +26,7 @@ namespace MSOCore
         public string Lastname { get; set; }
         public string Firstname { get; set; }
         public string Initials { get; set; }
-        public Nullable<bool> Male { get; set; }
+        public bool Male { get; set; }
         public string Nationality { get; set; }
         public string DayPhone { get; set; }
         public string EvePhone { get; set; }

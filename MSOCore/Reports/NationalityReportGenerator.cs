@@ -35,9 +35,9 @@ namespace MSOCore.Reports
 
             var totals = conts.GroupBy(x => x.Nationality ?? "Other")
                 .ToDictionary(x => x.Key, x => x.Count());
-            var males = conts.Where(x => !x.Male.HasValue || x.Male.Value).GroupBy(x => x.Nationality ?? "Other")
+            var males = conts.Where(x => x.Male).GroupBy(x => x.Nationality ?? "Other")
                 .ToDictionary(x => x.Key, x => x.Count());
-            var females = conts.Where(x => x.Male.HasValue && !x.Male.Value).GroupBy(x => x.Nationality ?? "Other")
+            var females = conts.Where(x => !x.Male).GroupBy(x => x.Nationality ?? "Other")
                 .ToDictionary(x => x.Key, x => x.Count());
             foreach (var key in totals.Keys.OrderBy(x => x))
                 yield return new NationalityVm()

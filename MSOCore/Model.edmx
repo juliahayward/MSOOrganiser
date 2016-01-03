@@ -299,7 +299,7 @@
           <Property Name="Lastname" Type="nvarchar" MaxLength="50" />
           <Property Name="Firstname" Type="nvarchar" MaxLength="50" />
           <Property Name="Initials" Type="nvarchar" MaxLength="10" />
-          <Property Name="Male" Type="bit" />
+          <Property Name="Male" Type="bit" Nullable="false" />
           <Property Name="Nationality" Type="nvarchar" MaxLength="50" />
           <Property Name="DayPhone" Type="nvarchar" MaxLength="50" />
           <Property Name="EvePhone" Type="nvarchar" MaxLength="50" />
@@ -781,7 +781,7 @@
           <Property Type="String" Name="Lastname" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Type="String" Name="Firstname" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Type="String" Name="Initials" MaxLength="10" FixedLength="false" Unicode="true" />
-          <Property Type="Boolean" Name="Male" />
+          <Property Type="Boolean" Name="Male" Nullable="false" />
           <Property Type="String" Name="Nationality" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Type="String" Name="DayPhone" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Type="String" Name="EvePhone" MaxLength="50" FixedLength="false" Unicode="true" />

@@ -210,6 +210,12 @@ namespace MSOOrganiser
             dialog.ShowDialog();
         }
 
+        private void pentamindStandings_Click(object sender, RoutedEventArgs e)
+        {
+            var printer = new PentamindStandingsPrinter();
+            printer.Print();
+        }
+
         
         
 

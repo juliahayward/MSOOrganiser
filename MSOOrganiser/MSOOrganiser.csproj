@@ -127,6 +127,7 @@
     <Compile Include="Reports\DonationPrinter.cs" />
     <Compile Include="Reports\MedalFormsPrinter.cs" />
     <Compile Include="Reports\MedalTablePrinter.cs" />
+    <Compile Include="Reports\PentamindStandingsPrinter.cs" />
     <Compile Include="Reports\PrintContactsReportPrinter.cs" />
     <Compile Include="Reports\PrintEventEntriesReportPrinter.cs" />
     <Compile Include="Reports\PrintEventEntriesSummaryReportPrinter.cs" />
