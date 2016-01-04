@@ -56,5 +56,14 @@ namespace MSOWeb.Controllers
 
             return View(model);
         }
+
+        public ActionResult PentamindStandings()
+        {
+            var generator = new PentamindStandingsGenerator();
+
+            var model = generator.GetStandings();
+
+            return View(model);
+        }
     }
 }

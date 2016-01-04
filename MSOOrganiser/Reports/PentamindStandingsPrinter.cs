@@ -86,7 +86,7 @@ namespace MSOOrganiser.Reports
                 }
 
                 row = new TableRow();
-                row.Cells.Add(new TableCell(new Paragraph(new Run("Top 40 listed. Competitors need 5 events to qualify")) { Margin = new Thickness(2), FontSize = 12, TextAlignment = TextAlignment.Center }) { ColumnSpan = 8 });
+                row.Cells.Add(new TableCell(new Paragraph(new Run("Top 40 listed. Competitors need 5 events to qualify.")) { Margin = new Thickness(2), FontSize = 12, TextAlignment = TextAlignment.Center }) { ColumnSpan = 8 });
                 bodyTable.RowGroups[0].Rows.Add(row);
 
                 doc.Blocks.Add(bodyTable);
