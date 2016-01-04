@@ -93,7 +93,7 @@ namespace MSOOrganiser
         {
             if (dockPanel.Children.Count > 2) dockPanel.Children.RemoveAt(2);
             var panel = new EventPanel();
-            panel.Populate(e.EventCode);
+            panel.Populate(e.EventCode, e.OlympiadId);
             panel.ContestantSelected += panel_ContestantSelected;
             dockPanel.Children.Add(panel);
         }

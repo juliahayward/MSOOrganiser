@@ -17,5 +17,6 @@ namespace MSOCore
         public string Payment_Method1 { get; set; }
         public Nullable<bool> Card { get; set; }
         public byte[] SSMA_TimeStamp { get; set; }
+        public int Id { get; set; }
     }
 }

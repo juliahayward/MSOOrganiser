@@ -91,7 +91,8 @@ namespace MSOOrganiser
             var entrant = ((FrameworkElement)sender).DataContext as ContestantPanelVm.EventVm;
             if (EventSelected != null)
             {
-                var args = new EventEventArgs() { EventCode = entrant.EventCode };
+                var args = new EventEventArgs() { EventCode = entrant.EventCode, 
+                    OlympiadId = int.Parse(ViewModel.CurrentOlympiadId) };
                 EventSelected(this, args);
             }
         }

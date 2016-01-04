@@ -90,7 +90,8 @@ namespace MSOOrganiser
             var evt = ((FrameworkElement)sender).DataContext as OlympiadPanelVm.EventVm;
             if (EventSelected != null)
             {
-                var args = new EventEventArgs() { EventCode = evt.Code };
+                var args = new EventEventArgs() { EventCode = evt.Code, 
+                    OlympiadId = int.Parse(ViewModel.OlympiadId) };
                 EventSelected(this, args);
             }
         }

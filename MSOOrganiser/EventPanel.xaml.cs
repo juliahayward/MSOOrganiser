@@ -30,6 +30,11 @@ namespace MSOOrganiser
             DataContext = new ResultsPanelVm();
         }
 
+        public ResultsPanelVm ViewModel
+        {
+            get { return DataContext as ResultsPanelVm; }
+        }
+
         // A delegate type for hooking up change notifications.
         public delegate void ContestantEventHandler(object sender, ContestantEventArgs e);
 
@@ -37,13 +42,13 @@ namespace MSOOrganiser
 
         public void Populate()
         {
-            ((ResultsPanelVm)DataContext).PopulateDropdown();
+            ViewModel.PopulateDropdown();
         }
 
-        public void Populate(string eventCode)
+        public void Populate(string eventCode, int olympiadId)
         {
-            ((ResultsPanelVm)DataContext).PopulateDropdown(eventCode);
-            ((ResultsPanelVm)DataContext).Populate();
+            ViewModel.PopulateDropdown(eventCode, olympiadId);
+            ViewModel.Populate();
         }
 
         private void cancel_Click(object sender, RoutedEventArgs e)
@@ -58,7 +63,12 @@ namespace MSOOrganiser
 
         private void eventCombo_Changed(object sender, SelectionChangedEventArgs e)
         {
-            ((ResultsPanelVm)DataContext).Populate();
+            ViewModel.Populate();
+        }
+
+        private void olympiadCombo_Changed(object sender, SelectionChangedEventArgs e)
+        {
+            ViewModel.Populate();
         }
 
         private void person_Click(object sender, RoutedEventArgs e)
@@ -73,11 +83,10 @@ namespace MSOOrganiser
 
         private void calculatePenta_Click(object sender, RoutedEventArgs e)
         {
-            var vm = (ResultsPanelVm)DataContext;
             var calculator = new Penta2015Calculator();
             try
             {
-                calculator.Calculate(vm.NumberInTeam, vm.Entrants);
+                calculator.Calculate(ViewModel.NumberInTeam, ViewModel.Entrants);
             }
             catch (Exception ex)
             {
@@ -87,11 +96,10 @@ namespace MSOOrganiser
 
         private void checkRanks_Click(object sender, RoutedEventArgs e)
         {
-            var vm = (ResultsPanelVm)DataContext;
             var checker = new RankChecker();
             try
             {
-                checker.Check(vm.NumberInTeam, vm.Entrants);
+                checker.Check(ViewModel.NumberInTeam, ViewModel.Entrants);
             }
             catch (Exception ex)
             {
@@ -101,11 +109,10 @@ namespace MSOOrganiser
 
         private void calculatePenta10_Click(object sender, RoutedEventArgs e)
         {
-            var vm = (ResultsPanelVm)DataContext;
             var calculator = new Penta2010Calculator();
             try
             {
-                calculator.Calculate(vm.NumberInTeam, vm.Entrants);
+                calculator.Calculate(ViewModel.NumberInTeam, ViewModel.Entrants);
             }
             catch (Exception ex)
             {
@@ -122,6 +129,12 @@ namespace MSOOrganiser
         {
             public string Text { get; set; }
             public string Value { get; set; }
+        }
+
+        public class OlympiadVm
+        {
+            public string Text { get; set; }
+            public int Id { get; set; }
         }
 
         public class TypeVm
@@ -187,6 +200,7 @@ namespace MSOOrganiser
             Sessions = new ObservableCollection<SessionVm>();
             Types = new ObservableCollection<TypeVm>();
             Locations = new ObservableCollection<LocationVm>();
+            Olympiads = new ObservableCollection<OlympiadVm>();
             EventCode = "";
 
             PopulateDropdown();
@@ -200,6 +214,7 @@ namespace MSOOrganiser
         public ObservableCollection<EntrantVm> Entrants { get; set; }
         public ObservableCollection<SessionVm> Sessions { get; set; }
         public ObservableCollection<LocationVm> Locations { get; set; }
+        public ObservableCollection<OlympiadVm> Olympiads { get; set; }
         public int CurrentOlympiadId { get; set; }
         public string EventCode { get; set; }
         public int EventId { get; set; }        // EIN in database
@@ -583,13 +598,23 @@ namespace MSOOrganiser
 
         #endregion
 
-        public void PopulateDropdown(string eventCode = null)
+        public void PopulateDropdown(string eventCode = null, int olympiadId = -1)
         {
             Events.Clear();
             var context = new DataEntities();
-            var currentOlympiad = context.Olympiad_Infoes.OrderByDescending(x => x.StartDate).First();
+
+            Olympiad_Info currentOlympiad;
+            if (olympiadId == -1)
+            {
+                currentOlympiad = context.Olympiad_Infoes.OrderByDescending(x => x.StartDate).First();
+            }
+            else
+            {
+                currentOlympiad = context.Olympiad_Infoes.First(x => x.Id == olympiadId);
+            }
             CurrentOlympiadId = currentOlympiad.Id;
-            foreach (var e in context.Events.Where(x => !x.Code.StartsWith("ZZ") && x.OlympiadId == CurrentOlympiadId)
+
+            foreach (var e in currentOlympiad.Events.Where(x => !x.Code.StartsWith("ZZ"))
                 .OrderBy(x => x.Code))
                 Events.Add(new EventVm { Text = e.Code + " " + e.Mind_Sport, Value = e.Code });
 
@@ -609,16 +634,19 @@ namespace MSOOrganiser
 
             Locations.Clear();
             Locations.Add(new LocationVm() { Value = null, Text = "(no location)" });
-            foreach (var l in currentOlympiad.Locations)
+            foreach (var l in currentOlympiad.Locations.OrderBy(x => x.Location1))
                 Locations.Add(new LocationVm() { Value = l.Location1, Text = l.Location1 });
+
+            Olympiads.Clear();
+            foreach (var o in context.Olympiad_Infoes.OrderByDescending(x => x.StartDate))
+                Olympiads.Add(new OlympiadVm { Text = o.FullTitle(), Id = o.Id });
         }
 
         public void Populate()
         {
             Entrants.Clear();
             if (EventCode == null) return;
-            if (CurrentOlympiadId == null) return;
-
+            
             var context = new DataEntities();
             
             var olympiadId = CurrentOlympiadId;

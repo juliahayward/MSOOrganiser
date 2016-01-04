@@ -17,12 +17,19 @@
             <StackPanel Orientation="Horizontal">
                 <TextBlock FontWeight="Bold" FontSize="16" Margin="10,10,10,10">Event
                 </TextBlock>
-                <ComboBox x:Name="eventCombo" Width="300" Margin="0,10,0,10"
+                <ComboBox Width="300" Margin="0,10,0,10"
                           ItemsSource="{Binding Events}"
                           DisplayMemberPath="Text"
                           SelectedValuePath="Value"
                           SelectedValue="{Binding EventCode}"
                           SelectionChanged="eventCombo_Changed">
+                </ComboBox>
+                <ComboBox Width="300" Margin="10,10,0,10"
+                          ItemsSource="{Binding Olympiads}"
+                          DisplayMemberPath="Text"
+                          SelectedValuePath="Id"
+                          SelectedValue="{Binding CurrentOlympiadId}"
+                          SelectionChanged="olympiadCombo_Changed">
                 </ComboBox>
                 <Button Margin="10,10,10,10" IsEnabled="{Binding IsDirty}" Click="save_Click">Save</Button>
                 <Button Margin="10,10,10,10" IsEnabled="{Binding IsDirty}" Click="cancel_Click">Cancel</Button>
