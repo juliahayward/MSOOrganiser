@@ -30,7 +30,7 @@ namespace MSOOrganiser.Dialogs
             get { return (AddLocationDialogVm)DataContext; }
         }
 
-        public string Name { get { return ViewModel.Name; } }
+        public string LocationName { get { return ViewModel.Name; } }
 
 
         private void add_Click(object sender, RoutedEventArgs e)

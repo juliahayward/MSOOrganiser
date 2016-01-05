@@ -90,8 +90,7 @@ namespace MSOOrganiser
             var evt = ((FrameworkElement)sender).DataContext as OlympiadPanelVm.EventVm;
             if (EventSelected != null)
             {
-                var args = new EventEventArgs() { EventCode = evt.Code, 
-                    OlympiadId = int.Parse(ViewModel.OlympiadId) };
+                var args = new EventEventArgs() { EventCode = evt.Code, OlympiadId = ViewModel.OlympiadId };
                 EventSelected(this, args);
             }
         }
@@ -101,9 +100,15 @@ namespace MSOOrganiser
             var dialog = new AddLocationDialog();
             if (dialog.ShowDialog().Value)
             {
-                ViewModel.Locations.Add(new OlympiadPanelVm.LocationVm() { Id = 0, Name = dialog.Name });
+                ViewModel.Locations.Add(new OlympiadPanelVm.LocationVm() { Id = 0, Name = dialog.LocationName });
                 ViewModel.IsDirty = true;
             }
+        }
+
+        private void addNew_Click(object sender, RoutedEventArgs e)
+        {
+            ViewModel.Olympiads.Insert(0, new OlympiadPanelVm.OlympiadVm { Text = "New Olympiad", Id = 0 });
+            ViewModel.OlympiadId = 0;
         }
     }
 
@@ -113,7 +118,7 @@ namespace MSOOrganiser
         public class OlympiadVm
         {
             public string Text { get; set; }
-            public string Value { get; set; }
+            public int Id { get; set; }
         }
 
         public class EventVm
@@ -131,9 +136,25 @@ namespace MSOOrganiser
 
         #region bindable properties
         public ObservableCollection<OlympiadVm> Olympiads { get; set; }
-        public string OlympiadId { get; set; }
         public ObservableCollection<EventVm> Events { get; set; }
         public ObservableCollection<LocationVm> Locations { get; set; }
+
+        private int _OlympiadId;
+        public int OlympiadId
+        {
+            get
+            {
+                return _OlympiadId;
+            }
+            set
+            {
+                if (_OlympiadId != value)
+                {
+                    _OlympiadId = value;
+                    OnPropertyChanged("OlympiadId");
+                }
+            }
+        }
 
         private bool _IsDirty;
         public bool IsDirty
@@ -148,9 +169,12 @@ namespace MSOOrganiser
                 {
                     _IsDirty = value;
                     OnPropertyChanged("IsDirty");
+                    OnPropertyChanged("IsNotDirty");
                 }
             }
         }
+
+        public bool IsNotDirty { get { return !IsDirty; } }
 
         private string _YearOf;
         public string YearOf 
@@ -380,21 +404,21 @@ namespace MSOOrganiser
             Olympiads = new ObservableCollection<OlympiadVm>();
             Events = new ObservableCollection<EventVm>();
             Locations = new ObservableCollection<LocationVm>();
-            OlympiadId = "0";
         }
 
         public void PopulateDropdown()
         {
             Olympiads.Clear();
             var context = new DataEntities();
-            Olympiads.Add(new OlympiadVm { Text = "New Olympiad", Value = "0" });
             foreach (var o in context.Olympiad_Infoes.OrderByDescending(x => x.StartDate))
-                Olympiads.Add(new OlympiadVm { Text = o.FullTitle(), Value = o.Id.ToString() });
+                Olympiads.Add(new OlympiadVm { Text = o.FullTitle(), Id = o.Id });
+
+            OlympiadId = Olympiads.First().Id;
         }
 
         public void PopulateGame()
         {
-            var id = int.Parse(OlympiadId);
+            var id = OlympiadId;
             if (id == 0)
             {
                 YearOf = "";
@@ -439,7 +463,7 @@ namespace MSOOrganiser
         public void Save()
         {
             var context = new DataEntities();
-            var id = int.Parse(OlympiadId);
+            var id = OlympiadId;
             Olympiad_Info o;
             if (id == 0)
             {
@@ -462,7 +486,8 @@ namespace MSOOrganiser
                 };
                 context.Olympiad_Infoes.Add(o);
                 // So we don't have to do a full refresh of the combo
-                Olympiads.Insert(0, new OlympiadVm() { Text = o.FullTitle(), Value = o.Id.ToString() });
+                Olympiads.RemoveAt(0);
+                Olympiads.Insert(0, new OlympiadVm() { Text = o.FullTitle(), Id = o.Id });
                 id = o.Id;
             }
             else
@@ -530,7 +555,7 @@ namespace MSOOrganiser
             context.SaveChanges();
 
             IsDirty = false;
-            OlympiadId = id.ToString();
+            OlympiadId = id;
         }
     }
 }

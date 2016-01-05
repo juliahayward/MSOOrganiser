@@ -13,10 +13,11 @@
                 <ComboBox x:Name="olympiadsCombo" Width="300" Margin="0,10,0,10"
                           ItemsSource="{Binding Olympiads}"
                           DisplayMemberPath="Text"
-                          SelectedValuePath="Value"
-                          SelectedValue="{Binding OlympiadId}"
+                          SelectedValuePath="Id"
+                          SelectedValue="{Binding OlympiadId, Mode=TwoWay}"
                           SelectionChanged="olympiadCombo_Changed">
                 </ComboBox>
+                <Button Margin="10,10,10,10" IsEnabled="{Binding IsNotDirty}" Click="addNew_Click">Add New</Button>
                 <Button Margin="10,10,10,10" IsEnabled="{Binding IsDirty}" Click="save_Click">Save</Button>
                 <Button Margin="10,10,10,10" IsEnabled="{Binding IsDirty}" Click="cancel_Click">Cancel</Button>
             </StackPanel>

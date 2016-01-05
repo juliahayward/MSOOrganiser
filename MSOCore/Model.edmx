@@ -64,14 +64,7 @@
           </EntitySet>
           <EntitySet Name="Olympiad Info" EntityType="DataModel.Store.Olympiad Info" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="Parings" EntityType="DataModel.Store.Parings" store:Type="Tables" Schema="dbo" />
-          <EntitySet Name="Payment Methods" EntityType="DataModel.Store.Payment Methods" store:Type="Tables" store:Schema="dbo" store:Name="Payment Methods">
-            <DefiningQuery>SELECT 
-      [Payment Methods].[Payment Method] AS [Payment Method], 
-      [Payment Methods].[Card] AS [Card], 
-      [Payment Methods].[SSMA_TimeStamp] AS [SSMA_TimeStamp], 
-      [Payment Methods].[Id] AS [Id]
-      FROM [dbo].[Payment Methods] AS [Payment Methods]</DefiningQuery>
-          </EntitySet>
+          <EntitySet Name="Payment Methods" EntityType="DataModel.Store.Payment Methods" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="Payments" EntityType="DataModel.Store.Payments" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="Resources" EntityType="DataModel.Store.Resources" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="SelectedCategories" EntityType="DataModel.Store.SelectedCategories" store:Type="Tables" Schema="dbo" />
@@ -369,12 +362,8 @@
           <Property Name="BScore" Type="real" />
           <Property Name="SSMA_TimeStamp" Type="timestamp" Nullable="false" StoreGeneratedPattern="Computed" />
         </EntityType>
-        <!--Errors Found During Generation:
-      warning 6002: The table/view 'mso.dbo.Payment Methods' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.
-      -->
         <EntityType Name="Payment Methods">
           <Key>
-            <PropertyRef Name="SSMA_TimeStamp" />
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Payment Method" Type="nvarchar" MaxLength="50" />
@@ -857,7 +846,6 @@
         </EntityType>
         <EntityType Name="Payment_Method">
           <Key>
-            <PropertyRef Name="SSMA_TimeStamp" />
             <PropertyRef Name="Id" />
           </Key>
           <Property Type="String" Name="Payment_Method1" MaxLength="50" FixedLength="false" Unicode="true" />

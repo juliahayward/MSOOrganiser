@@ -1,5 +1,7 @@
-﻿using System;
+﻿using MSOCore;
+using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -47,8 +49,24 @@ namespace MSOOrganiser.Dialogs
 
     public class AddPaymentToContestantVm
     {
+        public class PaymentMethodVm {
+            public string Text { get; set; }
+        }
+
         public decimal Amount { get; set; }
         public string PaymentMethod { get; set; }
         public bool Banked { get; set; }
+
+        public ObservableCollection<PaymentMethodVm> PaymentMethods { get; set; }
+
+        public AddPaymentToContestantVm()
+        {
+            PaymentMethods = new ObservableCollection<PaymentMethodVm>();
+
+            var context = new DataEntities();
+
+            foreach (var p in context.Payment_Methods)
+                PaymentMethods.Add(new PaymentMethodVm() { Text = p.Payment_Method1 });
+        }
     }
 }
