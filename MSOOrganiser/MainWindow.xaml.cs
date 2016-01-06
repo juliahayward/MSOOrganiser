@@ -216,6 +216,18 @@ namespace MSOOrganiser
             printer.Print();
         }
 
+        private void eventIncomeMenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            var printer = new EventIncomeReportPrinter();
+            printer.Print(true);
+        }
+
+        private void nonEventIncomeMenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            var printer = new EventIncomeReportPrinter();
+            printer.Print(false);
+        }
+
         
         
 

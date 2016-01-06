@@ -755,7 +755,7 @@ private string _Notes;
                     Absent = false,
                     EventCode = e.e.Game_Code,
                     EventName = e.g.Mind_Sport,
-                    Fee = e.e.Fee.HasValue ? e.e.Fee.Value : 0,
+                    Fee = e.e.Fee,
                     Medal = e.e.Medal ?? "",
                     Partner = e.e.Partner ?? "",
                     Penta = e.e.Penta_Score.HasValue ? e.e.Penta_Score.Value.ToString() : "",

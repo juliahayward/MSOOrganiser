@@ -16,7 +16,7 @@ namespace MSOCore
                         Comment = null,
                         Date = null,
                         // EntryNumber = id
-                        Fee = null,
+                        Fee = 0m,
                         Game_Code = eventCode,
                         Medal = null,
                         Mind_Sport_ID = contestant.Mind_Sport_ID,

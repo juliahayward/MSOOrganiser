@@ -146,7 +146,7 @@
           <Property Name="Game Code" Type="nvarchar" MaxLength="255" />
           <Property Name="Receipt" Type="bit" />
           <Property Name="Partner" Type="nvarchar" MaxLength="50" />
-          <Property Name="Fee" Type="money" />
+          <Property Name="Fee" Type="money" Nullable="false" />
           <Property Name="Comment" Type="nvarchar" MaxLength="255" />
           <Property Name="Rank" Type="int" />
           <Property Name="Score" Type="nvarchar" MaxLength="50" />
@@ -185,7 +185,7 @@
           </Key>
           <Property Name="EIN" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
           <Property Name="Year" Type="int" />
-          <Property Name="Number" Type="int" />
+          <Property Name="Number" Type="int" Nullable="false" />
           <Property Name="Code" Type="nvarchar" MaxLength="50" />
           <Property Name="Mind Sport" Type="nvarchar" MaxLength="100" />
           <Property Name="Type" Type="nvarchar" MaxLength="50" />
@@ -647,7 +647,7 @@
           <Property Type="String" Name="Game_Code" MaxLength="255" FixedLength="false" Unicode="true" />
           <Property Type="Boolean" Name="Receipt" />
           <Property Type="String" Name="Partner" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Type="Decimal" Name="Fee" Precision="19" Scale="4" />
+          <Property Type="Decimal" Name="Fee" Precision="19" Scale="4" Nullable="false" />
           <Property Type="String" Name="Comment" MaxLength="255" FixedLength="false" Unicode="true" />
           <Property Type="Int32" Name="Rank" />
           <Property Type="String" Name="Score" MaxLength="50" FixedLength="false" Unicode="true" />
@@ -689,7 +689,7 @@
           </Key>
           <Property Type="Int32" Name="EIN" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Type="Int32" Name="Year" />
-          <Property Type="Int32" Name="Number" />
+          <Property Type="Int32" Name="Number" Nullable="false" />
           <Property Type="String" Name="Code" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Type="String" Name="Mind_Sport" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Type="String" Name="Type" MaxLength="50" FixedLength="false" Unicode="true" />

@@ -20,7 +20,7 @@ namespace MSOCore
         public string Game_Code { get; set; }
         public Nullable<bool> Receipt { get; set; }
         public string Partner { get; set; }
-        public Nullable<decimal> Fee { get; set; }
+        public decimal Fee { get; set; }
         public string Comment { get; set; }
         public Nullable<int> Rank { get; set; }
         public string Score { get; set; }

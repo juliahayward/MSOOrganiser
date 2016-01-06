@@ -126,6 +126,9 @@ namespace MSOOrganiser.Reports
 
             foreach (var e in entrants)
             {
+                // Should not happen but occasionally it does
+                if (e.Name == null) continue;
+                
                 var jnr = (e.Name.DateofBirth.HasValue && (e.Name.DateofBirth.Value > juniorDate))
                     ? "JNR" : "";
 

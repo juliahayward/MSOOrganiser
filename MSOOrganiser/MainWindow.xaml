@@ -32,8 +32,8 @@
                     <MenuItem Header="View Location Use" IsEnabled="False"/>
                     <MenuItem Header="Banking" IsEnabled="False"/>
                     <MenuItem Header="Print Donations" Click="donationsMenuItem_Click"/>
-                    <MenuItem Header="Non-Event Income" IsEnabled="False"/>
-                    <MenuItem Header="Event Income" IsEnabled="False"/>
+                    <MenuItem Header="Non-Event Income" Click="nonEventIncomeMenuItem_Click"/>
+                    <MenuItem Header="Event Income" Click="eventIncomeMenuItem_Click"/>
                     <MenuItem Header="View Nationalities" Click="nationalitiesMenuItem_Click" />
                     <MenuItem Header="Print Event Entries" Click="printEventEntriesMenuItem_Click" />
                     <MenuItem Header="Entry Summary" Click="entrySummaryMenuItem_Click"/>
