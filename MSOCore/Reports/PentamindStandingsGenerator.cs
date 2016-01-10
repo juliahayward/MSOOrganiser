@@ -13,6 +13,7 @@ namespace MSOCore.Reports
             public class EventScore 
             {
                 public double Score { get; set; }
+                public string GameCode { get; set; }
                 public string Code { get; set; }
                 public bool IsLongSession { get; set; }
                 public override string ToString()
@@ -73,6 +74,7 @@ namespace MSOCore.Reports
                 standing.Scores = r.Select(x => new PentamindStandingsReportVm.EventScore()
                 {
                     Code = x.e.Game_Code,
+                    GameCode = x.e.Game_Code.Substring(0, 2),
                     Score = (double)x.e.Penta_Score,
                     IsLongSession = longSessionEvents.Contains(x.e.Game_Code)
                 }).ToList();
@@ -86,27 +88,76 @@ namespace MSOCore.Reports
             return vm;
         }
 
+        /// <summary>
+        /// This solution relies on there only ever being two long events required - otherwise
+        /// complexity quickly rises up and kills you! The situation we code around is where either
+        /// the best or second-best long event is beaten by a short event in the same skill.
+        /// </summary>
         public List<PentamindStandingsReportVm.EventScore>
             SelectBestScores(List<PentamindStandingsReportVm.EventScore> allScores, int pentaLong, int pentaTotal)
         {
+            var options = new List<List<PentamindStandingsReportVm.EventScore>>();
+            var plainScores = SelectBestScores1(allScores, pentaLong, pentaTotal, new string[0]);
+            options.Add(plainScores);
+
+            if (pentaLong >= 1)
+            {
+                var bestBigEvent = allScores.Where(x => x.IsLongSession).OrderByDescending(x => x.Score)
+                    .FirstOrDefault();
+                if (bestBigEvent != null)
+                {
+                    options.Add(SelectBestScores1(allScores, pentaLong, pentaTotal, new[] { bestBigEvent.GameCode }));
+                }
+
+                if (pentaLong >= 2 && bestBigEvent != null)
+                {
+                    var secondBest = allScores.Where(x => x.IsLongSession && x.GameCode != bestBigEvent.GameCode)
+                        .OrderByDescending(x => x.Score).FirstOrDefault();
+                    if (secondBest != null)
+                    {
+                        options.Add(SelectBestScores1(allScores, pentaLong, pentaTotal, 
+                            new[] { secondBest.GameCode }));
+                        options.Add(SelectBestScores1(allScores, pentaLong, pentaTotal,
+                            new[] { bestBigEvent.GameCode, secondBest.GameCode }));
+                    }
+                }
+            }
+
+            return options.OrderByDescending(x => x.Count).ThenByDescending(x => x.Sum(l => l.Score)).First();
+        }
+
+        public List<PentamindStandingsReportVm.EventScore>
+            SelectBestScores1(List<PentamindStandingsReportVm.EventScore> allScores, int pentaLong, int pentaTotal,
+                IEnumerable<string> skillsNotToUseOnLongSessions)
+        {
+            List<string> skills = new List<string>();
+            var allScoresClone = new List<PentamindStandingsReportVm.EventScore>();
+            allScoresClone.AddRange(allScores);
+
             var selected = new List<PentamindStandingsReportVm.EventScore>();
             for (int i = 0; i < pentaLong; i++)
             {
-                var best = allScores.Where(x => x.IsLongSession).OrderByDescending(x => x.Score).FirstOrDefault();
+                var best = allScoresClone.Where(x => x.IsLongSession 
+                            && !skills.Contains(x.GameCode)
+                            && !skillsNotToUseOnLongSessions.Contains(x.GameCode))
+                    .OrderByDescending(x => x.Score).FirstOrDefault();
                 if (best != null)
                 {
-                    allScores.Remove(best);
+                    allScoresClone.Remove(best);
                     selected.Add(best);
+                    skills.Add(best.GameCode);
                 }
             }
             var alreadyPicked = selected.Count();
-            for (int i = 0; i < pentaTotal - alreadyPicked; i++)
+            for (int i = 0; i < pentaTotal - pentaLong; i++)
             {
-                var best = allScores.OrderByDescending(x => x.Score).FirstOrDefault();
+                var best = allScoresClone.Where(x => !skills.Contains(x.GameCode))
+                    .OrderByDescending(x => x.Score).FirstOrDefault();
                 if (best != null)
                 {
-                    allScores.Remove(best);
+                    allScoresClone.Remove(best);
                     selected.Add(best);
+                    skills.Add(best.GameCode);
                 }
             }
             return selected.OrderByDescending(x => x.Score).ToList();
