@@ -129,6 +129,7 @@
     <Compile Include="Reports\ContestantMedalsGenerator.cs" />
     <Compile Include="Reports\DonationReportGenerator.cs" />
     <Compile Include="Reports\EventIncomeReportGenerator.cs" />
+    <Compile Include="Reports\GamePlanReportGenerator.cs" />
     <Compile Include="Reports\MedalFormsGenerator.cs" />
     <Compile Include="Reports\MedalTableReportGenerator.cs" />
     <Compile Include="Reports\GameMedalsGenerator.cs" />

@@ -32,7 +32,7 @@ namespace MSOOrganiser
         public MainWindow()
         {
             InitializeComponent();
-
+            /*
             var loginBox = new LoginWindow();
             loginBox.ShowDialog();
             if (loginBox.UserId == 0)
@@ -42,8 +42,10 @@ namespace MSOOrganiser
             }
             LoggedInUserId = loginBox.UserId;
             UserLoginId = loginBox.UserLoginId;
-
-            this.Title += " --- logged in as " + loginBox.UserName;
+            */
+            LoggedInUserId = 1;
+            UserLoginId = 1;
+            this.Title += " --- logged in as ";// +loginBox.UserName;
 
             if (dockPanel.Children.Count > 2) dockPanel.Children.RemoveAt(2);
             var panel = new StartupPanel();
@@ -226,6 +228,12 @@ namespace MSOOrganiser
         {
             var printer = new EventIncomeReportPrinter();
             printer.Print(false);
+        }
+
+        private void gamePlanMenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            var printer = new GamePlanPrinter();
+            printer.Print();
         }
 
         

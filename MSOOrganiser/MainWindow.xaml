@@ -24,7 +24,7 @@
                     <MenuItem Header="View Max Fee / Penta Cards" IsEnabled="False" Click="maxFeePentaCards_Click"/>
                     <MenuItem Header="Bulk Max Fee" IsEnabled="False"/>
                     <MenuItem Header="Contacts" Click="contactsMenuItem_Click"/>
-                    <MenuItem Header="View Game Plan" IsEnabled="False"/>
+                    <MenuItem Header="View Game Plan" Click="gamePlanMenuItem_Click"/>
                     <MenuItem Header="Sign In Sheets" IsEnabled="False"/>
                     <MenuItem Header="Parking Lists" Click="parkingListsMenuItem_Click" />
                     <MenuItem Header="Logistics Report" IsEnabled="False"/>

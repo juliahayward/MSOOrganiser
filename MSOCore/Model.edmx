@@ -21,18 +21,7 @@
           <EntitySet Name="Events" EntityType="DataModel.Store.Events" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="EventType" EntityType="DataModel.Store.EventType" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="Fees" EntityType="DataModel.Store.Fees" store:Type="Tables" Schema="dbo" />
-          <EntitySet Name="Games" EntityType="DataModel.Store.Games" store:Type="Tables" store:Schema="dbo" store:Name="Games">
-            <DefiningQuery>SELECT 
-      [Games].[Code] AS [Code], 
-      [Games].[Mind Sport] AS [Mind Sport], 
-      [Games].[Contacts] AS [Contacts], 
-      [Games].[Equipment] AS [Equipment], 
-      [Games].[Rules] AS [Rules], 
-      [Games].[Logo] AS [Logo], 
-      [Games].[SSMA_TimeStamp] AS [SSMA_TimeStamp], 
-      [Games].[Id] AS [Id]
-      FROM [dbo].[Games] AS [Games]</DefiningQuery>
-          </EntitySet>
+          <EntitySet Name="Games" EntityType="DataModel.Store.Games" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="Information" EntityType="DataModel.Store.Information" store:Type="Tables" store:Schema="dbo" store:Name="Information">
             <DefiningQuery>SELECT 
       [Information].[Mind Sport ID] AS [Mind Sport ID], 
@@ -232,12 +221,8 @@
           <Property Name="Concession" Type="money" />
           <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
         </EntityType>
-        <!--Errors Found During Generation:
-      warning 6002: The table/view 'mso.dbo.Games' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.
-      -->
         <EntityType Name="Games">
           <Key>
-            <PropertyRef Name="SSMA_TimeStamp" />
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Code" Type="nvarchar" MaxLength="2" />
@@ -732,7 +717,6 @@
         </EntityType>
         <EntityType Name="Game">
           <Key>
-            <PropertyRef Name="SSMA_TimeStamp" />
             <PropertyRef Name="Id" />
           </Key>
           <Property Type="String" Name="Code" MaxLength="2" FixedLength="false" Unicode="true" />
