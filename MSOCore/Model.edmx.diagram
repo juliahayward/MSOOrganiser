@@ -11,7 +11,7 @@
         <EntityTypeShape EntityType="DataModel.Event_Sess" Width="1.5" PointX="2.875" PointY="8.75" />
         <EntityTypeShape EntityType="DataModel.Event" Width="1.5" PointX="2.875" PointY="0.5" />
         <EntityTypeShape EntityType="DataModel.EventType" Width="1.5" PointX="9.5" PointY="15.625" />
-        <EntityTypeShape EntityType="DataModel.Game" Width="1.5" PointX="6.875" PointY="8.625" />
+        <EntityTypeShape EntityType="DataModel.Game" Width="1.5" PointX="5.125" PointY="8.75" />
         <EntityTypeShape EntityType="DataModel.Information" Width="1.5" PointX="9.25" PointY="10.75" />
         <EntityTypeShape EntityType="DataModel.Medal_Point" Width="1.5" PointX="11.125" PointY="10.625" />
         <EntityTypeShape EntityType="DataModel.Contestant" Width="1.5" PointX="11.125" PointY="0.5" />
@@ -38,6 +38,7 @@
         <AssociationConnector Association="DataModel.FK__Events__Olympiad__45BE5BA9" />
         <EntityTypeShape EntityType="DataModel.Location" Width="1.5" PointX="0.5" PointY="8.75" />
         <AssociationConnector Association="DataModel.FK__Location__Olympi__46B27FE2" />
+        <AssociationConnector Association="DataModel.FK__Events__GameId__4A8310C6" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

@@ -29,6 +29,7 @@ namespace MSOOrganiser.Reports
 
                 doc.ColumnWidth = 770; // 96ths of an inch
                 doc.FontFamily = new FontFamily("Verdana");
+                var totalPages = results.Games.Count + 1;
 
                 // Top page
 
@@ -39,7 +40,7 @@ namespace MSOOrganiser.Reports
 
                 var trow = new TableRow();
                 trow.Cells.Add(new TableCell(new Paragraph(new Run(todaysDate) { FontSize = 10, Foreground = Brushes.Gray })));
-                trow.Cells.Add(new TableCell(new Paragraph(new Run("Page 1 of 60") { FontSize = 10, Foreground = Brushes.Gray }) { TextAlignment = TextAlignment.Right }));
+                trow.Cells.Add(new TableCell(new Paragraph(new Run("Page 1 of " + totalPages) { FontSize = 10, Foreground = Brushes.Gray }) { TextAlignment = TextAlignment.Right }));
                 headerTable.RowGroups[0].Rows.Add(trow);
                 doc.Blocks.Add(headerTable);
 
@@ -51,6 +52,7 @@ namespace MSOOrganiser.Reports
                 doc.Blocks.Add(new Paragraph(new Run("Game Plan")) { Margin = new Thickness(10), FontSize = 36, FontWeight = FontWeights.Bold, TextAlignment = TextAlignment.Center });
                 // Results page
 
+                int page = 2;
                 foreach (var game in results.Games.OrderBy(x => x.Value.Name))
                 {
                     // a bit of a fiddle
@@ -65,7 +67,7 @@ namespace MSOOrganiser.Reports
                     trow = new TableRow();
                     trow.Cells.Add(new TableCell(new Paragraph(new Run(todaysDate) { FontSize = 10, Foreground = Brushes.Gray })));
                     trow.Cells.Add(new TableCell(new Paragraph(new Run(results.OlympiadName) { FontSize = 10, Foreground = Brushes.Gray }) { TextAlignment = TextAlignment.Center }));
-                    trow.Cells.Add(new TableCell(new Paragraph(new Run("Page 2 of 60") { FontSize = 10, Foreground = Brushes.Gray }) { TextAlignment = TextAlignment.Right }));
+                    trow.Cells.Add(new TableCell(new Paragraph(new Run("Page " + page++ + " of " + totalPages) { FontSize = 10, Foreground = Brushes.Gray }) { TextAlignment = TextAlignment.Right }));
                     headerTable.RowGroups[0].Rows.Add(trow);
                     doc.Blocks.Add(headerTable);
 
@@ -102,65 +104,73 @@ namespace MSOOrganiser.Reports
                     detailsTable2.RowGroups[0].Rows.Add(trow);
                     doc.Blocks.Add(detailsTable2);
 
-                    doc.Blocks.Add(MinorHorizontalRule());
+                    foreach (var evt in results.Events.Where(x => x.GameId == game.Value.Id).OrderBy(x => x.SequenceNumber))
+                    {
+                        doc.Blocks.Add(MinorHorizontalRule());
 
-                    headerTable = new Table() { CellSpacing = 0, BreakPageBefore = true };
-                    headerTable.Columns.Add(new TableColumn() { Width = new GridLength(120) });
-                    headerTable.Columns.Add(new TableColumn() { Width = new GridLength(530) });
-                    headerTable.Columns.Add(new TableColumn() { Width = new GridLength(120) });
-                    headerTable.RowGroups.Add(new TableRowGroup());
+                        headerTable = new Table() { CellSpacing = 0 };
+                        headerTable.Columns.Add(new TableColumn() { Width = new GridLength(120) });
+                        headerTable.Columns.Add(new TableColumn() { Width = new GridLength(530) });
+                        headerTable.Columns.Add(new TableColumn() { Width = new GridLength(120) });
+                        headerTable.RowGroups.Add(new TableRowGroup());
 
-                    trow = new TableRow();
-                    trow.Cells.Add(new TableCell(new Paragraph(new Run("42") { FontSize = 18 })));
-                    trow.Cells.Add(new TableCell(new Paragraph(new Run("Gackgammon Olympiad Chapionship") { FontSize = 18 }) { TextAlignment = TextAlignment.Center }));
-                    trow.Cells.Add(new TableCell(new Paragraph(new Run("GGOC") { FontSize = 18 }) { TextAlignment = TextAlignment.Right }));
-                    headerTable.RowGroups[0].Rows.Add(trow);
-                    doc.Blocks.Add(headerTable);
+                        trow = new TableRow();
+                        trow.Cells.Add(new TableCell(new Paragraph(new Run(evt.SequenceNumberStr) { FontSize = 18 })));
+                        trow.Cells.Add(new TableCell(new Paragraph(new Run(evt.Name) { FontSize = 18 }) { TextAlignment = TextAlignment.Center }));
+                        trow.Cells.Add(new TableCell(new Paragraph(new Run(evt.Code) { FontSize = 18 }) { TextAlignment = TextAlignment.Right }));
+                        headerTable.RowGroups[0].Rows.Add(trow);
+                        doc.Blocks.Add(headerTable);
 
-                    doc.Blocks.Add(MinorHorizontalRule());
+                        doc.Blocks.Add(MinorHorizontalRule());
 
-                    headerTable = new Table() { CellSpacing = 0 };
-                    headerTable.Columns.Add(new TableColumn() { Width = new GridLength(100) });
-                    headerTable.Columns.Add(new TableColumn() { Width = new GridLength(285) });
-                    headerTable.Columns.Add(new TableColumn() { Width = new GridLength(100) });
-                    headerTable.Columns.Add(new TableColumn() { Width = new GridLength(285) });
-                    headerTable.RowGroups.Add(new TableRowGroup());
+                        headerTable = new Table() { CellSpacing = 0 };
+                        headerTable.Columns.Add(new TableColumn() { Width = new GridLength(100) });
+                        headerTable.Columns.Add(new TableColumn() { Width = new GridLength(285) });
+                        headerTable.Columns.Add(new TableColumn() { Width = new GridLength(100) });
+                        headerTable.Columns.Add(new TableColumn() { Width = new GridLength(285) });
+                        headerTable.RowGroups.Add(new TableRowGroup());
 
-                    trow = new TableRow();
-                    trow.Cells.Add(new TableCell(new Paragraph(new Run("Dates:") { FontSize = 12, FontWeight = FontWeights.Bold })));
-                    trow.Cells.Add(new TableCell(new Paragraph(new Run("Fri 22/8 14:00-17:45") { FontSize = 12 })));
-                    trow.Cells.Add(new TableCell(new Paragraph(new Run("In Pentamind:") { FontSize = 12, FontWeight = FontWeights.Bold })));
-                    trow.Cells.Add(new TableCell(new Paragraph(new Run("Yes") { FontSize = 12 })));
-                    headerTable.RowGroups[0].Rows.Add(trow);
-                    trow = new TableRow();
-                    trow.Cells.Add(new TableCell(new Paragraph(new Run("Entry Fee:") { FontSize = 12, FontWeight = FontWeights.Bold })));
-                    trow.Cells.Add(new TableCell(new Paragraph(new Run("H - £10 (£9)") { FontSize = 12 })));
-                    trow.Cells.Add(new TableCell(new Paragraph(new Run("# in Team:") { FontSize = 12, FontWeight = FontWeights.Bold })));
-                    trow.Cells.Add(new TableCell(new Paragraph(new Run("1") { FontSize = 12 })));
-                    headerTable.RowGroups[0].Rows.Add(trow);
-                    trow = new TableRow();
-                    trow.Cells.Add(new TableCell(new Paragraph(new Run("Location:") { FontSize = 12, FontWeight = FontWeights.Bold })));
-                    trow.Cells.Add(new TableCell(new Paragraph(new Run("Upstairs Room 1") { FontSize = 12 })));
-                    trow.Cells.Add(new TableCell(new Paragraph(new Run("Expected:") { FontSize = 12, FontWeight = FontWeights.Bold })));
-                    trow.Cells.Add(new TableCell(new Paragraph(new Run("10") { FontSize = 12 })));
-                    headerTable.RowGroups[0].Rows.Add(trow);
-                    trow = new TableRow();
-                    trow.Cells.Add(new TableCell(new Paragraph(new Run("# Sessions:") { FontSize = 12, FontWeight = FontWeights.Bold })));
-                    trow.Cells.Add(new TableCell(new Paragraph(new Run("1") { FontSize = 12 })));
-                    trow.Cells.Add(new TableCell(new Paragraph(new Run("Prize Fund:") { FontSize = 12, FontWeight = FontWeights.Bold })));
-                    trow.Cells.Add(new TableCell(new Paragraph(new Run("£100") { FontSize = 12 })));
-                    headerTable.RowGroups[0].Rows.Add(trow);
-                    trow = new TableRow();
-                    trow.Cells.Add(new TableCell(new Paragraph(new Run("Arbiter(s):") { FontSize = 12, FontWeight = FontWeights.Bold })));
-                    trow.Cells.Add(new TableCell(new Paragraph(new Run("Tarquin Emo Death") { FontSize = 12 })));
-                    trow.Cells.Add(new TableCell(new Paragraph(new Run("Prize Giving:") { FontSize = 12, FontWeight = FontWeights.Bold })));
-                    trow.Cells.Add(new TableCell(new Paragraph(new Run("£") { FontSize = 12 })));
-                    headerTable.RowGroups[0].Rows.Add(trow);
-                    trow = new TableRow();
-                    trow.Cells.Add(new TableCell(new Paragraph(new Run("Notes:") { FontSize = 12, FontWeight = FontWeights.Bold })));
-                    trow.Cells.Add(new TableCell(new Paragraph(new Run("Flibble") { FontSize = 12 })) { ColumnSpan = 3 });
-                    headerTable.RowGroups[0].Rows.Add(trow);
-                    doc.Blocks.Add(headerTable);
+                        trow = new TableRow();
+                        trow.Cells.Add(new TableCell(new Paragraph(new Run("Dates:") { FontSize = 12, FontWeight = FontWeights.Bold })));
+                        var dateString = evt.Start.ToString("dd MMM hh:mm") + "-" + evt.End.ToString("hh:mm");
+                        trow.Cells.Add(new TableCell(new Paragraph(new Run(dateString) { FontSize = 12 })));
+                        trow.Cells.Add(new TableCell(new Paragraph(new Run("In Pentamind:") { FontSize = 12, FontWeight = FontWeights.Bold })));
+                        trow.Cells.Add(new TableCell(new Paragraph(new Run(evt.InPentamindStr) { FontSize = 12 })));
+                        headerTable.RowGroups[0].Rows.Add(trow);
+                        trow = new TableRow();
+                        trow.Cells.Add(new TableCell(new Paragraph(new Run("Entry Fee:") { FontSize = 12, FontWeight = FontWeights.Bold })));
+                        var feeString = evt.Code + " - " + results.Fees[evt.EntryFeeCode].Fee.ToString("C")
+                            + " (" + results.Fees[evt.EntryFeeCode].Concession.ToString("C") + ")";
+                        trow.Cells.Add(new TableCell(new Paragraph(new Run(feeString) { FontSize = 12 })));
+                        trow.Cells.Add(new TableCell(new Paragraph(new Run("# in Team:") { FontSize = 12, FontWeight = FontWeights.Bold })));
+                        trow.Cells.Add(new TableCell(new Paragraph(new Run(evt.NumberInTeamStr) { FontSize = 12 })));
+                        headerTable.RowGroups[0].Rows.Add(trow);
+                        trow = new TableRow();
+                        trow.Cells.Add(new TableCell(new Paragraph(new Run("Location:") { FontSize = 12, FontWeight = FontWeights.Bold })));
+                        trow.Cells.Add(new TableCell(new Paragraph(new Run(evt.Location) { FontSize = 12 })));
+                        trow.Cells.Add(new TableCell(new Paragraph(new Run("Expected:") { FontSize = 12, FontWeight = FontWeights.Bold })));
+                        trow.Cells.Add(new TableCell(new Paragraph(new Run(evt.Participants.ToString()) { FontSize = 12 })));
+                        headerTable.RowGroups[0].Rows.Add(trow);
+                        trow = new TableRow();
+                        trow.Cells.Add(new TableCell(new Paragraph(new Run("# Sessions:") { FontSize = 12, FontWeight = FontWeights.Bold })));
+                        trow.Cells.Add(new TableCell(new Paragraph(new Run(evt.NumSessions.ToString()) { FontSize = 12 })));
+                        trow.Cells.Add(new TableCell(new Paragraph(new Run("Prize Fund:") { FontSize = 12, FontWeight = FontWeights.Bold })));
+                        var prizeFund = (evt.PrizeFund > 0) ? evt.PrizeFund.ToString("C") : "";
+                        trow.Cells.Add(new TableCell(new Paragraph(new Run(prizeFund) { FontSize = 12 })));
+                        headerTable.RowGroups[0].Rows.Add(trow);
+                        trow = new TableRow();
+                        trow.Cells.Add(new TableCell(new Paragraph(new Run("Arbiter(s):") { FontSize = 12, FontWeight = FontWeights.Bold })));
+                        var arbiters = string.Join(", ", evt.Arbiters);
+                        trow.Cells.Add(new TableCell(new Paragraph(new Run(arbiters) { FontSize = 12 })));
+                        trow.Cells.Add(new TableCell(new Paragraph(new Run("Prize Giving:") { FontSize = 12, FontWeight = FontWeights.Bold })));
+                        trow.Cells.Add(new TableCell(new Paragraph(new Run(evt.PrizeGiving) { FontSize = 12 })));
+                        headerTable.RowGroups[0].Rows.Add(trow);
+                        trow = new TableRow();
+                        trow.Cells.Add(new TableCell(new Paragraph(new Run("Notes:") { FontSize = 12, FontWeight = FontWeights.Bold })));
+                        trow.Cells.Add(new TableCell(new Paragraph(new Run(evt.Notes) { FontSize = 12 })) { ColumnSpan = 3 });
+                        headerTable.RowGroups[0].Rows.Add(trow);
+                        doc.Blocks.Add(headerTable);
+                    }
 
                 }
 

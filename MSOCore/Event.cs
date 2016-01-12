@@ -49,9 +49,11 @@ namespace MSOCore
         public Nullable<bool> Display { get; set; }
         public byte[] SSMA_TimeStamp { get; set; }
         public Nullable<int> OlympiadId { get; set; }
+        public Nullable<int> GameId { get; set; }
     
         public virtual ICollection<Event_Sess> Event_Sess { get; set; }
         public virtual ICollection<Arbiter> Arbiters { get; set; }
         public virtual Olympiad_Info Olympiad_Info { get; set; }
+        public virtual Game Game { get; set; }
     }
 }

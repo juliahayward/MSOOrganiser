@@ -529,11 +529,14 @@ namespace MSOOrganiser
             {
                 if (evm.Id == 0)
                 {
+                    var game = context.Games.First(x => evm.Code.StartsWith(x.Code));
+
                     var evt = new Event()
                     {
                         Mind_Sport = evm.Name,
                         Code = evm.Code,
                         Olympiad_Info = o,
+                        Game = game
                         // TODO more stuff here
                     };
                     o.Events.Add(evt);

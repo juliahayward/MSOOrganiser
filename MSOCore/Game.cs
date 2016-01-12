@@ -14,6 +14,11 @@ namespace MSOCore
     
     public partial class Game
     {
+        public Game()
+        {
+            this.Events = new HashSet<Event>();
+        }
+    
         public string Code { get; set; }
         public string Mind_Sport { get; set; }
         public string Contacts { get; set; }
@@ -22,5 +27,7 @@ namespace MSOCore
         public byte[] Logo { get; set; }
         public byte[] SSMA_TimeStamp { get; set; }
         public int Id { get; set; }
+    
+        public virtual ICollection<Event> Events { get; set; }
     }
 }
