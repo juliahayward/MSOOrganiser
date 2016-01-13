@@ -8,7 +8,7 @@ namespace MSOCore
 {
     public partial class Entrant
     {
-        public static Entrant NewEntrant(string eventCode, string olympiadId, Contestant contestant)
+        public static Entrant NewEntrant(int evtId, string evtCode, string olympiadId, Contestant contestant)
         {
             return new Entrant()
                     {
@@ -17,7 +17,8 @@ namespace MSOCore
                         Date = null,
                         // EntryNumber = id
                         Fee = 0m,
-                        Game_Code = eventCode,
+                        EventId = evtId,
+                        Game_Code = evtCode,
                         Medal = null,
                         Mind_Sport_ID = contestant.Mind_Sport_ID,
                         MustUse = null,

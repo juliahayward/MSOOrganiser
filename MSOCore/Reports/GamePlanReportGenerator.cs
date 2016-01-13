@@ -88,12 +88,9 @@ namespace MSOCore.Reports
                     Location = e.Location,
                     NumSessions = e.Event_Sess.Count(),
                     Start = new DateTime(2000, 1, 1),
-                    End = new DateTime(2000, 1, 1)
+                    End = new DateTime(2000, 1, 1),
+                    Participants = e.Entrants.Count()
                 }).ToList();
-
-            foreach (var evt in vm.Events)
-                evt.Participants = context.Entrants.Count(x => x.OlympiadId == currentOlympiad.Id
-                    && x.Game_Code == evt.Code);
 
             vm.Games = context.Games
                 .Where(x => x.Events.Any(e => e.OlympiadId == currentOlympiad.Id && e.Number > 0))

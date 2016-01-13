@@ -900,7 +900,7 @@ private string _Notes;
                 context.Contestants.Add(dbCon);
                 id = dbCon.Mind_Sport_ID;
                 dbCon.Entrants = this.Events
-                    .Select(x => Entrant.NewEntrant(x.EventCode, CurrentOlympiadId, dbCon))
+                    .Select(x => Entrant.NewEntrant(x.EventId, x.EventCode, CurrentOlympiadId, dbCon))
                     .ToList();
                 dbCon.Payments = this.Payments
                     .Select(x => new Payment() { Payment1 = x.Amount, Payment_Method = x.Method, PaymentNumber = 0, Banked = x.Banked ? 1 : 0, MindSportsID = dbCon.Mind_Sport_ID, OlympiadId = int.Parse(CurrentOlympiadId), Name = dbCon})
@@ -939,7 +939,7 @@ private string _Notes;
                 // Add new events
                 foreach (var e in this.Events.Where(x => !dbCon.Entrants.Any(ee => ee.Game_Code == x.EventCode)))
                 {
-                 dbCon.Entrants.Add(Entrant.NewEntrant(e.EventCode, CurrentOlympiadId, dbCon));
+                 dbCon.Entrants.Add(Entrant.NewEntrant(e.EventId, e.EventCode, CurrentOlympiadId, dbCon));
                 }
                 // Remove unwanted events
                 foreach (var de in dbCon.Entrants.Where(x => !this.Events.Any(ee => ee.EventCode == x.Game_Code)).ToList())

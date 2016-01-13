@@ -88,6 +88,10 @@
             <End Role="Session" EntitySet="Session" />
             <End Role="Event Sess" EntitySet="Event Sess" />
           </AssociationSet>
+          <AssociationSet Name="FK__Entrants__EventI__4B7734FF" Association="DataModel.Store.FK__Entrants__EventI__4B7734FF">
+            <End Role="Events" EntitySet="Events" />
+            <End Role="Entrants" EntitySet="Entrants" />
+          </AssociationSet>
           <AssociationSet Name="FK__Events__GameId__4A8310C6" Association="DataModel.Store.FK__Events__GameId__4A8310C6">
             <End Role="Games" EntitySet="Games" />
             <End Role="Events" EntitySet="Events" />
@@ -152,6 +156,7 @@
           <Property Name="PIN" Type="int" />
           <Property Name="SSMA_TimeStamp" Type="timestamp" Nullable="false" StoreGeneratedPattern="Computed" />
           <Property Name="OlympiadId" Type="int" />
+          <Property Name="EventId" Type="int" />
         </EntityType>
         <EntityType Name="Event Resources">
           <Key>
@@ -504,6 +509,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK__Entrants__EventI__4B7734FF">
+          <End Role="Events" Type="DataModel.Store.Events" Multiplicity="0..1" />
+          <End Role="Entrants" Type="DataModel.Store.Entrants" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Events">
+              <PropertyRef Name="EIN" />
+            </Principal>
+            <Dependent Role="Entrants">
+              <PropertyRef Name="EventId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK__Events__GameId__4A8310C6">
           <End Role="Games" Type="DataModel.Store.Games" Multiplicity="0..1" />
           <End Role="Events" Type="DataModel.Store.Events" Multiplicity="*" />
@@ -633,6 +650,10 @@
             <End Role="Game" EntitySet="Games" />
             <End Role="Event" EntitySet="Events" />
           </AssociationSet>
+          <AssociationSet Name="FK__Entrants__EventI__4B7734FF" Association="DataModel.FK__Entrants__EventI__4B7734FF">
+            <End Role="Event" EntitySet="Events" />
+            <End Role="Entrant" EntitySet="Entrants" />
+          </AssociationSet>
         </EntityContainer>
         <EntityType Name="Badges___Misc">
           <Key>
@@ -667,6 +688,8 @@
           <Property Type="Binary" Name="SSMA_TimeStamp" Nullable="false" MaxLength="8" FixedLength="true" annotation:StoreGeneratedPattern="Computed" />
           <NavigationProperty Name="Name" Relationship="DataModel.Entrants_NamesEntrants" FromRole="Entrant" ToRole="Name" />
           <Property Type="Int32" Name="OlympiadId" />
+          <Property Type="Int32" Name="EventId" />
+          <NavigationProperty Name="Event" Relationship="DataModel.FK__Entrants__EventI__4B7734FF" FromRole="Entrant" ToRole="Event" />
         </EntityType>
         <EntityType Name="Event_Resource">
           <Key>
@@ -727,6 +750,7 @@
           <NavigationProperty Name="Olympiad_Info" Relationship="DataModel.FK__Events__Olympiad__45BE5BA9" FromRole="Event" ToRole="Olympiad_Info" />
           <Property Type="Int32" Name="GameId" />
           <NavigationProperty Name="Game" Relationship="DataModel.FK__Events__GameId__4A8310C6" FromRole="Event" ToRole="Game" />
+          <NavigationProperty Name="Entrants" Relationship="DataModel.FK__Entrants__EventI__4B7734FF" FromRole="Event" ToRole="Entrant" />
         </EntityType>
         <EntityType Name="EventType">
           <Key>
@@ -1094,6 +1118,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK__Entrants__EventI__4B7734FF">
+          <End Type="DataModel.Event" Role="Event" Multiplicity="0..1" />
+          <End Type="DataModel.Entrant" Role="Entrant" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Event">
+              <PropertyRef Name="EIN" />
+            </Principal>
+            <Dependent Role="Entrant">
+              <PropertyRef Name="EventId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -1113,6 +1149,7 @@
           <EntitySetMapping Name="Entrants">
             <EntityTypeMapping TypeName="DataModel.Entrant">
               <MappingFragment StoreEntitySet="Entrants">
+                <ScalarProperty Name="EventId" ColumnName="EventId" />
                 <ScalarProperty Name="OlympiadId" ColumnName="OlympiadId" />
                 <ScalarProperty Name="SSMA_TimeStamp" ColumnName="SSMA_TimeStamp" />
                 <ScalarProperty Name="PIN" ColumnName="PIN" />

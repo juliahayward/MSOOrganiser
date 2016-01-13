@@ -33,7 +33,9 @@ namespace MSOCore
         public Nullable<int> PIN { get; set; }
         public byte[] SSMA_TimeStamp { get; set; }
         public Nullable<int> OlympiadId { get; set; }
+        public Nullable<int> EventId { get; set; }
     
         public virtual Contestant Name { get; set; }
+        public virtual Event Event { get; set; }
     }
 }
