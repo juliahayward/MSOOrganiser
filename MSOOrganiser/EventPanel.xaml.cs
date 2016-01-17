@@ -17,6 +17,7 @@ using MSOCore;
 using MSOCore.Calculators;
 using MSOCore.Models;
 using MSOOrganiser.Dialogs;
+using MSOCore.Extensions;
 
 namespace MSOOrganiser
 {
@@ -135,7 +136,7 @@ namespace MSOOrganiser
                         {
                             ViewModel.Sessions.Add(new ResultsPanelVm.SessionVm() 
                                 { SessionCode = s.Code, Date = dialog.SelectedDate, Id = 0, 
-                                    Start = s.Start.ToString(@"hh\:mm"), End = s.End.ToString(@"hh\:mm"),
+                                    Start = s.Start.ToStandardString(), End = s.End.ToStandardString(),
                                 Worth = s.Worth});
                             ViewModel.IsDirty = true;
                         }

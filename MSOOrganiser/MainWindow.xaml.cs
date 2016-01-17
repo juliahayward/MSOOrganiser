@@ -236,8 +236,10 @@ namespace MSOOrganiser
             printer.Print();
         }
 
-        
-        
-
+        private void locationUse_Click(object sender, RoutedEventArgs e)
+        {
+            var printer = new LocationUsePrinter();
+            printer.Print();
+        }
     }
 }

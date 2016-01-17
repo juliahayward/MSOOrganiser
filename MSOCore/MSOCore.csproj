@@ -78,6 +78,7 @@
       <DependentUpon>Model.tt</DependentUpon>
     </Compile>
     <Compile Include="Extensions\StringExtensions.cs" />
+    <Compile Include="Extensions\TimeSpanExtensions.cs" />
     <Compile Include="Fee.cs">
       <DependentUpon>Model.tt</DependentUpon>
     </Compile>
@@ -130,6 +131,7 @@
     <Compile Include="Reports\DonationReportGenerator.cs" />
     <Compile Include="Reports\EventIncomeReportGenerator.cs" />
     <Compile Include="Reports\GamePlanReportGenerator.cs" />
+    <Compile Include="Reports\LocationUseReportGenerator.cs" />
     <Compile Include="Reports\MedalFormsGenerator.cs" />
     <Compile Include="Reports\MedalTableReportGenerator.cs" />
     <Compile Include="Reports\GameMedalsGenerator.cs" />

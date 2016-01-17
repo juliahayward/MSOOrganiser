@@ -130,6 +130,7 @@
     <Compile Include="Reports\DonationPrinter.cs" />
     <Compile Include="Reports\EventIncomeReportPrinter.cs" />
     <Compile Include="Reports\GamePlanPrinter.cs" />
+    <Compile Include="Reports\LocationUsePrinter.cs" />
     <Compile Include="Reports\MedalFormsPrinter.cs" />
     <Compile Include="Reports\MedalTablePrinter.cs" />
     <Compile Include="Reports\PentamindStandingsPrinter.cs" />
