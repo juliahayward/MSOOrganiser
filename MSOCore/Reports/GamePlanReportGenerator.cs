@@ -30,8 +30,20 @@ namespace MSOCore.Reports
                 public string Location { get; set; }
                 public int Participants { get; set; }
                 public int NumSessions { get; set; }
-                public DateTime Start { get; set; }
-                public DateTime End { get; set; }
+                public DateTime? StartDate { get; set; }
+                public TimeSpan? StartTime { get; set; }
+                public DateTime? EndDate { get; set; }
+                public TimeSpan? EndTime { get; set; }
+
+                public string DatesString
+                {
+                    get
+                    {
+                        if (!StartDate.HasValue) return "";
+                        return StartDate.Value.Add(StartTime.Value).ToString("dd MMM HH:mm")
+                            + "-" + EndDate.Value.Add(EndTime.Value).ToString("HH:mm");
+                    }
+                }
             }
 
             public class GameVm
@@ -70,12 +82,12 @@ namespace MSOCore.Reports
                 Concession = x.Concession.HasValue ? x.Concession.Value : 0m
             });
 
-            vm.Events = context.Events.Where(x => x.OlympiadId == currentOlympiad.Id)
+            var query = context.Events.Where(x => x.OlympiadId == currentOlympiad.Id)
                 .Where(x => x.Number > 0)
-                .Select(e => new GamePlanReportVm.EventVm 
-                { 
+                .Select(e => new GamePlanReportVm.EventVm
+                {
                     Code = e.Code,
-                    Name = e.Mind_Sport, 
+                    Name = e.Mind_Sport,
                     SequenceNumber = e.Number,
                     GameId = e.Game.Id,
                     InPentamind = e.Pentamind.HasValue && e.Pentamind.Value,
@@ -87,10 +99,14 @@ namespace MSOCore.Reports
                     EntryFeeCode = e.Entry_Fee,
                     Location = e.Location,
                     NumSessions = e.Event_Sess.Count(),
-                    Start = new DateTime(2000, 1, 1),
-                    End = new DateTime(2000, 1, 1),
+                    StartDate = e.Event_Sess.Min(sess => sess.Date.Value),
+                    StartTime = e.Event_Sess.Min(sess => sess.Session1.StartTime.Value),
+                    EndDate = e.Event_Sess.Max(sess => sess.Date.Value),
+                    EndTime = e.Event_Sess.Max(sess => sess.Session1.FinishTime.Value),
                     Participants = e.Entrants.Count()
-                }).ToList();
+                });
+                
+            vm.Events = query.ToList();
 
             vm.Games = context.Games
                 .Where(x => x.Events.Any(e => e.OlympiadId == currentOlympiad.Id && e.Number > 0))

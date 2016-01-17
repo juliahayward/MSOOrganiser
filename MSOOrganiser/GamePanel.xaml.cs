@@ -215,25 +215,25 @@ namespace MSOOrganiser
             var id = int.Parse(GameId);
             if (id == 0)
             {
-                //var dbGame = new Game()
-                //{
-                //    Name = this.Name,
-                //    Code = this.Code,
-                //    Contacts = this.Contacts,
-                //    Equipment = this.Equipment,
-                //    Rules = this.Rules
-                //};
-                //context.Games.Add(dbGame);
-                //id = dbGame.Id;
+                var dbGame = new Game()
+                {
+                    Mind_Sport = this.Name,
+                    Code = this.Code,
+                    Contacts = this.Contacts,
+                    Equipment = this.Equipment,
+                    Rules = this.Rules
+                };
+                context.Games.Add(dbGame);
+                id = dbGame.Id;
             }
             else
             {
-                //var dbGame = context.Games.FirstOrDefault(x => x.Id == id);
-                //dbGame.Name = Name;
-                //dbGame.Code = Code;
-                //dbGame.Contacts = Contacts;
-                //dbGame.Equipment = Equipment;
-                //dbGame.Rules = Rules;
+                var dbGame = context.Games.FirstOrDefault(x => x.Id == id);
+                dbGame.Mind_Sport = Name;
+                dbGame.Code = Code;
+                dbGame.Contacts = Contacts;
+                dbGame.Equipment = Equipment;
+                dbGame.Rules = Rules;
             }
             context.SaveChanges();
             IsDirty = false;

@@ -113,7 +113,6 @@ namespace MSOOrganiser
                         var existingEvent = ViewModel.Events.FirstOrDefault(x => x.EventCode == evt.Code);
                         if (existingEvent == null)
                         {
-                            MessageBox.Show("Adding " + evt.Code);
                             ViewModel.Events.Add(new ContestantPanelVm.EventVm() { EventCode = evt.Code, EventName = evt.Name, EventId = 0 });
                             ViewModel.IsDirty = true;
                         }
@@ -123,7 +122,6 @@ namespace MSOOrganiser
                         var eventToDelete = ViewModel.Events.FirstOrDefault(x => x.EventCode == evt.Code);
                         if (eventToDelete != null)
                         {
-                            MessageBox.Show("Removing" + evt.Code);
                             ViewModel.Events.Remove(eventToDelete);
                             ViewModel.IsDirty = true;
                         }

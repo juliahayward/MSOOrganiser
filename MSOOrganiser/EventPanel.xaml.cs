@@ -16,6 +16,7 @@ using System.Windows.Shapes;
 using MSOCore;
 using MSOCore.Calculators;
 using MSOCore.Models;
+using MSOOrganiser.Dialogs;
 
 namespace MSOOrganiser
 {
@@ -119,6 +120,39 @@ namespace MSOOrganiser
                 MessageBox.Show(ex.Message);
             }
         }
+
+        private void addSession_Click(object sender, RoutedEventArgs e)
+        {
+            var dialog = new AddSessionToEventDialog(ViewModel.Sessions.Select(x => x.SessionCode));
+            if (dialog.ShowDialog().Value)
+            {
+                foreach (var s in dialog.SelectedSessions)
+                {
+                    if (s.IsSelected)
+                    {
+                        var existingSession = ViewModel.Sessions.FirstOrDefault(x => x.SessionCode == s.Code);
+                        if (existingSession == null)
+                        {
+                            ViewModel.Sessions.Add(new ResultsPanelVm.SessionVm() 
+                                { SessionCode = s.Code, Date = dialog.SelectedDate, Id = 0, 
+                                    Start = s.Start.ToString(@"hh\:mm"), End = s.End.ToString(@"hh\:mm"),
+                                Worth = s.Worth});
+                            ViewModel.IsDirty = true;
+                        }
+                    }
+                    else
+                    {
+                        var sessionToDelete = ViewModel.Sessions.FirstOrDefault(x => x.SessionCode == s.Code);
+                        if (sessionToDelete != null)
+                        {
+                            ViewModel.Sessions.Remove(sessionToDelete);
+                            ViewModel.IsDirty = true;
+                        }
+                    }
+                }
+                ViewModel.NumSessions = ViewModel.Sessions.Sum(x => x.Worth);
+            }
+        }
     }
 
 
@@ -161,6 +195,9 @@ namespace MSOOrganiser
             public int Id { get; set; }
             public DateTime Date { get; set; }
             public string SessionCode { get; set; }
+            public string Start { get; set; }
+            public string End { get; set; }
+            public int Worth { get; set; }
         }
 
         // for table
@@ -681,7 +718,10 @@ namespace MSOOrganiser
 
             Sessions.Clear();
             foreach (var s in evt.Event_Sess)
-                Sessions.Add(new SessionVm() { Id = s.INDEX, Date = s.Date.Value, SessionCode = s.Session });
+                Sessions.Add(new SessionVm() { Id = s.INDEX, Date = s.Date.Value, SessionCode = s.Session,
+                    Start = s.Session1.StartTime.Value.ToString(@"hh\:mm"),
+                    End = s.Session1.FinishTime.Value.ToString(@"hh\:mm"),
+                Worth = (int)s.Session1.Worth.Value });
 
             var entrants = context.Entrants
                 .Join(context.Contestants, e => e.Mind_Sport_ID, c => c.Mind_Sport_ID, (e, c) => new { e = e, c = c })

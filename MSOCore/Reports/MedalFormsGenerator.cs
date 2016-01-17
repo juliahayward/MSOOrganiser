@@ -22,8 +22,6 @@ namespace MSOCore.Reports
                 public string Title { get; set; }
                 public string Code { get; set; }
                 public string SequenceNumber { get; set; }
-                public string StartDate { get; set; }
-                public string EndDate { get; set; }
                 public string Location { get; set; }
                 public string PrizeGiving { get; set; }
                 public string Prize1 { get; set; }
@@ -32,6 +30,29 @@ namespace MSOCore.Reports
                 public string JuniorPrizes { get; set; }
                 public string OtherPrizes { get; set; }
                 public IEnumerable<EntrantVm> Entrants { get; set; }
+
+                public DateTime? StartDate { get; set; }
+                public TimeSpan? StartTime { get; set; }
+                public DateTime? EndDate { get; set; }
+                public TimeSpan? EndTime { get; set; }
+
+                public string StartDateString
+                {
+                    get
+                    {
+                        if (!StartDate.HasValue) return "";
+                        return StartDate.Value.Add(StartTime.Value).ToString("dd MMM yyyy HH:mm");
+                    }
+                }
+
+                public string EndDateString
+                {
+                    get
+                    {
+                        if (!EndDate.HasValue) return "";
+                        return EndDate.Value.Add(EndTime.Value).ToString("dd MMM yyyy HH:mm");
+                    }
+                }
             }
 
             public string OlympiadTitle { get; set; }
@@ -71,8 +92,10 @@ namespace MSOCore.Reports
                         Title = x.Mind_Sport,
                         Code = x.Code,
                         SequenceNumber = x.Number.ToString(),
-                        StartDate = x.Event_Sess.Select(s => s.Date.Value).Min().ToString("dd MMM yyyy hh:mm"),
-                        EndDate = x.Event_Sess.Select(s => s.Date.Value).Max().ToString("dd MMM yyyy hh:mm"),
+                        StartDate = x.Event_Sess.Min(s => s.Date.Value),
+                        EndDate = x.Event_Sess.Max(s => s.Date.Value),
+                        StartTime = x.Event_Sess.Min(s => s.Session1.StartTime),
+                        EndTime = x.Event_Sess.Max(s => s.Session1.FinishTime),
                         Location = x.Location,
                         PrizeGiving = x.Prize_Giving,
                         Prize1 = x.C1st_Prize == null ? "" : "£" + x.C1st_Prize,

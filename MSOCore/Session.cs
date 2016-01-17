@@ -21,10 +21,11 @@ namespace MSOCore
     
         public string Session1 { get; set; }
         public string Description { get; set; }
-        public Nullable<System.DateTime> Start { get; set; }
-        public Nullable<System.DateTime> Finish { get; set; }
         public Nullable<float> Worth { get; set; }
         public byte[] SSMA_TimeStamp { get; set; }
+        public Nullable<System.TimeSpan> StartTime { get; set; }
+        public Nullable<System.TimeSpan> FinishTime { get; set; }
+        public bool IsActive { get; set; }
     
         public virtual ICollection<Event_Sess> Event_Sess { get; set; }
     }

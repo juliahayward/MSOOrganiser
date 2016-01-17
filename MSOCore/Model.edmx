@@ -92,6 +92,10 @@
             <End Role="Events" EntitySet="Events" />
             <End Role="Entrants" EntitySet="Entrants" />
           </AssociationSet>
+          <AssociationSet Name="FK__Event Ses__Sessi__4C6B5938" Association="DataModel.Store.FK__Event Ses__Sessi__4C6B5938">
+            <End Role="Session" EntitySet="Session" />
+            <End Role="Event Sess" EntitySet="Event Sess" />
+          </AssociationSet>
           <AssociationSet Name="FK__Events__GameId__4A8310C6" Association="DataModel.Store.FK__Events__GameId__4A8310C6">
             <End Role="Games" EntitySet="Games" />
             <End Role="Events" EntitySet="Events" />
@@ -417,10 +421,11 @@
           </Key>
           <Property Name="Session" Type="nvarchar" Nullable="false" MaxLength="50" />
           <Property Name="Description" Type="nvarchar" MaxLength="50" />
-          <Property Name="Start" Type="datetime2" Precision="0" />
-          <Property Name="Finish" Type="datetime2" Precision="0" />
           <Property Name="Worth" Type="real" />
           <Property Name="SSMA_TimeStamp" Type="timestamp" Nullable="false" StoreGeneratedPattern="Computed" />
+          <Property Name="StartTime" Type="time" />
+          <Property Name="FinishTime" Type="time" />
+          <Property Name="IsActive" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="UserLogins">
           <Key>
@@ -518,6 +523,18 @@
             </Principal>
             <Dependent Role="Entrants">
               <PropertyRef Name="EventId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Event Ses__Sessi__4C6B5938">
+          <End Role="Session" Type="DataModel.Store.Session" Multiplicity="0..1" />
+          <End Role="Event Sess" Type="DataModel.Store.Event Sess" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Session">
+              <PropertyRef Name="Session" />
+            </Principal>
+            <Dependent Role="Event Sess">
+              <PropertyRef Name="Session" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -934,11 +951,12 @@
           </Key>
           <Property Type="String" Name="Session1" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Type="String" Name="Description" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Type="DateTime" Name="Start" Precision="0" />
-          <Property Type="DateTime" Name="Finish" Precision="0" />
           <Property Type="Single" Name="Worth" />
           <Property Type="Binary" Name="SSMA_TimeStamp" Nullable="false" MaxLength="8" FixedLength="true" annotation:StoreGeneratedPattern="Computed" />
           <NavigationProperty Name="Event_Sess" Relationship="DataModel.Event_Sess_SessionEvent_Sess" FromRole="Session" ToRole="Event_Sess" />
+          <Property Type="Time" Name="StartTime" Precision="7" />
+          <Property Type="Time" Name="FinishTime" Precision="7" />
+          <Property Type="Boolean" Name="IsActive" Nullable="false" />
         </EntityType>
         <EntityType Name="User">
           <Key>
@@ -1414,10 +1432,11 @@
           <EntitySetMapping Name="Sessions">
             <EntityTypeMapping TypeName="DataModel.Session">
               <MappingFragment StoreEntitySet="Session">
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="FinishTime" ColumnName="FinishTime" />
+                <ScalarProperty Name="StartTime" ColumnName="StartTime" />
                 <ScalarProperty Name="SSMA_TimeStamp" ColumnName="SSMA_TimeStamp" />
                 <ScalarProperty Name="Worth" ColumnName="Worth" />
-                <ScalarProperty Name="Finish" ColumnName="Finish" />
-                <ScalarProperty Name="Start" ColumnName="Start" />
                 <ScalarProperty Name="Description" ColumnName="Description" />
                 <ScalarProperty Name="Session1" ColumnName="Session" />
               </MappingFragment>

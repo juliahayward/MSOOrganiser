@@ -102,6 +102,9 @@
     <Compile Include="Dialogs\AddPaymentToContestantDialog.xaml.cs">
       <DependentUpon>AddPaymentToContestantDialog.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Dialogs\AddSessionToEventDialog.xaml.cs">
+      <DependentUpon>AddSessionToEventDialog.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Dialogs\ErrorDialog.xaml.cs">
       <DependentUpon>ErrorDialog.xaml</DependentUpon>
     </Compile>
@@ -161,6 +164,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Dialogs\AddPaymentToContestantDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Dialogs\AddSessionToEventDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

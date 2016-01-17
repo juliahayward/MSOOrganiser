@@ -1,0 +1,28 @@
+﻿<Window x:Class="MSOOrganiser.Dialogs.AddSessionToEventDialog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Select Sessions for Event" Height="300" Width="300">
+    <Grid>
+        <StackPanel Orientation="Vertical">
+            <ComboBox Width="150" Margin="0,10,0,0"
+                          ItemsSource="{Binding Dates}"
+                          DisplayMemberPath="Text"
+                          SelectedValuePath="Date"
+                          SelectedValue="{Binding SelectedDate}">
+            </ComboBox>
+            <StackPanel Margin="10" Orientation="Horizontal">
+                <ListBox ItemsSource="{Binding Sessions}" Height="160" Width="262" ScrollViewer.VerticalScrollBarVisibility="Auto">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <CheckBox Content="{Binding Text}" Tag="{Binding Code}" IsChecked="{Binding IsSelected, Mode=TwoWay}" IsEnabled="{Binding IsEnabled}" Margin="0,5,0,0"/>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal">
+                <Button Margin="10" Width="120" Click="ok_Click">OK</Button>
+                <Button Margin="10" Width="120" Click="cancel_Click">Cancel</Button>
+            </StackPanel>
+        </StackPanel>
+    </Grid>
+</Window>

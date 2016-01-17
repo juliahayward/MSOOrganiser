@@ -121,18 +121,22 @@
                         <TextBox Text="{Binding Notes, Mode=TwoWay}" Width="600"></TextBox>
                     </StackPanel>
                     <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
-                        <Label Width="100">Sessions:</Label>
-                        <xctk:IntegerUpDown Value="{Binding NumSessions, Mode=TwoWay}" Minimum="0" Maximum="10" Width="40"></xctk:IntegerUpDown>
-                    </StackPanel>
+                        <Label Width="100" VerticalAlignment="Top">Sessions:</Label>
+                        <xctk:IntegerUpDown Value="{Binding NumSessions, Mode=TwoWay}" IsEnabled="False" Minimum="0" Maximum="10" Width="40" VerticalAlignment="Top"></xctk:IntegerUpDown>
+                        <Button VerticalAlignment="Top" Click="addSession_Click">Add Session</Button>
                     <DataGrid CanUserAddRows="False" CanUserResizeColumns="True" CanUserSortColumns="True"
                               AutoGenerateColumns="False"
-                            Width="920" Margin="0,20,0,0" IsReadOnly="True" ItemsSource="{Binding Sessions}">
+                            Width="420" IsReadOnly="True" ItemsSource="{Binding Sessions}">
                         <DataGrid.Columns>
                             <DataGridTextColumn Header="Id" Binding="{Binding Id}" />
+                            <DataGridTextColumn Header="Session Code" Width="60" Binding="{Binding SessionCode}"/>
                             <DataGridTextColumn Header="Date" Binding="{Binding Date, Converter={StaticResource ShowDateOnlyConverter}}" />
-                            <DataGridTextColumn Header="Session Code" Width="48" Binding="{Binding SessionCode}"/>
+                            <DataGridTextColumn Header="Start" Binding="{Binding Start}" />
+                            <DataGridTextColumn Header="End" Binding="{Binding End}" />
+                            <DataGridTextColumn Header="Worth" Binding="{Binding Worth}" />
                         </DataGrid.Columns>
                     </DataGrid>
+                    </StackPanel>
                 </StackPanel>
             </TabItem>
             <TabItem Header="Results">

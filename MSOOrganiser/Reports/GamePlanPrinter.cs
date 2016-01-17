@@ -132,14 +132,13 @@ namespace MSOOrganiser.Reports
 
                         trow = new TableRow();
                         trow.Cells.Add(new TableCell(new Paragraph(new Run("Dates:") { FontSize = 12, FontWeight = FontWeights.Bold })));
-                        var dateString = evt.Start.ToString("dd MMM hh:mm") + "-" + evt.End.ToString("hh:mm");
-                        trow.Cells.Add(new TableCell(new Paragraph(new Run(dateString) { FontSize = 12 })));
+                        trow.Cells.Add(new TableCell(new Paragraph(new Run(evt.DatesString) { FontSize = 12 })));
                         trow.Cells.Add(new TableCell(new Paragraph(new Run("In Pentamind:") { FontSize = 12, FontWeight = FontWeights.Bold })));
                         trow.Cells.Add(new TableCell(new Paragraph(new Run(evt.InPentamindStr) { FontSize = 12 })));
                         headerTable.RowGroups[0].Rows.Add(trow);
                         trow = new TableRow();
                         trow.Cells.Add(new TableCell(new Paragraph(new Run("Entry Fee:") { FontSize = 12, FontWeight = FontWeights.Bold })));
-                        var feeString = evt.Code + " - " + results.Fees[evt.EntryFeeCode].Fee.ToString("C")
+                        var feeString = evt.EntryFeeCode + " - " + results.Fees[evt.EntryFeeCode].Fee.ToString("C")
                             + " (" + results.Fees[evt.EntryFeeCode].Concession.ToString("C") + ")";
                         trow.Cells.Add(new TableCell(new Paragraph(new Run(feeString) { FontSize = 12 })));
                         trow.Cells.Add(new TableCell(new Paragraph(new Run("# in Team:") { FontSize = 12, FontWeight = FontWeights.Bold })));

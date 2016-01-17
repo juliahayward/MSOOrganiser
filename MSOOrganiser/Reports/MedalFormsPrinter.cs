@@ -24,16 +24,8 @@ namespace MSOOrganiser.Reports
 
         public void Print(DateTime fromDate, DateTime toDate)
         {
-            DateTime dt = DateTime.Now;
-
-
             var rg = new MedalFormsGenerator();
             var results = rg.GetItemsForLatest(fromDate, toDate);
-
-
-            DateTime dt2 = DateTime.Now;
-            System.Windows.MessageBox.Show(dt2.Subtract(dt).TotalMilliseconds.ToString());
-
 
             Print(results);
         }
@@ -88,13 +80,13 @@ namespace MSOOrganiser.Reports
 
                     trow = new TableRow();
                     trow.Cells.Add(new TableCell());
-                    trow.Cells.Add(new TableCell(new Paragraph(new Run("Start: " + evt.StartDate)) { Margin = new Thickness(2), FontSize = 10 }));
+                    trow.Cells.Add(new TableCell(new Paragraph(new Run("Start: " + evt.StartDateString)) { Margin = new Thickness(2), FontSize = 10 }));
                     trow.Cells.Add(new TableCell(new Paragraph(new Run("Location: " + evt.Location)) { Margin = new Thickness(2), FontSize = 10 }));
                     metaTable.RowGroups[0].Rows.Add(trow);
 
                     trow = new TableRow();
                     trow.Cells.Add(new TableCell());
-                    trow.Cells.Add(new TableCell(new Paragraph(new Run("End: " + evt.EndDate)) { Margin = new Thickness(2), FontSize = 10 }));
+                    trow.Cells.Add(new TableCell(new Paragraph(new Run("End: " + evt.EndDateString)) { Margin = new Thickness(2), FontSize = 10 }));
                     trow.Cells.Add(new TableCell(new Paragraph(new Run("Prize Giving: " + evt.PrizeGiving)) { Margin = new Thickness(2), FontSize = 10 }));
                     metaTable.RowGroups[0].Rows.Add(trow);
 

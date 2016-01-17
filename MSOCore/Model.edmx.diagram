@@ -40,16 +40,10 @@
         <AssociationConnector Association="DataModel.FK__Location__Olympi__46B27FE2" />
         <AssociationConnector Association="DataModel.FK__Events__GameId__4A8310C6" ManuallyRouted="true" >
           <ConnectorPoint PointX="5.875" PointY="8.75" />
-          <ConnectorPoint PointX="5.875" PointY="7.6212607155509078" />
-          <ConnectorPoint PointX="5.6252084058988832" PointY="7.6212607155509078" />
-          <ConnectorPoint PointX="5.6252084058988832" PointY="4.80483811197916" />
-          <ConnectorPoint PointX="4.375" PointY="4.80483811197916" />
+          <ConnectorPoint PointX="5.875" PointY="3.8828488214658443" />
+          <ConnectorPoint PointX="4.375" PointY="3.8828488214658443" />
         </AssociationConnector>
-        <AssociationConnector Association="DataModel.FK__Entrants__EventI__4B7734FF" ManuallyRouted="true" >
-          <ConnectorPoint PointX="4.375" PointY="6.2130494137650345" />
-          <ConnectorPoint PointX="5.54187507256555" PointY="6.2130494137650336" />
-          <ConnectorPoint PointX="5.7085417392322162" PointY="6.2130494137650345" />
-          <ConnectorPoint PointX="6.875" PointY="6.2130494137650345" />
+        <AssociationConnector Association="DataModel.FK__Entrants__EventI__4B7734FF" ManuallyRouted="false" >
         </AssociationConnector>
       </Diagram>
     </edmx:Diagrams>
