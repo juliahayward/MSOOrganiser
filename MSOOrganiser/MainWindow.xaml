@@ -38,7 +38,7 @@
                     <MenuItem Header="Print Event Entries" Click="printEventEntriesMenuItem_Click" />
                     <MenuItem Header="Entry Summary" Click="entrySummaryMenuItem_Click"/>
                     <MenuItem Header="Print a Day's Report" IsEnabled="False"/>
-                    <MenuItem Header="Print Today's Events" IsEnabled="False"/>
+                    <MenuItem Header="Print Today's Events" Click="printTodaysEventsMenuItem_Click"/>
                     <MenuItem Header="Print Today's Event By Game" IsEnabled="False"/>
                     <MenuItem Header="View Medal Forms" Click="medalFormsMenuItem_Click" />
                     <MenuItem Header="Print Named Pairing Card for an Event" IsEnabled="False"/>

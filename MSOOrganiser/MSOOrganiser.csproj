@@ -140,10 +140,12 @@
     <Compile Include="EventPanel.xaml.cs">
       <DependentUpon>EventPanel.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Reports\TodaysEventsPrinter.cs" />
     <Compile Include="StartupPanel.xaml.cs">
       <DependentUpon>StartupPanel.xaml</DependentUpon>
     </Compile>
     <Compile Include="StatusEventArgs.cs" />
+    <Compile Include="UIUtilities\SpinnyCursor.cs" />
     <Page Include="AddEventToOlympiadWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
