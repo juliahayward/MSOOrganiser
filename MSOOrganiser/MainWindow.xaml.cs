@@ -18,6 +18,7 @@ using System.Data;
 using MSOCore;
 using MSOOrganiser.Reports;
 using MSOOrganiser.Dialogs;
+using MSOOrganiser.UIUtilities;
 
 namespace MSOOrganiser
 {
@@ -32,7 +33,7 @@ namespace MSOOrganiser
         public MainWindow()
         {
             InitializeComponent();
-            /*
+
             var loginBox = new LoginWindow();
             loginBox.ShowDialog();
             if (loginBox.UserId == 0)
@@ -42,10 +43,10 @@ namespace MSOOrganiser
             }
             LoggedInUserId = loginBox.UserId;
             UserLoginId = loginBox.UserLoginId;
-            */
+            
             LoggedInUserId = 1;
             UserLoginId = 1;
-            this.Title += " --- logged in as ";// +loginBox.UserName;
+            this.Title += " --- logged in as " +loginBox.UserName;
 
             if (dockPanel.Children.Count > 2) dockPanel.Children.RemoveAt(2);
             var panel = new StartupPanel();
@@ -239,6 +240,12 @@ namespace MSOOrganiser
         private void locationUse_Click(object sender, RoutedEventArgs e)
         {
             var printer = new LocationUsePrinter();
+            printer.Print();
+        }
+
+        private void printTodaysEventsMenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            var printer = new TodaysEventsPrinter();
             printer.Print();
         }
     }
