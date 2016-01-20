@@ -1,4 +1,6 @@
-﻿using MSOOrganiser.UIUtilities;
+﻿using MSOCore.Reports;
+using MSOCore.Extensions;
+using MSOOrganiser.UIUtilities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,10 +16,10 @@ namespace MSOOrganiser.Reports
 {
     public class TodaysEventsPrinter
     {
-        public void Print(/* TODO date parameter */)
+        public void Print(DateTime date)
         {
-           // var rg = new PentamindStandingsGenerator();
-           // var results = rg.GetStandings();
+            var rg = new TodaysEventsGenerator();
+            var results = rg.GetEvents(date);
 
             PrintDialog dlg = new PrintDialog();
             if ((bool)dlg.ShowDialog().GetValueOrDefault())
@@ -42,8 +44,8 @@ namespace MSOOrganiser.Reports
                     var trow = new TableRow();
                     trow.Cells.Add(new TableCell(new Paragraph(new InlineUIContainer(image)) { Margin = new Thickness(10), FontSize = 10, FontWeight = FontWeights.Bold }));
                     var cell = new TableCell();
-                    cell.Blocks.Add(new Paragraph(new Run("18th Mind Sports Olympiad (2014)")) { Margin = new Thickness(10), FontSize = 24, FontWeight = FontWeights.Bold, TextAlignment = TextAlignment.Center });
-                    cell.Blocks.Add(new Paragraph(new Run("Friday's Events")) { Margin = new Thickness(2), FontSize = 48, FontWeight = FontWeights.Bold, TextAlignment = TextAlignment.Center });
+                    cell.Blocks.Add(new Paragraph(new Run(results.OlympiadName)) { Margin = new Thickness(10), FontSize = 24, FontWeight = FontWeights.Bold, TextAlignment = TextAlignment.Center });
+                    cell.Blocks.Add(new Paragraph(new Run(date.DayOfWeek.ToString() + "'s Events")) { Margin = new Thickness(2), FontSize = 48, FontWeight = FontWeights.Bold, TextAlignment = TextAlignment.Center });
                     trow.Cells.Add(cell);
                     headerTable.RowGroups[0].Rows.Add(trow);
 
@@ -57,19 +59,33 @@ namespace MSOOrganiser.Reports
                     bodyTable.Columns.Add(new TableColumn() { Width = new GridLength(100) });
                     bodyTable.RowGroups.Add(new TableRowGroup());
 
-                    var row = new TableRow();
-                    row.Cells.Add(new TableCell(new Paragraph(new Run("A")) { Margin = new Thickness(8), FontSize = 36, FontWeight = FontWeights.Bold }));
-                    var bodyCell = new TableCell();
-                    bodyCell.Blocks.Add(new Paragraph(new Run("Abalone Olympiad Championship")) { Margin = new Thickness(2), FontSize = 18, FontWeight = FontWeights.Bold });
-                    bodyCell.Blocks.Add(new Paragraph(new Run("        -> Learning Room 2")) { Margin = new Thickness(2), FontSize = 12 });
-                    row.Cells.Add(bodyCell);
-                    bodyCell = new TableCell();
-                    bodyCell.Blocks.Add(new Paragraph(new Run(" ")) { Margin = new Thickness(2), FontSize = 18 });
-                    bodyCell.Blocks.Add(new Paragraph(new Run("10.15 - 13.00")) { Margin = new Thickness(2), FontSize = 12 });
-                    row.Cells.Add(bodyCell);
+                    foreach (var initial in results.Sessions.Keys.OrderBy(x => x))
+                    {
 
-                    bodyTable.RowGroups[0].Rows.Add(row);
+                        var row = new TableRow();
+                        row.Cells.Add(new TableCell(new Paragraph(new Run(initial)) { Margin = new Thickness(8), FontSize = 36, FontWeight = FontWeights.Bold }));
+                        var bodyCell1 = new TableCell();
+                        var bodyCell2 = new TableCell();
 
+                        var lastName = "";
+                        foreach (var session in results.Sessions[initial])
+                        {
+                            if (session.EventName != lastName)
+                            {
+                                bodyCell1.Blocks.Add(new Paragraph(new Run(session.EventName)) { Margin = new Thickness(2), FontSize = 18, FontWeight = FontWeights.Bold, TextAlignment = TextAlignment.Left });
+                                bodyCell2.Blocks.Add(new Paragraph(new Run(" ")) { Margin = new Thickness(2), FontSize = 18 });
+                                lastName = session.EventName;
+                            }
+                            bodyCell1.Blocks.Add(new Paragraph(new Run("        -> " + session.Location)) { Margin = new Thickness(2), FontSize = 12 });
+                            bodyCell2.Blocks.Add(new Paragraph(new Run(session.Start.ToStandardString() + " - " + session.End.ToStandardString())) { Margin = new Thickness(2), FontSize = 12 });
+                        }
+                        row.Cells.Add(bodyCell1);
+                        row.Cells.Add(bodyCell2);
+
+                        bodyTable.RowGroups[0].Rows.Add(row);
+
+                    }
+                 
                     doc.Blocks.Add(bodyTable);
 
                     DocumentPaginator paginator = ((IDocumentPaginatorSource)doc).DocumentPaginator;

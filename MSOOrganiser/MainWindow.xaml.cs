@@ -245,8 +245,12 @@ namespace MSOOrganiser
 
         private void printTodaysEventsMenuItem_Click(object sender, RoutedEventArgs e)
         {
-            var printer = new TodaysEventsPrinter();
-            printer.Print();
+            var dlg = new SelectDateDialog();
+            if (dlg.ShowDialog().Value)
+            {
+                var printer = new TodaysEventsPrinter();
+                printer.Print(dlg.SelectedDate);
+            }
         }
     }
 }

@@ -1,0 +1,19 @@
+﻿<Window x:Class="MSOOrganiser.Dialogs.SelectDateDialog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Select Date" Height="132" Width="300">
+    <Grid>
+        <StackPanel Orientation="Vertical">
+            <ComboBox Width="150" Margin="0,10,0,0"
+                          ItemsSource="{Binding Dates}"
+                          DisplayMemberPath="Text"
+                          SelectedValuePath="Date"
+                          SelectedValue="{Binding SelectedDate}">
+            </ComboBox>
+            <StackPanel Orientation="Horizontal">
+                <Button Margin="10" Width="120" Click="ok_Click">OK</Button>
+                <Button Margin="10" Width="120" Click="cancel_Click">Cancel</Button>
+            </StackPanel>
+        </StackPanel>
+    </Grid>
+</Window>

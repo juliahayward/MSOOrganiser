@@ -138,6 +138,7 @@
     <Compile Include="Reports\IndividualMedalTableGenerator.cs" />
     <Compile Include="Reports\NationalityReportGenerator.cs" />
     <Compile Include="Reports\PentamindStandingsGenerator.cs" />
+    <Compile Include="Reports\TodaysEventsGenerator.cs" />
     <Compile Include="Reports\YearMedalsGenerator.cs" />
     <Compile Include="Resource.cs">
       <DependentUpon>Model.tt</DependentUpon>
