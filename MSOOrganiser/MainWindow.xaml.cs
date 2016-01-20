@@ -252,5 +252,19 @@ namespace MSOOrganiser
                 printer.Print(dlg.SelectedDate);
             }
         }
+
+        private void daysReportMenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            // This is a combination of existing reports
+            //  1. 
+            //  2. Todays Events (for the right day)
+            //  3.
+            //  4.
+            //  5.  Traffic report (for the right day)
+            //  6.  Income summary
+            //  7.  
+            //  8.  Medal table
+            //  9.
+        }
     }
 }
