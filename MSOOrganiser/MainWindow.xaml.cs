@@ -262,9 +262,15 @@ namespace MSOOrganiser
             //  4.
             //  5.  Traffic report (for the right day)
             //  6.  Income summary
-            //  7.  
+            //  7.  Entry Summary
             //  8.  Medal table
-            //  9.
+            //  9.  Event Entries (for the right day)
+        }
+
+        private void trafficReport_Click(object sender, RoutedEventArgs e)
+        {
+            // looks like Location Use. Main Menu item does for whole plympiad, 
+            // DayReport just for a day
         }
     }
 }

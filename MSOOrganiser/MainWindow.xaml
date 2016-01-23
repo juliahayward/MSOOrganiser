@@ -28,7 +28,7 @@
                     <MenuItem Header="Sign In Sheets" IsEnabled="False"/>
                     <MenuItem Header="Parking Lists" Click="parkingListsMenuItem_Click" />
                     <MenuItem Header="Logistics Report" IsEnabled="False"/>
-                    <MenuItem Header="View Traffic Report" IsEnabled="False"/>
+                    <MenuItem Header="View Traffic Report" Click="trafficReport_Click"/>
                     <MenuItem Header="View Location Use" Click="locationUse_Click"/>
                     <MenuItem Header="Banking" IsEnabled="False"/>
                     <MenuItem Header="Print Donations" Click="donationsMenuItem_Click"/>
