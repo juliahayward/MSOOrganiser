@@ -269,8 +269,8 @@ namespace MSOOrganiser
 
         private void trafficReport_Click(object sender, RoutedEventArgs e)
         {
-            // looks like Location Use. Main Menu item does for whole plympiad, 
-            // DayReport just for a day
+            var printer = new TrafficReportPrinter();
+            printer.Print();
         }
     }
 }
