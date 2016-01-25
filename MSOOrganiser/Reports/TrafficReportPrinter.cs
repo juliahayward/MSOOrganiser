@@ -1,4 +1,5 @@
 ﻿using MSOCore.Reports;
+using MSOOrganiser.DocumentExtensions;
 using MSOOrganiser.UIUtilities;
 using System;
 using System.Collections.Generic;
@@ -100,8 +101,8 @@ namespace MSOOrganiser.Reports
                                 var peopleInLocation = eventsInLocation.Sum(x => x.NumParticipants);
 
                                 var row = new TableRow();
-                                row.Cells.Add(new TableCell(new Paragraph(new Run(location.Name)) { Margin = new Thickness(2), FontSize = 10 }));
-                                row.Cells.Add(new TableCell(new Paragraph(new Run(peopleInLocation.ToString())) { Margin = new Thickness(2), FontSize = 10, TextAlignment = TextAlignment.Right }));
+                                row.Cells.Add(new StdTableCell(location.Name));
+                                row.Cells.Add(new StdRightTableCell(peopleInLocation.ToString()));
                                 table.RowGroups[0].Rows.Add(row);
                                 total += peopleInLocation;
                             }
@@ -240,15 +241,15 @@ namespace MSOOrganiser.Reports
                                         x.Date == date && x.Session == session.Code);
 
                                 var row = new TableRow();
-                                row.Cells.Add(new TableCell(new Paragraph(new Run(location.Name)) { Margin = new Thickness(2), FontSize = 10 }));
-                                row.Cells.Add(new TableCell(new Paragraph(new Run("")) { Margin = new Thickness(2), FontSize = 10, TextAlignment = TextAlignment.Right }));
+                                row.Cells.Add(new StdTableCell(location.Name));
+                                row.Cells.Add(new StdRightTableCell(""));
                                 table.RowGroups[0].Rows.Add(row);
 
                                 foreach (var evt in eventsInLocation.OrderBy(x => x.Name))
                                 {
                                     row = new TableRow();
-                                    row.Cells.Add(new TableCell(new Paragraph(new Run(evt.Name)) { Margin = new Thickness(2), FontSize = 10 }));
-                                    row.Cells.Add(new TableCell(new Paragraph(new Run(evt.NumParticipants.ToString())) { Margin = new Thickness(2), FontSize = 10, TextAlignment = TextAlignment.Right }));
+                                    row.Cells.Add(new StdTableCell(evt.Name));
+                                    row.Cells.Add(new StdRightTableCell(evt.NumParticipants.ToString()));
                                     table.RowGroups[0].Rows.Add(row);
                                     total += evt.NumParticipants;
                                 }

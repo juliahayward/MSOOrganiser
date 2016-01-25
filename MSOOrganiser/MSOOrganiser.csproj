@@ -113,6 +113,7 @@
     </Compile>
     <Compile Include="DocumentExtensions\BorderedParagraph.cs" />
     <Compile Include="DocumentExtensions\BorderedTableCell.cs" />
+    <Compile Include="DocumentExtensions\StdTableCell.cs" />
     <Compile Include="EventEntriesReportPicker.xaml.cs">
       <DependentUpon>EventEntriesReportPicker.xaml</DependentUpon>
     </Compile>
