@@ -256,7 +256,7 @@ namespace MSOOrganiser
         private void daysReportMenuItem_Click(object sender, RoutedEventArgs e)
         {
             // This is a combination of existing reports
-            //  1. 
+            //  1. Events per Session (for the right day; not normally independent)
             //  2. Todays Events (for the right day)
             //  3.
             //  4.
@@ -271,6 +271,12 @@ namespace MSOOrganiser
         {
             var printer = new TrafficReportPrinter();
             printer.Print();
+        }
+
+        private void printEventsPerSessionMenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            var printer = new TrafficReportPrinter();
+            printer.PrintEventsPerSession();
         }
     }
 }
