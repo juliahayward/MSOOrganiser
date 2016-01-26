@@ -108,8 +108,8 @@ namespace MSOOrganiser.Reports
                             }
 
                             var trow = new TableRow();
-                            trow.Cells.Add(new TableCell(new Paragraph(new Run("Total")) { Margin = new Thickness(2), FontSize = 10, FontWeight = FontWeights.Bold }));
-                            trow.Cells.Add(new TableCell(new Paragraph(new Run(total.ToString())) { Margin = new Thickness(2), FontSize = 10, FontWeight = FontWeights.Bold, TextAlignment = TextAlignment.Right }));
+                            trow.Cells.Add(new BoldTableCell("Total"));
+                            trow.Cells.Add(new BoldRightTableCell(total.ToString()));
                             table.RowGroups[0].Rows.Add(trow);
 
                             grandTotal += total;
