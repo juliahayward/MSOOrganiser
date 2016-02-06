@@ -27,7 +27,6 @@
                     <MenuItem Header="View Game Plan" Click="gamePlanMenuItem_Click"/>
                     <MenuItem Header="Sign In Sheets" IsEnabled="False"/>
                     <MenuItem Header="Parking Lists" Click="parkingListsMenuItem_Click" />
-                    <MenuItem Header="Logistics Report" IsEnabled="False"/>
                     <MenuItem Header="View Traffic Report" Click="trafficReport_Click"/>
                     <MenuItem Header="View Location Use" Click="locationUse_Click"/>
                     <MenuItem Header="Banking" IsEnabled="False"/>
@@ -36,7 +35,7 @@
                     <MenuItem Header="Event Income" Click="eventIncomeMenuItem_Click"/>
                     <MenuItem Header="View Nationalities" Click="nationalitiesMenuItem_Click" />
                     <MenuItem Header="Print Event Entries" Click="printEventEntriesMenuItem_Click" />
-                    <MenuItem Header="Events per Session (Daily)" Click="printEventsPerSessionMenuItem_Click" />
+                    <MenuItem Header="Events per Session (Logistics Report)" Click="printEventsPerSessionMenuItem_Click" />
                     <MenuItem Header="Entry Summary" Click="entrySummaryMenuItem_Click"/>
                     <MenuItem Header="Print a Day's Report" Click="daysReportMenuItem_Click" />
                     <MenuItem Header="Print Today's Events" Click="printTodaysEventsMenuItem_Click"/>
