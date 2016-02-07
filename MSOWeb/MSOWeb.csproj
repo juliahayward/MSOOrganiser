@@ -156,6 +156,8 @@
     <Content Include="Views\Report\YearMedals.cshtml" />
     <Content Include="Views\Report\GameMedals.cshtml" />
     <Content Include="Views\Report\PentamindStandings.cshtml" />
+    <Content Include="Views\Shared\_ViewStart.cshtml" />
+    <Content Include="Views\Shared\_Layout.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

@@ -1,0 +1,26 @@
+﻿@{
+    ViewBag.Title = "_Layout";
+}
+
+<html>
+<head>
+    <link rel="stylesheet" type="text/css" media="all" href="http://www.msoworld.com/wp-content/themes/twentyeleven/style.css" />
+    <link rel='stylesheet' id='style-css' href='http://www.msoworld.com/wp-content/plugins/displet-pop/style.css?ver=4.3.3' type='text/css' media='all' />
+    <style type="text/css" id="custom-background-css">
+        body.custom-background {
+            background-color: #ffffff;
+        }
+    </style>
+</head>
+<body class="home blog custom-background single-author two-column right-sidebar">
+    <div id="page" class="hfeed">
+        <div id="main">
+            <div id="primary">
+                <div id="content">
+                    @RenderBody()
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
