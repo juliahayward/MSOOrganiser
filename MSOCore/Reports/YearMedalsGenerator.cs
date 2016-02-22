@@ -22,6 +22,7 @@ namespace MSOCore.Reports
                 public string EventName { get; set; }
                 public string Medal { get; set; }
                 public int Rank { get; set; }
+                public int ContestantId { get; set; }
                 public string FirstName { get; set; }
                 public string LastName { get; set; }
                 public string Name { get { return FirstName + " " + LastName; } }
@@ -50,6 +51,7 @@ namespace MSOCore.Reports
                     EventName = ecv.ev.Mind_Sport,
                     Medal = ecv.ec.e.Medal,
                     Rank = ecv.ec.e.Rank.Value,
+                    ContestantId = ecv.ec.c.Mind_Sport_ID,
                     FirstName = ecv.ec.c.Firstname,
                     LastName = ecv.ec.c.Lastname,
                     Nationality = ecv.ec.c.Nationality

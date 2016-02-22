@@ -1,29 +1,50 @@
 ﻿@model IEnumerable<MSOCore.Reports.IndividualMedalTableGenerator.MedalTableVm>
 @{
-    Layout = null;
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
-<h2>Individual All-Time Medal Table</h2>
-<table>
-    <tr>
-        <td>Rank</td>
-        <td>Name</td>
-        <td>Country</td>
-        <td>Gold</td>
-        <td>Silver</td>
-        <td>Bronze</td>
-        <td>Total</td>
+
+<style type="text/css">
+    .jmhTable {
+        border: 1px black solid; 
+        width: 400px; 
+        margin-left: 100px
+    }
+    .jmhTable td {
+        vertical-align: middle;
+    }
+    .jmhPaddedHeader {
+        margin: 4px;
+        display: block;
+    }
+    .jmhPadded {
+        margin: 4px;
+        display: block;
+    }
+</style>
+
+<h1 class="entry-title">Individual All-Time Medal Table</h1>
+
+<table class="jmhTable">
+    <tr style="background: AliceBlue">
+        <td><span class="jmhPaddedHeader">Rank</span></td>
+        <td><span class="jmhPaddedHeader">Name</span></td>
+        <td></td>
+        <td><span class="jmhPaddedHeader">Gold</span></td>
+        <td><span class="jmhPaddedHeader">Silver</span></td>
+        <td><span class="jmhPaddedHeader">Bronze</span></td>
+        <td><span class="jmhPaddedHeader">Total</span></td>
     </tr>
     @{ int index = 1; }
     @foreach (var item in Model)
     {    
     <tr>
-        <td>@index</td>
-        <td><a href="/Report/ContestantMedals?contestantId=@item.ContestantId">@item.Name</a></td>
-        <td><img src="@item.Flag" alt="@item.Nationality" title="@item.Nationality"/></td>
-        <td>@item.Golds</td>
-        <td>@item.Silvers</td>
-        <td>@item.Bronzes</td>
-        <td>@item.Total</td>
+        <td><div class="jmhPadded">@index</div></td>
+        <td><div class="jmhPadded"><a href="/Report/ContestantMedals?contestantId=@item.ContestantId">@item.Name</a></div></td>
+        <td><img class="jmhPadded" src="@item.Flag" alt="@item.Nationality" title="@item.Nationality"/></td>
+        <td><div class="jmhPadded">@item.Golds</div></td>
+        <td><div class="jmhPadded">@item.Silvers</div></td>
+        <td><div class="jmhPadded">@item.Bronzes</div></td>
+        <td><div class="jmhPadded">@item.Total</div></td>
     </tr>
         index++;
     }

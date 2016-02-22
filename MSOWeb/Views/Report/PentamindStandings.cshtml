@@ -1,29 +1,47 @@
 ﻿@model MSOCore.Reports.PentamindStandingsGenerator.PentamindStandingsReportVm
 @{
-    Layout = null;
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Pentamind Standings</h2>
-<h3>@Model.OlympiadTitle</h3>
+<style type="text/css">
+    .jmhTable {
+        border: 1px black solid; 
+        width: 400px; 
+        margin-left: 100px
+    }
+    .jmhTable td {
+        vertical-align: middle;
+    }
+    .jmhPaddedHeader {
+        margin: 4px;
+        display: block;
+    }
+    .jmhPadded {
+        margin: 4px;
+        display: block;
+    }
+</style>
 
-<table>
-    <tr>
+<h1 class="entry-title">Pentamind Standings: @Model.OlympiadTitle</h1>
+
+<table class="jmhTable">
+    <tr  style="background: AliceBlue">
         <td></td>
-        <td>Name</td>
-        <td>Score</td>
-        <td colspan="5">Individual events</td>
+        <td><span class="jmhPaddedHeader">Name</span></td>
+        <td><span class="jmhPaddedHeader">Score</span></td>
+        <td colspan="5"><span class="jmhPaddedHeader">Individual events</span></td>
     </tr>
     @foreach (var item in Model.Standings.Take(40))
     {    
     <tr>
-        <td>@item.FemaleFlag</td>
-        <td>@item.Name</td>
-        <td width="100">@item.TotalScoreStr</td>
-        <td style="font-size: small">@item.ScoreStr(0)</td>
-        <td style="font-size: small">@item.ScoreStr(1)</td>
-        <td style="font-size: small">@item.ScoreStr(2)</td>
-        <td style="font-size: small">@item.ScoreStr(3)</td>
-        <td style="font-size: small">@item.ScoreStr(4)</td>
+        <td><span class="jmhPadded">@item.FemaleFlag</span></td>
+        <td><span class="jmhPadded">@item.Name</span></td>
+        <td width="100"><span class="jmhPadded">@item.TotalScoreStr</span></td>
+        <td style="font-size: smaller"><span class="jmhPadded">@item.ScoreStr(0)</span></td>
+        <td style="font-size: small"><span class="jmhPadded">@item.ScoreStr(1)</span></td>
+        <td style="font-size: small"><span class="jmhPadded">@item.ScoreStr(2)</span></td>
+        <td style="font-size: small"><span class="jmhPadded">@item.ScoreStr(3)</span></td>
+        <td style="font-size: small"><span class="jmhPadded">@item.ScoreStr(4)</span></td>
     </tr>
     }
 </table>

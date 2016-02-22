@@ -1,19 +1,47 @@
 ﻿@model MSOCore.Reports.GameMedalsGenerator.GameMedalsVm
 @{
-    Layout = null;
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
-<h2>Results for @Model.GameName</h2>
+
+<style type="text/css">
+    .jmhTable {
+        border: 1px black solid; 
+        width: 400px; 
+        margin-left: 100px
+    }
+    .jmhTable td {
+        vertical-align: middle;
+    }
+    .jmhPaddedHeader {
+        margin: 4px;
+        display: block;
+    }
+    .jmhPadded {
+        margin: 4px;
+        display: block;
+    }
+</style>
+
+<h1 class="entry-title">Results for @Model.GameName</h1>
 
 @foreach (var year in Model.Medals.Select(x => x.Year).Distinct())
 {
-<h3>@year</h3>
+<h2 class="entry-title">@year</h2>
     foreach (var eventName in Model.Medals.Where(x => x.Year == year).Select(x => x.EventName).Distinct())
     {
-        <table style="border: 1px black solid; width: 400px; margin-left: 100px">
-            <tr><td colspan="3" style="background: AliceBlue">@eventName</td></tr>
+        <table class="jmhTable">
+            <tr>
+                <td colspan="3" style="background: AliceBlue">
+                    <span class="jmhPaddedHeader">@eventName</span></td>
+            </tr>
         @foreach (var medal in Model.Medals.Where(x => x.EventName == eventName && x.Year == year))
         {
-            <tr><td>@medal.Medal</td><td>@medal.Name</td><td><img src="@medal.Flag"  alt="@medal.Nationality" title="@medal.Nationality"/></td></tr>
+            <tr>
+                <td style="width:100px;"><div class="jmhPadded">@medal.Medal</div></td>
+                <td style="width:240px;"><div class="jmhPadded">
+                    <a href="./ContestantMedals?contestantId=@medal.ContestantId">@medal.Name</a>
+                                         </div></td>
+                <td><img class="jmhPadded" src="@medal.Flag"  alt="@medal.Nationality" title="@medal.Nationality"/></td></tr>
         }
             </table>
             <p></p>

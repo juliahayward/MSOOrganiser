@@ -22,7 +22,7 @@
     }
 </style>
 
-<h1 class="entry-title">Medals for @Model.Year</h1>
+<!--h1 class="entry-title">Medals for @Model.Year</h1-->
 
 @foreach (var gameName in Model.Medals.Select(x => x.GameName).Distinct())
 {
@@ -37,7 +37,9 @@
         {
             <tr>
                 <td style="width:100px;"><div class="jmhPadded">@medal.Medal</div></td>
-                <td style="width:240px;"><div class="jmhPadded">@medal.Name</div></td>
+                <td style="width:240px;"><div class="jmhPadded">
+                    <a href="./ContestantMedals?contestantId=@medal.ContestantId">@medal.Name</a>
+                                         </div></td>
                 <td><img class="jmhPadded" src="@medal.Flag"  alt="@medal.Nationality" title="@medal.Nationality"/></td>
             </tr>
         }

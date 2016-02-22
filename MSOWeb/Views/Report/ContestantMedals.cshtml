@@ -1,27 +1,48 @@
 ﻿@model MSOCore.Reports.ContestantMedalsGenerator.ContestantVm
 @{
-    Layout = null;
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
-<h2>All time record: @Model.Name</h2>
 
-<img src="@Model.Flag" alt="@Model.Nationality" title="@Model.Nationality"/>
+<style type="text/css">
+    .jmhTable {
+        border: 1px black solid; 
+        width: 400px; 
+        margin-left: 100px
+    }
+    .jmhTable td {
+        vertical-align: middle;
+    }
+    .jmhPaddedHeader {
+        margin: 4px;
+        display: block;
+    }
+    .jmhPadded {
+        margin: 4px;
+        display: block;
+    }
+</style>
 
-<p>Titles:</p>
-<p>Grandmasters</p>
+
+<h1 class="entry-title">All time record: @Model.Name
+    <img src="@Model.Flag" alt="@Model.Nationality" title="@Model.Nationality"/>
+</h1>
+
+<h1 class="entry-title">Titles:</h1>
+<p><b>Grandmaster</b></p>
 <ul>
     @foreach (var code in Model.Grandmasters)
     {
     <li>@code</li>
     }
 </ul>
-<p>International Masters</p>
+<p><b>International Master</b></p>
 <ul>
     @foreach (var code in Model.InternationalMasters)
     {
     <li>@code</li>
     }
 </ul>
-<p>Candidate Masters</p>
+<p><b>Candidate Master</b></p>
 <ul>
     @foreach (var code in Model.CandidateMasters)
     {
@@ -29,8 +50,8 @@
     }
 </ul>
 
-<p>Medals:</p>
-<p>Gold: @Model.Golds, Silver: @Model.Silvers, Bronze: @Model.Bronzes</p>
+<h1 class="entry-title">Medals:</h1>
+<p><b>Gold: @Model.Golds, Silver: @Model.Silvers, Bronze: @Model.Bronzes</b></p>
 <ul>
     @foreach (var medal in Model.Medals)
     {
