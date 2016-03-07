@@ -1,5 +1,7 @@
-﻿using System;
+﻿using JuliaHayward.Common.Logging;
+using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Web;
 using System.Web.Http;
@@ -19,6 +21,17 @@ namespace MSOWeb
             WebApiConfig.Register(GlobalConfiguration.Configuration);
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
+        }
+
+        protected void Application_Error(object sender, EventArgs e)
+        {
+            Exception exception = Server.GetLastError();
+
+            var trelloKey = ConfigurationManager.AppSettings["TrelloKey"];
+            var trelloAuthKey = ConfigurationManager.AppSettings["TrelloAuthKey"];
+
+            var logger = new TrelloLogger(trelloKey, trelloAuthKey);
+            logger.Error("MSOWeb", exception.Message, exception.StackTrace);
         }
     }
 }
