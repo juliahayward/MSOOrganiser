@@ -25,11 +25,11 @@ namespace MSOOrganiser.Dialogs
         {
             this.textBox.Text = ex.Message + Environment.NewLine + ex.StackTrace;
 
-            //var trelloKey = ConfigurationManager.AppSettings["TrelloKey"];
-            //var trelloAuthKey = ConfigurationManager.AppSettings["TrelloAuthKey"];
+            var trelloKey = ConfigurationManager.AppSettings["TrelloKey"];
+            var trelloAuthKey = ConfigurationManager.AppSettings["TrelloAuthKey"];
 
-            //var logger = new TrelloLogger(trelloKey, trelloAuthKey);
-            //logger.Error("MSOWeb", ex.Message, ex.StackTrace);
+            var logger = new TrelloLogger(trelloKey, trelloAuthKey);
+            logger.Error("MSOWeb", ex.Message, ex.StackTrace);
         }
 
         public ErrorDialog()
