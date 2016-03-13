@@ -762,9 +762,11 @@ namespace MSOOrganiser
 
             evt.EIN = EventId;
             evt.Arbiters.Clear();
-            var arbiter = context.Arbiters.ToList().FirstOrDefault(a => a.Name.FullName() == Arbiter);
+            var arbiter = context.Contestants.ToList().FirstOrDefault(a => a.FullName() == Arbiter);
             if (arbiter != null)
-                evt.Arbiters.Add(arbiter);
+            {
+                evt.Arbiters.Add(new Arbiter() { EIN = EventId, Name = arbiter });
+            }
             evt.Location = Location;
             evt.Entry_Fee = EntryFee;
             evt.Number_in_Team = NumberInTeam;
