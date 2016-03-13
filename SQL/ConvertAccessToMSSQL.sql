@@ -244,6 +244,12 @@ ALTER TABLE Session DROP COLUMN Start, Finish
 
 ALTER TABLE [Event Sess] ADD FOREIGN KEY (Session) REFERENCES [Session] (Session)
 
+-------------------------------------------------------------
+--- Make the OlympiadId not null in Events
+-------------------------------------------------------------
+
+ALTER TABLE Events ALTER COLUMN OlympiadId INT NOT NULL
+
 
 
 

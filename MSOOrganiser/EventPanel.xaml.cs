@@ -55,12 +55,12 @@ namespace MSOOrganiser
 
         private void cancel_Click(object sender, RoutedEventArgs e)
         {
-            throw new NotImplementedException("foo");
+            ViewModel.Populate();
         }
 
         private void save_Click(object sender, RoutedEventArgs e)
         {
-            throw new NotImplementedException("foo");
+            ViewModel.Save();
         }
 
         private void eventCombo_Changed(object sender, SelectionChangedEventArgs e)
@@ -749,6 +749,56 @@ namespace MSOOrganiser
                 });
             }
 
+        }
+
+        public void Save()
+        {
+            var context = new DataEntities();
+            var evt = context.Events.First(x => x.OlympiadId == CurrentOlympiadId && x.Code == EventCode);
+
+            // There's no "create" here
+            if (evt == null)
+                throw new ArgumentException("No such event " + EventCode + " in olympiad " + CurrentOlympiadId);
+
+            evt.EIN = EventId;
+            evt.Arbiters.Clear();
+            var arbiter = context.Arbiters.ToList().FirstOrDefault(a => a.Name.FullName() == Arbiter);
+            if (arbiter != null)
+                evt.Arbiters.Add(arbiter);
+            evt.Location = Location;
+            evt.Entry_Fee = EntryFee;
+            evt.Number_in_Team = NumberInTeam;
+            evt.Prize_fund = PrizeFund;
+            evt.C1st_Prize = Prize1.ToString();
+            evt.C2nd_Prize = Prize2.ToString();
+            evt.C3rd_Prize = Prize3.ToString();
+            evt.JNR_1st_Prize = JuniorPrize1.ToString();
+            evt.JNR_2nd_Prize = JuniorPrize2.ToString();
+            evt.JNR_3rd_Prize = JuniorPrize3.ToString();
+            evt.Other_Prizes = OtherPrizes;
+            evt.JNR_Other_Prizes = JuniorOtherPrizes;
+            evt.Pentamind = Pentamind;
+            evt.incMaxFee = IncludedInMaxFee;
+            evt.JNR_Medals = JuniorMedals;
+            evt.Type = Type;
+            evt.X_Num = ExpectedNumber;
+            evt.Notes = Notes;
+            evt.No_Sessions = NumSessions;
+
+            evt.Event_Sess.Clear();
+            foreach (var s in Sessions)
+            {
+                var session = new Event_Sess() { EIN = EventId, Date = s.Date, Session = s.SessionCode };
+                evt.Event_Sess.Add(session);
+            }
+       
+            // Entrants are *not* added here
+
+            context.SaveChanges();
+
+            // Now set the Number. This has to be done in conjunction with other events.
+            var indexer = new EventIndexer();
+            indexer.IndexEvents(CurrentOlympiadId);
         }
     }
 }

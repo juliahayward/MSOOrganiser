@@ -100,7 +100,7 @@
             <End Role="Games" EntitySet="Games" />
             <End Role="Events" EntitySet="Events" />
           </AssociationSet>
-          <AssociationSet Name="FK__Events__Olympiad__45BE5BA9" Association="DataModel.Store.FK__Events__Olympiad__45BE5BA9">
+          <AssociationSet Name="FK__Events__Olympiad__4D5F7D71" Association="DataModel.Store.FK__Events__Olympiad__4D5F7D71">
             <End Role="Olympiad Info" EntitySet="Olympiad Info" />
             <End Role="Events" EntitySet="Events" />
           </AssociationSet>
@@ -213,7 +213,7 @@
           <Property Name="X-Num" Type="int" />
           <Property Name="Display" Type="bit" />
           <Property Name="SSMA_TimeStamp" Type="timestamp" Nullable="false" StoreGeneratedPattern="Computed" />
-          <Property Name="OlympiadId" Type="int" />
+          <Property Name="OlympiadId" Type="int" Nullable="false" />
           <Property Name="GameId" Type="int" />
         </EntityType>
         <EntityType Name="EventType">
@@ -550,8 +550,8 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Events__Olympiad__45BE5BA9">
-          <End Role="Olympiad Info" Type="DataModel.Store.Olympiad Info" Multiplicity="0..1" />
+        <Association Name="FK__Events__Olympiad__4D5F7D71">
+          <End Role="Olympiad Info" Type="DataModel.Store.Olympiad Info" Multiplicity="1" />
           <End Role="Events" Type="DataModel.Store.Events" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Olympiad Info">
@@ -762,7 +762,7 @@
           <Property Type="Boolean" Name="Display" />
           <Property Type="Binary" Name="SSMA_TimeStamp" Nullable="false" MaxLength="8" FixedLength="true" annotation:StoreGeneratedPattern="Computed" />
           <NavigationProperty Name="Event_Sess" Relationship="DataModel.Event_Sess_EventsEvent_Sess" FromRole="Event" ToRole="Event_Sess" />
-          <Property Type="Int32" Name="OlympiadId" />
+          <Property Type="Int32" Name="OlympiadId" Nullable="false" />
           <NavigationProperty Name="Arbiters" Relationship="DataModel.Arbiters_EventsArbiters" FromRole="Event" ToRole="Arbiter" />
           <NavigationProperty Name="Olympiad_Info" Relationship="DataModel.FK__Events__Olympiad__45BE5BA9" FromRole="Event" ToRole="Olympiad_Info" />
           <Property Type="Int32" Name="GameId" />
@@ -1091,7 +1091,7 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK__Events__Olympiad__45BE5BA9">
-          <End Type="DataModel.Olympiad_Info" Role="Olympiad_Info" Multiplicity="0..1" />
+          <End Type="DataModel.Olympiad_Info" Role="Olympiad_Info" Multiplicity="1" />
           <End Type="DataModel.Event" Role="Event" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Olympiad_Info">

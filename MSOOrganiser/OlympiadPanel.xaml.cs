@@ -1,4 +1,5 @@
 ﻿using MSOCore;
+using MSOCore.Calculators;
 using MSOCore.Models;
 using MSOOrganiser.Dialogs;
 using MSOOrganiser.Events;
@@ -556,6 +557,10 @@ namespace MSOOrganiser
                 // Not doing updates here
             }
             context.SaveChanges();
+
+
+            var eventIndexer = new EventIndexer();
+            eventIndexer.IndexEvents(id);
 
             IsDirty = false;
             OlympiadId = id;

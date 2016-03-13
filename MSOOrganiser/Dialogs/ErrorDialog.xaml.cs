@@ -1,5 +1,7 @@
-﻿using System;
+﻿using JuliaHayward.Common.Logging;
+using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -22,6 +24,12 @@ namespace MSOOrganiser.Dialogs
         public ErrorDialog(Exception ex) : this()
         {
             this.textBox.Text = ex.Message + Environment.NewLine + ex.StackTrace;
+
+            //var trelloKey = ConfigurationManager.AppSettings["TrelloKey"];
+            //var trelloAuthKey = ConfigurationManager.AppSettings["TrelloAuthKey"];
+
+            //var logger = new TrelloLogger(trelloKey, trelloAuthKey);
+            //logger.Error("MSOWeb", ex.Message, ex.StackTrace);
         }
 
         public ErrorDialog()
