@@ -43,9 +43,6 @@ namespace MSOOrganiser
             }
             LoggedInUserId = loginBox.UserId;
             UserLoginId = loginBox.UserLoginId;
-            
-            LoggedInUserId = 1;
-            UserLoginId = 1;
             this.Title += " --- logged in as " +loginBox.UserName;
 
             if (dockPanel.Children.Count > 2) dockPanel.Children.RemoveAt(2);
@@ -57,7 +54,8 @@ namespace MSOOrganiser
         {
             var context = new DataEntities();
             var user = context.Users.Find(LoggedInUserId);
-            var login = user.UserLogins.First(x => x.Id == UserLoginId);
+            var login = user.UserLogins.Where(x => x.Id == UserLoginId)
+                .OrderByDescending(x => x.LogInDate).First();
             login.LogOutDate = DateTime.UtcNow;
             context.SaveChanges();
         }
