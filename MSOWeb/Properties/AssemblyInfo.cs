@@ -10,7 +10,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("MSOWeb")]
-[assembly: AssemblyCopyright("Copyright © Julia Haywrad 2015")]
+[assembly: AssemblyCopyright("Copyright © Julia Hayward 2015")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -31,5 +31,5 @@ using System.Runtime.InteropServices;
 //
 // You can specify all the values or you can default the Revision and Build Numbers 
 // by using the '*' as shown below:
-[assembly: AssemblyVersion("0.5.0.*")]
-[assembly: AssemblyFileVersion("0.5.0.*")]
+[assembly: AssemblyVersion("0.6.0.*")]
+[assembly: AssemblyFileVersion("0.6.0.*")]
