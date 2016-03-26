@@ -18,6 +18,7 @@ using MSOCore.Calculators;
 using MSOCore.Models;
 using MSOOrganiser.Dialogs;
 using MSOCore.Extensions;
+using MSOOrganiser.UIUtilities;
 
 namespace MSOOrganiser
 {
@@ -65,7 +66,10 @@ namespace MSOOrganiser
                 var errors = ViewModel.Validate();
                 if (!errors.Any())
                 {
-                    ViewModel.Save();
+                    using (new SpinnyCursor())
+                    {
+                        ViewModel.Save();
+                    }
                 }
                 else
                 {

@@ -3,6 +3,7 @@ using MSOCore.Calculators;
 using MSOCore.Models;
 using MSOOrganiser.Dialogs;
 using MSOOrganiser.Events;
+using MSOOrganiser.UIUtilities;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -65,7 +66,10 @@ namespace MSOOrganiser
                 var errors = ViewModel.Validate();
                 if (!errors.Any())
                 {
-                    ViewModel.Save();
+                    using (new SpinnyCursor())
+                    {
+                        ViewModel.Save();
+                    }
                 }
                 else
                 {

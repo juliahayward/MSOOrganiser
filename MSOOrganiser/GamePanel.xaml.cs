@@ -16,6 +16,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using MSOCore;
+using MSOOrganiser.UIUtilities;
 
 namespace MSOOrganiser
 {
@@ -60,7 +61,10 @@ namespace MSOOrganiser
                 var errors = ViewModel.Validate();
                 if (!errors.Any())
                 {
-                    ViewModel.Save();
+                    using (new SpinnyCursor())
+                    {
+                        ViewModel.Save();
+                    }
                 }
                 else
                 {

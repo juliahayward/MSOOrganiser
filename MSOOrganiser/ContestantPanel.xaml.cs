@@ -2,6 +2,7 @@
 using MSOCore.Models;
 using MSOOrganiser.Dialogs;
 using MSOOrganiser.Events;
+using MSOOrganiser.UIUtilities;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -82,12 +83,16 @@ namespace MSOOrganiser
                 var errors = ViewModel.Validate();
                 if (!errors.Any())
                 {
-                    ViewModel.Save();
+                    using (new SpinnyCursor())
+                    {
+                        ViewModel.Save();
+                    }
                 }
-                else{
-                    errors.Insert(0, "Could not save:");                    
+                else
+                {
+                    errors.Insert(0, "Could not save:");
                     MessageBox.Show(string.Join(Environment.NewLine, errors));
-            }
+                }
             }
             catch (Exception ex)
             {
@@ -128,7 +133,7 @@ namespace MSOOrganiser
                         var existingEvent = ViewModel.Events.FirstOrDefault(x => x.EventCode == evt.Code);
                         if (existingEvent == null)
                         {
-                            ViewModel.Events.Add(new ContestantPanelVm.EventVm() { EventCode = evt.Code, EventName = evt.Name, EventId = 0 });
+                            ViewModel.Events.Add(new ContestantPanelVm.EventVm() { EventCode = evt.Code, EventName = evt.Name, EventId = evt.Id });
                             ViewModel.IsDirty = true;
                         }
                     }
