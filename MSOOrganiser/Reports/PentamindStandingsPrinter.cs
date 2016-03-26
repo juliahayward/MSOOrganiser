@@ -51,6 +51,7 @@ namespace MSOOrganiser.Reports
 
                 Table bodyTable = new Table() { CellSpacing = 0 };
                 bodyTable.Columns.Add(new TableColumn() { Width = new GridLength(20) });
+                bodyTable.Columns.Add(new TableColumn() { Width = new GridLength(20) });
                 bodyTable.Columns.Add(new TableColumn() { Width = new GridLength(200) });
                 bodyTable.Columns.Add(new TableColumn() { Width = new GridLength(75) });
                 bodyTable.Columns.Add(new TableColumn() { Width = new GridLength(90) });
@@ -62,6 +63,7 @@ namespace MSOOrganiser.Reports
 
                 var row = new TableRow();
                 row.Cells.Add(new TableCell(new Paragraph(new Run("")) { Margin = new Thickness(2), FontSize = 12 }));
+                row.Cells.Add(new TableCell(new Paragraph(new Run("")) { Margin = new Thickness(2), FontSize = 12 }));
                 row.Cells.Add(new TableCell(new Paragraph(new Run("Name")) { Margin = new Thickness(2), FontSize = 12 }));
                 row.Cells.Add(new TableCell(new Paragraph(new Run("Total")) { Margin = new Thickness(2), FontSize = 12 }));
                 row.Cells.Add(new TableCell(new Paragraph(new Run("")) { Margin = new Thickness(2), FontSize = 12 }));
@@ -71,9 +73,12 @@ namespace MSOOrganiser.Reports
                 row.Cells.Add(new TableCell(new Paragraph(new Run("")) { Margin = new Thickness(2), FontSize = 12 }));
                 bodyTable.RowGroups[0].Rows.Add(row);
 
+                var rank = 0;
                 foreach (var s in results.Standings.Take(40))
                 {
+                    rank++;
                     row = new TableRow();
+                    row.Cells.Add(new TableCell(new Paragraph(new Run(rank.ToString())) { Margin = new Thickness(2), FontSize = 12, }));
                     row.Cells.Add(new TableCell(new Paragraph(new Run(s.FemaleFlag)) { Margin = new Thickness(2), FontSize = 12, }));
                     row.Cells.Add(new TableCell(new Paragraph(new Run(s.Name)) { Margin = new Thickness(2), FontSize = 12 }));
                     row.Cells.Add(new TableCell(new Paragraph(new Run(s.TotalScoreStr)) { Margin = new Thickness(2), FontSize = 12 }));
