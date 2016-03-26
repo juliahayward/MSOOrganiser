@@ -60,7 +60,23 @@ namespace MSOOrganiser
 
         private void save_Click(object sender, RoutedEventArgs e)
         {
-            ViewModel.Save();
+            try
+            {
+                var errors = ViewModel.Validate();
+                if (!errors.Any())
+                {
+                    ViewModel.Save();
+                }
+                else
+                {
+                    errors.Insert(0, "Could not save:");
+                    MessageBox.Show(string.Join(Environment.NewLine, errors));
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Something went wrong  - data not saved");
+            }
         }
 
         private void eventCombo_Changed(object sender, SelectionChangedEventArgs e)
@@ -749,6 +765,13 @@ namespace MSOOrganiser
                 });
             }
 
+        }
+
+        public List<string> Validate()
+        {
+            var errors = new List<string>();
+
+            return errors;
         }
 
         public void Save()

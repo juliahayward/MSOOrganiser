@@ -32,25 +32,46 @@ namespace MSOOrganiser
             DataContext = new GamePanelVm();
         }
 
+        public GamePanelVm ViewModel
+        {
+            get { return DataContext as GamePanelVm; }
+        }
+
 
         public void Populate()
         {
-            ((GamePanelVm)DataContext).PopulateDropdown();
+            ViewModel.PopulateDropdown();
         }
 
         private void gameCombo_Changed(object sender, SelectionChangedEventArgs e)
         {
-            ((GamePanelVm)DataContext).PopulateGame();
+            ViewModel.PopulateGame();
         }
 
         private void cancel_Click(object sender, RoutedEventArgs e)
         {
-            ((GamePanelVm)DataContext).PopulateGame();
+            ViewModel.PopulateGame();
         }
 
         private void save_Click(object sender, RoutedEventArgs e)
         {
-            ((GamePanelVm)DataContext).Save();
+            try
+            {
+                var errors = ViewModel.Validate();
+                if (!errors.Any())
+                {
+                    ViewModel.Save();
+                }
+                else
+                {
+                    errors.Insert(0, "Could not save:");
+                    MessageBox.Show(string.Join(Environment.NewLine, errors));
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Something went wrong  - data not saved");
+            }
         }
     }
 
@@ -207,6 +228,11 @@ namespace MSOOrganiser
                 Rules = dbGame.Rules;
             }
             IsDirty = false;
+        }
+
+        public List<string> Validate()
+        {
+            return new List<string>();
         }
 
         public void Save()

@@ -60,7 +60,23 @@ namespace MSOOrganiser
 
         private void save_Click(object sender, RoutedEventArgs e)
         {
-            ViewModel.Save();
+            try
+            {
+                var errors = ViewModel.Validate();
+                if (!errors.Any())
+                {
+                    ViewModel.Save();
+                }
+                else
+                {
+                    errors.Insert(0, "Could not save:");
+                    MessageBox.Show(string.Join(Environment.NewLine, errors));
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Something went wrong  - data not saved");
+            }
         }
 
         private void deleteEvent_Click(object sender, RoutedEventArgs e)
@@ -459,6 +475,36 @@ namespace MSOOrganiser
                 }
             }
             IsDirty = false;
+        }
+
+        public List<string> Validate()
+        {
+            int i;
+            DateTime dt;
+            decimal d;
+            var errors = new List<string>();
+            if (!int.TryParse(YearOf, out i))
+                errors.Add("Invalid year");
+            if (!DateTime.TryParse(StartDate, out dt))
+                errors.Add("Invalid start date");
+            if (!DateTime.TryParse(FinishDate, out dt))
+                errors.Add("Invalid end date");
+            if (!decimal.TryParse(MaxFee, out d))
+                errors.Add("Invalid MaxFee");
+            if (!decimal.TryParse(MaxCon, out d))
+                errors.Add("Invalid Max Concession");
+            if (!DateTime.TryParse(AgeDate, out dt))
+                errors.Add("Invalid age-date");
+            if (!int.TryParse(JnrAge, out i))
+                errors.Add("Invalid junior age");
+            if (!int.TryParse(SnrAge, out i))
+                errors.Add("Invalid senior age");
+            if (!int.TryParse(PentaLong, out i))
+                errors.Add("Invalid penamind long events");
+            if (!int.TryParse(PentaTotal, out i))
+                errors.Add("Invalid pentamind total events");
+
+            return errors;
         }
 
         public void Save()
