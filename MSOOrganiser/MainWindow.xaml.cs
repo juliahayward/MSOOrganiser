@@ -279,5 +279,11 @@ namespace MSOOrganiser
             var printer = new TrafficReportPrinter();
             printer.PrintEventsPerSession();
         }
+
+        private void contestantList_Click(object sender, RoutedEventArgs e)
+        {
+            var exporter = new ContestantListCsvExporter();
+            exporter.ExportThisYearsContestants();
+        }
     }
 }

@@ -46,6 +46,7 @@
                     <MenuItem Header="Print Medal Table" Click="medalTable_Click"/>
                     <MenuItem Header="Print Results" IsEnabled="False"/>
                     <MenuItem Header="Pentamind Standings (NEW)" Click="pentamindStandings_Click" />
+                    <MenuItem Header="Contestant listing for JW3 (.csv)" Click="contestantList_Click" />
                 </MenuItem>
                 <MenuItem Header="Misc">
                     <MenuItem Header="Print Misc Badges" IsEnabled="False"/>
