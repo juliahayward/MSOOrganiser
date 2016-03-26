@@ -460,8 +460,8 @@ namespace MSOOrganiser
                 Venue = o.Venue;
                 StartDate = o.StartDate.Value.ToString("dd/MM/yyyy");
                 FinishDate = (o.FinishDate.HasValue) ? o.FinishDate.Value.ToString("dd/MM/yyyy") : "";
-                MaxFee = o.MaxFee.Value.ToString("F2");
-                MaxCon = o.MaxCon.Value.ToString("F2");
+                MaxFee = (o.MaxFee.HasValue) ? o.MaxFee.Value.ToString("F2") : "";
+                MaxCon = (o.MaxCon.HasValue) ? o.MaxCon.Value.ToString("F2") : "";
                 AgeDate = o.AgeDate.ToString();
                 JnrAge = o.JnrAge.ToString();
                 SnrAge = o.SnrAge.ToString();
