@@ -54,10 +54,13 @@ namespace MSOOrganiser
         {
             var context = new DataEntities();
             var user = context.Users.Find(LoggedInUserId);
-            var login = user.UserLogins.Where(x => x.Id == UserLoginId)
-                .OrderByDescending(x => x.LogInDate).First();
-            login.LogOutDate = DateTime.UtcNow;
-            context.SaveChanges();
+            var login = user.UserLogins.Where(x => x.Id == UserLoginId && x.LogOutDate == null)
+                .OrderByDescending(x => x.LogInDate).FirstOrDefault();
+            if (login != null)
+            {
+                login.LogOutDate = DateTime.UtcNow;
+                context.SaveChanges();
+            }
         }
 
 
