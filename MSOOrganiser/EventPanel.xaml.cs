@@ -662,7 +662,7 @@ namespace MSOOrganiser
             var context = new DataEntities();
 
             Olympiad_Info currentOlympiad;
-            if (olympiadId == -1)
+            if (olympiadId < 1)
             {
                 currentOlympiad = context.Olympiad_Infoes.OrderByDescending(x => x.StartDate).First();
             }
