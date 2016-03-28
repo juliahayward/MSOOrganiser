@@ -11,6 +11,8 @@
         <local:ShowBlankIfZeroIntConverter x:Key="ShowBlankIfZeroIntConverter" />
         <local:ShowCurrencyConverter x:Key="ShowCurrencyConverter" />
         <local:ShowDateOnlyConverter x:Key="ShowDateOnlyConverter" />
+        <local:MedalToBackgroundColorConverter x:Key="MedalToBackgroundColorConverter" />
+        <local:MedalToForegroundColorConverter x:Key="MedalToForegroundColorConverter" />
     </UserControl.Resources>
     <StackPanel Orientation="Vertical">
         <Border BorderBrush="#ff000000" BorderThickness="1" CornerRadius="8" Margin="4" Background="AliceBlue">
@@ -144,11 +146,24 @@
                     <TextBlock>You can't add competitors here. Go to Competitors and find the right person.</TextBlock>
                     <DataGrid Name="dataGrid" CanUserAddRows="False" CanUserResizeColumns="True" CanUserSortColumns="True"
                               AutoGenerateColumns="False"
-                            Width="920" Margin="0,20,0,0" IsReadOnly="True" ItemsSource="{Binding Entrants}">
+                            Width="920" Margin="0,20,0,0" ItemsSource="{Binding Entrants}">
                         <DataGrid.Columns>
-                            <DataGridTextColumn Header="EntrantId" Binding="{Binding EntrantId}" />
-                            <DataGridTextColumn Header="ContestantId" Binding="{Binding ContestantId}" />
-                            <DataGridTextColumn Header="Medal" Width="48" Binding="{Binding Medal}">
+                            <DataGridTextColumn IsReadOnly="True" Header="EntrantId" Binding="{Binding EntrantId}" />
+                            <DataGridTextColumn IsReadOnly="True" Header="ContestantId" Binding="{Binding ContestantId}" />
+                            <DataGridComboBoxColumn Width="80" Header="Medal"
+                                      SelectedItemBinding="{Binding Path=Medal, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                                <DataGridComboBoxColumn.ElementStyle>
+                                    <Style TargetType="ComboBox">
+                                        <Setter Property="ItemsSource" Value="{Binding Medals}" />
+                                    </Style>
+                                </DataGridComboBoxColumn.ElementStyle>
+                                <DataGridComboBoxColumn.EditingElementStyle>
+                                    <Style TargetType="ComboBox">
+                                        <Setter Property="ItemsSource" Value="{Binding Medals}" />
+                                    </Style>
+                                </DataGridComboBoxColumn.EditingElementStyle>
+                            </DataGridComboBoxColumn>
+                            <!-- DataGridTextColumn IsReadOnly="True" Header="Medal" Width="48" Binding="{Binding Medal}">
                                 <DataGridTextColumn.ElementStyle>
                                     <Style TargetType="{x:Type TextBlock}">
                                         <Style.Triggers>
@@ -165,16 +180,28 @@
                                         </Style.Triggers>
                                     </Style>
                                 </DataGridTextColumn.ElementStyle>
+                            </DataGridTextColumn -->
+                            <DataGridTextColumn IsReadOnly="True" Header="FirstName" Binding="{Binding FirstName}" />
+                            <DataGridTextColumn IsReadOnly="True" Header="LastName" Binding="{Binding LastName}" />
+                            <DataGridTextColumn Header="Rank" Binding="{Binding Rank, Converter={StaticResource ShowBlankIfZeroIntConverter}, Mode=TwoWay}">
+                                <DataGridTextColumn.ElementStyle>
+                                    <Style TargetType="TextBlock">
+                                        <Setter Property="TextWrapping" Value="Wrap" />
+                                    </Style>
+                                </DataGridTextColumn.ElementStyle>
+                                <DataGridTextColumn.EditingElementStyle>
+                                    <Style TargetType="TextBox">
+                                        <Setter Property="TextWrapping" Value="Wrap" />
+                                        <Setter Property="AcceptsReturn" Value="true" />
+                                    </Style>
+                                </DataGridTextColumn.EditingElementStyle>
                             </DataGridTextColumn>
-                            <DataGridTextColumn Header="FirstName" Binding="{Binding FirstName}" />
-                            <DataGridTextColumn Header="LastName" Binding="{Binding LastName}" />
-                            <DataGridTextColumn Header="Rank" Binding="{Binding Rank, Converter={StaticResource ShowBlankIfZeroIntConverter}}" />
-                            <DataGridTextColumn Header="Score" Binding="{Binding Score}" />
-                            <DataGridCheckBoxColumn Header="Absent" Binding="{Binding Absent}" />
-                            <DataGridTextColumn Header="TieBreak" Binding="{Binding TieBreak}" />
-                            <DataGridTextColumn Header="Pentamind" Binding="{Binding PentaScore}" />
-                            <DataGridTextColumn Header="TeamOrPair" Binding="{Binding TeamOrPair}"  />
-                            <DataGridTextColumn Header="PIN" Binding="{Binding PIN}"  />
+                            <DataGridTextColumn Header="Score" Binding="{Binding Score, Mode=TwoWay}" />
+                            <DataGridCheckBoxColumn Header="Absent" Binding="{Binding Absent, Mode=TwoWay}" />
+                            <DataGridTextColumn Header="TieBreak" Binding="{Binding TieBreak, Mode=TwoWay}" />
+                            <DataGridTextColumn IsReadOnly="True" Header="Pentamind" Binding="{Binding PentaScore}" />
+                            <DataGridTextColumn Header="TeamOrPair" Binding="{Binding TeamOrPair, Mode=TwoWay}"  />
+                            <DataGridTextColumn IsReadOnly="True" Header="PIN" Binding="{Binding PIN}"  />
                             <DataGridTemplateColumn  MinWidth="100" Header="View">
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>

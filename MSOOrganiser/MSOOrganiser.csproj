@@ -104,6 +104,7 @@
     <Compile Include="ContestantPanel.xaml.cs">
       <DependentUpon>ContestantPanel.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Converters\MedalToBackgroundColorConverter.cs" />
     <Compile Include="Converters\ShowDateOnlyConverter.cs" />
     <Compile Include="Converters\ShowCurrencyConverter.cs" />
     <Compile Include="Converters\ShowBlankIfZeroIntConverter.cs" />

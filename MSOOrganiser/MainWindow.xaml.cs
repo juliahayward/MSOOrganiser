@@ -33,7 +33,10 @@ namespace MSOOrganiser
         public MainWindow()
         {
             InitializeComponent();
+        }
 
+        private void window_Loaded(object sender, EventArgs e)
+        {
             var loginBox = new LoginWindow();
             loginBox.ShowDialog();
             if (loginBox.UserId == 0)

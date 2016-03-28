@@ -224,6 +224,13 @@ namespace MSOOrganiser
         // for table
         public class EntrantVm : VmBase, IPentaCalculable
         {
+            private ResultsPanelVm _parent;
+
+            public EntrantVm(ResultsPanelVm parent)
+            {
+                _parent = parent;
+            }
+
             public int EntrantId { get; set; }
             public int ContestantId { get; set; }
             public string Medal { get; set; }
@@ -248,6 +255,8 @@ namespace MSOOrganiser
             }
             public string TeamOrPair { get; set; }
             public string PIN { get; set; } // need this?
+
+            public ObservableCollection<string> Medals { get { return _parent.Medals; } }
         }
 
         public ResultsPanelVm()
@@ -259,6 +268,7 @@ namespace MSOOrganiser
             Types = new ObservableCollection<TypeVm>();
             Locations = new ObservableCollection<LocationVm>();
             Olympiads = new ObservableCollection<OlympiadVm>();
+            Medals = StandardMedalsList();
             EventCode = "";
 
             PopulateDropdown();
@@ -266,6 +276,7 @@ namespace MSOOrganiser
         }
 
         #region bindable properties
+        public ObservableCollection<string> Medals { get; set; }
         public ObservableCollection<TypeVm> Types { get; set; }
         public ObservableCollection<EntryFeeVm> Fees { get; set; }
         public ObservableCollection<EventVm> Events { get; set; }
@@ -656,6 +667,20 @@ namespace MSOOrganiser
 
         #endregion
 
+        private ObservableCollection<string> StandardMedalsList()
+        {
+            var list = new ObservableCollection<string>();
+            list.Add("");
+            list.Add("Gold");
+            list.Add("Silver");
+            list.Add("Bronze");
+            list.Add("Gold JNR");
+            list.Add("Silver JNR");
+            list.Add("Bronze JNR");
+            return list;
+        }
+
+
         public void PopulateDropdown(string eventCode = null, int olympiadId = -1)
         {
             Events.Clear();
@@ -752,7 +777,7 @@ namespace MSOOrganiser
 
             foreach (var e in entrants)
             {
-                Entrants.Add(new EntrantVm()
+                Entrants.Add(new EntrantVm(this)
                 {
                     EntrantId = e.e.EntryNumber,
                     ContestantId = e.c.Mind_Sport_ID,
@@ -821,7 +846,17 @@ namespace MSOOrganiser
                 evt.Event_Sess.Add(session);
             }
        
-            // Entrants are *not* added here
+            // Entrants are *not* added here but their ranks etc are
+            foreach (var e in Entrants)
+            {
+                var entrant = context.Entrants.First(x => x.EntryNumber == e.EntrantId);
+                entrant.Absent = e.Absent;
+                entrant.Medal = (string.IsNullOrEmpty(e.Medal)) ? null : e.Medal;
+                entrant.Rank = e.Rank;
+                entrant.Score = e.Score;
+                entrant.Tie_break = e.TieBreak;
+                entrant.Partner = e.TeamOrPair;
+            }
 
             context.SaveChanges();
 

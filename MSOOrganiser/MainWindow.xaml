@@ -3,6 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="Mind Sports Olympiad" Height="800" Width="960"
         Icon="/MSOOrganiser;component/Resources/Logo.png"
+        Loaded="window_Loaded"
         Closing="window_Closing">
     <Grid>
         <DockPanel x:Name="dockPanel">
