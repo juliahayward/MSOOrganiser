@@ -3,9 +3,12 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:MSOOrganiser.Converters"
              mc:Ignorable="d" 
              d:DesignHeight="600" d:DesignWidth="600">
-
+    <UserControl.Resources>
+        <local:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" />
+    </UserControl.Resources>
     <StackPanel Orientation="Vertical">
         <Border BorderBrush="#ff000000" BorderThickness="1" CornerRadius="8" Margin="4" Background="AliceBlue">
             <StackPanel Orientation="Horizontal">
@@ -99,7 +102,7 @@
                                 <DataGridTextColumn Header="ID" Binding="{Binding Id}" />
                                 <DataGridTextColumn Header="Code" Binding="{Binding Code}" />
                                 <DataGridTextColumn Header="Name" Binding="{Binding Name}" />
-                                <DataGridTemplateColumn  MinWidth="100" Header="View">
+                                <DataGridTemplateColumn  MinWidth="100" Header="Actions">
                                     <DataGridTemplateColumn.CellTemplate>
                                         <DataTemplate>
                                             <Grid>
@@ -108,11 +111,11 @@
                                         </DataTemplate>
                                     </DataGridTemplateColumn.CellTemplate>
                                 </DataGridTemplateColumn>
-                                <DataGridTemplateColumn  MinWidth="100" Header="View">
+                                <DataGridTemplateColumn  MinWidth="100" Header="">
                                     <DataGridTemplateColumn.CellTemplate>
                                         <DataTemplate>
                                             <Grid>
-                                                <Button Click="deleteEvent_Click">Delete</Button>
+                                                <Button Click="deleteEvent_Click" Visibility="{Binding CanDelete, Converter={StaticResource BoolToVisibilityConverter}}">Delete</Button>
                                             </Grid>
                                         </DataTemplate>
                                     </DataGridTemplateColumn.CellTemplate>

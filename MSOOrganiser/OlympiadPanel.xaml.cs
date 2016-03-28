@@ -147,6 +147,7 @@ namespace MSOOrganiser
             public int Id { get; set; }
             public string Code { get; set; }
             public string Name { get; set; }
+            public bool CanDelete { get; set; }
         }
 
         public class LocationVm
@@ -470,7 +471,7 @@ namespace MSOOrganiser
                 Events.Clear();
                 foreach (var e in o.Events.OrderBy(x => x.Code))
                 {
-                    Events.Add(new EventVm() { Id = e.EIN, Code = e.Code, Name = e.Mind_Sport });
+                    Events.Add(new EventVm() { Id = e.EIN, Code = e.Code, Name = e.Mind_Sport, CanDelete = !e.Entrants.Any(x => x.Rank.HasValue && x.Rank > 0) });
                 }
                 Locations.Clear();
                 foreach (var l in o.Locations.OrderBy(x => x.Location1))
