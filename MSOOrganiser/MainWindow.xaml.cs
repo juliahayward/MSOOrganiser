@@ -19,6 +19,7 @@ using MSOCore;
 using MSOOrganiser.Reports;
 using MSOOrganiser.Dialogs;
 using MSOOrganiser.UIUtilities;
+using System.Diagnostics;
 
 namespace MSOOrganiser
 {
@@ -287,6 +288,11 @@ namespace MSOOrganiser
         {
             var exporter = new ContestantListCsvExporter();
             exporter.ExportThisYearsContestants();
+        }
+
+        private void help_Click(object sender, RoutedEventArgs e)
+        {
+            Process.Start("http://www.juliahayward.com/MSO/Help.html");
         }
     }
 }

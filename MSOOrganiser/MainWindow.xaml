@@ -54,6 +54,8 @@
                 </MenuItem>
                 <MenuItem Header="About" Click="about_Click">
                 </MenuItem>
+                <MenuItem Header="Help" Click="help_Click">
+                </MenuItem>
             </Menu>
             <StatusBar DockPanel.Dock="Bottom">
                 <StatusBar.ItemsPanel>
