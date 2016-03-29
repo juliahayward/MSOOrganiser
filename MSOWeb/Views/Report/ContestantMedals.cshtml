@@ -27,7 +27,12 @@
     <img src="@Model.Flag" alt="@Model.Nationality" title="@Model.Nationality"/>
 </h1>
 
+@if (Model.HasTitles())
+{
 <h1 class="entry-title">Titles:</h1>
+}
+@if (Model.Grandmasters.Any())
+{
 <p><b>Grandmaster</b></p>
 <ul>
     @foreach (var code in Model.Grandmasters)
@@ -35,6 +40,9 @@
     <li>@code</li>
     }
 </ul>
+}
+@if (Model.InternationalMasters.Any())
+{
 <p><b>International Master</b></p>
 <ul>
     @foreach (var code in Model.InternationalMasters)
@@ -42,6 +50,9 @@
     <li>@code</li>
     }
 </ul>
+}
+@if (Model.CandidateMasters.Any())
+{
 <p><b>Candidate Master</b></p>
 <ul>
     @foreach (var code in Model.CandidateMasters)
@@ -49,6 +60,7 @@
     <li>@code</li>
     }
 </ul>
+}
 
 <h1 class="entry-title">Medals:</h1>
 <p><b>Gold: @Model.Golds, Silver: @Model.Silvers, Bronze: @Model.Bronzes</b></p>

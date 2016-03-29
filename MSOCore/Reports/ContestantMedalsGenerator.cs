@@ -37,6 +37,11 @@ namespace MSOCore.Reports
             public IEnumerable<string> Grandmasters { get; set; }
             public IEnumerable<string> InternationalMasters { get; set; }
             public IEnumerable<string> CandidateMasters { get; set; }
+
+            public bool HasTitles()
+            {
+                return (Grandmasters.Any() || InternationalMasters.Any() || CandidateMasters.Any());
+            }
         }
 
         public ContestantVm GetModel(int id)
