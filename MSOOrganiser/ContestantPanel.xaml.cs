@@ -112,7 +112,7 @@ namespace MSOOrganiser
             if (EventSelected != null)
             {
                 var args = new EventEventArgs() { EventCode = entrant.EventCode, 
-                    OlympiadId = int.Parse(ViewModel.CurrentOlympiadId) };
+                    OlympiadId = ViewModel.CurrentOlympiadId };
                 EventSelected(this, args);
             }
         }
@@ -121,7 +121,7 @@ namespace MSOOrganiser
         {
             var selectedEvents = ViewModel.Events.Select(x => x.EventCode);
             var nonEditableEvents = ViewModel.Events.Where(x => x.Rank != 0).Select(x => x.EventCode);
-            var dialog = new AddEventsToContestantWindow(int.Parse(ViewModel.CurrentOlympiadId), selectedEvents, nonEditableEvents);
+            var dialog = new AddEventsToContestantWindow(ViewModel.CurrentOlympiadId, selectedEvents, nonEditableEvents);
             dialog.ShowDialog();
 
             if (dialog.DialogResult.Value)
@@ -237,8 +237,8 @@ namespace MSOOrganiser
 
         public ObservableCollection<OlympiadVm> Olympiads { get; set; }
 
-        private string _currentOlympiadId;
-        public string CurrentOlympiadId
+        private int _currentOlympiadId;
+        public int CurrentOlympiadId
         {
             get
             {
@@ -749,7 +749,7 @@ private string _Notes;
             foreach (var c in context.Olympiad_Infoes
                 .OrderByDescending(x => x.StartDate))
                 Olympiads.Add(new OlympiadVm { Text = c.FullTitle(), Value = c.Id.ToString() });
-            CurrentOlympiadId = Olympiads.First().Value;
+            CurrentOlympiadId = int.Parse(Olympiads.First().Value);
         }
 
         public void PopulateEvents()
@@ -759,7 +759,7 @@ private string _Notes;
             if (CurrentOlympiadId == null) return;
 
             var context = new DataEntities();
-            var olympiadId = int.Parse(CurrentOlympiadId);
+            var olympiadId = CurrentOlympiadId;
             var contestantId = int.Parse(ContestantId);
             var entrants = context.Entrants
                 .Join(context.Events, e => e.Game_Code, g => g.Code, (e, g) => new { e = e, g = g })
@@ -791,7 +791,7 @@ private string _Notes;
             if (CurrentOlympiadId == null) return;
 
             var context = new DataEntities();
-            var olympiadId = int.Parse(CurrentOlympiadId);
+            var olympiadId = CurrentOlympiadId;
             var contestantId = int.Parse(ContestantId);
             var payments = context.Payments.Where(x => x.OlympiadId == olympiadId && x.MindSportsID == contestantId)
                 .OrderBy(x => x.PaymentNumber).ToList();
@@ -928,7 +928,7 @@ private string _Notes;
                     .Select(x => Entrant.NewEntrant(x.EventId, x.EventCode, CurrentOlympiadId, dbCon))
                     .ToList();
                 dbCon.Payments = this.Payments
-                    .Select(x => new Payment() { Payment1 = x.Amount, Payment_Method = x.Method, PaymentNumber = 0, Banked = x.Banked ? 1 : 0, MindSportsID = dbCon.Mind_Sport_ID, OlympiadId = int.Parse(CurrentOlympiadId), Name = dbCon})
+                    .Select(x => new Payment() { Payment1 = x.Amount, Payment_Method = x.Method, PaymentNumber = 0, Banked = x.Banked ? 1 : 0, MindSportsID = dbCon.Mind_Sport_ID, OlympiadId = CurrentOlympiadId, Name = dbCon})
                     .ToList();
             }
             else
@@ -961,19 +961,19 @@ private string _Notes;
                 dbCon.FIDECode = FIDECode;
                 dbCon.Notes = Notes;
 
-                // Add new events
-                foreach (var e in this.Events.Where(x => !dbCon.Entrants.Any(ee => ee.Game_Code == x.EventCode)))
+                // Add new events that aren't already in this olympiad for this person
+                foreach (var e in this.Events.Where(x => !dbCon.Entrants.Any(ee => ee.OlympiadId == CurrentOlympiadId && ee.Game_Code == x.EventCode)))
                 {
                  dbCon.Entrants.Add(Entrant.NewEntrant(e.EventId, e.EventCode, CurrentOlympiadId, dbCon));
                 }
-                // Remove unwanted events
-                foreach (var de in dbCon.Entrants.Where(x => !this.Events.Any(ee => ee.EventCode == x.Game_Code)).ToList())
+                // Remove unwanted events from this olympiad
+                foreach (var de in dbCon.Entrants.Where(x => x.OlympiadId == CurrentOlympiadId && !this.Events.Any(ee => ee.EventCode == x.Game_Code)).ToList())
                 {
                  dbCon.Entrants.Remove(de);
                 }
                 foreach (var p in this.Payments.Where(x => !dbCon.Payments.Any(pp => pp.PaymentNumber == x.PaymentId)))
                 {
-                    dbCon.Payments.Add(new Payment() { Payment1 = p.Amount, Payment_Method = p.Method, PaymentNumber = 0, Banked = p.Banked ? 1 : 0, MindSportsID = dbCon.Mind_Sport_ID, OlympiadId = int.Parse(CurrentOlympiadId), Name = dbCon });
+                    dbCon.Payments.Add(new Payment() { Payment1 = p.Amount, Payment_Method = p.Method, PaymentNumber = 0, Banked = p.Banked ? 1 : 0, MindSportsID = dbCon.Mind_Sport_ID, OlympiadId = CurrentOlympiadId, Name = dbCon });
                 }
                 // At the moment we can't delete payments (deliberate)
             }
