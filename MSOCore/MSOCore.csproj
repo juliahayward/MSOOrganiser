@@ -129,6 +129,7 @@
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Reports\ContestantMedalsGenerator.cs" />
+    <Compile Include="Reports\PokerStandingsGenerator.cs" />
     <Compile Include="Reports\TrafficReportGenerator.cs" />
     <Compile Include="Reports\DonationReportGenerator.cs" />
     <Compile Include="Reports\EventIncomeReportGenerator.cs" />

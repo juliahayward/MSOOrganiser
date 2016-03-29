@@ -224,6 +224,12 @@ namespace MSOOrganiser
             printer.Print();
         }
 
+        private void pokerStandings_Click(object sender, RoutedEventArgs e)
+        {
+            var printer = new PokerStandingsPrinter();
+            printer.Print();
+        }
+
         private void eventIncomeMenuItem_Click(object sender, RoutedEventArgs e)
         {
             var printer = new EventIncomeReportPrinter();
@@ -294,5 +300,7 @@ namespace MSOOrganiser
         {
             Process.Start("http://www.juliahayward.com/MSO/Help.html");
         }
+
+       
     }
 }
