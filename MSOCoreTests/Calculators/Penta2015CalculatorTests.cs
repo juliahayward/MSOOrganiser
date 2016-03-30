@@ -10,7 +10,7 @@ namespace MSOCoreTests
         [TestMethod]
         public void CalculatorThrowsOnMissingRank()
         {
-            var data = new[] { new TestCalc { Rank = 0, PentaScore = "", Absent = false, Id = 1 } };
+            var data = new[] { new TestCalc { Rank = 0, PentaScore = 0f, Absent = false, Id = 1 } };
 
             var calc = new Penta2015Calculator();
             try
@@ -26,12 +26,12 @@ namespace MSOCoreTests
         public void CalculatorGetsRightAnswerInSimpleCase()
         {
             var data = new[] { 
-                new TestCalc { Rank = 1, PentaScore = "", Absent = false, Id = 1 },
-                new TestCalc { Rank = 3, PentaScore = "", Absent = false, Id = 2 },
-                new TestCalc { Rank = 5, PentaScore = "", Absent = false, Id = 3 },
-                new TestCalc { Rank = 0, PentaScore = "", Absent = true, Id = 13 },
-                new TestCalc { Rank = 4, PentaScore = "", Absent = false, Id = 4 },
-                new TestCalc { Rank = 2, PentaScore = "", Absent = false, Id = 5 },
+                new TestCalc { Rank = 1, PentaScore = 0f, Absent = false, Id = 1 },
+                new TestCalc { Rank = 3, PentaScore = 0f, Absent = false, Id = 2 },
+                new TestCalc { Rank = 5, PentaScore = 0f, Absent = false, Id = 3 },
+                new TestCalc { Rank = 0, PentaScore = 0f, Absent = true, Id = 13 },
+                new TestCalc { Rank = 4, PentaScore = 0f, Absent = false, Id = 4 },
+                new TestCalc { Rank = 2, PentaScore = 0f, Absent = false, Id = 5 },
             };
 
             var calc = new Penta2015Calculator();
@@ -49,12 +49,12 @@ namespace MSOCoreTests
         public void CalculatorGetsRightAnswerWhenTie()
         {
             var data = new[] { 
-                new TestCalc { Rank = 1, PentaScore = "", Absent = false, Id = 1 },
-                new TestCalc { Rank = 3, PentaScore = "", Absent = false, Id = 2 },
-                new TestCalc { Rank = 5, PentaScore = "", Absent = false, Id = 3 },
-                new TestCalc { Rank = 0, PentaScore = "", Absent = true, Id = 13 },
-                new TestCalc { Rank = 4, PentaScore = "", Absent = false, Id = 4 },
-                new TestCalc { Rank = 1, PentaScore = "", Absent = false, Id = 5 },
+                new TestCalc { Rank = 1, PentaScore = 0f, Absent = false, Id = 1 },
+                new TestCalc { Rank = 3, PentaScore = 0f, Absent = false, Id = 2 },
+                new TestCalc { Rank = 5, PentaScore = 0f, Absent = false, Id = 3 },
+                new TestCalc { Rank = 0, PentaScore = 0f, Absent = true, Id = 13 },
+                new TestCalc { Rank = 4, PentaScore = 0f, Absent = false, Id = 4 },
+                new TestCalc { Rank = 1, PentaScore = 0f, Absent = false, Id = 5 },
             };
 
             var calc = new Penta2015Calculator();
@@ -72,18 +72,18 @@ namespace MSOCoreTests
         public void CalculatorGetsRightAnswerWhenTwoPerTeam()
         {
             var data = new[] { 
-                new TestCalc { Rank = 1, PentaScore = "", Absent = false, Id = 1 },
-                new TestCalc { Rank = 3, PentaScore = "", Absent = false, Id = 2 },
-                new TestCalc { Rank = 5, PentaScore = "", Absent = false, Id = 3 },
-                new TestCalc { Rank = 0, PentaScore = "", Absent = true, Id = 13 },
-                new TestCalc { Rank = 4, PentaScore = "", Absent = false, Id = 4 },
-                new TestCalc { Rank = 2, PentaScore = "", Absent = false, Id = 5 },
-                new TestCalc { Rank = 1, PentaScore = "", Absent = false, Id = 101 },
-                new TestCalc { Rank = 3, PentaScore = "", Absent = false, Id = 102 },
-                new TestCalc { Rank = 5, PentaScore = "", Absent = false, Id = 103 },
-                new TestCalc { Rank = 0, PentaScore = "", Absent = true, Id = 113 },
-                new TestCalc { Rank = 4, PentaScore = "", Absent = false, Id = 104 },
-                new TestCalc { Rank = 2, PentaScore = "", Absent = false, Id = 105 },
+                new TestCalc { Rank = 1, PentaScore = 0f, Absent = false, Id = 1 },
+                new TestCalc { Rank = 3, PentaScore = 0f, Absent = false, Id = 2 },
+                new TestCalc { Rank = 5, PentaScore = 0f, Absent = false, Id = 3 },
+                new TestCalc { Rank = 0, PentaScore = 0f, Absent = true, Id = 13 },
+                new TestCalc { Rank = 4, PentaScore = 0f, Absent = false, Id = 4 },
+                new TestCalc { Rank = 2, PentaScore = 0f, Absent = false, Id = 5 },
+                new TestCalc { Rank = 1, PentaScore = 0f, Absent = false, Id = 101 },
+                new TestCalc { Rank = 3, PentaScore = 0f, Absent = false, Id = 102 },
+                new TestCalc { Rank = 5, PentaScore = 0f, Absent = false, Id = 103 },
+                new TestCalc { Rank = 0, PentaScore = 0f, Absent = true, Id = 113 },
+                new TestCalc { Rank = 4, PentaScore = 0f, Absent = false, Id = 104 },
+                new TestCalc { Rank = 2, PentaScore = 0f, Absent = false, Id = 105 },
             };
 
             var calc = new Penta2015Calculator();
@@ -101,7 +101,7 @@ namespace MSOCoreTests
     public class TestCalc : IPentaCalculable
     {
         public int Rank { get; set; }
-        public string PentaScore { get; set; }
+        public float PentaScore { get; set; }
         public bool Absent { get; set; }
         public int Id { get; set; }
     }

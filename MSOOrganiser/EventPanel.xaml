@@ -9,6 +9,7 @@
              d:DesignHeight="300" d:DesignWidth="600">
     <UserControl.Resources>
         <local:ShowBlankIfZeroIntConverter x:Key="ShowBlankIfZeroIntConverter" />
+        <local:Show3DecPlacesConverter x:Key="Show3DecPlacesConverter" />
         <local:ShowCurrencyConverter x:Key="ShowCurrencyConverter" />
         <local:ShowDateOnlyConverter x:Key="ShowDateOnlyConverter" />
         <local:MedalToBackgroundColorConverter x:Key="MedalToBackgroundColorConverter" />
@@ -199,7 +200,7 @@
                             <DataGridTextColumn Header="Score" Binding="{Binding Score, Mode=TwoWay}" />
                             <DataGridCheckBoxColumn Header="Absent" Binding="{Binding Absent, Mode=TwoWay}" />
                             <DataGridTextColumn Header="TieBreak" Binding="{Binding TieBreak, Mode=TwoWay}" />
-                            <DataGridTextColumn IsReadOnly="True" Header="Pentamind" Binding="{Binding PentaScore}" />
+                            <DataGridTextColumn IsReadOnly="True" Header="Pentamind" Binding="{Binding PentaScore, Converter={StaticResource Show3DecPlacesConverter}}" />
                             <DataGridTextColumn Header="TeamOrPair" Binding="{Binding TeamOrPair, Mode=TwoWay}"  />
                             <DataGridTextColumn IsReadOnly="True" Header="PIN" Binding="{Binding PIN}"  />
                             <DataGridTemplateColumn  MinWidth="100" Header="View">

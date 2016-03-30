@@ -9,7 +9,7 @@ namespace MSOCore.Calculators
     public interface IPentaCalculable
     {
         int Rank { get; set; }
-        string PentaScore { get; set; }
+        float PentaScore { get; set; }
         bool Absent { get; set; }
     }
 
@@ -25,7 +25,7 @@ namespace MSOCore.Calculators
             foreach (var entry in entries)
             {
                 if (entry.Absent) {
-                    entry.PentaScore = "";
+                    entry.PentaScore = 0;
                     continue;
                 }
 
@@ -38,7 +38,7 @@ namespace MSOCore.Calculators
                 // Spread linearly, imaginary rank 0 = 100; last place = 0;
                 var myPentaScore = 100 * (numberOfTeams - myEffectiveRank) / numberOfTeams;
 
-                entry.PentaScore = myPentaScore.ToString();
+                entry.PentaScore = (float)myPentaScore;
             }
         }
     }

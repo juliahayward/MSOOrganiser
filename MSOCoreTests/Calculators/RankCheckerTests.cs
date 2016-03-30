@@ -15,12 +15,12 @@ namespace MSOCoreTests.Calculators
         public void CheckerGetsRightAnswerInSimpleCase()
         {
             var data = new[] { 
-                new TestCalc { Rank = 1, PentaScore = "", Absent = false, Id = 1 },
-                new TestCalc { Rank = 3, PentaScore = "", Absent = false, Id = 2 },
-                new TestCalc { Rank = 5, PentaScore = "", Absent = false, Id = 3 },
-                new TestCalc { Rank = 0, PentaScore = "", Absent = true, Id = 13 },
-                new TestCalc { Rank = 4, PentaScore = "", Absent = false, Id = 4 },
-                new TestCalc { Rank = 2, PentaScore = "", Absent = false, Id = 5 },
+                new TestCalc { Rank = 1, PentaScore = 0f, Absent = false, Id = 1 },
+                new TestCalc { Rank = 3, PentaScore = 0f, Absent = false, Id = 2 },
+                new TestCalc { Rank = 5, PentaScore = 0f, Absent = false, Id = 3 },
+                new TestCalc { Rank = 0, PentaScore = 0f, Absent = true, Id = 13 },
+                new TestCalc { Rank = 4, PentaScore = 0f, Absent = false, Id = 4 },
+                new TestCalc { Rank = 2, PentaScore = 0f, Absent = false, Id = 5 },
             };
 
             var c = new RankChecker();
@@ -31,12 +31,12 @@ namespace MSOCoreTests.Calculators
         public void CheckerCatchesZeroRank()
         {
             var data = new[] { 
-                new TestCalc { Rank = 1, PentaScore = "", Absent = false, Id = 1 },
-                new TestCalc { Rank = 3, PentaScore = "", Absent = false, Id = 2 },
-                new TestCalc { Rank = 5, PentaScore = "", Absent = false, Id = 3 },
-                new TestCalc { Rank = 0, PentaScore = "", Absent = false, Id = 13 },
-                new TestCalc { Rank = 4, PentaScore = "", Absent = false, Id = 4 },
-                new TestCalc { Rank = 2, PentaScore = "", Absent = false, Id = 5 },
+                new TestCalc { Rank = 1, PentaScore = 0f, Absent = false, Id = 1 },
+                new TestCalc { Rank = 3, PentaScore = 0f, Absent = false, Id = 2 },
+                new TestCalc { Rank = 5, PentaScore = 0f, Absent = false, Id = 3 },
+                new TestCalc { Rank = 0, PentaScore = 0f, Absent = false, Id = 13 },
+                new TestCalc { Rank = 4, PentaScore = 0f, Absent = false, Id = 4 },
+                new TestCalc { Rank = 2, PentaScore = 0f, Absent = false, Id = 5 },
             };
 
             var c = new RankChecker();
@@ -52,12 +52,12 @@ namespace MSOCoreTests.Calculators
         public void CheckerCatchesMissingRank()
         {
             var data = new[] { 
-                new TestCalc { Rank = 1, PentaScore = "", Absent = false, Id = 1 },
-                new TestCalc { Rank = 3, PentaScore = "", Absent = false, Id = 2 },
-                new TestCalc { Rank = 5, PentaScore = "", Absent = false, Id = 3 },
-                new TestCalc { Rank = 7, PentaScore = "", Absent = false, Id = 13 },
-                new TestCalc { Rank = 4, PentaScore = "", Absent = false, Id = 4 },
-                new TestCalc { Rank = 2, PentaScore = "", Absent = false, Id = 5 },
+                new TestCalc { Rank = 1, PentaScore = 0f, Absent = false, Id = 1 },
+                new TestCalc { Rank = 3, PentaScore = 0f, Absent = false, Id = 2 },
+                new TestCalc { Rank = 5, PentaScore = 0f, Absent = false, Id = 3 },
+                new TestCalc { Rank = 7, PentaScore = 0f, Absent = false, Id = 13 },
+                new TestCalc { Rank = 4, PentaScore = 0f, Absent = false, Id = 4 },
+                new TestCalc { Rank = 2, PentaScore = 0f, Absent = false, Id = 5 },
             };
 
             var c = new RankChecker();
@@ -73,12 +73,12 @@ namespace MSOCoreTests.Calculators
         public void CheckerCatchesDuplicateRank()
         {
             var data = new[] { 
-                new TestCalc { Rank = 1, PentaScore = "", Absent = false, Id = 1 },
-                new TestCalc { Rank = 3, PentaScore = "", Absent = false, Id = 2 },
-                new TestCalc { Rank = 5, PentaScore = "", Absent = false, Id = 3 },
-                new TestCalc { Rank = 3, PentaScore = "", Absent = false, Id = 13 },
-                new TestCalc { Rank = 4, PentaScore = "", Absent = false, Id = 4 },
-                new TestCalc { Rank = 2, PentaScore = "", Absent = false, Id = 5 },
+                new TestCalc { Rank = 1, PentaScore = 0f, Absent = false, Id = 1 },
+                new TestCalc { Rank = 3, PentaScore = 0f, Absent = false, Id = 2 },
+                new TestCalc { Rank = 5, PentaScore = 0f, Absent = false, Id = 3 },
+                new TestCalc { Rank = 3, PentaScore = 0f, Absent = false, Id = 13 },
+                new TestCalc { Rank = 4, PentaScore = 0f, Absent = false, Id = 4 },
+                new TestCalc { Rank = 2, PentaScore = 0f, Absent = false, Id = 5 },
             };
 
             var c = new RankChecker();
@@ -94,12 +94,12 @@ namespace MSOCoreTests.Calculators
         public void CheckerHandlesDuplicateRankWithGapAfter()
         {
             var data = new[] { 
-                new TestCalc { Rank = 1, PentaScore = "", Absent = false, Id = 1 },
-                new TestCalc { Rank = 3, PentaScore = "", Absent = false, Id = 2 },
-                new TestCalc { Rank = 5, PentaScore = "", Absent = false, Id = 3 },
-                new TestCalc { Rank = 3, PentaScore = "", Absent = false, Id = 13 },
-                new TestCalc { Rank = 6, PentaScore = "", Absent = false, Id = 4 },
-                new TestCalc { Rank = 2, PentaScore = "", Absent = false, Id = 5 },
+                new TestCalc { Rank = 1, PentaScore = 0f, Absent = false, Id = 1 },
+                new TestCalc { Rank = 3, PentaScore = 0f, Absent = false, Id = 2 },
+                new TestCalc { Rank = 5, PentaScore = 0f, Absent = false, Id = 3 },
+                new TestCalc { Rank = 3, PentaScore = 0f, Absent = false, Id = 13 },
+                new TestCalc { Rank = 6, PentaScore = 0f, Absent = false, Id = 4 },
+                new TestCalc { Rank = 2, PentaScore = 0f, Absent = false, Id = 5 },
             };
 
             var c = new RankChecker();
@@ -110,12 +110,12 @@ namespace MSOCoreTests.Calculators
         public void CheckerHandlesTeams()
         {
             var data = new[] { 
-                new TestCalc { Rank = 1, PentaScore = "", Absent = false, Id = 1 },
-                new TestCalc { Rank = 3, PentaScore = "", Absent = false, Id = 2 },
-                new TestCalc { Rank = 2, PentaScore = "", Absent = false, Id = 3 },
-                new TestCalc { Rank = 3, PentaScore = "", Absent = false, Id = 13 },
-                new TestCalc { Rank = 1, PentaScore = "", Absent = false, Id = 4 },
-                new TestCalc { Rank = 2, PentaScore = "", Absent = false, Id = 5 },
+                new TestCalc { Rank = 1, PentaScore = 0f, Absent = false, Id = 1 },
+                new TestCalc { Rank = 3, PentaScore = 0f, Absent = false, Id = 2 },
+                new TestCalc { Rank = 2, PentaScore = 0f, Absent = false, Id = 3 },
+                new TestCalc { Rank = 3, PentaScore = 0f, Absent = false, Id = 13 },
+                new TestCalc { Rank = 1, PentaScore = 0f, Absent = false, Id = 4 },
+                new TestCalc { Rank = 2, PentaScore = 0f, Absent = false, Id = 5 },
             };
 
             var c = new RankChecker();
@@ -126,12 +126,12 @@ namespace MSOCoreTests.Calculators
         public void CheckerCatchesMissingInTeams()
         {
             var data = new[] { 
-                new TestCalc { Rank = 1, PentaScore = "", Absent = false, Id = 1 },
-                new TestCalc { Rank = 3, PentaScore = "", Absent = false, Id = 2 },
-                new TestCalc { Rank = 2, PentaScore = "", Absent = false, Id = 3 },
-                new TestCalc { Rank = 4, PentaScore = "", Absent = false, Id = 13 },
-                new TestCalc { Rank = 1, PentaScore = "", Absent = false, Id = 4 },
-                new TestCalc { Rank = 2, PentaScore = "", Absent = false, Id = 5 },
+                new TestCalc { Rank = 1, PentaScore = 0f, Absent = false, Id = 1 },
+                new TestCalc { Rank = 3, PentaScore = 0f, Absent = false, Id = 2 },
+                new TestCalc { Rank = 2, PentaScore = 0f, Absent = false, Id = 3 },
+                new TestCalc { Rank = 4, PentaScore = 0f, Absent = false, Id = 13 },
+                new TestCalc { Rank = 1, PentaScore = 0f, Absent = false, Id = 4 },
+                new TestCalc { Rank = 2, PentaScore = 0f, Absent = false, Id = 5 },
             };
 
             var c = new RankChecker();

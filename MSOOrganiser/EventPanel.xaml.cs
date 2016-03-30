@@ -240,8 +240,8 @@ namespace MSOOrganiser
             public string Score { get; set; }
             public bool Absent { get; set; }
             public string TieBreak { get; set; }
-            private string _pentaScore;
-            public string PentaScore
+            private float _pentaScore;
+            public float PentaScore
             {
                 get { return _pentaScore; }
                 set
@@ -788,7 +788,7 @@ namespace MSOOrganiser
                     Score = e.e.Score,
                     Absent = e.e.Absent.HasValue ? e.e.Absent.Value : false,
                     TieBreak = e.e.Tie_break,
-                    PentaScore = e.e.Penta_Score.HasValue ? e.e.Penta_Score.ToString() : "",
+                    PentaScore = e.e.Penta_Score.HasValue ? e.e.Penta_Score.Value : 0,
                     TeamOrPair = e.e.Partner,
                     PIN = e.e.PIN.HasValue ? e.e.PIN.Value.ToString() : ""
                 });
@@ -854,6 +854,7 @@ namespace MSOOrganiser
                 entrant.Medal = (string.IsNullOrEmpty(e.Medal)) ? null : e.Medal;
                 entrant.Rank = e.Rank;
                 entrant.Score = e.Score;
+                if (e.Rank > 0) entrant.Penta_Score = e.PentaScore; else entrant.Penta_Score = null;
                 entrant.Tie_break = e.TieBreak;
                 entrant.Partner = e.TeamOrPair;
             }

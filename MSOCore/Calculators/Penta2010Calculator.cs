@@ -19,7 +19,7 @@ namespace MSOCore.Calculators
             {
                 if (entry.Absent)
                 {
-                    entry.PentaScore = "";
+                    entry.PentaScore = 0;
                     continue;
                 }
 
@@ -36,7 +36,7 @@ namespace MSOCore.Calculators
                 if (numberOfTeams < 10)
                     myPentaScore = myPentaScore * numberOfTeams / (numberOfTeams + 1);
 
-                entry.PentaScore = myPentaScore.ToString();
+                entry.PentaScore = (float)myPentaScore;
             }
         }
     }
