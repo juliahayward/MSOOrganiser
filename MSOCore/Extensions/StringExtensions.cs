@@ -10,7 +10,9 @@ namespace MSOCore.Extensions
     {
         public static string GetFlag(this string nationality)
         {
-            return string.Format("http://www.boardability.com/images/flags/{0}.jpg", nationality)
+            if (nationality == "") nationality = "default";
+
+            return string.Format("/content/images/flags/{0}.jpg", nationality)
                         .Replace(" ", "_").ToLower();
         }
 
