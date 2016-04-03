@@ -56,7 +56,7 @@ namespace MSOCore.Reports
                 .ToList();
 
             var results = context.Entrants
-                .Where(x => x.OlympiadId == currentOlympiad.Id && x.Penta_Score.HasValue && x.Penta_Score.Value > 0)
+                .Where(x => x.OlympiadId == currentOlympiad.Id && !x.Absent && x.Rank.HasValue && x.Penta_Score.HasValue)
                 .Join(context.Contestants, e => e.Mind_Sport_ID, c => c.Mind_Sport_ID, (e, c) => new { e, c })
                 .GroupBy(x => x.c.Mind_Sport_ID)
                 .ToList();

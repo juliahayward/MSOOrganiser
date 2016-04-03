@@ -9,14 +9,14 @@ using MSOCore.Calculators;
 namespace MSOCoreTests.Calculators
 {
     [TestClass]
-    public class Penta2010CalculatorTests
+    public class PentaPre2010CalculatorTests
     {
         [TestMethod]
         public void CalculatorThrowsOnMissingRank()
         {
             var data = new[] { new TestCalc { Rank = 0, PentaScore = 0, Absent = false, Id = 1 } };
 
-            var calc = new Penta2010Calculator();
+            var calc = new PentaPre2010Calculator();
             try
             {
                 calc.Calculate(1, data);
@@ -38,15 +38,15 @@ namespace MSOCoreTests.Calculators
                 new TestCalc { Rank = 2, PentaScore = 0f, Absent = false, Id = 5 },
             };
 
-            var calc = new Penta2010Calculator();
+            var calc = new PentaPre2010Calculator();
             calc.Calculate(1, data);
 
-            Assert.AreEqual(83.33334f, data[0].PentaScore, 0.00001);
-            Assert.AreEqual(41.66666f, data[1].PentaScore, 0.00001);
-            Assert.AreEqual(0, data[2].PentaScore, 0.00001);
-            Assert.AreEqual(0, data[3].PentaScore, 0.00001);
-            Assert.AreEqual(20.83333f, data[4].PentaScore, 0.00001);
-            Assert.AreEqual(62.5f, data[5].PentaScore, 0.00001);
+            Assert.AreEqual(100, data[0].PentaScore);
+            Assert.AreEqual(50, data[1].PentaScore);
+            Assert.AreEqual(0, data[2].PentaScore);
+            Assert.AreEqual(0, data[3].PentaScore);
+            Assert.AreEqual(25, data[4].PentaScore);
+            Assert.AreEqual(75, data[5].PentaScore);
         }
 
         [TestMethod]
@@ -67,7 +67,7 @@ namespace MSOCoreTests.Calculators
                 new TestCalc { Rank = 12, PentaScore = 0f, Absent = false, Id = 12 },
             };
 
-            var calc = new Penta2010Calculator();
+            var calc = new PentaPre2010Calculator();
             calc.Calculate(1, data);
 
             Assert.AreEqual(100f, data[0].PentaScore, 0.00001);
@@ -90,15 +90,15 @@ namespace MSOCoreTests.Calculators
                 new TestCalc { Rank = 1, PentaScore = 0f, Absent = false, Id = 5 },
             };
 
-            var calc = new Penta2010Calculator();
+            var calc = new PentaPre2010Calculator();
             calc.Calculate(1, data);
 
-            Assert.AreEqual(72.91666f, data[0].PentaScore, 0.00001);
-            Assert.AreEqual(41.66666f, data[1].PentaScore, 0.00001);
+            Assert.AreEqual(87.5, data[0].PentaScore);
+            Assert.AreEqual(50, data[1].PentaScore);
             Assert.AreEqual(0, data[2].PentaScore);
             Assert.AreEqual(0, data[3].PentaScore);
-            Assert.AreEqual(20.83333f, data[4].PentaScore, 0.00001);
-            Assert.AreEqual(72.91666f, data[5].PentaScore, 0.00001);
+            Assert.AreEqual(25, data[4].PentaScore);
+            Assert.AreEqual(87.5, data[5].PentaScore);
         }
 
         [TestMethod]
@@ -119,15 +119,15 @@ namespace MSOCoreTests.Calculators
                 new TestCalc { Rank = 2, PentaScore = 0f, Absent = false, Id = 105 },
             };
 
-            var calc = new Penta2010Calculator();
+            var calc = new PentaPre2010Calculator();
             calc.Calculate(2, data);
 
-            Assert.AreEqual(83.33333f, data[0].PentaScore, 0.00001);
-            Assert.AreEqual(41.66666f, data[1].PentaScore, 0.00001);
+            Assert.AreEqual(100, data[0].PentaScore);
+            Assert.AreEqual(50, data[1].PentaScore);
             Assert.AreEqual(0, data[2].PentaScore);
             Assert.AreEqual(0, data[3].PentaScore);
-            Assert.AreEqual(20.83333f, data[4].PentaScore, 0.00001);
-            Assert.AreEqual(62.5f, data[5].PentaScore, 0.00001);
+            Assert.AreEqual(25, data[4].PentaScore);
+            Assert.AreEqual(75, data[5].PentaScore);
         }
     }
 }

@@ -250,7 +250,11 @@ ALTER TABLE [Event Sess] ADD FOREIGN KEY (Session) REFERENCES [Session] (Session
 
 ALTER TABLE Events ALTER COLUMN OlympiadId INT NOT NULL
 
+-------------------------------------------------------------
+--- Make the Absent flag not null in Entrants
+-------------------------------------------------------------
 
+ALTER TABLE Entrants ALTER COLUMN Absent BIT NOT NULL
 
 
 

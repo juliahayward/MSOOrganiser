@@ -155,7 +155,7 @@ namespace MSOOrganiser
                     LastName = e.c.Lastname,
                     Rank = e.e.Rank.HasValue ? e.e.Rank.Value : 0,
                     Score = e.e.Score,
-                    Absent = e.e.Absent.HasValue ? e.e.Absent.Value : false,
+                    Absent = e.e.Absent,
                     TieBreak = e.e.Tie_break,
                     PentaScore = e.e.Penta_Score.HasValue ? e.e.Penta_Score.ToString() : "",
                     TeamOrPair = e.e.Partner,

@@ -6,8 +6,24 @@ using System.Threading.Tasks;
 
 namespace MSOCore.Calculators
 {
-    public class Penta2010Calculator
+    
+    public class Penta2010Calculator : PentaCalculator
     {
+        public override double Formula(int n, double p)
+        {
+            // Spread linearly; top = 100, bottom = 0 
+            var myPentaScore = 100 * (n - p) / (n - 1);
+            // Small events - introduce a fudge factor
+            if (n < 10)
+                myPentaScore = myPentaScore * n / (n + 1);
+            return myPentaScore;
+        }
+    }
+        
+    public abstract class PentaCalculator
+    {
+        public abstract double Formula(int numberOfTeams, double myPosition);
+
         public void Calculate(int numberInTeam, IEnumerable<IPentaCalculable> entries)
         {
             if (entries.Any(x => x.Absent == false && x.Rank == 0))
@@ -29,12 +45,7 @@ namespace MSOCore.Calculators
 
                 var myEffectiveRank = myRank + (numberOfTeamsOnMyRank - 1) / 2.0;
 
-                // Spread linearly; top = 100, bottom = 0 
-                var myPentaScore = 100 * (numberOfTeams - myEffectiveRank) / (numberOfTeams - 1);
-                
-                // Small events - introduce a fudge factor
-                if (numberOfTeams < 10)
-                    myPentaScore = myPentaScore * numberOfTeams / (numberOfTeams + 1);
+                var myPentaScore = Formula(numberOfTeams, myEffectiveRank);               
 
                 entry.PentaScore = (float)myPentaScore;
             }

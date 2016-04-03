@@ -25,7 +25,7 @@ namespace MSOCore
         public Nullable<int> Rank { get; set; }
         public string Score { get; set; }
         public string Tie_break { get; set; }
-        public Nullable<bool> Absent { get; set; }
+        public bool Absent { get; set; }
         public string Medal { get; set; }
         public Nullable<float> Penta_Score { get; set; }
         public Nullable<bool> MustUse { get; set; }
