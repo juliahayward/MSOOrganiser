@@ -20,6 +20,7 @@ using MSOOrganiser.Reports;
 using MSOOrganiser.Dialogs;
 using MSOOrganiser.UIUtilities;
 using System.Diagnostics;
+using AutoUpdaterForWPF;
 
 namespace MSOOrganiser
 {
@@ -28,6 +29,7 @@ namespace MSOOrganiser
     /// </summary>
     public partial class MainWindow : Window
     {
+        private bool _updateCheckDone = false;
         private int LoggedInUserId { get; set; }
         private int UserLoginId { get; set; }
 
@@ -38,6 +40,8 @@ namespace MSOOrganiser
 
         private void window_Loaded(object sender, EventArgs e)
         {
+            CheckForUpdates();
+
             var loginBox = new LoginWindow();
             loginBox.ShowDialog();
             if (loginBox.UserId == 0)
@@ -54,8 +58,27 @@ namespace MSOOrganiser
             dockPanel.Children.Add(panel);
         }
 
+        private void CheckForUpdates()
+        {
+            try
+            {
+                var autoUpdater = new AutoUpdater();
+                var result = autoUpdater.DoUpdate("http://apps.juliahayward.com/MSOOrganiser");
+                if (result == AutoUpdateResult.UpdateInitiated)
+                {
+                    this.Close();
+                    Environment.Exit(0);
+                }
+            }
+            catch (Exception) { /* don't bother logging */ }
+            _updateCheckDone = true;
+        }
+
         private void window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
+            if (!_updateCheckDone)
+                return;
+
             var context = new DataEntities();
             var user = context.Users.Find(LoggedInUserId);
             var login = user.UserLogins.Where(x => x.Id == UserLoginId && x.LogOutDate == null)
