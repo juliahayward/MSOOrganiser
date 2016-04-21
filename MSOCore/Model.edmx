@@ -21,6 +21,7 @@
           <EntitySet Name="Events" EntityType="DataModel.Store.Events" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="EventType" EntityType="DataModel.Store.EventType" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="Fees" EntityType="DataModel.Store.Fees" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="GameCategories" EntityType="DataModel.Store.GameCategories" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="Games" EntityType="DataModel.Store.Games" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="Information" EntityType="DataModel.Store.Information" store:Type="Tables" store:Schema="dbo" store:Name="Information">
             <DefiningQuery>SELECT 
@@ -103,6 +104,10 @@
           <AssociationSet Name="FK__Events__Olympiad__4D5F7D71" Association="DataModel.Store.FK__Events__Olympiad__4D5F7D71">
             <End Role="Olympiad Info" EntitySet="Olympiad Info" />
             <End Role="Events" EntitySet="Events" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Games__CategoryI__503BEA1C" Association="DataModel.Store.FK__Games__CategoryI__503BEA1C">
+            <End Role="GameCategories" EntitySet="GameCategories" />
+            <End Role="Games" EntitySet="Games" />
           </AssociationSet>
           <AssociationSet Name="FK__Location__Olympi__46B27FE2" Association="DataModel.Store.FK__Location__Olympi__46B27FE2">
             <End Role="Olympiad Info" EntitySet="Olympiad Info" />
@@ -235,6 +240,13 @@
           <Property Name="Concession" Type="money" />
           <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
         </EntityType>
+        <EntityType Name="GameCategories">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="NAME" Type="nvarchar" Nullable="false" MaxLength="256" />
+        </EntityType>
         <EntityType Name="Games">
           <Key>
             <PropertyRef Name="Id" />
@@ -247,6 +259,7 @@
           <Property Name="Logo" Type="varbinary(max)" />
           <Property Name="SSMA_TimeStamp" Type="timestamp" Nullable="false" StoreGeneratedPattern="Computed" />
           <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="CategoryId" Type="int" />
         </EntityType>
         <!--Errors Found During Generation:
       warning 6002: The table/view 'mso.dbo.Information' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.
@@ -562,6 +575,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK__Games__CategoryI__503BEA1C">
+          <End Role="GameCategories" Type="DataModel.Store.GameCategories" Multiplicity="0..1" />
+          <End Role="Games" Type="DataModel.Store.Games" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="GameCategories">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Games">
+              <PropertyRef Name="CategoryId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK__Location__Olympi__46B27FE2">
           <End Role="Olympiad Info" Type="DataModel.Store.Olympiad Info" Multiplicity="0..1" />
           <End Role="Location" Type="DataModel.Store.Location" Multiplicity="*" />
@@ -670,6 +695,11 @@
           <AssociationSet Name="FK__Entrants__EventI__4B7734FF" Association="DataModel.FK__Entrants__EventI__4B7734FF">
             <End Role="Event" EntitySet="Events" />
             <End Role="Entrant" EntitySet="Entrants" />
+          </AssociationSet>
+          <EntitySet Name="GameCategories" EntityType="DataModel.GameCategory" />
+          <AssociationSet Name="FK__Games__CategoryI__503BEA1C" Association="DataModel.FK__Games__CategoryI__503BEA1C">
+            <End Role="GameCategory" EntitySet="GameCategories" />
+            <End Role="Game" EntitySet="Games" />
           </AssociationSet>
         </EntityContainer>
         <EntityType Name="Badges___Misc">
@@ -792,6 +822,8 @@
           <Property Type="Binary" Name="SSMA_TimeStamp" Nullable="false" MaxLength="8" FixedLength="true" annotation:StoreGeneratedPattern="Computed" />
           <Property Type="Int32" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <NavigationProperty Name="Events" Relationship="DataModel.FK__Events__GameId__4A8310C6" FromRole="Game" ToRole="Event" />
+          <Property Type="Int32" Name="CategoryId" />
+          <NavigationProperty Name="GameCategory" Relationship="DataModel.FK__Games__CategoryI__503BEA1C" FromRole="Game" ToRole="GameCategory" />
         </EntityType>
         <EntityType Name="Information">
           <Key>
@@ -1148,6 +1180,26 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="GameCategory">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Type="Int32" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="String" Name="NAME" Nullable="false" MaxLength="256" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Games" Relationship="DataModel.FK__Games__CategoryI__503BEA1C" FromRole="GameCategory" ToRole="Game" />
+        </EntityType>
+        <Association Name="FK__Games__CategoryI__503BEA1C">
+          <End Type="DataModel.GameCategory" Role="GameCategory" Multiplicity="0..1" />
+          <End Type="DataModel.Game" Role="Game" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="GameCategory">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Game">
+              <PropertyRef Name="CategoryId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -1261,6 +1313,7 @@
           <EntitySetMapping Name="Games">
             <EntityTypeMapping TypeName="DataModel.Game">
               <MappingFragment StoreEntitySet="Games">
+                <ScalarProperty Name="CategoryId" ColumnName="CategoryId" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="SSMA_TimeStamp" ColumnName="SSMA_TimeStamp" />
                 <ScalarProperty Name="Logo" ColumnName="Logo" />
@@ -1489,6 +1542,14 @@
                 <ScalarProperty Name="OlympiadId" ColumnName="OlympiadId" />
                 <ScalarProperty Name="YEAR" ColumnName="YEAR" />
                 <ScalarProperty Name="Location1" ColumnName="Location" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="GameCategories">
+            <EntityTypeMapping TypeName="DataModel.GameCategory">
+              <MappingFragment StoreEntitySet="GameCategories">
+                <ScalarProperty Name="NAME" ColumnName="NAME" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

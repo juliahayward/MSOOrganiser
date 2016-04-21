@@ -27,7 +27,9 @@ namespace MSOCore
         public byte[] Logo { get; set; }
         public byte[] SSMA_TimeStamp { get; set; }
         public int Id { get; set; }
+        public Nullable<int> CategoryId { get; set; }
     
         public virtual ICollection<Event> Events { get; set; }
+        public virtual GameCategory GameCategory { get; set; }
     }
 }

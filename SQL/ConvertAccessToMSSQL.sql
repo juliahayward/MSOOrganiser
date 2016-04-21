@@ -256,6 +256,41 @@ ALTER TABLE Events ALTER COLUMN OlympiadId INT NOT NULL
 
 ALTER TABLE Entrants ALTER COLUMN Absent BIT NOT NULL
 
+-------------------------------------------------------------
+-- Game categories
+-------------------------------------------------------------
+
+create table GameCategories
+(
+	Id INT IDENTITY(1,1) NOT NULL,
+	NAME NVARCHAR(256) NOT NULL,
+	CONSTRAINT [GameCategories$PrimaryKey] PRIMARY KEY CLUSTERED 
+	(
+		[Id] ASC
+	) WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]) 
+ON [PRIMARY]
+
+INSERT INTO GameCategories VALUES ('Traditional Abstract')
+INSERT INTO GameCategories VALUES ('Modern Abstract')
+INSERT INTO GameCategories VALUES ('Eurogames')
+INSERT INTO GameCategories VALUES ('Card & Tile Games')
+INSERT INTO GameCategories VALUES ('Mental Disciplines')
+INSERT INTO GameCategories VALUES ('Decamentathlon')
+
+ALTER TABLE Games ADD CategoryId INT
+
+ALTER TABLE Games ADD FOREIGN KEY (CategoryId) REFERENCES [GameCategories] (Id)
+
+update Games SET CategoryId = 1 where code in ('SH','GO','CH','BA','OT','OW','GK','CC')
+update Games SET CategoryId = 2 where code in ('PA','AZ','LO','EN','TW','BO','AB','SU','KA','ST','CO','QR','BK','SZ')
+update Games SET CategoryId = 3 WHERE CODE IN ('DI','MO','SE','TM','PR','AL','HT','CA','AC','CK','TI','WO','CB','DN','RG')
+update Games SET CategoryId = 4 WHERE CODE IN ('SC','KC','BR','VE','MG','CR','CN','TL','LC','DO','RU','PO','TE')
+update Games SET CategoryId = 5 WHERE CODE IN ('MC','CT','PZ','MS','ME','MC','MA','QZ','CP')
+update Games SET CategoryId = 6 WHERE CODE IN ('DE')
+
+
+
+
 
 
 

@@ -84,12 +84,15 @@ namespace MSOOrganiser
         public class GameVm
         {
             public string Text { get; set; }
-            public string Value { get; set; }
+            public int Value { get; set; }
         }
 
         #region bindable properties
+
         public ObservableCollection<GameVm> Games { get; set; }
-        public string GameId { get; set; }
+        public ObservableCollection<GameCategoryVm> Categories { get; set; }
+
+        public int GameId { get; set; }
 
         private bool _IsDirty;
         public bool IsDirty
@@ -122,6 +125,23 @@ namespace MSOOrganiser
                     _Name = value;
                     IsDirty = true;
                     OnPropertyChanged("Name");
+                }
+            }
+        }
+        private int _CategoryId;
+        public int CategoryId
+        {
+            get
+            {
+                return _CategoryId;
+            }
+            set
+            {
+                if (_CategoryId != value)
+                {
+                    _CategoryId = value;
+                    IsDirty = true;
+                    OnPropertyChanged("CategoryId");
                 }
             }
         }
@@ -195,24 +215,38 @@ namespace MSOOrganiser
         }
         #endregion
 
+        public class GameCategoryVm
+        {
+            public int Id { get; set; }
+            public string Name { get; set; }
+        }
+
         public GamePanelVm()
         {
             Games = new ObservableCollection<GameVm>();
-            GameId = "0";
+            GameId = 0;
+
+            Categories = new ObservableCollection<GameCategoryVm>();
         }
 
         public void PopulateDropdown()
         {
             Games.Clear();
             var context = new DataEntities();
-            Games.Add(new GameVm { Text = "New Game", Value = "0" });
+
+            Categories.Clear();
+            Categories.Add(new GameCategoryVm() { Id = 0, Name = "(No category)" });
+            foreach (var c in context.GameCategories.Select(x => new GameCategoryVm { Id = x.Id, Name = x.NAME }))
+                Categories.Add(c);
+
+            Games.Add(new GameVm { Text = "New Game", Value = 0 });
             foreach (var game in context.Games.OrderBy(x => x.Code))
-                Games.Add(new GameVm { Text = game.Code + " : " + game.Mind_Sport, Value = game.Id.ToString() });
+                Games.Add(new GameVm { Text = game.Code + " : " + game.Mind_Sport, Value = game.Id });
         }
 
         public void PopulateGame()
         {
-            var id = int.Parse(GameId);
+            var id = GameId;
             if (id == 0)
             {
                 Name = "";
@@ -220,6 +254,7 @@ namespace MSOOrganiser
                 Contacts = "";
                 Equipment = "";
                 Rules = "";
+                CategoryId = 0;
             }
             else
             {
@@ -230,6 +265,7 @@ namespace MSOOrganiser
                 Contacts = dbGame.Contacts;
                 Equipment = dbGame.Equipment;
                 Rules = dbGame.Rules;
+                CategoryId = dbGame.CategoryId ?? 0;
             }
             IsDirty = false;
         }
@@ -242,7 +278,7 @@ namespace MSOOrganiser
         public void Save()
         {
             var context = new DataEntities();
-            var id = int.Parse(GameId);
+            var id = GameId;
             if (id == 0)
             {
                 var dbGame = new Game()
@@ -251,7 +287,8 @@ namespace MSOOrganiser
                     Code = this.Code,
                     Contacts = this.Contacts,
                     Equipment = this.Equipment,
-                    Rules = this.Rules
+                    Rules = this.Rules,
+                    CategoryId = (this.CategoryId == 0) ? (int?)null : this.CategoryId
                 };
                 context.Games.Add(dbGame);
                 id = dbGame.Id;
@@ -264,11 +301,12 @@ namespace MSOOrganiser
                 dbGame.Contacts = Contacts;
                 dbGame.Equipment = Equipment;
                 dbGame.Rules = Rules;
+                dbGame.CategoryId = (this.CategoryId == 0) ? (int?)null : this.CategoryId;
             }
             context.SaveChanges();
             IsDirty = false;
-            PopulateDropdown();
-            GameId = id.ToString();
+
+            GameId = id;
         }
     }
 }
