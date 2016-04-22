@@ -17,7 +17,7 @@ namespace MSOOrganiser.Reports
     {
         public void Print()
         {
-            var context = new DataEntities();
+            var context = DataEntitiesProvider.Provide();
             var currentOlympiad = context.Olympiad_Infoes.OrderByDescending(x => x.StartDate).First();
 
             var rg = new DonationReportGenerator();

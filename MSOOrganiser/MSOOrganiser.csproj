@@ -120,6 +120,7 @@
     <Compile Include="AddEventsToContestantWindow.xaml.cs">
       <DependentUpon>AddEventsToContestantWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Data\ConnectionStringUpdater.cs" />
     <Compile Include="Dialogs\AboutDialog.xaml.cs">
       <DependentUpon>AboutDialog.xaml</DependentUpon>
     </Compile>

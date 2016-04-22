@@ -68,7 +68,7 @@ namespace MSOOrganiser.Dialogs
             Sessions = new ObservableCollection<SessionVm>();
             Dates = new ObservableCollection<DateVm>();
 
-            var context = new DataEntities();
+            var context = DataEntitiesProvider.Provide();
             var currentOlympiad = context.Olympiad_Infoes.OrderByDescending(x => x.StartDate).First();
 
             for (var date = currentOlympiad.StartDate.Value; date <= currentOlympiad.FinishDate.Value; date = date.AddDays(1))

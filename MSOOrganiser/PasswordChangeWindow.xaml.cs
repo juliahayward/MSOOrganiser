@@ -32,7 +32,7 @@ namespace MSOOrganiser
             {
                 MessageBox.Show("New passwords don't match");
             }
-            var context = new DataEntities();
+            var context = DataEntitiesProvider.Provide();
             var user = context.Users.FirstOrDefault(x => x.PIN == UserId);
             if (user != null)
             {

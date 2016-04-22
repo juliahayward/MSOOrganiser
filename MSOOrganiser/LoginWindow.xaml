@@ -19,6 +19,7 @@
                     </PasswordBox>
                 </StackPanel>
                 <Button x:Name="loginButton" Margin="64,10,64,0" Click="loginButton_Click">Log In</Button>
+                <CheckBox x:Name="testData" Margin="64,10,64,0" >Use test data</CheckBox>
             </StackPanel>
         </StackPanel>
     </Grid>

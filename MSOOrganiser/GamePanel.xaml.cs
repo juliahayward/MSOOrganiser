@@ -232,7 +232,7 @@ namespace MSOOrganiser
         public void PopulateDropdown()
         {
             Games.Clear();
-            var context = new DataEntities();
+            var context = DataEntitiesProvider.Provide();
 
             Categories.Clear();
             Categories.Add(new GameCategoryVm() { Id = 0, Name = "(No category)" });
@@ -258,7 +258,7 @@ namespace MSOOrganiser
             }
             else
             {
-                var context = new DataEntities();
+                var context = DataEntitiesProvider.Provide();
                 var dbGame = context.Games.FirstOrDefault(x => x.Id == id);
                 Name = dbGame.Mind_Sport;
                 Code = dbGame.Code;
@@ -277,7 +277,7 @@ namespace MSOOrganiser
 
         public void Save()
         {
-            var context = new DataEntities();
+            var context = DataEntitiesProvider.Provide();
             var id = GameId;
             if (id == 0)
             {

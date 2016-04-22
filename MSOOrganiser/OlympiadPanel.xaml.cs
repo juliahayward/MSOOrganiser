@@ -431,7 +431,7 @@ namespace MSOOrganiser
         public void PopulateDropdown()
         {
             Olympiads.Clear();
-            var context = new DataEntities();
+            var context = DataEntitiesProvider.Provide();
             foreach (var o in context.Olympiad_Infoes.OrderByDescending(x => x.StartDate))
                 Olympiads.Add(new OlympiadVm { Text = o.FullTitle(), Id = o.Id });
 
@@ -453,7 +453,7 @@ namespace MSOOrganiser
             }
             else
             {
-                var context = new DataEntities();
+                var context = DataEntitiesProvider.Provide();
                 var o = context.Olympiad_Infoes.FirstOrDefault(x => x.Id == id);
                 YearOf = o.YearOf.ToString();
                 Number = o.Number;
@@ -514,7 +514,7 @@ namespace MSOOrganiser
 
         public void Save()
         {
-            var context = new DataEntities();
+            var context = DataEntitiesProvider.Provide();
             var id = OlympiadId;
             Olympiad_Info o;
             if (id == 0)

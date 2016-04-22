@@ -110,7 +110,7 @@ namespace MSOOrganiser
             Events = new ObservableCollection<EventVm>();
             Dates = new ObservableCollection<DateVm>();
 
-            var context = new DataEntities();
+            var context = DataEntitiesProvider.Provide();
             var currentOlympiad = context.Olympiad_Infoes.OrderByDescending(x => x.StartDate).First();
             foreach (var evt in context.Events
                 .Where(x => x.Code != null && x.Mind_Sport != null && x.OlympiadId == currentOlympiad.Id)

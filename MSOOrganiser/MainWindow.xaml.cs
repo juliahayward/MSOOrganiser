@@ -21,6 +21,7 @@ using MSOOrganiser.Dialogs;
 using MSOOrganiser.UIUtilities;
 using System.Diagnostics;
 using AutoUpdaterForWPF;
+using MSOOrganiser.Data;
 
 namespace MSOOrganiser
 {
@@ -42,6 +43,8 @@ namespace MSOOrganiser
         {
             CheckForUpdates();
 
+            ConnectionStringUpdater.Update();
+
             var loginBox = new LoginWindow();
             loginBox.ShowDialog();
             if (loginBox.UserId == 0)
@@ -51,7 +54,8 @@ namespace MSOOrganiser
             }
             LoggedInUserId = loginBox.UserId;
             UserLoginId = loginBox.UserLoginId;
-            this.Title += " --- logged in as " +loginBox.UserName;
+            this.Title += " --- logged in as " + loginBox.UserName
+                + " --- " + DataEntitiesProvider.Description();
 
             if (dockPanel.Children.Count > 2) dockPanel.Children.RemoveAt(2);
             var panel = new StartupPanel();
@@ -79,7 +83,7 @@ namespace MSOOrganiser
             if (!_updateCheckDone)
                 return;
 
-            var context = new DataEntities();
+            var context = DataEntitiesProvider.Provide();
             var user = context.Users.Find(LoggedInUserId);
             var login = user.UserLogins.Where(x => x.Id == UserLoginId && x.LogOutDate == null)
                 .OrderByDescending(x => x.LogInDate).FirstOrDefault();

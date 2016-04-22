@@ -33,7 +33,7 @@ namespace MSOCore.Reports
         {
             var medals = new[] { "Gold", "Silver", "Bronze" };
 
-            var context = new DataEntities();
+            var context = DataEntitiesProvider.Provide();
             var medalCounts = context.Entrants.Where(x => medals.Contains(x.Medal))
                 .GroupBy(x => x.Mind_Sport_ID.Value, x => x)
                 .Select(x => new 

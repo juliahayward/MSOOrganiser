@@ -110,7 +110,7 @@ namespace MSOOrganiser
         {
             UsePastEvent = true;
             PastEvents = new ObservableCollection<EventVm>();
-            var context = new DataEntities();
+            var context = DataEntitiesProvider.Provide();
             foreach (var evt in context.Events
                 .Where(x => x.Code != null && x.Mind_Sport != null)
                 .Select(x => new EventVm() { Id = x.EIN, Code = x.Code, Name = x.Mind_Sport })

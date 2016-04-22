@@ -44,7 +44,7 @@ namespace MSOCore.Reports
 
         public PentamindStandingsReportVm GetStandings()
         {
-            var context = new DataEntities();
+            var context = DataEntitiesProvider.Provide();
             var currentOlympiad = context.Olympiad_Infoes.OrderByDescending(x => x.StartDate).First();
 
             var vm = new PentamindStandingsReportVm();

@@ -18,7 +18,7 @@ namespace MSOCoreTests.Calculators
             var eventIndexer = new EventIndexer();
             eventIndexer.IndexEvents(9);            // 2014 in test data
 
-            var context = new DataEntities();
+            var context = DataEntitiesProvider.Provide();
             var events = context.Events.Where(x => x.OlympiadId == 9).ToList();
             // This depends on the sessions not being altered - unlikely now
             Assert.AreEqual(70, events.Max(e => e.Number));

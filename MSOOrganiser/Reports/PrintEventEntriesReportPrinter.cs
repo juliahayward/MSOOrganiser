@@ -15,7 +15,7 @@ namespace MSOOrganiser.Reports
     {
         public void Print(DateTime startDate, DateTime endDate)
         {
-            var context = new DataEntities();
+            var context = DataEntitiesProvider.Provide();
             var currentOlympiad = context.Olympiad_Infoes.OrderByDescending(x => x.StartDate).First();
             var events = context.Events.Where(x => x.OlympiadId == currentOlympiad.Id 
                 && x.Event_Sess.Any(sess => sess.Date >= startDate && sess.Date <= endDate));
@@ -25,7 +25,7 @@ namespace MSOOrganiser.Reports
 
         public void Print(IEnumerable<string> EventCodes)
         {
-            var context = new DataEntities();
+            var context = DataEntitiesProvider.Provide();
             var currentOlympiad = context.Olympiad_Infoes.OrderByDescending(x => x.StartDate).First();
             var juniorDate = DateTime.Now.AddYears(-currentOlympiad.JnrAge.Value - 1);
 
@@ -57,7 +57,7 @@ namespace MSOOrganiser.Reports
 
         public void Print(string EventCode)
         {
-            var context = new DataEntities();
+            var context = DataEntitiesProvider.Provide();
             var currentOlympiad = context.Olympiad_Infoes.OrderByDescending(x => x.StartDate).First();
             var juniorDate = DateTime.Now.AddYears(- currentOlympiad.JnrAge.Value - 1);
 

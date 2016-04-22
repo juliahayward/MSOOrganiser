@@ -71,7 +71,7 @@ namespace MSOCore.Reports
         public GamePlanReportVm GetItemsForLatest()
         {
             var vm = new GamePlanReportVm();
-            var context = new DataEntities();
+            var context = DataEntitiesProvider.Provide();
             var currentOlympiad = context.Olympiad_Infoes.OrderByDescending(x => x.StartDate).First();
             vm.OlympiadName = currentOlympiad.FullTitle();
 

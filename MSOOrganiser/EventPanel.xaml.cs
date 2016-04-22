@@ -684,7 +684,7 @@ namespace MSOOrganiser
         public void PopulateDropdown(string eventCode = null, int olympiadId = -1)
         {
             Events.Clear();
-            var context = new DataEntities();
+            var context = DataEntitiesProvider.Provide();
 
             Olympiad_Info currentOlympiad;
             if (olympiadId < 1)
@@ -730,7 +730,7 @@ namespace MSOOrganiser
             Entrants.Clear();
             if (EventCode == null) return;
             
-            var context = new DataEntities();
+            var context = DataEntitiesProvider.Provide();
             
             var olympiadId = CurrentOlympiadId;
             var evt = context.Events.First(x => x.OlympiadId == olympiadId && x.Code == EventCode);
@@ -805,7 +805,7 @@ namespace MSOOrganiser
 
         public void Save()
         {
-            var context = new DataEntities();
+            var context = DataEntitiesProvider.Provide();
             var evt = context.Events.First(x => x.OlympiadId == CurrentOlympiadId && x.Code == EventCode);
 
             // There's no "create" here

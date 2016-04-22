@@ -15,7 +15,7 @@ namespace MSOOrganiser.Reports
     {
         public void Print()
         {
-            var context = new DataEntities();
+            var context = DataEntitiesProvider.Provide();
 
             var games = context.Games.Where(x => !x.Code.StartsWith("ZZ"))
                 .OrderBy(x => x.Code)

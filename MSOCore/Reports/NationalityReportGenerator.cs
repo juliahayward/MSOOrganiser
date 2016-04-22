@@ -19,7 +19,7 @@ namespace MSOCore.Reports
 
         public IEnumerable<NationalityVm> GetItemsForLatest()
         {
-            var context = new DataEntities();
+            var context = DataEntitiesProvider.Provide();
             var olympiad = context.Olympiad_Infoes.OrderByDescending(x => x.StartDate).First();
 
             return GetItems(olympiad.Id);
@@ -27,7 +27,7 @@ namespace MSOCore.Reports
 
         public IEnumerable<NationalityVm> GetItems(int olympiadId)
         {
-            var context = new DataEntities();
+            var context = DataEntitiesProvider.Provide();
             var contIds = context.Entrants.Where(x => x.OlympiadId == olympiadId) 
                 .Select(x => x.Mind_Sport_ID).Distinct().ToList();
             var conts = context.Contestants.Where(x => contIds.Contains(x.Mind_Sport_ID))

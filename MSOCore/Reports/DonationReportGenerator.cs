@@ -17,7 +17,7 @@ namespace MSOCore.Reports
 
         public IEnumerable<DonationReportVm> GetItemsForLatest()
         {
-            var context = new DataEntities();
+            var context = DataEntitiesProvider.Provide();
             var olympiad = context.Olympiad_Infoes.OrderByDescending(x => x.StartDate).First();
 
             return GetItems(olympiad.Id);
@@ -25,7 +25,7 @@ namespace MSOCore.Reports
 
         public IEnumerable<DonationReportVm> GetItems(int olympiadId)
         {
-            var context = new DataEntities();
+            var context = DataEntitiesProvider.Provide();
             var donors = context.Entrants.Where(x => x.OlympiadId == olympiadId && x.Game_Code.StartsWith("DO"))
                 .Join(context.Contestants, x => x.Mind_Sport_ID, c => c.Mind_Sport_ID, (e, c) => new { e, c })
                 .Select(ec => new DonationReportVm

@@ -120,7 +120,7 @@ namespace MSOOrganiser
         public void PopulateDropdown()
         {
             Events.Clear();
-            var context = new DataEntities();
+            var context = DataEntitiesProvider.Provide();
             CurrentOlympiadId = context.Olympiad_Infoes.OrderByDescending(x => x.StartDate).First().Id;
             foreach (var e in context.Events.Where(x => !x.Code.StartsWith("ZZ") && x.OlympiadId == CurrentOlympiadId)
                 .OrderBy(x => x.Code))
@@ -136,7 +136,7 @@ namespace MSOOrganiser
             if (EventId == null) return;
             if (CurrentOlympiadId == null) return;
 
-            var context = new DataEntities();
+            var context = DataEntitiesProvider.Provide();
             var olympiadId = CurrentOlympiadId;
             var entrants = context.Entrants
                 .Join(context.Contestants, e => e.Mind_Sport_ID, c => c.Mind_Sport_ID, (e, c) => new { e = e, c = c })

@@ -28,7 +28,10 @@ namespace MSOOrganiser
 
         private void loginButton_Click(object sender, RoutedEventArgs e)
         {
-            var context = new DataEntities();
+            // this is not good - should pass all stuff out of dialog and 
+            DataEntitiesProvider.IsProduction = !testData.IsChecked.Value;
+
+            var context = DataEntitiesProvider.Provide();
             var user = context.Users.FirstOrDefault(x => x.Name == usernameBox.Text);
             if (user != null && VerifyPassword(context, user, passwordBox.Password))
             {
@@ -38,6 +41,7 @@ namespace MSOOrganiser
                 user.UserLogins.Add(login);
                 context.SaveChanges();
                 UserLoginId = login.Id;
+                UseTestData = testData.IsChecked.Value;
             }
             else
                 UserId = 0;
@@ -49,6 +53,7 @@ namespace MSOOrganiser
         public int UserId { get; set; }
         public string UserName { get; set; }
         public int UserLoginId { get; set; }
+        public bool UseTestData { get; set; }
 
         private void usernameBox_KeyDown(object sender, KeyEventArgs e)
         {

@@ -718,7 +718,7 @@ private string _Notes;
         public void PopulateDropdown()
         {
             Contestants.Clear();
-            var context = new DataEntities();
+            var context = DataEntitiesProvider.Provide();
     
             if (FilterFirstName == "" && FilterLastName == "")
                 Contestants.Add(new ContestantVm { Text = "New Competitor", Value = "0" });
@@ -734,7 +734,7 @@ private string _Notes;
         public void PopulateDropdown(int contestantId)
         {
             Contestants.Clear();
-            var context = new DataEntities();
+            var context = DataEntitiesProvider.Provide();
             foreach (var c in context.Contestants
                 .Where(x => x.Mind_Sport_ID == contestantId))
                 Contestants.Add(new ContestantVm { Text = c.Firstname + " " + c.Lastname, Value = c.Mind_Sport_ID.ToString() });
@@ -745,7 +745,7 @@ private string _Notes;
         public void PopulateOlympiadDropdown()
         {
             Olympiads.Clear();
-            var context = new DataEntities();
+            var context = DataEntitiesProvider.Provide();
             foreach (var c in context.Olympiad_Infoes
                 .OrderByDescending(x => x.StartDate))
                 Olympiads.Add(new OlympiadVm { Text = c.FullTitle(), Value = c.Id.ToString() });
@@ -758,7 +758,7 @@ private string _Notes;
             if (ContestantId == null) return;
             if (CurrentOlympiadId == null) return;
 
-            var context = new DataEntities();
+            var context = DataEntitiesProvider.Provide();
             var olympiadId = CurrentOlympiadId;
             var contestantId = int.Parse(ContestantId);
             var entrants = context.Entrants
@@ -790,7 +790,7 @@ private string _Notes;
             if (ContestantId == null) return;
             if (CurrentOlympiadId == null) return;
 
-            var context = new DataEntities();
+            var context = DataEntitiesProvider.Provide();
             var olympiadId = CurrentOlympiadId;
             var contestantId = int.Parse(ContestantId);
             var payments = context.Payments.Where(x => x.OlympiadId == olympiadId && x.MindSportsID == contestantId)
@@ -856,7 +856,7 @@ private string _Notes;
             }
             else
             {
-                var context = new DataEntities();
+                var context = DataEntitiesProvider.Provide();
                 var dbCon = context.Contestants.FirstOrDefault(x => x.Mind_Sport_ID == id);
                 Title = dbCon.Title;
                 FirstName = dbCon.Firstname;
@@ -894,7 +894,7 @@ private string _Notes;
 
         public void Save()
         {
-            var context = new DataEntities();
+            var context = DataEntitiesProvider.Provide();
             var id = int.Parse(ContestantId);
             if (id == 0)
             {

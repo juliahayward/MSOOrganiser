@@ -28,7 +28,7 @@ namespace MSOCore.Reports
 
         public IEnumerable<MedalTableVm> GetItemsForLatest()
         {
-            var context = new DataEntities();
+            var context = DataEntitiesProvider.Provide();
             var olympiad = context.Olympiad_Infoes.OrderByDescending(x => x.StartDate).First();
 
             return GetItems(olympiad.Id);
@@ -36,7 +36,7 @@ namespace MSOCore.Reports
 
         public IEnumerable<MedalTableVm> GetItems(int olympiadId)
         {
-            var context = new DataEntities();
+            var context = DataEntitiesProvider.Provide();
             var entrants = context.Entrants.Where(x => x.OlympiadId == olympiadId)
                 .Join(context.Contestants, x => x.Mind_Sport_ID, c => c.Mind_Sport_ID, (e, c) => new { e, c })
                 .Where(ec => ec.e.Medal != null && ec.e.Medal != "")

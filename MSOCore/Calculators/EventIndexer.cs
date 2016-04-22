@@ -16,7 +16,7 @@ namespace MSOCore.Calculators
         /// <param name="olympiadId"></param>
         public void IndexEvents(int olympiadId)
         {
-            var context = new DataEntities();
+            var context = DataEntitiesProvider.Provide();
             var events = context.Events.Where(x => x.OlympiadId == olympiadId && x.Event_Sess.Any())
                 .OrderBy(x => x.Event_Sess.Min(es => es.Date))
                 .ThenBy(x => x.Event_Sess.Min(es => es.Session1.StartTime))

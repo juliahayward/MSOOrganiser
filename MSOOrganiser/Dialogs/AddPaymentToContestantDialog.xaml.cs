@@ -63,7 +63,7 @@ namespace MSOOrganiser.Dialogs
         {
             PaymentMethods = new ObservableCollection<PaymentMethodVm>();
 
-            var context = new DataEntities();
+            var context = DataEntitiesProvider.Provide();
 
             foreach (var p in context.Payment_Methods)
                 PaymentMethods.Add(new PaymentMethodVm() { Text = p.Payment_Method1 });

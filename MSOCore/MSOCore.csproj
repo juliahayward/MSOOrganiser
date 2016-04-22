@@ -60,6 +60,7 @@
     <Compile Include="Contestant.cs">
       <DependentUpon>Model.tt</DependentUpon>
     </Compile>
+    <Compile Include="DataEntities.cs" />
     <Compile Include="Domain\Contestant.cs" />
     <Compile Include="Domain\Entrant.cs" />
     <Compile Include="Domain\Fee.cs" />

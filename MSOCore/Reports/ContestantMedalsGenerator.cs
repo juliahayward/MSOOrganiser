@@ -46,7 +46,7 @@ namespace MSOCore.Reports
 
         public ContestantVm GetModel(int id)
         {
-            var context = new DataEntities();
+            var context = DataEntitiesProvider.Provide();
 
             var contestant = context.Contestants.First(x => x.Mind_Sport_ID == id);
 

@@ -33,7 +33,7 @@ namespace MSOCore.Reports
 
         public YearMedalsVm GetModel(int year)
         {
-            var context = new DataEntities();
+            var context = DataEntitiesProvider.Provide();
 
             var olympiadId = context.Olympiad_Infoes.First(x => x.YearOf == year).Id;
 

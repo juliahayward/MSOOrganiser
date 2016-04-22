@@ -27,7 +27,7 @@ namespace MSOCore.Reports
         public TodaysEventsVm GetEvents(DateTime date)
         {
             var vm = new TodaysEventsVm();
-            var context = new DataEntities();
+            var context = DataEntitiesProvider.Provide();
             var currentOlympiad = context.Olympiad_Infoes.Where(x => x.StartDate <= date && x.FinishDate >= date).First();
             vm.OlympiadName = currentOlympiad.FullTitle();
 

@@ -57,7 +57,7 @@ namespace MSOOrganiser
         public AddEventsToContestantWindowVm(int olympiadId, IEnumerable<string> selectedEvents, IEnumerable<string> nonEditableCodes)
         {
             Events = new ObservableCollection<EventVm>();
-            var context = new DataEntities();
+            var context = DataEntitiesProvider.Provide();
             foreach (var evt in context.Events
                 .Where(x => x.Code != null && x.Mind_Sport != null && x.OlympiadId == olympiadId)
                 .Select(x => new EventVm() { Id = x.EIN, Code = x.Code, Name = x.Mind_Sport })

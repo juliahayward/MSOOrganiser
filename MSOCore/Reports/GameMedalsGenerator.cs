@@ -32,7 +32,7 @@ namespace MSOCore.Reports
 
         public GameMedalsVm GetModel(string gameCode)
         {
-            var context = new DataEntities();
+            var context = DataEntitiesProvider.Provide();
 
             var gameName = context.Games.First(x => x.Code == gameCode).Mind_Sport;
 

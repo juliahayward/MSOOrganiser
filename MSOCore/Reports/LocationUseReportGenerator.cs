@@ -81,7 +81,7 @@ namespace MSOCore.Reports
         public LocationUseReportVm GetItemsForLatest()
         {
             var vm = new LocationUseReportVm();
-            var context = new DataEntities();
+            var context = DataEntitiesProvider.Provide();
             var currentOlympiad = context.Olympiad_Infoes.OrderByDescending(x => x.StartDate).First();
             vm.OlympiadName = currentOlympiad.FullTitle();
             vm.StartDate = currentOlympiad.StartDate.Value;

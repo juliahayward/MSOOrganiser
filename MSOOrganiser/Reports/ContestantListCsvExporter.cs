@@ -23,7 +23,7 @@ namespace MSOOrganiser.Reports
             {
                 string filename = dlg.FileName;
 
-                var context = new DataEntities();
+                var context = DataEntitiesProvider.Provide();
                 var olympiad = context.Olympiad_Infoes
                     .OrderByDescending(x => x.StartDate)
                     .First();

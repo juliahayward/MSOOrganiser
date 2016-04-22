@@ -61,7 +61,7 @@ namespace MSOCore.Reports
 
         public MedalFormsVm GetItemsForLatest(string eventCode)
         {
-            var context = new DataEntities();
+            var context = DataEntitiesProvider.Provide();
             var currentOlympiad = context.Olympiad_Infoes.OrderByDescending(x => x.StartDate).First();
 
             var events = currentOlympiad.Events.Where(x => x.Code == eventCode);
@@ -73,7 +73,7 @@ namespace MSOCore.Reports
 
         public MedalFormsVm GetItemsForLatest(DateTime startDate, DateTime endDate)
         {
-            var context = new DataEntities();
+            var context = DataEntitiesProvider.Provide();
             var currentOlympiad = context.Olympiad_Infoes.OrderByDescending(x => x.StartDate).First();
             var events = currentOlympiad.Events
                 .Where(x => x.Event_Sess.Any(sess => sess.Date >= startDate && sess.Date <= endDate));
