@@ -54,7 +54,7 @@ namespace MSOCore.Reports
                     ContestantId = ecv.ec.c.Mind_Sport_ID,
                     FirstName = ecv.ec.c.Firstname,
                     LastName = ecv.ec.c.Lastname,
-                    Nationality = ecv.ec.c.Nationality
+                    Nationality = ecv.ec.c.Nationality ?? "default"
                 })
                 .ToList()
                 .OrderByDescending(x => x.Year).ThenBy(x => x.EventCode).ThenBy(x => x.Rank).ThenBy(x => x.Medal.MedalRank());

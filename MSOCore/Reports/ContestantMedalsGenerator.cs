@@ -82,7 +82,7 @@ namespace MSOCore.Reports
             {
                 Id = id,
                 Name = string.Format("{0} {1}", contestant.Firstname, contestant.Lastname),
-                Nationality = contestant.Nationality,
+                Nationality = contestant.Nationality ?? "default",
                 Medals = medalEvents,
                 Grandmasters = gmCodes,
                 InternationalMasters = imCodes,

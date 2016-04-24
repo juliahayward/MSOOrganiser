@@ -54,7 +54,7 @@ namespace MSOCore.Reports
                     Bronzes = mc.Bronzes,
                     FirstName = c.Firstname,
                     LastName = c.Lastname,
-                    Nationality = c.Nationality
+                    Nationality = c.Nationality ?? "default"
                 })
                 .ToList()
                 .OrderByDescending(m => m.Golds).ThenByDescending(x => x.Silvers).ThenByDescending(x => x.Bronzes);
