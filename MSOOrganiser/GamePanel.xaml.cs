@@ -272,7 +272,12 @@ namespace MSOOrganiser
 
         public List<string> Validate()
         {
-            return new List<string>();
+            var context = DataEntitiesProvider.Provide();
+            
+            var errors = new List<string>();
+            if (GameId == 0 && context.Games.Any(x => x.Code == Code))
+                errors.Add("Code " + Code + " is already being used");
+            return errors;
         }
 
         public void Save()
