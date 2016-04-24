@@ -42,10 +42,12 @@ namespace MSOCore.Reports
             public IEnumerable<ContestantStanding> Standings { get; set; }
         }
 
-        public PentamindStandingsReportVm GetStandings()
+        public PentamindStandingsReportVm GetStandings(int? year)
         {
             var context = DataEntitiesProvider.Provide();
-            var currentOlympiad = context.Olympiad_Infoes.OrderByDescending(x => x.StartDate).First();
+            var currentOlympiad = (year.HasValue)
+                ? context.Olympiad_Infoes.Where(x => x.StartDate.HasValue && x.StartDate.Value.Year == year.Value).First()
+                : context.Olympiad_Infoes.OrderByDescending(x => x.StartDate).First();
 
             var vm = new PentamindStandingsReportVm();
             vm.OlympiadTitle = currentOlympiad.FullTitle();

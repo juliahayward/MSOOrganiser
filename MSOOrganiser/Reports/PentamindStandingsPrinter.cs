@@ -17,7 +17,7 @@ namespace MSOOrganiser.Reports
         public void Print()
         {
             var rg = new PentamindStandingsGenerator();
-            var results = rg.GetStandings();
+            var results = rg.GetStandings(null);
 
             PrintDialog dlg = new PrintDialog();
             if ((bool)dlg.ShowDialog().GetValueOrDefault())

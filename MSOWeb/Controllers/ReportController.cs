@@ -57,11 +57,21 @@ namespace MSOWeb.Controllers
             return View(model);
         }
 
-        public ActionResult PentamindStandings()
+        public ActionResult PentamindStandings(int? year)
         {
             var generator = new PentamindStandingsGenerator();
 
-            var model = generator.GetStandings();
+            var model = generator.GetStandings(year);
+
+            return View(model);
+        }
+
+        // For evaluation only
+        public ActionResult PentamindStandings4Cats(int? year)
+        {
+            var generator = new PentamindStandings4CatsGenerator();
+
+            var model = generator.GetStandings(year);
 
             return View(model);
         }
