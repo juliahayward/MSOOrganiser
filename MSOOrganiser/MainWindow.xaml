@@ -15,7 +15,9 @@
                 <MenuItem Header="Olympiads" Click="olympiadsMenuItem_Click"/>
                 <MenuItem Header="Games" Click="gamesMenuItem_Click"/>
                 <MenuItem Header="Competitors" Click="competitorsMenuItem_Click"/>
-                <MenuItem Header="Events" IsEnabled="False"/>
+                <MenuItem Header="Events">
+                    <MenuItem Header="Copy from Previous Year" Click="copyEventsMenuItem_Click"/>
+                </MenuItem>
                 <MenuItem Header="Results">
                     <MenuItem Header="Display results" Click="displayResultsMenuItem_Click"/>
                     <MenuItem Header="Edit Results" Click="resultsMenuItem_Click" />

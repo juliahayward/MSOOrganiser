@@ -328,6 +328,37 @@ namespace MSOOrganiser
             Process.Start("http://www.juliahayward.com/MSO/Help.html");
         }
 
+        private void copyEventsMenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            var context = DataEntitiesProvider.Provide();
+            var thisOlympiad = context.Olympiad_Infoes.OrderByDescending(x => x.StartDate).First();
+
+            if (thisOlympiad.Events.Any())
+            {
+                MessageBox.Show("You cannot do this if the current Olympiad already has events.");
+                return;
+            }
+
+            var previousOlympiad = context.Olympiad_Infoes.OrderByDescending(x => x.StartDate).Skip(1).First();
+
+            this.Status.Text = "Copying from " + previousOlympiad.YearOf + " to " + thisOlympiad.YearOf;
+            var dateShift = thisOlympiad.StartDate.Value.Subtract(previousOlympiad.StartDate.Value);
+
+            foreach (var evt in previousOlympiad.Events)
+            {
+                var newE = evt.CopyTo(thisOlympiad);
+                // This is a copy, so move the dates along by the same amount
+                foreach (var es in newE.Event_Sess)
+                {
+                    es.Date = es.Date.Value.Add(dateShift);
+                }
+                thisOlympiad.Events.Add(newE);
+            }
+
+            context.SaveChanges();
+            this.Status.Text = "";
+        }
+
        
     }
 }

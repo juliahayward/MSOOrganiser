@@ -61,8 +61,11 @@
       <DependentUpon>Model.tt</DependentUpon>
     </Compile>
     <Compile Include="DataEntities.cs" />
+    <Compile Include="Domain\Arbiter.cs" />
     <Compile Include="Domain\Contestant.cs" />
     <Compile Include="Domain\Entrant.cs" />
+    <Compile Include="Domain\Event.cs" />
+    <Compile Include="Domain\Event_Sess.cs" />
     <Compile Include="Domain\Fee.cs" />
     <Compile Include="Domain\Olympiad_Info.cs" />
     <Compile Include="Entrant.cs">
