@@ -251,6 +251,8 @@ namespace MSOOrganiser
             public string Medal { get; set; }
             public string FirstName { get; set; }
             public string LastName { get; set; }
+            public bool IsJunior { get; set; }
+            public string Junior { get { return IsJunior ? "JNR" : "";  } }
             public int Rank { get; set; }
             public string Score { get; set; }
             public bool Absent { get; set; }
@@ -748,6 +750,7 @@ namespace MSOOrganiser
             var context = DataEntitiesProvider.Provide();
             
             var olympiadId = CurrentOlympiadId;
+            var currentOlympiad = context.Olympiad_Infoes.First(x => x.Id == CurrentOlympiadId);
             var evt = context.Events.First(x => x.OlympiadId == olympiadId && x.Code == EventCode);
 
             EventId = evt.EIN;
@@ -790,6 +793,8 @@ namespace MSOOrganiser
                 .OrderBy(x => x.e.Rank)
                 .ThenBy(x => x.c.Lastname).ToList();
 
+            var juniorDate = DateTime.Now.AddYears(-currentOlympiad.JnrAge.Value - 1);
+
             foreach (var e in entrants)
             {
                 Entrants.Add(new EntrantVm(this)
@@ -799,6 +804,7 @@ namespace MSOOrganiser
                     Medal = e.e.Medal ?? "",
                     FirstName = e.c.Firstname,
                     LastName = e.c.Lastname,
+                    IsJunior = e.c.DateofBirth.HasValue && e.c.DateofBirth > juniorDate, 
                     Rank = e.e.Rank.HasValue ? e.e.Rank.Value : 0,
                     Score = e.e.Score,
                     Absent = e.e.Absent,

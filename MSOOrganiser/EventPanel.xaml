@@ -193,6 +193,7 @@
                             </DataGridTextColumn -->
                             <DataGridTextColumn IsReadOnly="True" Header="FirstName" Binding="{Binding FirstName}" />
                             <DataGridTextColumn IsReadOnly="True" Header="LastName" Binding="{Binding LastName}" />
+                            <DataGridTextColumn IsReadOnly="True" Header="" Binding="{Binding Junior}" />
                             <DataGridTextColumn Header="Rank" Binding="{Binding Rank, Converter={StaticResource ShowBlankIfZeroIntConverter}, Mode=TwoWay}">
                                 <DataGridTextColumn.ElementStyle>
                                     <Style TargetType="TextBlock">
