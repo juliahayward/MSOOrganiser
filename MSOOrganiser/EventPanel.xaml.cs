@@ -19,6 +19,7 @@ using MSOCore.Models;
 using MSOOrganiser.Dialogs;
 using MSOCore.Extensions;
 using MSOOrganiser.UIUtilities;
+using JuliaHayward.Common.Environment;
 
 namespace MSOOrganiser
 {
@@ -31,6 +32,13 @@ namespace MSOOrganiser
         {
             InitializeComponent();
             DataContext = new ResultsPanelVm();
+
+            if (!JuliaEnvironment.CurrentEnvironment.IsDebug())
+            {
+                dataGrid2.Columns[0].Visibility = Visibility.Collapsed;
+                dataGrid.Columns[0].Visibility = Visibility.Collapsed;
+                dataGrid.Columns[1].Visibility = Visibility.Collapsed;
+            }
         }
 
         public ResultsPanelVm ViewModel
@@ -173,6 +181,13 @@ namespace MSOOrganiser
                 }
                 ViewModel.NumSessions = ViewModel.Sessions.Sum(x => x.Worth);
             }
+        }
+
+        private void deleteSession_Click(object sender, RoutedEventArgs e)
+        {
+            var sessionToDelete = ((FrameworkElement)sender).DataContext as ResultsPanelVm.SessionVm;
+            ViewModel.Sessions.Remove(sessionToDelete);
+            ViewModel.IsDirty = true;
         }
     }
 

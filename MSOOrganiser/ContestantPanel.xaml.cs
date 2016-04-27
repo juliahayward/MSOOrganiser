@@ -1,4 +1,5 @@
-﻿using MSOCore;
+﻿using JuliaHayward.Common.Environment;
+using MSOCore;
 using MSOCore.Models;
 using MSOOrganiser.Dialogs;
 using MSOOrganiser.Events;
@@ -31,6 +32,12 @@ namespace MSOOrganiser
         {
             InitializeComponent();
             DataContext = new ContestantPanelVm();
+
+            if (!JuliaEnvironment.CurrentEnvironment.IsDebug())
+            {
+                dataGrid.Columns[0].Visibility = Visibility.Collapsed;
+                paymentDataGrid.Columns[0].Visibility = Visibility.Collapsed;
+            }
         }
 
         public ContestantPanelVm ViewModel

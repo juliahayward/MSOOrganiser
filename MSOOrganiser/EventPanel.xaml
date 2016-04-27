@@ -127,7 +127,7 @@
                         <Label Width="100" VerticalAlignment="Top">Sessions:</Label>
                         <xctk:IntegerUpDown Value="{Binding NumSessions, Mode=TwoWay}" IsEnabled="False" Minimum="0" Maximum="10" Width="40" VerticalAlignment="Top"></xctk:IntegerUpDown>
                         <Button VerticalAlignment="Top" Click="addSession_Click">Add Session</Button>
-                    <DataGrid CanUserAddRows="False" CanUserResizeColumns="True" CanUserSortColumns="True"
+                    <DataGrid Name="dataGrid2" CanUserAddRows="False" CanUserResizeColumns="True" CanUserSortColumns="True"
                               AutoGenerateColumns="False"
                             Width="420" IsReadOnly="True" ItemsSource="{Binding Sessions}">
                         <DataGrid.Columns>
@@ -137,7 +137,16 @@
                             <DataGridTextColumn Header="Start" Binding="{Binding Start}" />
                             <DataGridTextColumn Header="End" Binding="{Binding End}" />
                             <DataGridTextColumn Header="Worth" Binding="{Binding Worth}" />
-                        </DataGrid.Columns>
+                                <DataGridTemplateColumn  MinWidth="100" Header="">
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <Grid>
+                                                <Button Click="deleteSession_Click">Delete</Button>
+                                            </Grid>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
+                            </DataGrid.Columns>
                     </DataGrid>
                     </StackPanel>
                 </StackPanel>

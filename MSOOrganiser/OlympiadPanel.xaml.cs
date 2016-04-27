@@ -1,4 +1,5 @@
-﻿using MSOCore;
+﻿using JuliaHayward.Common.Environment;
+using MSOCore;
 using MSOCore.Calculators;
 using MSOCore.Models;
 using MSOOrganiser.Dialogs;
@@ -32,6 +33,12 @@ namespace MSOOrganiser
         {
             InitializeComponent();
             DataContext = new OlympiadPanelVm();
+
+            if (!JuliaEnvironment.CurrentEnvironment.IsDebug())
+            {
+                dataGrid.Columns[0].Visibility = Visibility.Collapsed;
+                locationsDataGrid.Columns[0].Visibility = Visibility.Collapsed;
+            }
         }
 
         // A delegate type for hooking up change notifications.
