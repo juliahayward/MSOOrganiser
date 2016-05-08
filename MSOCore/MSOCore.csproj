@@ -46,6 +46,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ApiLogic\OlympiadEventsApiLogic.cs" />
     <Compile Include="Arbiter.cs">
       <DependentUpon>Model.tt</DependentUpon>
     </Compile>
