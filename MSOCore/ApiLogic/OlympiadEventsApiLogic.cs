@@ -50,5 +50,18 @@ namespace MSOCore.ApiLogic
 
             return vm;
         }
+
+        public void AddEventEntry(string json)
+        {
+            var context = DataEntitiesProvider.Provide();
+
+            var entryJson = new EntryJson()
+            {
+                JsonText = json
+            };
+
+            context.EntryJsons.Add(entryJson);
+            context.SaveChanges();
+        }
     }
 }

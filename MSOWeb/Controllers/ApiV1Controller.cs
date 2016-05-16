@@ -16,5 +16,20 @@ namespace MSOWeb.Controllers
             return Json(l.GetOlympiadEvents(), JsonRequestBehavior.AllowGet);
         }
 
+        [HttpPost]
+        public ActionResult AddEventEntry(string data)
+        {
+            var l = new OlympiadEventsApiLogic();
+            try
+            {
+                l.AddEventEntry(data);
+                return Json(new { success = true });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, message = ex.Message });
+            }
+        }
+
     }
 }

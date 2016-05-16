@@ -72,6 +72,9 @@
     <Compile Include="Entrant.cs">
       <DependentUpon>Model.tt</DependentUpon>
     </Compile>
+    <Compile Include="EntryJson.cs">
+      <DependentUpon>Model.tt</DependentUpon>
+    </Compile>
     <Compile Include="Event.cs">
       <DependentUpon>Model.tt</DependentUpon>
     </Compile>

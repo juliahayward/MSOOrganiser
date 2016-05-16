@@ -50,5 +50,6 @@ namespace MSOCore
         public DbSet<Arbiter> Arbiters { get; set; }
         public DbSet<Location> Locations { get; set; }
         public DbSet<GameCategory> GameCategories { get; set; }
+        public DbSet<EntryJson> EntryJsons { get; set; }
     }
 }

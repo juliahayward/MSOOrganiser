@@ -16,6 +16,7 @@
       FROM [dbo].[Badges - Misc] AS [Badges - Misc]</DefiningQuery>
           </EntitySet>
           <EntitySet Name="Entrants" EntityType="DataModel.Store.Entrants" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="EntryJsons" EntityType="DataModel.Store.EntryJsons" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="Event Resources" EntityType="DataModel.Store.Event Resources" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="Event Sess" EntityType="DataModel.Store.Event Sess" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="Events" EntityType="DataModel.Store.Events" store:Type="Tables" Schema="dbo" />
@@ -166,6 +167,13 @@
           <Property Name="SSMA_TimeStamp" Type="timestamp" Nullable="false" StoreGeneratedPattern="Computed" />
           <Property Name="OlympiadId" Type="int" />
           <Property Name="EventId" Type="int" />
+        </EntityType>
+        <EntityType Name="EntryJsons">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="JsonText" Type="nvarchar(max)" Nullable="false" />
         </EntityType>
         <EntityType Name="Event Resources">
           <Key>
@@ -701,6 +709,7 @@
             <End Role="GameCategory" EntitySet="GameCategories" />
             <End Role="Game" EntitySet="Games" />
           </AssociationSet>
+          <EntitySet Name="EntryJsons" EntityType="DataModel.EntryJson" />
         </EntityContainer>
         <EntityType Name="Badges___Misc">
           <Key>
@@ -1200,6 +1209,13 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="EntryJson">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Type="Int32" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="String" Name="JsonText" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -1549,6 +1565,14 @@
             <EntityTypeMapping TypeName="DataModel.GameCategory">
               <MappingFragment StoreEntitySet="GameCategories">
                 <ScalarProperty Name="NAME" ColumnName="NAME" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="EntryJsons">
+            <EntityTypeMapping TypeName="DataModel.EntryJson">
+              <MappingFragment StoreEntitySet="EntryJsons">
+                <ScalarProperty Name="JsonText" ColumnName="JsonText" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
