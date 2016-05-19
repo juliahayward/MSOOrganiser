@@ -1,0 +1,44 @@
+﻿@model MSOCore.Reports.EventEntrantsGenerator.EventEntrantsVm
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<style type="text/css">
+    .jmhTable {
+        border: 1px black solid; 
+        width: 400px; 
+        margin-left: 100px
+    }
+    .jmhTable td {
+        vertical-align: middle;
+    }
+    .jmhPaddedHeader {
+        margin: 4px;
+        display: block;
+    }
+    .jmhPadded {
+        margin: 4px;
+        display: block;
+    }
+</style>
+
+<h1 class="entry-title">Entrants: @Model.EventName @Model.EventYear</h1>
+
+@{ var i = 1; }
+
+<table class="jmhTable">
+    <tr  style="background: AliceBlue">
+        <td></td>
+        <td><span class="jmhPaddedHeader">Name</span></td>
+    </tr>
+    @foreach (var item in Model.Entrants)
+    {    
+    <tr>
+        <td>@i</td>
+        <td><span class="jmhPadded">@item.Name</span></td>
+    </tr>
+        
+        i++;
+    }
+</table>
+
