@@ -48,6 +48,7 @@
         <EntityTypeShape EntityType="DataModel.GameCategory" Width="1.5" PointX="5.125" PointY="13" />
         <AssociationConnector Association="DataModel.FK__Games__CategoryI__503BEA1C" />
         <EntityTypeShape EntityType="DataModel.EntryJson" Width="1.5" PointX="1.4330922967908402" PointY="4.0892111529080246" />
+        <EntityTypeShape EntityType="DataModel.Nationality" Width="1.5" PointX="8.3252412417555419" PointY="23.411815236980008" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

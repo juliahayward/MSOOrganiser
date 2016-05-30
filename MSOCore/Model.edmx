@@ -53,6 +53,7 @@
       [National Flags].[SSMA_TimeStamp] AS [SSMA_TimeStamp]
       FROM [dbo].[National Flags] AS [National Flags]</DefiningQuery>
           </EntitySet>
+          <EntitySet Name="Nationalities" EntityType="DataModel.Store.Nationalities" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="Olympiad Info" EntityType="DataModel.Store.Olympiad Info" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="Parings" EntityType="DataModel.Store.Parings" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="Payment Methods" EntityType="DataModel.Store.Payment Methods" store:Type="Tables" Schema="dbo" />
@@ -346,6 +347,13 @@
           <Property Name="Continent" Type="nvarchar" MaxLength="50" />
           <Property Name="Code" Type="nvarchar" MaxLength="3" />
           <Property Name="SSMA_TimeStamp" Type="timestamp" Nullable="false" StoreGeneratedPattern="Computed" />
+        </EntityType>
+        <EntityType Name="Nationalities">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
         </EntityType>
         <EntityType Name="Olympiad Info">
           <Key>
@@ -710,6 +718,7 @@
             <End Role="Game" EntitySet="Games" />
           </AssociationSet>
           <EntitySet Name="EntryJsons" EntityType="DataModel.EntryJson" />
+          <EntitySet Name="Nationalities" EntityType="DataModel.Nationality" />
         </EntityContainer>
         <EntityType Name="Badges___Misc">
           <Key>
@@ -1216,6 +1225,13 @@
           <Property Type="Int32" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Type="String" Name="JsonText" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
         </EntityType>
+        <EntityType Name="Nationality">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Type="Int32" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="String" Name="Name" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -1573,6 +1589,14 @@
             <EntityTypeMapping TypeName="DataModel.EntryJson">
               <MappingFragment StoreEntitySet="EntryJsons">
                 <ScalarProperty Name="JsonText" ColumnName="JsonText" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Nationalities">
+            <EntityTypeMapping TypeName="DataModel.Nationality">
+              <MappingFragment StoreEntitySet="Nationalities">
+                <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>

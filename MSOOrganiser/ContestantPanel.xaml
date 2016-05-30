@@ -52,7 +52,8 @@
                     </StackPanel>
                     <StackPanel Orientation="Horizontal" Margin="0,20,0,0">
                         <Label Width="100">Nationality:</Label>
-                        <TextBox Text="{Binding Nationality, Mode=TwoWay}" Width="100"></TextBox>
+                        <ComboBox Width="160" ItemsSource="{Binding Nationalities}" DisplayMemberPath="Text"
+                                  SelectedValuePath="Value" SelectedValue="{Binding Nationality, Mode=TwoWay}"/>
                     </StackPanel>
                     <StackPanel Orientation="Horizontal" Margin="0,20,0,0">
                         <Label Width="100">Phone</Label>

@@ -188,6 +188,18 @@ namespace MSOOrganiser
             public string Value { get; set; }
         }
 
+        public class NationalityVm
+        {
+            public string Text { get; set; }
+            public string Value { get; set; }
+
+            public NationalityVm(string n)
+            {
+                Text = n;
+                Value = n;
+            }
+        }
+
         public class OlympiadVm
         {
             public string Text { get; set; }
@@ -221,6 +233,7 @@ namespace MSOOrganiser
         public ObservableCollection<TitleVm> Titles { get; set; }
         public ObservableCollection<EventVm> Events { get; set; }
         public ObservableCollection<PaymentVm> Payments { get; set; }
+        public static ObservableCollection<NationalityVm> Nationalities { get; set; }
 
         public ObservableCollection<ContestantVm> Contestants { get; set; }
         public CollectionView FilteredContestants { get; set; }
@@ -389,7 +402,7 @@ namespace MSOOrganiser
                 if (_Initials != value)
                 {
                     _Initials = value;
-                    _IsDirty = true;
+                    IsDirty = true;
                     OnPropertyChanged("Initials");
                     OnPropertyChanged("Name");
                 }
@@ -410,7 +423,7 @@ namespace MSOOrganiser
                 if (_IsMale != value)
                 {
                     _IsMale = value;
-                    _IsDirty = true;
+                    IsDirty = true;
                     OnPropertyChanged("IsMale");
                 }
             }
@@ -428,7 +441,7 @@ namespace MSOOrganiser
                 if (_Nationality != value)
                 {
                     _Nationality = value;
-                    _IsDirty = true;
+                    IsDirty = true;
                     OnPropertyChanged("Nationality");
                 }
             }
@@ -446,7 +459,7 @@ namespace MSOOrganiser
                 if (_DayPhone != value)
                 {
                     _DayPhone = value;
-                    _IsDirty = true;
+                    IsDirty = true;
                     OnPropertyChanged("DayPhone");
                 }
             }
@@ -464,7 +477,7 @@ namespace MSOOrganiser
                 if (_EvePhone != value)
                 {
                     _EvePhone = value;
-                    _IsDirty = true;
+                    IsDirty = true;
                     OnPropertyChanged("EvePhone");
                 }
             }
@@ -482,7 +495,7 @@ namespace MSOOrganiser
                 if (_Fax != value)
                 {
                     _Fax = value;
-                    _IsDirty = true;
+                    IsDirty = true;
                     OnPropertyChanged("Fax");
                 }
             }
@@ -499,7 +512,7 @@ private string _Email;
                 if (_Email != value)
                 {
                     _Email = value;
-                    _IsDirty = true;
+                    IsDirty = true;
                     OnPropertyChanged("Email");
                 }
             }
@@ -516,7 +529,7 @@ private bool _WantsNoNews;
                 if (_WantsNoNews != value)
                 {
                     _WantsNoNews = value;
-                    _IsDirty = true;
+                    IsDirty = true;
                     OnPropertyChanged("WantsNoNews");
                 }
             }
@@ -533,7 +546,7 @@ private string _DateOfBirth;
                 if (_DateOfBirth != value)
                 {
                     _DateOfBirth = value;
-                    _IsDirty = true;
+                    IsDirty = true;
                     OnPropertyChanged("DateOfBirth");
                 }
             }
@@ -550,7 +563,7 @@ private bool _IsConcessional;
                 if (_IsConcessional != value)
                 {
                     _IsConcessional = value;
-                    _IsDirty = true;
+                    IsDirty = true;
                     OnPropertyChanged("IsConcessional");
                 }
             }
@@ -567,7 +580,7 @@ private string _Address1;
                 if (_Address1 != value)
                 {
                     _Address1 = value;
-                    _IsDirty = true;
+                    IsDirty = true;
                     OnPropertyChanged("Address1");
                 }
             }
@@ -584,7 +597,7 @@ private string _Address2;
                 if (_Address2 != value)
                 {
                     _Address2 = value;
-                    _IsDirty = true;
+                    IsDirty = true;
                     OnPropertyChanged("Address2");
                 }
             }
@@ -601,7 +614,7 @@ private string _City;
                 if (_City != value)
                 {
                     _City = value;
-                    _IsDirty = true;
+                    IsDirty = true;
                     OnPropertyChanged("City");
                 }
             }
@@ -618,7 +631,7 @@ private string _County;
                 if (_County != value)
                 {
                     _County = value;
-                    _IsDirty = true;
+                    IsDirty = true;
                     OnPropertyChanged("County");
                 }
             }
@@ -635,7 +648,7 @@ private string _Postcode;
                 if (_Postcode != value)
                 {
                     _Postcode = value;
-                    _IsDirty = true;
+                    IsDirty = true;
                     OnPropertyChanged("Postcode");
                 }
             }
@@ -652,7 +665,7 @@ private string _Country;
                 if (_Country != value)
                 {
                     _Country = value;
-                    _IsDirty = true;
+                    IsDirty = true;
                     OnPropertyChanged("Country");
                 }
             }
@@ -669,7 +682,7 @@ private string _BCFCode;
                 if (_BCFCode != value)
                 {
                     _BCFCode = value;
-                    _IsDirty = true;
+                    IsDirty = true;
                     OnPropertyChanged("BCFCode");
                 }
             }
@@ -686,7 +699,7 @@ private string _FIDECode;
                 if (_FIDECode != value)
                 {
                     _FIDECode = value;
-                    _IsDirty = true;
+                    IsDirty = true;
                     OnPropertyChanged("FIDECode");
                 }
             }
@@ -703,7 +716,7 @@ private string _Notes;
                 if (_Notes != value)
                 {
                     _Notes = value;
-                    _IsDirty = true;
+                    IsDirty = true;
                     OnPropertyChanged("Notes");
                 }
             }
@@ -729,6 +742,14 @@ private string _Notes;
             Titles.Add(new TitleVm() { Text = "Ms", Value = "Ms" });
             Titles.Add(new TitleVm() { Text = "Miss", Value = "Miss" });
             Titles.Add(new TitleVm() { Text = "Dr", Value = "Dr" });
+
+            if (Nationalities == null)
+            {
+                Nationalities = new ObservableCollection<NationalityVm>();
+                var context = DataEntitiesProvider.Provide();
+                context.Nationalities.Select(x => x.Name).ToList()
+                    .ForEach(n => Nationalities.Add(new NationalityVm(n)));
+            }
             
             PopulateOlympiadDropdown();
             PopulateEvents();

@@ -124,6 +124,9 @@
       <DesignTime>True</DesignTime>
     </Compile>
     <Compile Include="Models\VmBase.cs" />
+    <Compile Include="Nationality.cs">
+      <DependentUpon>Model.tt</DependentUpon>
+    </Compile>
     <Compile Include="National_Flag.cs">
       <DependentUpon>Model.tt</DependentUpon>
     </Compile>
