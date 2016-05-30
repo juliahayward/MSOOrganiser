@@ -595,7 +595,8 @@ namespace MSOOrganiser
                         Mind_Sport = evm.Name,
                         Code = evm.Code,
                         Olympiad_Info = o,
-                        Game = game
+                        Game = game,
+                        MAX_Number = 70
                         // TODO more stuff here
                     };
                     o.Events.Add(evt);
