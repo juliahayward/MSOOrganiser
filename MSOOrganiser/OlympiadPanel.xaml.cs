@@ -617,6 +617,12 @@ namespace MSOOrganiser
             }
             context.SaveChanges();
 
+            // Make sure Current is set properly
+            var oldCurrents = context.Olympiad_Infoes.Where(x => x.Current.Value).ToList();
+            oldCurrents.ForEach(ol => ol.Current = false);
+            var newCurrent = context.Olympiad_Infoes.OrderByDescending(x => x.StartDate).First();
+            newCurrent.Current = true;
+            context.SaveChanges();
 
             var eventIndexer = new EventIndexer();
             eventIndexer.IndexEvents(id);
