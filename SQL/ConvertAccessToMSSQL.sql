@@ -302,7 +302,24 @@ CREATE TABLE EntryJsons
 ) 
 ON [PRIMARY]
 
+/* Nationalities should be sanitised before running this */
 
+CREATE TABLE Nationalities 
+( 
+	Id INT IDENTITY(1,1) NOT NULL,
+	Name NVARCHAR(MAX) NOT NULL,
+	CONSTRAINT [PK_Nationalities] PRIMARY KEY CLUSTERED 
+	(
+		[Id] ASC
+	) 
+	WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) 
+ON [PRIMARY]
+
+INSERT INTO Nationalities 
+SELECT DISTINCT Nationality from Names 
+WHERE Nationality IS NOT NULL
+ORDER BY Nationality
 
 
 
