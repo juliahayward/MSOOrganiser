@@ -21,6 +21,7 @@ namespace MSOOrganiser
     /// </summary>
     public partial class PasswordChangeWindow : Window
     {
+
         public PasswordChangeWindow()
         {
             InitializeComponent();
@@ -55,6 +56,8 @@ namespace MSOOrganiser
 
             user.Hash = computedHash;
             context.SaveChanges();
+
+            MessageBox.Show("Password changed successfully");
         }
     }
 }

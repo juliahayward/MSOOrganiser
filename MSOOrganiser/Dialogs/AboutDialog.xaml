@@ -9,7 +9,7 @@
             <StackPanel Orientation="Vertical" Width="240">
                 <TextBlock Margin="0,10,0,0">MSO Organiser</TextBlock>
                 <TextBlock Margin="0,10,0,0" x:Name="version"/>
-                <TextBlock Margin="0,10,0,0">© Julia Hayward 2014-5</TextBlock>
+                <TextBlock Margin="0,10,0,0">© Julia Hayward 2014-6</TextBlock>
                 <TextBlock Margin="0,10,0,0" TextWrapping="Wrap">For help, support and feature requests contact julia@juliahayward.com. Contributors welcome, see https://github.com/juliahayward/MSOOrganiser</TextBlock>
             </StackPanel>
         </StackPanel>
