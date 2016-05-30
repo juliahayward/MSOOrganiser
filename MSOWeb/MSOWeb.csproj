@@ -175,6 +175,7 @@
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Report\PentamindStandings4Cats.cshtml" />
     <Content Include="Views\Event\Entrants.cshtml" />
+    <Content Include="Views\Report\Error.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

@@ -50,11 +50,18 @@ namespace MSOWeb.Controllers
 
         public ActionResult GameMedals(string gameCode)
         {
-            var generator = new GameMedalsGenerator();
+            try
+            {
+                var generator = new GameMedalsGenerator();
 
-            var model = generator.GetModel(gameCode);
+                var model = generator.GetModel(gameCode);
 
-            return View(model);
+                return View(model);
+            }
+            catch (ArgumentException ex)
+            {
+                return View("Error", (object)ex.Message);
+            }
         }
 
         public ActionResult PentamindStandings(int? year)

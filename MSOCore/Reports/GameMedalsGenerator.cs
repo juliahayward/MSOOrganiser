@@ -34,9 +34,11 @@ namespace MSOCore.Reports
         {
             var context = DataEntitiesProvider.Provide();
 
-            var gameName = context.Games.First(x => x.Code == gameCode).Mind_Sport;
+            var game = context.Games.FirstOrDefault(x => x.Code == gameCode);
+            if (game == null)
+                throw new ArgumentException("Game code " + (gameCode ?? "(null)") + " not recognised");
 
-            var retval = new GameMedalsVm { GameName = gameName };
+            var retval = new GameMedalsVm { GameName = game.Mind_Sport };
 
             retval.Medals = context.Entrants
                 .Where(x => x.Game_Code.StartsWith(gameCode) && x.Medal != null  && x.Year < 7000)

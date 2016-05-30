@@ -7,9 +7,10 @@
             <TextBlock Margin="4" TextWrapping="Wrap">MSO Organiser encountered an error and is unable to process your request. 
             Please mail the text below to julia@juliahayward.com with a description of what you were doing at the
             time for the error to be diagnosed.</TextBlock>
-            <TextBox Margin="4" Height="220" x:Name="textBox"></TextBox>
+            <TextBox Margin="4" Height="210" x:Name="textBox"></TextBox>
             <StackPanel Orientation="Horizontal">
                 <Button Margin="4" Width="150" Click="ok_Click">OK</Button>
+                <Button Margin="4" Width="150" Click="shutdown_Click" Content="Exit"/>
             </StackPanel>
         </StackPanel>
     </Grid>

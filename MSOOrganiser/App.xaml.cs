@@ -29,7 +29,11 @@ namespace MSOOrganiser
             var dlg = new ErrorDialog(e);
             dlg.ShowDialog();
 
-            this.Shutdown();
+            var wantsToContinue = (bool)dlg.DialogResult;
+            if (!wantsToContinue)
+                this.Shutdown();
+
+            args.Handled = true;
         }
     }
 }

@@ -42,5 +42,11 @@ namespace MSOOrganiser.Dialogs
             this.DialogResult = true;
             this.Close();
         }
+
+        private void shutdown_Click(object sender, RoutedEventArgs e)
+        {
+            this.DialogResult = false;
+            this.Close();
+        }
     }
 }

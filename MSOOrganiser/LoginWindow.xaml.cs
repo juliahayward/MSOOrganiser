@@ -26,6 +26,14 @@ namespace MSOOrganiser
             InitializeComponent();
         }
 
+        public LoginWindow(string loginName)
+        {
+            InitializeComponent();
+
+            // TODO - turn into proper bound VM
+            usernameBox.Text = loginName;
+        }
+
         private void loginButton_Click(object sender, RoutedEventArgs e)
         {
             // this is not good - should pass all stuff out of dialog and 

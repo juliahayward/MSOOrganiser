@@ -55,7 +55,7 @@ namespace MSOCore.Reports
                 x => new { code = x.Game_Code, year = x.OlympiadId.Value }, 
                 e => new { code = e.Code, year = e.OlympiadId }, (x, e) => new { x, e })
                 .Select(xe => new ContestantVm.MedalVm { Year = xe.x.Year.Value, Code = xe.x.Game_Code, Name = xe.e.Mind_Sport, Medal = xe.x.Medal})
-                .OrderBy(x => x.Year).ToList();
+                .OrderByDescending(x => x.Year).ToList();
 
             var gmCodes = new List<string>();
             var imCodes = new List<string>();

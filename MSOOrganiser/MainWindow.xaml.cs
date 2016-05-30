@@ -45,13 +45,18 @@ namespace MSOOrganiser
 
             ConnectionStringUpdater.Update();
 
-            var loginBox = new LoginWindow();
+            var lastLoggedIn = GetLastLoggedInUser();
+
+            var loginBox = new LoginWindow(lastLoggedIn);
             loginBox.ShowDialog();
             if (loginBox.UserId == 0)
             {
                 MessageBox.Show("Invalid user/password");
                 this.Close();
             }
+
+            WriteLoggedInUserToRegistry(loginBox.UserName);
+
             LoggedInUserId = loginBox.UserId;
             UserLoginId = loginBox.UserLoginId;
             this.Title += " --- logged in as " + loginBox.UserName
@@ -60,6 +65,23 @@ namespace MSOOrganiser
             if (dockPanel.Children.Count > 2) dockPanel.Children.RemoveAt(2);
             var panel = new StartupPanel();
             dockPanel.Children.Add(panel);
+        }
+
+        private void WriteLoggedInUserToRegistry(string userId)
+        {
+            var key = Microsoft.Win32.Registry.CurrentUser.CreateSubKey(@"Software\JuliaHayward\MSOOrganiser");
+            key.SetValue("LastLoginId", userId);
+            key.Close();
+        }
+
+        private string GetLastLoggedInUser()
+        {
+            var key = Microsoft.Win32.Registry.CurrentUser.OpenSubKey(@"Software\JuliaHayward\MSOOrganiser");
+            if (key == null) return "";
+
+            var value = key.GetValue("LastLoginId");
+            key.Close();
+            return (string)value ?? "";
         }
 
         private void CheckForUpdates()
@@ -85,12 +107,15 @@ namespace MSOOrganiser
 
             var context = DataEntitiesProvider.Provide();
             var user = context.Users.Find(LoggedInUserId);
-            var login = user.UserLogins.Where(x => x.Id == UserLoginId && x.LogOutDate == null)
-                .OrderByDescending(x => x.LogInDate).FirstOrDefault();
-            if (login != null)
+            if (user != null)
             {
-                login.LogOutDate = DateTime.UtcNow;
-                context.SaveChanges();
+                var login = user.UserLogins.Where(x => x.Id == UserLoginId && x.LogOutDate == null)
+                    .OrderByDescending(x => x.LogInDate).FirstOrDefault();
+                if (login != null)
+                {
+                    login.LogOutDate = DateTime.UtcNow;
+                    context.SaveChanges();
+                }
             }
         }
 
