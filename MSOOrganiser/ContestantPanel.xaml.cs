@@ -326,8 +326,21 @@ namespace MSOOrganiser
                     IsDirty = true;
                     OnPropertyChanged("Title");
                 }
+                SetGenderForHonorific(_Title);
             }
         }
+
+        private void SetGenderForHonorific(string title)
+        {
+            if (title == "Mr") 
+                IsMale = true;
+
+            var femaleHonorifics = new[] { "Mrs", "Ms", "Miss" };
+            if (femaleHonorifics.Contains(title)) 
+                IsMale = false;
+        }
+
+
         private string _FirstName;
         public string FirstName
         {
