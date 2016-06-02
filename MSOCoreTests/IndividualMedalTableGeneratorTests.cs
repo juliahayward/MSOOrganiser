@@ -16,7 +16,7 @@ namespace MSOCoreTests
         {
             var generator = new IndividualMedalTableGenerator();
 
-            var data = generator.GetItems();
+            var data = generator.GetItems(1, 100);
 
             Assert.IsTrue(data.Any());
         }

@@ -1,9 +1,13 @@
-﻿@model IEnumerable<MSOCore.Reports.IndividualMedalTableGenerator.MedalTableVm>
+﻿@model MSOCore.Reports.IndividualMedalTableGenerator.MedalTableVm
 @{
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 <style type="text/css">
+    .jmhFooter {
+        width: 400px; 
+        margin-left: 100px
+    }
     .jmhTable {
         border: 1px black solid; 
         width: 400px; 
@@ -34,8 +38,8 @@
         <td><span class="jmhPaddedHeader">Bronze</span></td>
         <td><span class="jmhPaddedHeader">Total</span></td>
     </tr>
-    @{ int index = 1; }
-    @foreach (var item in Model)
+    @{ int index = Model.FirstIndex; }
+    @foreach (var item in Model.Entries)
     {    
     <tr>
         <td><div class="jmhPadded">@index</div></td>
@@ -49,3 +53,15 @@
         index++;
     }
 </table>
+
+<div class="jmhFooter">
+    @if (Model.HasPrevious)
+    {
+        <a href="/Report/IndividualMedals?page=@Model.PreviousPage">&lt; Previous</a>
+    }
+    <span style="padding: 32px">Page @Model.Page</span>
+    @if (Model.HasNext)
+    {
+        <a href="/Report/IndividualMedals?page=@Model.NextPage">Next &gt;</a>
+    }
+</div>
