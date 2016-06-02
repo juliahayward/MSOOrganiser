@@ -345,10 +345,11 @@ namespace MSOOrganiser
 
         private void SetGenderForHonorific(string title)
         {
-            if (title == "Mr") 
+            var maleHonorifics = new[] { "Mr", "Master", "Sir" };
+            if (maleHonorifics.Contains(title))
                 IsMale = true;
 
-            var femaleHonorifics = new[] { "Mrs", "Ms", "Miss" };
+            var femaleHonorifics = new[] { "Mrs", "Ms", "Miss", "Lady" };
             if (femaleHonorifics.Contains(title)) 
                 IsMale = false;
         }
@@ -741,7 +742,11 @@ private string _Notes;
             Titles.Add(new TitleVm() { Text = "Mrs", Value = "Mrs" });
             Titles.Add(new TitleVm() { Text = "Ms", Value = "Ms" });
             Titles.Add(new TitleVm() { Text = "Miss", Value = "Miss" });
+            Titles.Add(new TitleVm() { Text = "Master", Value = "Master" });
             Titles.Add(new TitleVm() { Text = "Dr", Value = "Dr" });
+            Titles.Add(new TitleVm() { Text = "Prof", Value = "Prof" });
+            Titles.Add(new TitleVm() { Text = "Sir", Value = "Sir" });
+            Titles.Add(new TitleVm() { Text = "Lady", Value = "Lady" });
 
             if (Nationalities == null)
             {

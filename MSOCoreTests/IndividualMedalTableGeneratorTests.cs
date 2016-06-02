@@ -18,7 +18,8 @@ namespace MSOCoreTests
 
             var data = generator.GetItems(1, 100);
 
-            Assert.IsTrue(data.Any());
+            Assert.AreEqual(data.Page, 1);
+            Assert.IsTrue(data.Entries.Any());
         }
 
         [TestMethod]
