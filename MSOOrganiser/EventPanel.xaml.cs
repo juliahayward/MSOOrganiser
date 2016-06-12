@@ -751,7 +751,12 @@ namespace MSOOrganiser
             
             var olympiadId = CurrentOlympiadId;
             var currentOlympiad = context.Olympiad_Infoes.First(x => x.Id == CurrentOlympiadId);
-            var evt = context.Events.First(x => x.OlympiadId == olympiadId && x.Code == EventCode);
+            var evt = context.Events.FirstOrDefault(x => x.OlympiadId == olympiadId && x.Code == EventCode);
+            if (evt == null)
+            {
+                MessageBox.Show("Event " + EventCode + " didn't occur in " + currentOlympiad.YearOf);
+                return;
+            }
 
             EventId = evt.EIN;
             Arbiter = string.Join(", ", evt.Arbiters.Select(a => a.Name.FullName()));

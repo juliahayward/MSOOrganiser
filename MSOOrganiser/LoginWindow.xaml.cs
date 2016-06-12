@@ -52,7 +52,10 @@ namespace MSOOrganiser
                 UseTestData = testData.IsChecked.Value;
             }
             else
+            {
                 UserId = 0;
+                UserName = "";
+            }
 
             this.DialogResult = true;
             this.Close();

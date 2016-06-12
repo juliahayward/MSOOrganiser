@@ -48,7 +48,7 @@
                         <TextBox Text="{Binding Initials, Mode=TwoWay}" Width="40"></TextBox>
                         <TextBox Text="{Binding LastName, Mode=TwoWay}" Width="160"></TextBox>
                         <Label>Male:</Label>
-                        <CheckBox IsChecked="{Binding Male, Mode=TwoWay}"></CheckBox>
+                        <CheckBox IsChecked="{Binding IsMale, Mode=TwoWay}" VerticalAlignment="Center"></CheckBox>
                     </StackPanel>
                     <StackPanel Orientation="Horizontal" Margin="0,20,0,0">
                         <Label Width="100">Nationality:</Label>
@@ -68,7 +68,7 @@
                         <Label Width="100">Email:</Label>
                         <TextBox Text="{Binding Email, Mode=TwoWay}" Width="200"></TextBox>
                         <Label>Exclude from promotional mail:</Label>
-                        <CheckBox IsChecked="{Binding WantsNoMail, Mode=TwoWay}"></CheckBox>
+                        <CheckBox IsChecked="{Binding WantsNoMail, Mode=TwoWay}" VerticalAlignment="Center"></CheckBox>
                     </StackPanel>
                     <StackPanel Orientation="Horizontal" Margin="0,20,0,0">
                         <Label Width="100">Date of Birth:</Label>

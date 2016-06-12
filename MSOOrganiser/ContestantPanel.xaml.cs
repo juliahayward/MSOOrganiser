@@ -914,7 +914,7 @@ private string _Notes;
                 EvePhone = dbCon.EvePhone;
                 Fax = dbCon.Fax;
                 WantsNoNews = dbCon.No_News.HasValue ? dbCon.No_News.Value : true;
-                DateOfBirth = (dbCon.DateofBirth.HasValue) ? dbCon.DateofBirth.Value.ToString("dd/mm/yyyy") : "";
+                DateOfBirth = (dbCon.DateofBirth.HasValue) ? dbCon.DateofBirth.Value.ToString("dd/MM/yyyy") : "";
                 IsConcessional = dbCon.Concessional.HasValue ? dbCon.Concessional.Value : true;
                 Address1 = dbCon.Address1;
                 Address2 = dbCon.Address2;
