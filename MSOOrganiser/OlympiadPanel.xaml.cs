@@ -1,4 +1,5 @@
 ﻿using JuliaHayward.Common.Environment;
+using JuliaHayward.Common.Logging;
 using MSOCore;
 using MSOCore.Calculators;
 using MSOCore.Models;
@@ -9,6 +10,8 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Configuration;
+using System.Data.Entity.Validation;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -86,7 +89,16 @@ namespace MSOOrganiser
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Something went wrong  - data not saved");
+                string message = (ex is DbEntityValidationException)
+                    ? ((DbEntityValidationException)ex).EntityValidationErrors.First().ValidationErrors.First().ErrorMessage
+                    : ex.Message;
+
+                MessageBox.Show("Something went wrong  - data not saved (" + message + ")");
+
+                var trelloKey = ConfigurationManager.AppSettings["TrelloKey"];
+                var trelloAuthKey = ConfigurationManager.AppSettings["TrelloAuthKey"];
+                var logger = new TrelloLogger(trelloKey, trelloAuthKey);
+                logger.Error("MSOWeb", message, ex.StackTrace);
             }
         }
 

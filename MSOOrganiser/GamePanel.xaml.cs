@@ -17,6 +17,9 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using MSOCore;
 using MSOOrganiser.UIUtilities;
+using System.Configuration;
+using JuliaHayward.Common.Logging;
+using System.Data.Entity.Validation;
 
 namespace MSOOrganiser
 {
@@ -74,7 +77,16 @@ namespace MSOOrganiser
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Something went wrong  - data not saved");
+                string message = (ex is DbEntityValidationException)
+                    ? ((DbEntityValidationException)ex).EntityValidationErrors.First().ValidationErrors.First().ErrorMessage
+                    : ex.Message;
+
+                MessageBox.Show("Something went wrong  - data not saved (" + message + ")");
+
+                var trelloKey = ConfigurationManager.AppSettings["TrelloKey"];
+                var trelloAuthKey = ConfigurationManager.AppSettings["TrelloAuthKey"];
+                var logger = new TrelloLogger(trelloKey, trelloAuthKey);
+                logger.Error("MSOWeb", message, ex.StackTrace);
             }
         }
     }

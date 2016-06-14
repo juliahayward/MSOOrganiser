@@ -1,4 +1,5 @@
 ﻿using JuliaHayward.Common.Environment;
+using JuliaHayward.Common.Logging;
 using MSOCore;
 using MSOCore.Models;
 using MSOOrganiser.Dialogs;
@@ -8,6 +9,10 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
+using System.Configuration;
+using System.Data;
+using System.Data.Entity.Validation;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -103,7 +108,16 @@ namespace MSOOrganiser
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Something went wrong  - data not saved");
+                string message = (ex is DbEntityValidationException)
+                    ? ((DbEntityValidationException)ex).EntityValidationErrors.First().ValidationErrors.First().ErrorMessage
+                    : ex.Message;
+
+                MessageBox.Show("Something went wrong  - data not saved (" + message + ")");
+
+                var trelloKey = ConfigurationManager.AppSettings["TrelloKey"];
+                var trelloAuthKey = ConfigurationManager.AppSettings["TrelloAuthKey"];
+                var logger = new TrelloLogger(trelloKey, trelloAuthKey);
+                logger.Error("MSOWeb", message, ex.StackTrace);
             }
         }
 
@@ -535,8 +549,9 @@ private bool _WantsNoNews;
                 }
             }
         }
-private string _DateOfBirth;
-        public string DateOfBirth
+
+        private DateTime? _DateOfBirth;
+        public DateTime? DateOfBirth
         {
             get
             {
@@ -552,6 +567,7 @@ private string _DateOfBirth;
                 }
             }
         }
+
 private bool _IsConcessional;
         public bool IsConcessional
         {
@@ -887,7 +903,7 @@ private string _Notes;
                 EvePhone = "";
                 Fax = "";
                 WantsNoNews = false;
-                DateOfBirth = "";
+                DateOfBirth = null;
                 IsConcessional = false;
                 Address1 = "";
                 Address2 = "";
@@ -914,7 +930,7 @@ private string _Notes;
                 EvePhone = dbCon.EvePhone;
                 Fax = dbCon.Fax;
                 WantsNoNews = dbCon.No_News.HasValue ? dbCon.No_News.Value : true;
-                DateOfBirth = (dbCon.DateofBirth.HasValue) ? dbCon.DateofBirth.Value.ToString("dd/MM/yyyy") : "";
+                DateOfBirth = dbCon.DateofBirth;
                 IsConcessional = dbCon.Concessional.HasValue ? dbCon.Concessional.Value : true;
                 Address1 = dbCon.Address1;
                 Address2 = dbCon.Address2;
@@ -934,6 +950,9 @@ private string _Notes;
         public List<string> Validate()
         {
             var errors = new List<string>();
+
+            if (!(string.IsNullOrEmpty(Email) || new EmailAddressAttribute().IsValid(Email)))
+                errors.Add(Email + " is not a valid email address");
 
             return errors;
         }
@@ -956,7 +975,7 @@ private string _Notes;
                     EvePhone = this.EvePhone,
                     Fax = this.Fax,
                     No_News = this.WantsNoNews,
-                    DateofBirth = (string.IsNullOrEmpty(this.DateOfBirth)) ? (DateTime?)null : DateTime.Parse(this.DateOfBirth),
+                    DateofBirth = this.DateOfBirth,
                     Concessional = this.IsConcessional,
                     Address1 = this.Address1,
                     Address2 = this.Address2,
@@ -993,9 +1012,7 @@ private string _Notes;
                 dbCon.EvePhone = EvePhone;
                 dbCon.Fax = Fax;
                 dbCon.No_News = WantsNoNews;
-                DateTime dt;
-                var success = DateTime.TryParse(DateOfBirth, out dt);
-                if (success) dbCon.DateofBirth = dt;
+                dbCon.DateofBirth = DateOfBirth;
                 dbCon.Concessional = IsConcessional;
                 dbCon.Address1 = Address1;
                 dbCon.Address2 = Address2;
