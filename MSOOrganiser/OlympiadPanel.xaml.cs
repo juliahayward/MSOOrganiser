@@ -482,7 +482,7 @@ namespace MSOOrganiser
                 FinishDate = (o.FinishDate.HasValue) ? o.FinishDate.Value.ToString("dd/MM/yyyy") : "";
                 MaxFee = (o.MaxFee.HasValue) ? o.MaxFee.Value.ToString("F2") : "";
                 MaxCon = (o.MaxCon.HasValue) ? o.MaxCon.Value.ToString("F2") : "";
-                AgeDate = o.AgeDate.ToString();
+                AgeDate = (o.AgeDate.HasValue) ? o.AgeDate.Value.ToString("dd/MM/yyyy") : "";
                 JnrAge = o.JnrAge.ToString();
                 SnrAge = o.SnrAge.ToString();
                 PentaLong = o.PentaLong.ToString();
@@ -504,20 +504,20 @@ namespace MSOOrganiser
         public List<string> Validate()
         {
             int i;
-            DateTime dt;
+            DateTime startDt, endDt, ageDt;
             decimal d;
             var errors = new List<string>();
             if (!int.TryParse(YearOf, out i))
                 errors.Add("Invalid year");
-            if (!DateTime.TryParse(StartDate, out dt))
+            if (!DateTime.TryParse(StartDate, out startDt))
                 errors.Add("Invalid start date");
-            if (!DateTime.TryParse(FinishDate, out dt))
+            if (!DateTime.TryParse(FinishDate, out endDt))
                 errors.Add("Invalid end date");
             if (!decimal.TryParse(MaxFee, out d))
                 errors.Add("Invalid MaxFee");
             if (!decimal.TryParse(MaxCon, out d))
                 errors.Add("Invalid Max Concession");
-            if (!DateTime.TryParse(AgeDate, out dt))
+            if (!DateTime.TryParse(AgeDate, out ageDt))
                 errors.Add("Invalid age-date");
             if (!int.TryParse(JnrAge, out i))
                 errors.Add("Invalid junior age");
@@ -527,6 +527,9 @@ namespace MSOOrganiser
                 errors.Add("Invalid penamind long events");
             if (!int.TryParse(PentaTotal, out i))
                 errors.Add("Invalid pentamind total events");
+
+            if (startDt > endDt)
+                errors.Add("Start date must be prior to End Date");
 
             return errors;
         }
@@ -556,6 +559,7 @@ namespace MSOOrganiser
                     Events = new List<Event>()
                 };
                 context.Olympiad_Infoes.Add(o);
+                context.SaveChanges();
                 // So we don't have to do a full refresh of the combo
                 Olympiads.RemoveAt(0);
                 Olympiads.Insert(0, new OlympiadVm() { Text = o.FullTitle(), Id = o.Id });
