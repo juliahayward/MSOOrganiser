@@ -122,7 +122,7 @@
             </TabItem>
             <TabItem Header="Events and Payments">
                 <StackPanel Orientation="Vertical">
-                    <Button Click="addEvent_Click">Add Events</Button>
+                    <Button Click="addEvent_Click">Add / Remove Events</Button>
                     <StackPanel Orientation="Horizontal" Margin="0,20,0,0">
                         <Label Width="100">Olympiad:</Label>
                         <ComboBox Width="240"
