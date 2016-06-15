@@ -76,7 +76,7 @@
                     </StackPanel>
                     <StackPanel Orientation="Horizontal" Margin="0,20,0,0">
                         <Label Width="100">Is Concession:</Label>
-                        <CheckBox IsChecked="{Binding IsConcession, Mode=TwoWay}"></CheckBox>
+                        <CheckBox IsChecked="{Binding IsConcession, Mode=TwoWay}" VerticalAlignment="Center"></CheckBox>
                     </StackPanel>
                     <StackPanel Orientation="Horizontal" Margin="0,20,0,0">
                         <Label Width="100">Address1:</Label>
