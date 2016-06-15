@@ -731,7 +731,7 @@ namespace MSOOrganiser
                 Events.Add(new EventVm { Text = e.Code + " " + e.Mind_Sport, Value = e.Code });
 
             if (eventCode == null)
-                EventCode = Events.First().Value;
+                EventCode = (Events.Any()) ? Events.First().Value : null;
             else
                 EventCode = eventCode;
 
