@@ -473,7 +473,10 @@ namespace MSOOrganiser
             else
             {
                 var context = DataEntitiesProvider.Provide();
-                var o = context.Olympiad_Infoes.FirstOrDefault(x => x.Id == id);
+                // TODO This join could be eliminated if an Event had a do-not-delete flag. Still, it's
+                // better than not Including it.
+                var o = context.Olympiad_Infoes.Include("Events").Include("Events.Entrants")
+                    .FirstOrDefault(x => x.Id == id);
                 YearOf = o.YearOf.ToString();
                 Number = o.Number;
                 Title = o.Title;
@@ -556,7 +559,8 @@ namespace MSOOrganiser
                     SnrAge = int.Parse(this.SnrAge),
                     PentaLong = int.Parse(this.PentaLong),
                     PentaTotal = int.Parse(this.PentaTotal),
-                    Events = new List<Event>()
+                    Events = new List<Event>(),
+                    Current = false,    // will be sorted out later                      
                 };
                 context.Olympiad_Infoes.Add(o);
                 context.SaveChanges();
@@ -581,6 +585,7 @@ namespace MSOOrganiser
                 o.SnrAge = int.Parse(this.SnrAge);
                 o.PentaLong = int.Parse(this.PentaLong);
                 o.PentaTotal = int.Parse(this.PentaTotal);
+                o.Current = false;      // will be sorted out later
             }
             context.SaveChanges();
             // Now update the events and locations. Need to do here to have the reference back to the Olympiad
