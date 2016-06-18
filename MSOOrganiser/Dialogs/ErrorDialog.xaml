@@ -9,7 +9,7 @@
             time for the error to be diagnosed.</TextBlock>
             <TextBox Margin="4" Height="210" x:Name="textBox"></TextBox>
             <StackPanel Orientation="Horizontal">
-                <Button Margin="4" Width="150" Click="ok_Click">OK</Button>
+                <Button Margin="4" Width="150" Click="ok_Click" IsDefault="True">OK</Button>
                 <Button Margin="4" Width="150" Click="shutdown_Click" Content="Exit"/>
             </StackPanel>
         </StackPanel>
