@@ -21,8 +21,12 @@ namespace MSOOrganiser.Converters
         {
             if (value == null || (string)value == "")
                 return 0;
+
+            int output;
+            if (int.TryParse((string)value, out output))
+                return output;
             else
-                return int.Parse((string)value);
+                return 0;
         }
     }
 }
