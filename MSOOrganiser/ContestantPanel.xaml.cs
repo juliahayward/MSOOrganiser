@@ -154,7 +154,7 @@ namespace MSOOrganiser
                         var existingEvent = ViewModel.Events.FirstOrDefault(x => x.EventCode == evt.Code);
                         if (existingEvent == null)
                         {
-                            ViewModel.Events.Add(new ContestantPanelVm.EventVm() { EventCode = evt.Code, EventName = evt.Name, EventId = evt.Id });
+                            ViewModel.AddEvent(new ContestantPanelVm.EventVm() { EventCode = evt.Code, EventName = evt.Name, EventId = evt.Id });
                             ViewModel.IsDirty = true;
                         }
                     }
@@ -163,7 +163,7 @@ namespace MSOOrganiser
                         var eventToDelete = ViewModel.Events.FirstOrDefault(x => x.EventCode == evt.Code);
                         if (eventToDelete != null)
                         {
-                            ViewModel.Events.Remove(eventToDelete);
+                            ViewModel.RemoveEvent(eventToDelete);
                             ViewModel.IsDirty = true;
                         }
                     }
@@ -176,7 +176,7 @@ namespace MSOOrganiser
             var dialog = new AddPaymentToContestantDialog();
             if (dialog.ShowDialog().Value)
             {
-                ViewModel.Payments.Add(new ContestantPanelVm.PaymentVm()
+                ViewModel.AddPayment(new ContestantPanelVm.PaymentVm()
                 {
                     Amount = dialog.Payment.Amount,
                     Method = dialog.Payment.PaymentMethod,
@@ -740,6 +740,18 @@ private string _Notes;
             }
         }
 
+        public string Totals
+        {
+            get
+            {
+                var totalFees = Events.Sum(x => x.Fee);
+                var totalPayment = Payments.Sum(x => x.Amount);
+                return "Total fees: £" + totalFees
+                    + " Total payments: £" + totalPayment.ToString("F")
+                    + ((totalFees <= totalPayment) ? "" : " Owing: " + (totalFees - totalPayment).ToString("F")); 
+            }
+        }
+
         public DateTime UpdatedAt { get; set; }
 
         #endregion
@@ -777,6 +789,25 @@ private string _Notes;
             PopulateEvents();
             PopulatePayments();
         }
+
+        public void AddPayment(PaymentVm item)
+        {
+            Payments.Add(item);
+            OnPropertyChanged("Totals");
+        }
+
+        public void AddEvent(EventVm item)
+        {
+            Events.Add(item);
+            OnPropertyChanged("Totals");
+        }
+
+        public void RemoveEvent(EventVm item)
+        {
+            Events.Remove(item);
+            OnPropertyChanged("Totals");
+        }
+
 
         public void PopulateDropdown()
         {

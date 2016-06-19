@@ -52,7 +52,7 @@
                     </StackPanel>
                     <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
                         <Label Width="100">Arbiter:</Label>
-                        <TextBox Text="{Binding Arbiter, Mode=TwoWay}" Width="160"></TextBox>
+                        <TextBox Text="{Binding Arbiter, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="160"></TextBox>
                     </StackPanel>
                     <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
                         <Label Width="100">Location:</Label>
@@ -90,17 +90,17 @@
                     </StackPanel>
                     <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
                         <Label Width="100">Prize Fund:</Label>
-                        <TextBox Text="{Binding PrizeFund, Mode=TwoWay, Converter={StaticResource ShowCurrencyConverter}}" Width="60"></TextBox>
+                        <TextBox Text="{Binding PrizeFund, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource ShowCurrencyConverter}}" Width="60"></TextBox>
                         <Label Width="40">1st:</Label>
-                        <TextBox Text="{Binding Prize1, Mode=TwoWay, Converter={StaticResource ShowCurrencyConverter}}" Width="60"></TextBox>
+                        <TextBox Text="{Binding Prize1, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource ShowCurrencyConverter}}" Width="60"></TextBox>
                         <Label Width="40">2nd:</Label>
-                        <TextBox Text="{Binding Prize2, Mode=TwoWay, Converter={StaticResource ShowCurrencyConverter}}" Width="60"></TextBox>
+                        <TextBox Text="{Binding Prize2, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource ShowCurrencyConverter}}" Width="60"></TextBox>
                         <Label Width="40">3rd:</Label>
-                        <TextBox Text="{Binding Prize3, Mode=TwoWay, Converter={StaticResource ShowCurrencyConverter}}" Width="60"></TextBox>
+                        <TextBox Text="{Binding Prize3, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource ShowCurrencyConverter}}" Width="60"></TextBox>
                     </StackPanel>
                     <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
                         <Label Width="160">Other prizes:</Label>
-                        <TextBox Text="{Binding OtherPrizes, Mode=TwoWay}" Width="240"></TextBox>
+                        <TextBox Text="{Binding OtherPrizes, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="240"></TextBox>
                     </StackPanel>
                     <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
                         <Label Width="160">Junior Medals:</Label>
@@ -109,19 +109,19 @@
                     <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
                         <Label Width="160">Junior cash prizes:</Label>
                         <Label Width="40">1st:</Label>
-                        <TextBox Text="{Binding JuniorPrize1, Mode=TwoWay, Converter={StaticResource ShowCurrencyConverter}}" Width="60"></TextBox>
+                        <TextBox Text="{Binding JuniorPrize1, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource ShowCurrencyConverter}}" Width="60"></TextBox>
                         <Label Width="40">2nd:</Label>
-                        <TextBox Text="{Binding JuniorPrize2, Mode=TwoWay, Converter={StaticResource ShowCurrencyConverter}}" Width="60"></TextBox>
+                        <TextBox Text="{Binding JuniorPrize2, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource ShowCurrencyConverter}}" Width="60"></TextBox>
                         <Label Width="40">3rd:</Label>
-                        <TextBox Text="{Binding JuniorPrize3, Mode=TwoWay, Converter={StaticResource ShowCurrencyConverter}}" Width="60"></TextBox>
+                        <TextBox Text="{Binding JuniorPrize3, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource ShowCurrencyConverter}}" Width="60"></TextBox>
                     </StackPanel>
                     <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
                         <Label Width="160">Other junior prizes:</Label>
-                        <TextBox Text="{Binding JuniorOtherPrizes, Mode=TwoWay}" Width="240"></TextBox>
+                        <TextBox Text="{Binding JuniorOtherPrizes, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="240"></TextBox>
                     </StackPanel>
                     <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
                         <Label Width="160">Notes:</Label>
-                        <TextBox Text="{Binding Notes, Mode=TwoWay}" Width="600"></TextBox>
+                        <TextBox Text="{Binding Notes, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="600"></TextBox>
                     </StackPanel>
                     <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
                         <Label Width="100" VerticalAlignment="Top">Sessions:</Label>

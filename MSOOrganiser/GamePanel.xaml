@@ -22,11 +22,11 @@
         </Border>
         <StackPanel Orientation="Horizontal" Margin="0,20,0,0">
             <Label Width="100">Code:</Label>
-            <TextBox Text="{Binding Code, Mode=TwoWay}" Width="40"></TextBox>
+            <TextBox Text="{Binding Code, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="40"></TextBox>
         </StackPanel>
         <StackPanel Orientation="Horizontal" Margin="0,20,0,0">
             <Label Width="100">Name:</Label>
-            <TextBox Text="{Binding Name, Mode=TwoWay}" Width="100"></TextBox>
+            <TextBox Text="{Binding Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="100"></TextBox>
         </StackPanel>
         <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
             <Label Width="100">Category:</Label>
@@ -39,15 +39,15 @@
         </StackPanel>
         <StackPanel Orientation="Horizontal" Margin="0,20,0,0">
             <Label Width="100">Contacts:</Label>
-            <TextBox Width="740" MinLines="3" Text="{Binding Contacts, Mode=TwoWay}"></TextBox>
+            <TextBox Width="740" MinLines="3" Text="{Binding Contacts, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"></TextBox>
         </StackPanel>
         <StackPanel Orientation="Horizontal" Margin="0,20,0,0">
             <Label Width="100">Equipment:</Label>
-            <TextBox Width="740" MinLines="3" Text="{Binding Equipment, Mode=TwoWay}"></TextBox>
+            <TextBox Width="740" MinLines="3" Text="{Binding Equipment, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"></TextBox>
         </StackPanel>
         <StackPanel Orientation="Horizontal" Margin="0,20,0,0">
             <Label Width="100">Rules:</Label>
-            <TextBox Width="740" MinLines="5" Text="{Binding Rules, Mode=TwoWay}"></TextBox>
+            <TextBox Width="740" MinLines="5" Text="{Binding Rules, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"></TextBox>
         </StackPanel>
     </StackPanel>
 </UserControl>

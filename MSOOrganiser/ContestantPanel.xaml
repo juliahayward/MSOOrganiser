@@ -44,9 +44,9 @@
                           SelectedValuePath="Value"
                           SelectedValue="{Binding Title}">
                         </ComboBox>
-                        <TextBox Text="{Binding FirstName, Mode=TwoWay}" Width="100" MaxLength="50"></TextBox>
-                        <TextBox Text="{Binding Initials, Mode=TwoWay}" Width="40" MaxLength="10"></TextBox>
-                        <TextBox Text="{Binding LastName, Mode=TwoWay}" Width="160"  MaxLength="50"></TextBox>
+                        <TextBox Text="{Binding FirstName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="100" MaxLength="50"></TextBox>
+                        <TextBox Text="{Binding Initials, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="40" MaxLength="10"></TextBox>
+                        <TextBox Text="{Binding LastName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="160"  MaxLength="50"></TextBox>
                         <Label>Male:</Label>
                         <CheckBox IsChecked="{Binding IsMale, Mode=TwoWay}" VerticalAlignment="Center"></CheckBox>
                     </StackPanel>
@@ -58,17 +58,17 @@
                     <StackPanel Orientation="Horizontal" Margin="0,20,0,0">
                         <Label Width="100">Phone</Label>
                         <Label> (day) </Label>
-                        <TextBox Text="{Binding DayPhone, Mode=TwoWay}" Width="100" MaxLength="50"></TextBox>
+                        <TextBox Text="{Binding DayPhone, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="100" MaxLength="50"></TextBox>
                         <Label> (evening) </Label>
-                        <TextBox Text="{Binding EvePhone, Mode=TwoWay}" Width="100" MaxLength="50"></TextBox>
+                        <TextBox Text="{Binding EvePhone, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="100" MaxLength="50"></TextBox>
                         <Label> (fax)</Label>
-                        <TextBox Text="{Binding Fax, Mode=TwoWay}" Width="100" MaxLength="50"></TextBox>
+                        <TextBox Text="{Binding Fax, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="100" MaxLength="50"></TextBox>
                     </StackPanel>
                     <StackPanel Orientation="Horizontal" Margin="0,20,0,0">
                         <Label Width="100">Email:</Label>
-                        <TextBox Text="{Binding Email, Mode=TwoWay}" Width="200" MaxLength="50"></TextBox>
+                        <TextBox Text="{Binding Email, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="200" MaxLength="50"></TextBox>
                         <Label>Exclude from promotional mail:</Label>
-                        <CheckBox IsChecked="{Binding WantsNoMail, Mode=TwoWay}" VerticalAlignment="Center"></CheckBox>
+                        <CheckBox IsChecked="{Binding WantsNoMail, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Center"></CheckBox>
                     </StackPanel>
                     <StackPanel Orientation="Horizontal" Margin="0,20,0,0">
                         <Label Width="100">Date of Birth:</Label>
@@ -80,31 +80,31 @@
                     </StackPanel>
                     <StackPanel Orientation="Horizontal" Margin="0,20,0,0">
                         <Label Width="100">Address1:</Label>
-                        <TextBox Text="{Binding Address1, Mode=TwoWay}" Width="200" MaxLength="50"></TextBox>
+                        <TextBox Text="{Binding Address1, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="200" MaxLength="50"></TextBox>
                     </StackPanel>
                     <StackPanel Orientation="Horizontal" Margin="0,0,0,0">
                         <Label Width="100">Address2:</Label>
-                        <TextBox Text="{Binding Address2, Mode=TwoWay}" Width="200" MaxLength="50"></TextBox>
+                        <TextBox Text="{Binding Address2, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="200" MaxLength="50"></TextBox>
                     </StackPanel>
                     <StackPanel Orientation="Horizontal" Margin="0,0,0,0">
                         <Label Width="100">City:</Label>
-                        <TextBox Text="{Binding City, Mode=TwoWay}" Width="200" MaxLength="50"></TextBox>
+                        <TextBox Text="{Binding City, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="200" MaxLength="50"></TextBox>
                     </StackPanel>
                     <StackPanel Orientation="Horizontal" Margin="0,0,0,0">
                         <Label Width="100">County:</Label>
-                        <TextBox Text="{Binding County, Mode=TwoWay}" Width="200" MaxLength="50"></TextBox>
+                        <TextBox Text="{Binding County, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="200" MaxLength="50"></TextBox>
                     </StackPanel>
                     <StackPanel Orientation="Horizontal" Margin="0,0,0,0">
                         <Label Width="100">Postcode:</Label>
-                        <TextBox Text="{Binding Postcode, Mode=TwoWay}" Width="100" MaxLength="50"></TextBox>
+                        <TextBox Text="{Binding Postcode, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="100" MaxLength="50"></TextBox>
                     </StackPanel>
                     <StackPanel Orientation="Horizontal" Margin="0,0,0,0">
                         <Label Width="100">Country:</Label>
-                        <TextBox Text="{Binding Country, Mode=TwoWay}" Width="100" MaxLength="50"></TextBox>
+                        <TextBox Text="{Binding Country, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="100" MaxLength="50"></TextBox>
                     </StackPanel>
                     <StackPanel Orientation="Horizontal" Margin="0,20,0,0">
                         <Label Width="100">Notes:</Label>
-                        <TextBox Text="{Binding Notes, Mode=TwoWay}" Width="740" MinLines="3"></TextBox>
+                        <TextBox Text="{Binding Notes, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="740" MinLines="3"></TextBox>
                     </StackPanel>
                 </StackPanel>
             </TabItem>
@@ -112,11 +112,11 @@
                 <StackPanel Orientation="Vertical">
                     <StackPanel Orientation="Horizontal" Margin="0,20,0,0">
                         <Label Width="100">BCF Code:</Label>
-                        <TextBox Text="{Binding BCFCode, Mode=TwoWay}" Width="100" MaxLength="7"></TextBox>
+                        <TextBox Text="{Binding BCFCode, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="100" MaxLength="7"></TextBox>
                     </StackPanel>
                     <StackPanel Orientation="Horizontal" Margin="0,20,0,0">
                         <Label Width="100">FIDE Code:</Label>
-                        <TextBox Text="{Binding FIDECode, Mode=TwoWay}" Width="100"  MaxLength="8"></TextBox>
+                        <TextBox Text="{Binding FIDECode, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="100"  MaxLength="8"></TextBox>
                     </StackPanel>
                 </StackPanel>
             </TabItem>
@@ -195,7 +195,7 @@
                     <Button Click="addPayment_Click">Add Payment</Button>
                     <DataGrid Name="paymentDataGrid" CanUserAddRows="False" CanUserResizeColumns="True" CanUserSortColumns="True"
                               AutoGenerateColumns="False" 
-                            Width="920" Margin="0,20,0,0" IsReadOnly="True" ItemsSource="{Binding Payments}">
+                            Width="920" Margin="0,20,0,20" IsReadOnly="True" ItemsSource="{Binding Payments}">
                         <DataGrid.Columns>
                             <DataGridTextColumn Header="PaymentId" Binding="{Binding PaymentId}" />
                             <DataGridTextColumn Header="Amount" Binding="{Binding Amount, Converter={StaticResource ShowCurrencyConverter}}" />
@@ -203,6 +203,9 @@
                             <DataGridCheckBoxColumn Header="Banked" Binding="{Binding Banked}" />
                         </DataGrid.Columns>
                     </DataGrid>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock FontWeight="Bold" FontSize="16" Margin="10,10,10,10" Text="{Binding Totals}"/>
+                    </StackPanel>
                 </StackPanel>
             </TabItem>
             <TabItem Header="Other">

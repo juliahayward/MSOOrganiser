@@ -815,7 +815,8 @@ namespace MSOOrganiser
                 Sessions.Add(new SessionVm() { Id = s.INDEX, Date = s.Date.Value, SessionCode = s.Session,
                     Start = s.Session1.StartTime.Value.ToString(@"hh\:mm"),
                     End = s.Session1.FinishTime.Value.ToString(@"hh\:mm"),
-                Worth = (int)s.Session1.Worth.Value });
+                    // Todo purge the nulls out of the database (needs a whole rethink anyway)
+                Worth = (s.Session1.Worth.HasValue) ? (int)s.Session1.Worth.Value : 0});
 
             var entrants = context.Entrants
                 .Join(context.Contestants, e => e.Mind_Sport_ID, c => c.Mind_Sport_ID, (e, c) => new { e = e, c = c })

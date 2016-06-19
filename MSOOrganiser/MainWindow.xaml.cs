@@ -151,11 +151,14 @@ namespace MSOOrganiser
 
         void panel_EventSelected(object sender, Events.EventEventArgs e)
         {
-            if (dockPanel.Children.Count > 2) dockPanel.Children.RemoveAt(2);
-            var panel = new EventPanel();
-            panel.Populate(e.EventCode, e.OlympiadId);
-            panel.ContestantSelected += panel_ContestantSelected;
-            dockPanel.Children.Add(panel);
+            using (new SpinnyCursor())
+            {
+                if (dockPanel.Children.Count > 2) dockPanel.Children.RemoveAt(2);
+                var panel = new EventPanel();
+                panel.Populate(e.EventCode, e.OlympiadId);
+                panel.ContestantSelected += panel_ContestantSelected;
+                dockPanel.Children.Add(panel);
+            }
         }
 
 
@@ -190,11 +193,14 @@ namespace MSOOrganiser
 
         void panel_ContestantSelected(object sender, Events.ContestantEventArgs e)
         {
-            if (dockPanel.Children.Count > 2) dockPanel.Children.RemoveAt(2);
-            var panel = new ContestantPanel();
-            panel.Populate(e.ContestantId);
-            panel.EventSelected += panel_EventSelected;
-            dockPanel.Children.Add(panel);
+            using (new SpinnyCursor())
+            {
+                if (dockPanel.Children.Count > 2) dockPanel.Children.RemoveAt(2);
+                var panel = new ContestantPanel();
+                panel.Populate(e.ContestantId);
+                panel.EventSelected += panel_EventSelected;
+                dockPanel.Children.Add(panel);
+            }
         }
 
         private void displayResultsMenuItem_Click(object sender, RoutedEventArgs e)

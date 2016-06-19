@@ -30,17 +30,17 @@
                 <StackPanel Orientation="Vertical">
                     <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
                         <Label Width="100">Year:</Label>
-                        <TextBox Text="{Binding YearOf, Mode=TwoWay}" Width="40"></TextBox>
+                        <TextBox Text="{Binding YearOf, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="40"></TextBox>
                     </StackPanel>
                     <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
                         <Label Width="100">Number:</Label>
-                        <TextBox Text="{Binding Number, Mode=TwoWay}" Width="100"></TextBox>
+                        <TextBox Text="{Binding Number, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="100"></TextBox>
                         <Label>Title:</Label>
-                        <TextBox Text="{Binding Title, Mode=TwoWay}" Width="348"></TextBox>
+                        <TextBox Text="{Binding Title, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="348"></TextBox>
                     </StackPanel>
                     <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
                         <Label Width="100">Venue:</Label>
-                        <TextBox Width="484" MinLines="3" MaxLines="3" Text="{Binding Venue, Mode=TwoWay}"></TextBox>
+                        <TextBox Width="484" MinLines="3" MaxLines="3" Text="{Binding Venue, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"></TextBox>
                     </StackPanel>
                     <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
                         <Label Width="100">Locations:</Label>
@@ -58,34 +58,34 @@
                     </StackPanel>
                     <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
                         <Label Width="100">Start Date:</Label>
-                        <TextBox Text="{Binding StartDate, Mode=TwoWay}" Width="100"></TextBox>
+                        <TextBox Text="{Binding StartDate, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="100"></TextBox>
                         <Label Width="100">Finish Date:</Label>
-                        <TextBox Text="{Binding FinishDate, Mode=TwoWay}" Width="100"></TextBox>
+                        <TextBox Text="{Binding FinishDate, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="100"></TextBox>
                     </StackPanel>
                     <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
                         <Label Width="100">Maximum Fees:</Label>
                         <Label>Standard £</Label>
-                        <TextBox Width="80" Text="{Binding MaxFee, Mode=TwoWay}"></TextBox>
+                        <TextBox Width="80" Text="{Binding MaxFee, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"></TextBox>
                         <Label>Concession £</Label>
-                        <TextBox Width="80" Text="{Binding MaxCon, Mode=TwoWay}"></TextBox>
+                        <TextBox Width="80" Text="{Binding MaxCon, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"></TextBox>
                     </StackPanel>
                     <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
                         <Label Width="100">Age Date:</Label>
-                        <TextBox Text="{Binding AgeDate, Mode=TwoWay}" Width="100"></TextBox>
+                        <TextBox Text="{Binding AgeDate, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="100"></TextBox>
                         <Label>Junior Age:</Label>
-                        <TextBox Text="{Binding JnrAge, Mode=TwoWay}" Width="32"></TextBox>
+                        <TextBox Text="{Binding JnrAge, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="32"></TextBox>
                         <Label>Senior Age:</Label>
-                        <TextBox Text="{Binding SnrAge, Mode=TwoWay}" Width="32"></TextBox>
+                        <TextBox Text="{Binding SnrAge, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="32"></TextBox>
                     </StackPanel>
                     <GroupBox Header="Pentamind" Margin="0,10,0,0">
                         <StackPanel Orientation="Vertical">
                             <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
                                 <Label Width="150">Long sessions needed:</Label>
-                                <TextBox Text="{Binding PentaLong, Mode=TwoWay}" Width="32"></TextBox>
+                                <TextBox Text="{Binding PentaLong, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="32"></TextBox>
                             </StackPanel>
                             <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
                                 <Label Width="150">Total sessions needed:</Label>
-                                <TextBox Text="{Binding PentaTotal, Mode=TwoWay}" Width="32"></TextBox>
+                                <TextBox Text="{Binding PentaTotal, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="32"></TextBox>
                             </StackPanel>
                         </StackPanel>
                     </GroupBox>
