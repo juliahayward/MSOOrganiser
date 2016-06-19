@@ -20,6 +20,7 @@ namespace MSOCore
                         EventId = evtId,
                         Game_Code = evtCode,
                         Medal = null,
+                        JuniorMedal = null,
                         Mind_Sport_ID = contestant.Mind_Sport_ID,
                         MustUse = null,
                         Name = contestant,

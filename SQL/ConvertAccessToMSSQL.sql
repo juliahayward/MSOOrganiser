@@ -344,6 +344,9 @@ ALTER TABLE [mso].[dbo].[Names] DROP CONSTRAINT SSMA_CC$Names$Notes$disallow_zer
 ALTER TABLE [mso].[dbo].[Names] DROP CONSTRAINT SSMA_CC$Names$PostCode$disallow_zero_length
 ALTER TABLE [mso].[dbo].[Names] DROP CONSTRAINT SSMA_CC$Names$Title$disallow_zero_length
 
+/* Separate column for junior medal, as you cna win both */
+
+ALTER TABLE Entrants ADD JuniorMedal NVARCHAR(50) NULL
 
 
 

@@ -161,6 +161,24 @@
                                     </Style>
                                 </DataGridTextColumn.ElementStyle>
                             </DataGridTextColumn>
+                            <DataGridTextColumn Header="Junior Medal" Width="96" Binding="{Binding JuniorMedal}">
+                                <DataGridTextColumn.ElementStyle>
+                                    <Style TargetType="{x:Type TextBlock}">
+                                        <Style.Triggers>
+                                            <Trigger Property="Text" Value="Bronze">
+                                                <Setter Property="Background" Value="Brown"/>
+                                                <Setter Property="Foreground" Value="White"/>
+                                            </Trigger>
+                                            <Trigger Property="Text" Value="Silver">
+                                                <Setter Property="Background" Value="Silver"/>
+                                            </Trigger>
+                                            <Trigger Property="Text" Value="Gold">
+                                                <Setter Property="Background" Value="Gold"/>
+                                            </Trigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </DataGridTextColumn.ElementStyle>
+                            </DataGridTextColumn>
                             <DataGridTextColumn Header="Rank" Binding="{Binding Rank, Converter={StaticResource ShowBlankIfZeroIntConverter}}" />
                             <DataGridTextColumn Header="Pentamind" Binding="{Binding Penta}" />
                             <DataGridTextColumn Header="TieBreak" Binding="{Binding TieBreak}" />

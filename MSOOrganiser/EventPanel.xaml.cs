@@ -261,6 +261,7 @@ namespace MSOOrganiser
             public int EntrantId { get; set; }
             public int ContestantId { get; set; }
             public string Medal { get; set; }
+            public string JuniorMedal { get; set; }
             public string FirstName { get; set; }
             public string LastName { get; set; }
             public bool IsJunior { get; set; }
@@ -286,6 +287,7 @@ namespace MSOOrganiser
             public string PIN { get; set; } // need this?
 
             public ObservableCollection<string> Medals { get { return _parent.Medals; } }
+            public ObservableCollection<string> JuniorMedals { get { return _parent.JuniorMedals1; } }
         }
 
         public ResultsPanelVm()
@@ -298,6 +300,7 @@ namespace MSOOrganiser
             Locations = new ObservableCollection<LocationVm>();
             Olympiads = new ObservableCollection<OlympiadVm>();
             Medals = StandardMedalsList();
+            JuniorMedals1 = JuniorMedalsList();
             EventCode = "";
 
             PopulateDropdown();
@@ -306,6 +309,8 @@ namespace MSOOrganiser
 
         #region bindable properties
         public ObservableCollection<string> Medals { get; set; }
+        public ObservableCollection<string> JuniorMedals1 { get; set; } 
+        // TODO Other JuniorMedals should be HasJuniorMedals
         public ObservableCollection<TypeVm> Types { get; set; }
         public ObservableCollection<EntryFeeVm> Fees { get; set; }
         public ObservableCollection<EventVm> Events { get; set; }
@@ -703,11 +708,19 @@ namespace MSOOrganiser
             list.Add("Gold");
             list.Add("Silver");
             list.Add("Bronze");
+            return list;
+        }
+
+        private ObservableCollection<string> JuniorMedalsList()
+        {
+            var list = new ObservableCollection<string>();
+            list.Add("");
             list.Add("Gold JNR");
             list.Add("Silver JNR");
             list.Add("Bronze JNR");
             return list;
         }
+
 
 
         public void PopulateDropdown(string eventCode = null, int olympiadId = -1)
@@ -819,6 +832,7 @@ namespace MSOOrganiser
                     EntrantId = e.e.EntryNumber,
                     ContestantId = e.c.Mind_Sport_ID,
                     Medal = e.e.Medal ?? "",
+                    JuniorMedal = e.e.JuniorMedal ?? "",
                     FirstName = e.c.Firstname,
                     LastName = e.c.Lastname,
                     IsJunior = e.c.DateofBirth.HasValue && e.c.DateofBirth > juniorDate, 
@@ -890,6 +904,7 @@ namespace MSOOrganiser
                 var entrant = context.Entrants.First(x => x.EntryNumber == e.EntrantId);
                 entrant.Absent = e.Absent;
                 entrant.Medal = (string.IsNullOrEmpty(e.Medal)) ? null : e.Medal;
+                entrant.JuniorMedal = (string.IsNullOrEmpty(e.JuniorMedal)) ? null : e.JuniorMedal;
                 entrant.Rank = e.Rank;
                 entrant.Score = e.Score;
                 if (e.Rank > 0) entrant.Penta_Score = e.PentaScore; else entrant.Penta_Score = null;

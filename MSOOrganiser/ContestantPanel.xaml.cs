@@ -229,6 +229,7 @@ namespace MSOOrganiser
             public decimal Fee { get; set; }
             public string Partner { get; set; }
             public string Medal { get; set; }
+            public string JuniorMedal { get; set; }
             public int Rank { get; set; }
             public string Penta { get; set; }
             public string TieBreak { get; set; }
@@ -837,6 +838,7 @@ private string _Notes;
                     EventName = e.g.Mind_Sport,
                     Fee = e.e.Fee,
                     Medal = e.e.Medal ?? "",
+                    JuniorMedal = e.e.JuniorMedal ?? "",
                     Partner = e.e.Partner ?? "",
                     Penta = e.e.Penta_Score.HasValue ? e.e.Penta_Score.Value.ToString() : "",
                     Rank = e.e.Rank.HasValue ? e.e.Rank.Value : 0,
