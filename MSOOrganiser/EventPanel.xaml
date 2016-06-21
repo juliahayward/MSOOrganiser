@@ -235,9 +235,12 @@
                             </DataGridTemplateColumn>
                         </DataGrid.Columns>
                     </DataGrid>
-                    <Button Click="checkRanks_Click">Check Ranks</Button>
-                    <Button Click="calculatePenta_Click">Calculate Pentamind Scores</Button>
-                    <Button Click="calculatePenta10_Click">Calculate Pentamind Scores (2010 formula)</Button>
+                    <StackPanel Orientation="Horizontal">
+                        <Button Margin="4,4,4,4" Click="checkRanks_Click">Check Ranks</Button>
+                        <Button Margin="4,4,4,4" Click="calculatePenta_Click">Calculate Pentamind Scores</Button>
+                        <Button Margin="4,4,4,4" Click="calculatePenta10_Click">Calculate Pentamind Scores (2010 formula)</Button>
+                        <Button Margin="4,4,4,4" Click="print_Click">Print Results</Button>
+                    </StackPanel>
                 </StackPanel>
             </TabItem>
         </TabControl>

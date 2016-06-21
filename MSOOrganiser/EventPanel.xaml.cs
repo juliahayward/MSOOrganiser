@@ -23,6 +23,7 @@ using JuliaHayward.Common.Environment;
 using System.Configuration;
 using JuliaHayward.Common.Logging;
 using System.Data.Entity.Validation;
+using MSOOrganiser.Reports;
 
 namespace MSOOrganiser
 {
@@ -101,6 +102,12 @@ namespace MSOOrganiser
                 var logger = new TrelloLogger(trelloKey, trelloAuthKey);
                 logger.Error("MSOWeb", message, ex.StackTrace);
             }
+        }
+
+        public void print_Click(object sender, EventArgs e)
+        {
+            var printer = new SingleEventResultsPrinter(ViewModel.CurrentOlympiadId, ViewModel.EventCode);
+            printer.Print();
         }
 
         private void eventCombo_Changed(object sender, SelectionChangedEventArgs e)
@@ -824,7 +831,7 @@ namespace MSOOrganiser
                 .OrderBy(x => x.e.Rank)
                 .ThenBy(x => x.c.Lastname).ToList();
 
-            var juniorDate = DateTime.Now.AddYears(-currentOlympiad.JnrAge.Value - 1);
+            var juniorDate = currentOlympiad.AgeDate.Value.AddYears(-currentOlympiad.JnrAge.Value - 1);
 
             foreach (var e in entrants)
             {

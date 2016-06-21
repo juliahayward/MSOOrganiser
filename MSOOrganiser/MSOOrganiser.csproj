@@ -161,6 +161,7 @@
     </Compile>
     <Compile Include="Reports\ContestantListCsvExporter.cs" />
     <Compile Include="Reports\PokerStandingsPrinter.cs" />
+    <Compile Include="Reports\SingleEventResultsPrinter.cs" />
     <Compile Include="Reports\TrafficReportPrinter.cs" />
     <Compile Include="Reports\DonationPrinter.cs" />
     <Compile Include="Reports\EventIncomeReportPrinter.cs" />
