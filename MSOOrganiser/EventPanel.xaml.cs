@@ -268,7 +268,9 @@ namespace MSOOrganiser
             public int EntrantId { get; set; }
             public int ContestantId { get; set; }
             public string Medal { get; set; }
+            public int MedalSortValue { get { return (string.IsNullOrEmpty(Medal)) ? 100 : (int)Enum.Parse(typeof(Medals), Medal); } }
             public string JuniorMedal { get; set; }
+            public int JuniorMedalSortValue { get { return (string.IsNullOrEmpty(JuniorMedal)) ? 100 : (int)Enum.Parse(typeof(Medals), JuniorMedal); } }
             public string FirstName { get; set; }
             public string LastName { get; set; }
             public bool IsJunior { get; set; }

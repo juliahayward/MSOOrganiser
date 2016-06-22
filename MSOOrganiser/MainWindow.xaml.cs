@@ -390,6 +390,11 @@ namespace MSOOrganiser
             this.Status.Text = "";
         }
 
+        private void printResults_Click(object sender, RoutedEventArgs e)
+        {
+            MessageBox.Show("Event results can be printed from the individual event panel");
+        }
+
        
     }
 }

@@ -161,7 +161,8 @@
                             <DataGridTextColumn IsReadOnly="True" Header="EntrantId" Binding="{Binding EntrantId}" />
                             <DataGridTextColumn IsReadOnly="True" Header="ContestantId" Binding="{Binding ContestantId}" />
                             <DataGridComboBoxColumn Width="80" Header="Medal"
-                                      SelectedItemBinding="{Binding Path=Medal, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                                      SelectedItemBinding="{Binding Path=Medal, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                      SortMemberPath="MedalSortValue">
                                 <DataGridComboBoxColumn.ElementStyle>
                                     <Style TargetType="ComboBox">
                                         <Setter Property="ItemsSource" Value="{Binding Medals}" />
@@ -174,7 +175,8 @@
                                 </DataGridComboBoxColumn.EditingElementStyle>
                             </DataGridComboBoxColumn>
                             <DataGridComboBoxColumn Width="80" Header="Junior Medal"
-                                      SelectedItemBinding="{Binding Path=JuniorMedal, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                                      SelectedItemBinding="{Binding Path=JuniorMedal, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                      SortMemberPath="JuniorMedalSortValue">
                                 <DataGridComboBoxColumn.ElementStyle>
                                     <Style TargetType="ComboBox">
                                         <Setter Property="ItemsSource" Value="{Binding JuniorMedals}" />
