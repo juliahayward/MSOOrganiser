@@ -133,20 +133,26 @@ namespace MSOOrganiser
 
         private void olympiadsMenuItem_Click(object sender, RoutedEventArgs e)
         {
-            if (dockPanel.Children.Count > 2) dockPanel.Children.RemoveAt(2);
-            var panel = new OlympiadPanel();
-            panel.Populate();
-            panel.EventSelected += panel_EventSelected;
-            dockPanel.Children.Add(panel);
+            using (new SpinnyCursor())
+            {
+                if (dockPanel.Children.Count > 2) dockPanel.Children.RemoveAt(2);
+                var panel = new OlympiadPanel();
+                panel.Populate();
+                panel.EventSelected += panel_EventSelected;
+                dockPanel.Children.Add(panel);
+            }
         }
 
         private void competitorsMenuItem_Click(object sender, RoutedEventArgs e)
         {
-            if (dockPanel.Children.Count > 2) dockPanel.Children.RemoveAt(2);
-            var panel = new ContestantPanel();
-            panel.Populate();
-            panel.EventSelected += panel_EventSelected;
-            dockPanel.Children.Add(panel);
+            using (new SpinnyCursor())
+            {
+                if (dockPanel.Children.Count > 2) dockPanel.Children.RemoveAt(2);
+                var panel = new ContestantPanel();
+                panel.Populate();
+                panel.EventSelected += panel_EventSelected;
+                dockPanel.Children.Add(panel);
+            }
         }
 
         void panel_EventSelected(object sender, Events.EventEventArgs e)
@@ -164,10 +170,13 @@ namespace MSOOrganiser
 
         private void gamesMenuItem_Click(object sender, RoutedEventArgs e)
         {
-            if (dockPanel.Children.Count > 2) dockPanel.Children.RemoveAt(2);
-            var panel = new GamePanel();
-            panel.Populate();
-            dockPanel.Children.Add(panel);
+            using (new SpinnyCursor())
+            {
+                if (dockPanel.Children.Count > 2) dockPanel.Children.RemoveAt(2);
+                var panel = new GamePanel();
+                panel.Populate();
+                dockPanel.Children.Add(panel);
+            }
         }
 
         private void nationalitiesMenuItem_Click(object sender, RoutedEventArgs e)
@@ -328,7 +337,7 @@ namespace MSOOrganiser
             //  1. Events per Session (for the right day; not normally independent)
             //  2. Todays Events (for the right day)
             //  3.
-            //  4.
+            //  4.  Event Results for today, concatenated
             //  5.  Traffic report (for the right day)
             //  6.  Income summary
             //  7.  Entry Summary

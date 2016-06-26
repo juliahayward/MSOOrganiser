@@ -226,7 +226,22 @@
                             <DataGridCheckBoxColumn Header="Absent" Binding="{Binding Absent, Mode=TwoWay}" />
                             <DataGridTextColumn Header="TieBreak" Binding="{Binding TieBreak, Mode=TwoWay}" />
                             <DataGridTextColumn IsReadOnly="True" Header="Pentamind" Binding="{Binding PentaScore, Converter={StaticResource Show3DecPlacesConverter}}" />
-                            <DataGridTextColumn Header="TeamOrPair" Binding="{Binding TeamOrPair, Mode=TwoWay}"  />
+                            <!-- Show this if more than 2 in team -->
+                            <DataGridTextColumn Header="Team" Binding="{Binding TeamOrPair, Mode=TwoWay}"  />
+                            <!-- Show this if exactly 2 in team -->
+                            <DataGridComboBoxColumn Width="80" Header="Partner"
+                                      SelectedItemBinding="{Binding Path=TeamOrPair, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                                <DataGridComboBoxColumn.ElementStyle>
+                                    <Style TargetType="ComboBox">
+                                        <Setter Property="ItemsSource" Value="{Binding Partners}" />
+                                    </Style>
+                                </DataGridComboBoxColumn.ElementStyle>
+                                <DataGridComboBoxColumn.EditingElementStyle>
+                                    <Style TargetType="ComboBox">
+                                        <Setter Property="ItemsSource" Value="{Binding Partners}" />
+                                    </Style>
+                                </DataGridComboBoxColumn.EditingElementStyle>
+                            </DataGridComboBoxColumn>
                             <DataGridTextColumn IsReadOnly="True" Header="PIN" Binding="{Binding PIN}"  />
                             <DataGridTemplateColumn  MinWidth="100" Header="View">
                                 <DataGridTemplateColumn.CellTemplate>

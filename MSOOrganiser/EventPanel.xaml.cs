@@ -64,11 +64,32 @@ namespace MSOOrganiser
         {
             ViewModel.PopulateDropdown(eventCode, olympiadId);
             ViewModel.Populate();
+            SetPairsColumnVisibility();
+        }
+          
+        private void SetPairsColumnVisibility()
+        {
+            if (ViewModel.NumberInTeam == 1)
+            {
+                dataGrid.Columns[12].Visibility = Visibility.Collapsed; // text box
+                dataGrid.Columns[13].Visibility = Visibility.Collapsed; // dropdown
+            }
+            else if (ViewModel.NumberInTeam == 2)
+            {
+                dataGrid.Columns[12].Visibility = Visibility.Collapsed;
+                dataGrid.Columns[13].Visibility = Visibility.Visible;
+            }
+            else
+            {
+                dataGrid.Columns[12].Visibility = Visibility.Visible;
+                dataGrid.Columns[13].Visibility = Visibility.Collapsed;
+            }
         }
 
         private void cancel_Click(object sender, RoutedEventArgs e)
         {
             ViewModel.Populate();
+            SetPairsColumnVisibility();
         }
 
         private void save_Click(object sender, RoutedEventArgs e)
@@ -113,11 +134,13 @@ namespace MSOOrganiser
         private void eventCombo_Changed(object sender, SelectionChangedEventArgs e)
         {
             ViewModel.Populate();
+            SetPairsColumnVisibility();
         }
 
         private void olympiadCombo_Changed(object sender, SelectionChangedEventArgs e)
         {
             ViewModel.Populate();
+            SetPairsColumnVisibility();
         }
 
         private void person_Click(object sender, RoutedEventArgs e)
@@ -244,6 +267,12 @@ namespace MSOOrganiser
             public string Value { get; set; }
         }
 
+        public class PartnerVm
+        {
+            public string Text { get; set; }
+            public string Value { get; set; }
+        }
+
         // for table
         public class SessionVm : VmBase
         {
@@ -273,6 +302,7 @@ namespace MSOOrganiser
             public int JuniorMedalSortValue { get { return (string.IsNullOrEmpty(JuniorMedal)) ? 100 : (int)Enum.Parse(typeof(Medals), JuniorMedal); } }
             public string FirstName { get; set; }
             public string LastName { get; set; }
+            public string FullName { get { return FirstName + " " + LastName; } }
             public bool IsJunior { get; set; }
             public string Junior { get { return IsJunior ? "JNR" : "";  } }
             public int Rank { get; set; }
@@ -297,6 +327,7 @@ namespace MSOOrganiser
 
             public ObservableCollection<string> Medals { get { return _parent.Medals; } }
             public ObservableCollection<string> JuniorMedals { get { return _parent.JuniorMedals1; } }
+            public ObservableCollection<string> Partners { get { return _parent.Partners; } }
         }
 
         public ResultsPanelVm()
@@ -308,6 +339,8 @@ namespace MSOOrganiser
             Types = new ObservableCollection<TypeVm>();
             Locations = new ObservableCollection<LocationVm>();
             Olympiads = new ObservableCollection<OlympiadVm>();
+            Partners = new ObservableCollection<string>();
+
             Medals = StandardMedalsList();
             JuniorMedals1 = JuniorMedalsList();
             EventCode = "";
@@ -327,6 +360,7 @@ namespace MSOOrganiser
         public ObservableCollection<SessionVm> Sessions { get; set; }
         public ObservableCollection<LocationVm> Locations { get; set; }
         public ObservableCollection<OlympiadVm> Olympiads { get; set; }
+        public ObservableCollection<string> Partners { get; set; }
         public int CurrentOlympiadId { get; set; }
         public string EventCode { get; set; }
         public int EventId { get; set; }        // EIN in database
@@ -833,6 +867,11 @@ namespace MSOOrganiser
                 .OrderBy(x => x.e.Rank)
                 .ThenBy(x => x.c.Lastname).ToList();
 
+            Partners.Clear();
+            foreach (var ec in entrants.OrderBy(ec => ec.c.FullName()))
+                Partners.Add(ec.c.FullName());
+
+
             var juniorDate = currentOlympiad.AgeDate.Value.AddYears(-currentOlympiad.JnrAge.Value - 1);
 
             foreach (var e in entrants)
@@ -855,14 +894,32 @@ namespace MSOOrganiser
                     PIN = e.e.PIN.HasValue ? e.e.PIN.Value.ToString() : ""
                 });
             }
-
         }
 
         public List<string> Validate()
         {
             var errors = new List<string>();
 
+            ValidatePartners(errors);
+
             return errors;
+        }
+
+        private void ValidatePartners(List<string> errors)
+        {
+            if (NumberInTeam == 2)
+            {
+                foreach (var e1 in Entrants.Where(x => !x.Absent && x.Rank != 0))
+                {
+                    var e2 = Entrants.FirstOrDefault(x => x.FullName == e1.TeamOrPair);
+                    if (e2 == null)
+                        errors.Add(e1.FullName + " does not have a partner");
+                    else if (e2.TeamOrPair != e1.FullName)
+                        errors.Add(e1.FullName + " and " + e2.FullName + " have mismatched partners");
+                    else if (e2.Rank != e1.Rank)
+                        errors.Add("Partners " + e1.FullName + " and " + e2.FullName + " should have the same rank");
+                }
+            }
         }
 
         public void Save()

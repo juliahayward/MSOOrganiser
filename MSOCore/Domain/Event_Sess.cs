@@ -27,5 +27,8 @@ namespace MSOCore
 
             return es;
         }
+
+        public DateTime ActualStart { get { return this.Date.Value.Add(Session1.StartTime.Value); } }
+        public DateTime ActualEnd { get { return this.Date.Value.Add(Session1.FinishTime.Value); } }
     }
 }
