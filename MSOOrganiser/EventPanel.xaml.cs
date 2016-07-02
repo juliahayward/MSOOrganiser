@@ -172,6 +172,19 @@ namespace MSOOrganiser
             }
         }
 
+        private void calculateRanks_Click(object sender, RoutedEventArgs args)
+        {
+            var checker = new RankCalculator();
+            try
+            {
+                checker.Calculate(ViewModel.NumberInTeam, ViewModel.HighScoresAreBest, ViewModel.Entrants);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }
+
         private void checkRanks_Click(object sender, RoutedEventArgs e)
         {
             var checker = new RankChecker();
@@ -273,6 +286,12 @@ namespace MSOOrganiser
             public string Value { get; set; }
         }
 
+        public class ScoreModeVm
+        {
+            public string Text { get; set; }
+            public bool Value { get; set; }
+        }
+
         public class PartnerVm
         {
             public string Text { get; set; }
@@ -311,7 +330,19 @@ namespace MSOOrganiser
             public string FullName { get { return FirstName + " " + LastName; } }
             public bool IsJunior { get; set; }
             public string Junior { get { return IsJunior ? "JNR" : "";  } }
-            public int Rank { get; set; }
+            private int _rank;
+            public int Rank 
+            {
+                get { return _rank; }
+                set
+                {
+                    if (_rank != value)
+                    {
+                        _rank = value;
+                        OnPropertyChanged("Rank");
+                    }
+                }
+            }
             public string Score { get; set; }
             public bool Absent { get; set; }
             public string TieBreak { get; set; }
@@ -346,16 +377,19 @@ namespace MSOOrganiser
             Locations = new ObservableCollection<LocationVm>();
             Olympiads = new ObservableCollection<OlympiadVm>();
             Partners = new ObservableCollection<string>();
+            ScoreModes = new ObservableCollection<ScoreModeVm>();
 
             Medals = StandardMedalsList();
             JuniorMedals1 = JuniorMedalsList();
             EventCode = "";
 
+            PopulateScoreModes();
             PopulateDropdown();
             Populate();
         }
 
         #region bindable properties
+        public ObservableCollection<ScoreModeVm> ScoreModes { get; set; }
         public ObservableCollection<string> Medals { get; set; }
         public ObservableCollection<string> JuniorMedals1 { get; set; } 
         // TODO Other JuniorMedals should be HasJuniorMedals
@@ -749,7 +783,50 @@ namespace MSOOrganiser
             }
         }
 
+        private bool _highScoresAreBest = true;
+        public bool HighScoresAreBest
+        {
+            get
+            {
+                return _highScoresAreBest;
+            }
+            set
+            {
+                if (_highScoresAreBest != value)
+                {
+                    _highScoresAreBest = value;
+                    _IsDirty = true;
+                    OnPropertyChanged("HighScoresAreBest");
+                }
+            }
+        }
+
+        private bool _highTieBreaksAreBest = true;
+        public bool HighTieBreaksAreBest
+        {
+            get
+            {
+                return _highTieBreaksAreBest;
+            }
+            set
+            {
+                if (_highTieBreaksAreBest != value)
+                {
+                    _highTieBreaksAreBest = value;
+                    _IsDirty = true;
+                    OnPropertyChanged("HighTieBreaksAreBest");
+                }
+            }
+        }
+
         #endregion
+
+        private void PopulateScoreModes()
+        {
+            ScoreModes.Clear();
+            ScoreModes.Add(new ScoreModeVm() { Text = "Highest", Value = true });
+            ScoreModes.Add(new ScoreModeVm() { Text = "Lowest", Value = false });
+        }
 
         private ObservableCollection<string> StandardMedalsList()
         {
@@ -826,7 +903,7 @@ namespace MSOOrganiser
             
             var olympiadId = CurrentOlympiadId;
             var currentOlympiad = context.Olympiad_Infoes.First(x => x.Id == CurrentOlympiadId);
-            EditingThePast = currentOlympiad.Current.Value;
+            EditingThePast = !currentOlympiad.Current.Value;
             var evt = context.Events.FirstOrDefault(x => x.OlympiadId == olympiadId && x.Code == EventCode);
             if (evt == null)
             {

@@ -53,6 +53,7 @@
     <Compile Include="Badges___Misc.cs">
       <DependentUpon>Model.tt</DependentUpon>
     </Compile>
+    <Compile Include="Calculators\RankCalculator.cs" />
     <Compile Include="Calculators\PentaPre2010Calculator.cs" />
     <Compile Include="Calculators\EventIndexer.cs" />
     <Compile Include="Calculators\Penta2010Calculator.cs" />

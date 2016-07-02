@@ -153,7 +153,20 @@
             </TabItem>
             <TabItem Header="Results">
                 <StackPanel Orientation="Vertical">
-                    <TextBlock>You can't add competitors here. Go to Competitors and find the right person.</TextBlock>
+                    <TextBlock>You can't add competitors here. Locate the required Competitor and add to their events list.</TextBlock>
+                    <StackPanel Orientation="Horizontal">
+                        <Label>Winners are those with the</Label>
+                        <ComboBox ItemsSource="{Binding ScoreModes}"
+                          DisplayMemberPath="Text"
+                          SelectedValuePath="Value"
+                          SelectedValue="{Binding HighScoresAreBest}"></ComboBox>
+                        <Label>scores, then the</Label>
+                        <ComboBox ItemsSource="{Binding ScoreModes}"
+                          DisplayMemberPath="Text"
+                          SelectedValuePath="Value"
+                          SelectedValue="{Binding HighTieBreaksAreBest}"></ComboBox>
+                        <Label>tiebreaks</Label>
+                    </StackPanel>
                     <DataGrid Name="dataGrid" CanUserAddRows="False" CanUserResizeColumns="True" CanUserSortColumns="True"
                               AutoGenerateColumns="False"
                             Width="920" Margin="0,20,0,0" ItemsSource="{Binding Entrants}">
@@ -254,6 +267,7 @@
                     </DataGrid>
                     <StackPanel Orientation="Horizontal">
                         <Button Margin="4,4,4,4" Click="checkRanks_Click">Check Ranks</Button>
+                        <Button Margin="4,4,4,4" Click="calculateRanks_Click">Calculate Ranks</Button>
                         <Button Margin="4,4,4,4" Click="calculatePenta_Click">Calculate Pentamind Scores</Button>
                         <Button Margin="4,4,4,4" Click="calculatePenta10_Click">Calculate Pentamind Scores (2010 formula)</Button>
                         <Button Margin="4,4,4,4" Click="print_Click">Print Results</Button>

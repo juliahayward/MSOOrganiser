@@ -223,7 +223,7 @@ namespace MSOOrganiser
         public class OlympiadVm
         {
             public string Text { get; set; }
-            public string Value { get; set; }
+            public int Value { get; set; }
         }
 
         public class EventVm
@@ -850,17 +850,16 @@ private string _Notes;
             var context = DataEntitiesProvider.Provide();
             foreach (var c in context.Olympiad_Infoes
                 .OrderByDescending(x => x.StartDate))
-                Olympiads.Add(new OlympiadVm { Text = c.FullTitle(), Value = c.Id.ToString() });
-            CurrentOlympiadId = int.Parse(Olympiads.First().Value);
+                Olympiads.Add(new OlympiadVm { Text = c.FullTitle(), Value = c.Id });
+            CurrentOlympiadId = Olympiads.First().Value;
         }
 
         public void PopulateEvents()
         {
             Events.Clear();
             if (ContestantId == null) return;
-            if (CurrentOlympiadId == null) return;
 
-            EditingThePast = (CurrentOlympiadId == Olympiads.First().Value);
+            EditingThePast = (CurrentOlympiadId != Olympiads.First().Value);
 
             var context = DataEntitiesProvider.Provide();
             var olympiadId = CurrentOlympiadId;

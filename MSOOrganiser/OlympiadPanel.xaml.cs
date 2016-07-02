@@ -484,7 +484,7 @@ namespace MSOOrganiser
                 // better than not Including it.
                 var o = context.Olympiad_Infoes.Include("Events").Include("Events.Entrants")
                     .FirstOrDefault(x => x.Id == id);
-                EditngThePast = o.Current.Value;
+                EditingThePast = !o.Current.Value;
                 YearOf = o.YearOf.ToString();
                 Number = o.Number;
                 Title = o.Title;
