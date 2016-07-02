@@ -92,6 +92,12 @@ namespace MSOOrganiser
         {
             try
             {
+                if (ViewModel.EditingThePast)
+                {
+                    if (MessageBox.Show("You are editing data for a past Olympiad. Are you sure this is right?",
+                        "MSOOrganiser", MessageBoxButton.YesNo, MessageBoxImage.Warning, MessageBoxResult.No)
+                        == MessageBoxResult.No) return;
+                }
                 var errors = ViewModel.Validate();
                 if (!errors.Any())
                 {
@@ -288,6 +294,8 @@ namespace MSOOrganiser
                 }
             }
         }
+
+        public bool EditingThePast { get; set; }
 
         private string _filterFirstName;
         public string FilterFirstName
@@ -851,6 +859,8 @@ private string _Notes;
             Events.Clear();
             if (ContestantId == null) return;
             if (CurrentOlympiadId == null) return;
+
+            EditingThePast = (CurrentOlympiadId == Olympiads.First().Value);
 
             var context = DataEntitiesProvider.Provide();
             var olympiadId = CurrentOlympiadId;

@@ -73,6 +73,12 @@ namespace MSOOrganiser
         {
             try
             {
+                if (ViewModel.EditingThePast)
+                {
+                    if (MessageBox.Show("You are editing data for a past Olympiad. Are you sure this is right?",
+                        "MSOOrganiser", MessageBoxButton.YesNo, MessageBoxImage.Warning, MessageBoxResult.No)
+                        == MessageBoxResult.No) return;
+                }
                 var errors = ViewModel.Validate();
                 if (!errors.Any())
                 {
@@ -179,6 +185,7 @@ namespace MSOOrganiser
         public ObservableCollection<OlympiadVm> Olympiads { get; set; }
         public ObservableCollection<EventVm> Events { get; set; }
         public ObservableCollection<LocationVm> Locations { get; set; }
+        public bool EditingThePast { get; set; }
 
         private int _OlympiadId;
         public int OlympiadId
@@ -477,6 +484,7 @@ namespace MSOOrganiser
                 // better than not Including it.
                 var o = context.Olympiad_Infoes.Include("Events").Include("Events.Entrants")
                     .FirstOrDefault(x => x.Id == id);
+                EditngThePast = o.Current.Value;
                 YearOf = o.YearOf.ToString();
                 Number = o.Number;
                 Title = o.Title;

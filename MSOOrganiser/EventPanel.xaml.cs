@@ -96,6 +96,12 @@ namespace MSOOrganiser
         {
             try
             {
+                if (ViewModel.EditingThePast)
+                {
+                    if (MessageBox.Show("You are editing data for a past Olympiad. Are you sure this is right?",
+                        "MSOOrganiser", MessageBoxButton.YesNo, MessageBoxImage.Warning, MessageBoxResult.No)
+                        == MessageBoxResult.No) return;
+                }
                 var errors = ViewModel.Validate();
                 if (!errors.Any())
                 {
@@ -362,6 +368,7 @@ namespace MSOOrganiser
         public ObservableCollection<OlympiadVm> Olympiads { get; set; }
         public ObservableCollection<string> Partners { get; set; }
         public int CurrentOlympiadId { get; set; }
+        public bool EditingThePast { get; set; }
         public string EventCode { get; set; }
         public int EventId { get; set; }        // EIN in database
 
@@ -819,6 +826,7 @@ namespace MSOOrganiser
             
             var olympiadId = CurrentOlympiadId;
             var currentOlympiad = context.Olympiad_Infoes.First(x => x.Id == CurrentOlympiadId);
+            EditingThePast = currentOlympiad.Current.Value;
             var evt = context.Events.FirstOrDefault(x => x.OlympiadId == olympiadId && x.Code == EventCode);
             if (evt == null)
             {
