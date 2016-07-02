@@ -13,7 +13,7 @@
                           ItemsSource="{Binding Games}"
                           DisplayMemberPath="Text"
                           SelectedValuePath="Value"
-                          SelectedValue="{Binding GameId}"
+                          SelectedValue="{Binding GameId, Mode=TwoWay}"
                           SelectionChanged="gameCombo_Changed">
                 </ComboBox>
                 <Button Margin="10,10,10,10" IsEnabled="{Binding IsDirty}" Click="save_Click">Save</Button>

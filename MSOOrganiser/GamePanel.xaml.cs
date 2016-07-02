@@ -104,7 +104,22 @@ namespace MSOOrganiser
         public ObservableCollection<GameVm> Games { get; set; }
         public ObservableCollection<GameCategoryVm> Categories { get; set; }
 
-        public int GameId { get; set; }
+        private int _gameId;
+        public int GameId
+        {
+            get
+            {
+                return _gameId;
+            }
+            set
+            {
+                if (_gameId != value)
+                {
+                    _gameId = value;
+                    OnPropertyChanged("GameId");
+                }
+            }
+        }
 
         private bool _IsDirty;
         public bool IsDirty
@@ -294,11 +309,13 @@ namespace MSOOrganiser
 
         public void Save()
         {
+            bool dropdownRefreshNeeded = false;
             var context = DataEntitiesProvider.Provide();
             var id = GameId;
+            Game dbGame;
             if (id == 0)
             {
-                var dbGame = new Game()
+                dbGame = new Game()
                 {
                     Mind_Sport = this.Name,
                     Code = this.Code,
@@ -308,22 +325,26 @@ namespace MSOOrganiser
                     CategoryId = (this.CategoryId == 0) ? (int?)null : this.CategoryId
                 };
                 context.Games.Add(dbGame);
-                id = dbGame.Id;
+                dropdownRefreshNeeded = true;
             }
             else
             {
-                var dbGame = context.Games.FirstOrDefault(x => x.Id == id);
+                dbGame = context.Games.FirstOrDefault(x => x.Id == id);
                 dbGame.Mind_Sport = Name;
                 dbGame.Code = Code;
-                dbGame.Contacts = Contacts;
-                dbGame.Equipment = Equipment;
-                dbGame.Rules = Rules;
+                dbGame.Contacts = (Contacts == "") ? null : Contacts;   // TODO zero length contraints
+                dbGame.Equipment = (Equipment == "") ? null : Equipment;
+                dbGame.Rules = (Rules == "") ? null : Rules;
                 dbGame.CategoryId = (this.CategoryId == 0) ? (int?)null : this.CategoryId;
             }
             context.SaveChanges();
             IsDirty = false;
 
-            GameId = id;
+            // So we don't have to do a full refresh of the combo
+            if (dropdownRefreshNeeded)
+                Games.Add(new GameVm { Text = dbGame.Code + " : " + dbGame.Mind_Sport, Value = dbGame.Id });
+
+            GameId = dbGame.Id;
         }
     }
 }
