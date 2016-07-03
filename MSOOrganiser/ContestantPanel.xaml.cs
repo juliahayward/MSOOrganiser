@@ -68,7 +68,10 @@ namespace MSOOrganiser
 
         public void search_Click(object sender, RoutedEventArgs e)
         {
-            ViewModel.PopulateDropdown();
+            using (new SpinnyCursor())
+            {
+                ViewModel.PopulateDropdown();
+            }
         }
 
         public void clearSearch_Click(object sender, RoutedEventArgs e)
@@ -148,7 +151,8 @@ namespace MSOOrganiser
         {
             var selectedEvents = ViewModel.Events.Select(x => x.EventCode);
             var nonEditableEvents = ViewModel.Events.Where(x => x.Rank != 0).Select(x => x.EventCode);
-            var dialog = new AddEventsToContestantWindow(ViewModel.CurrentOlympiadId, selectedEvents, nonEditableEvents);
+            var dialog = new AddEventsToContestantWindow(ViewModel.CurrentOlympiadId, 
+                ViewModel.IsJuniorForOlympiad, selectedEvents, nonEditableEvents);
             dialog.ShowDialog();
 
             if (dialog.DialogResult.Value)
@@ -160,7 +164,7 @@ namespace MSOOrganiser
                         var existingEvent = ViewModel.Events.FirstOrDefault(x => x.EventCode == evt.Code);
                         if (existingEvent == null)
                         {
-                            ViewModel.AddEvent(new ContestantPanelVm.EventVm() { EventCode = evt.Code, EventName = evt.Name, EventId = evt.Id });
+                            ViewModel.AddEvent(new ContestantPanelVm.EventVm() { EventCode = evt.Code, EventName = evt.Name, EventId = evt.Id, Fee = evt.Fee });
                             ViewModel.IsDirty = true;
                         }
                     }
@@ -258,6 +262,7 @@ namespace MSOOrganiser
 
         public ObservableCollection<ContestantVm> Contestants { get; set; }
         public CollectionView FilteredContestants { get; set; }
+        public bool IsJuniorForOlympiad { get; set; }
         
         private string _contestantId;
         public string ContestantId
@@ -754,9 +759,9 @@ private string _Notes;
             {
                 var totalFees = Events.Sum(x => x.Fee);
                 var totalPayment = Payments.Sum(x => x.Amount);
-                return "Total fees: £" + totalFees
-                    + " Total payments: £" + totalPayment.ToString("F")
-                    + ((totalFees <= totalPayment) ? "" : " Owing: " + (totalFees - totalPayment).ToString("F")); 
+                return "Total fees: £" + totalFees.ToString("F")
+                    + "      Total payments: £" + totalPayment.ToString("F")
+                    + ((totalFees <= totalPayment) ? "" : "     Owing: £" + (totalFees - totalPayment).ToString("F")); 
             }
         }
 
@@ -863,6 +868,8 @@ private string _Notes;
 
             var context = DataEntitiesProvider.Provide();
             var olympiadId = CurrentOlympiadId;
+            var olympiad = context.Olympiad_Infoes.First(x => x.Id == CurrentOlympiadId);
+            IsJuniorForOlympiad = Contestant.IsJuniorForOlympiad(DateOfBirth, olympiad);
             var contestantId = int.Parse(ContestantId);
             var entrants = context.Entrants
                 .Join(context.Events, e => e.Game_Code, g => g.Code, (e, g) => new { e = e, g = g })
@@ -870,9 +877,10 @@ private string _Notes;
                 .OrderBy(x => x.e.Game_Code).ToList();       
             foreach (var e in entrants)
             {
+                // TODO: this is really an EntrantVm not an EventVm
                 Events.Add(new EventVm()
                 {
-                    EventId = e.e.EntryNumber,
+                    EventId = e.e.EventId.Value,
                     Absent = false,
                     EventCode = e.e.Game_Code,
                     EventName = e.g.Mind_Sport,
@@ -1032,7 +1040,7 @@ private string _Notes;
                 context.Contestants.Add(dbCon);
                 id = dbCon.Mind_Sport_ID;
                 dbCon.Entrants = this.Events
-                    .Select(x => Entrant.NewEntrant(x.EventId, x.EventCode, CurrentOlympiadId, dbCon))
+                    .Select(x => Entrant.NewEntrant(x.EventId, x.EventCode, CurrentOlympiadId, dbCon, x.Fee))
                     .ToList();
                 dbCon.Payments = this.Payments
                     .Select(x => new Payment() { Payment1 = x.Amount, Payment_Method = x.Method, PaymentNumber = 0, Banked = x.Banked ? 1 : 0, MindSportsID = dbCon.Mind_Sport_ID, OlympiadId = CurrentOlympiadId, Name = dbCon})
@@ -1069,7 +1077,7 @@ private string _Notes;
                 // Add new events that aren't already in this olympiad for this person
                 foreach (var e in this.Events.Where(x => !dbCon.Entrants.Any(ee => ee.OlympiadId == CurrentOlympiadId && ee.Game_Code == x.EventCode)))
                 {
-                 dbCon.Entrants.Add(Entrant.NewEntrant(e.EventId, e.EventCode, CurrentOlympiadId, dbCon));
+                 dbCon.Entrants.Add(Entrant.NewEntrant(e.EventId, e.EventCode, CurrentOlympiadId, dbCon, e.Fee));
                 }
                 // Remove unwanted events from this olympiad
                 foreach (var de in dbCon.Entrants.Where(x => x.OlympiadId == CurrentOlympiadId && !this.Events.Any(ee => ee.EventCode == x.Game_Code)).ToList())
