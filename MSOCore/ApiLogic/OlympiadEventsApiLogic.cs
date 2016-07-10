@@ -57,7 +57,8 @@ namespace MSOCore.ApiLogic
 
             var entryJson = new EntryJson()
             {
-                JsonText = json
+                JsonText = json,
+                SubmittedDate = DateTime.UtcNow
             };
 
             context.EntryJsons.Add(entryJson);
