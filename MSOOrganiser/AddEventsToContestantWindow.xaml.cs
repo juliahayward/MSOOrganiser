@@ -54,6 +54,21 @@ namespace MSOOrganiser
     {
         public ObservableCollection<EventVm> Events { get; set; }
 
+        private string _filterText = "";
+        public string FilterText
+        {
+            get { return _filterText; }
+            set
+            {
+                if (value != _filterText)
+                {
+                    _filterText = value;
+                    FilterList();
+                    OnPropertyChanged("FilterText");
+                }
+            }
+        }
+
         public AddEventsToContestantWindowVm(int olympiadId, bool isConcession, IEnumerable<string> selectedEvents, IEnumerable<string> nonEditableCodes)
         {
             var context = DataEntitiesProvider.Provide();
@@ -65,7 +80,7 @@ namespace MSOOrganiser
             Events = new ObservableCollection<EventVm>();
             foreach (var evt in context.Events
                 .Where(x => x.Code != null && x.Mind_Sport != null && x.OlympiadId == olympiadId)
-                .Select(x => new EventVm() { Id = x.EIN, Code = x.Code, Name = x.Mind_Sport, FeeCode = x.Entry_Fee })
+                .Select(x => new EventVm() { Id = x.EIN, Code = x.Code, Name = x.Mind_Sport, FeeCode = x.Entry_Fee, IsIncludedInMaxFee = (x.incMaxFee.HasValue && x.incMaxFee.Value) })
                 .ToList()
                 .Distinct(new EventVmCodeOnlyComparer())
                 .OrderBy(x => x.Code))
@@ -77,7 +92,17 @@ namespace MSOOrganiser
             }
         }
 
-        public class EventVm
+        private void FilterList()
+        {
+            foreach (var evt in Events)
+            {
+                evt.Visibility = (evt.Name.ToLower().Contains(_filterText.ToLower()))
+                    ? Visibility.Visible
+                    : Visibility.Collapsed;
+            }
+        }
+
+        public class EventVm : VmBase
         {
             public int Id { get; set; }
             public string Code { get; set; }
@@ -85,8 +110,15 @@ namespace MSOOrganiser
             public string Text { get { return Code + " " + Name; } }
             public string FeeCode { get; set; }
             public decimal Fee { get; set; }
+            public bool IsIncludedInMaxFee { get; set; }
             public bool IsSelected { get; set; }
             public bool IsEnabled { get; set; }
+            private Visibility _Visibility = Visibility.Visible;
+            public Visibility Visibility
+            {
+                get { return _Visibility; }
+                set { if (value != _Visibility) { _Visibility = value; OnPropertyChanged("Visibility"); } }
+            }
             public string ToolTip { get { if (IsEnabled) return null; else return "Events that you already have a score for cannot be deselected"; } }
         }
 

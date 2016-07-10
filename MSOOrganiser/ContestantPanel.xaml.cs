@@ -1,6 +1,7 @@
 ﻿using JuliaHayward.Common.Environment;
 using JuliaHayward.Common.Logging;
 using MSOCore;
+using MSOCore.Calculators;
 using MSOCore.Models;
 using MSOOrganiser.Dialogs;
 using MSOOrganiser.Events;
@@ -164,7 +165,7 @@ namespace MSOOrganiser
                         var existingEvent = ViewModel.Events.FirstOrDefault(x => x.EventCode == evt.Code);
                         if (existingEvent == null)
                         {
-                            ViewModel.AddEvent(new ContestantPanelVm.EventVm() { EventCode = evt.Code, EventName = evt.Name, EventId = evt.Id, Fee = evt.Fee });
+                            ViewModel.AddEvent(new ContestantPanelVm.EventVm() { EventCode = evt.Code, EventName = evt.Name, EventId = evt.Id, Fee = evt.Fee, StandardFee = evt.Fee, IncludedInMaxFee = evt.IsIncludedInMaxFee });
                             ViewModel.IsDirty = true;
                         }
                     }
@@ -178,6 +179,7 @@ namespace MSOOrganiser
                         }
                     }
                 }
+                ViewModel.ApportionCosts();
             }
         }
 
@@ -230,13 +232,18 @@ namespace MSOOrganiser
             public int Value { get; set; }
         }
 
-        public class EventVm
+        public class EventVm  : VmBase
         {
             public int EventId { get; set; }
             public string EventCode { get; set; }
             public string EventName { get; set; }
             public bool Receipt { get; set; }
-            public decimal Fee { get; set; }
+            public decimal StandardFee { get; set; }    // Before we apply the max-fee apportioning
+            private decimal _fee;
+            public decimal Fee { get { return _fee; }
+                set { if (value != _fee) { _fee = value; OnPropertyChanged("Fee"); } }
+            }
+            public bool IncludedInMaxFee { get; set; }
             public string Partner { get; set; }
             public string Medal { get; set; }
             public string JuniorMedal { get; set; }
@@ -815,6 +822,24 @@ private string _Notes;
             OnPropertyChanged("Totals");
         }
 
+        public void ApportionCosts()
+        {
+            var context = DataEntitiesProvider.Provide();
+            var olympiad = context.Olympiad_Infoes.First(x => x.Id == CurrentOlympiadId);
+
+            var canApportion = (!IsJuniorForOlympiad) ? olympiad.MaxFee.HasValue : olympiad.MaxCon.HasValue;
+            if (!canApportion) return;
+
+            var maxFee = (!IsJuniorForOlympiad) ?
+                olympiad.MaxFee.Value : olympiad.MaxCon.Value;
+
+            var apportioner = new CostApportioner<EventVm>(
+                x => x.StandardFee, (e, f) => e.Fee = f, x => x.IncludedInMaxFee);
+            apportioner.ApportionCost(Events, maxFee);
+
+            OnPropertyChanged("Totals");
+        }
+
         public void RemoveEvent(EventVm item)
         {
             Events.Remove(item);
@@ -874,7 +899,13 @@ private string _Notes;
             var entrants = context.Entrants
                 .Join(context.Events, e => e.Game_Code, g => g.Code, (e, g) => new { e = e, g = g })
                 .Where(x => x.e.OlympiadId == olympiadId && x.g.OlympiadId == olympiadId && x.e.Mind_Sport_ID == contestantId)
-                .OrderBy(x => x.e.Game_Code).ToList();       
+                .OrderBy(x => x.e.Game_Code).ToList();  
+     
+            var allFees = context.Fees.ToList();
+            var fees = (IsJuniorForOlympiad)
+                ? allFees.ToDictionary(x => x.Code, x => x.Concession)
+                : allFees.ToDictionary(x => x.Code, x => x.Adult);
+
             foreach (var e in entrants)
             {
                 // TODO: this is really an EntrantVm not an EventVm
@@ -885,6 +916,8 @@ private string _Notes;
                     EventCode = e.e.Game_Code,
                     EventName = e.g.Mind_Sport,
                     Fee = e.e.Fee,
+                    StandardFee = fees[e.g.Entry_Fee].Value,
+                    IncludedInMaxFee = (e.g.incMaxFee.HasValue && e.g.incMaxFee.Value),
                     Medal = e.e.Medal ?? "",
                     JuniorMedal = e.e.JuniorMedal ?? "",
                     Partner = e.e.Partner ?? "",
@@ -995,6 +1028,7 @@ private string _Notes;
             IsDirty = false;
             PopulateEvents();
             PopulatePayments();
+            OnPropertyChanged("Totals");
         }
 
         public List<string> Validate()

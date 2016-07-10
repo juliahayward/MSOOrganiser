@@ -518,6 +518,12 @@ namespace MSOOrganiser
             DateTime startDt, endDt, ageDt;
             decimal d;
             var errors = new List<string>();
+            if (string.IsNullOrEmpty(Number))
+                errors.Add("Number must be specified");
+            if (string.IsNullOrEmpty(Title))
+                errors.Add("Title must be specified");
+            if (string.IsNullOrEmpty(Venue))
+                errors.Add("Venue must be specified");
             if (!int.TryParse(YearOf, out i))
                 errors.Add("Invalid year");
             if (!DateTime.TryParse(StartDate, out startDt))
