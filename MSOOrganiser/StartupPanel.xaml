@@ -6,6 +6,6 @@
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
     <Grid>
-        <WebBrowser Source="http://msoworld.com"></WebBrowser>
+        <WebBrowser x:Name="Browser" Source="http://msoworld.com"></WebBrowser>
     </Grid>
 </UserControl>
