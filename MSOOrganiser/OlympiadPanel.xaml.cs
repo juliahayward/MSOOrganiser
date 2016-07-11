@@ -292,8 +292,8 @@ namespace MSOOrganiser
                 }
             }
         }
-        private string _StartDate;
-        public string StartDate
+        private DateTime? _StartDate;
+        public DateTime? StartDate
         {
             get
             {
@@ -309,8 +309,8 @@ namespace MSOOrganiser
                 }
             }
         }
-        private string _FinishDate;
-        public string FinishDate
+        private DateTime? _FinishDate;
+        public DateTime? FinishDate
         {
             get
             {
@@ -360,8 +360,8 @@ namespace MSOOrganiser
                 }
             }
         }
-        private string _AgeDate;
-        public string AgeDate
+        private DateTime? _AgeDate;
+        public DateTime? AgeDate
         {
             get
             {
@@ -471,7 +471,7 @@ namespace MSOOrganiser
             {
                 YearOf = "";
                 Number = "";
-                Title = ""; Venue = ""; StartDate = ""; FinishDate = ""; MaxFee = ""; MaxCon = ""; AgeDate= "";
+                Title = ""; Venue = ""; StartDate = null; FinishDate = null; MaxFee = ""; MaxCon = ""; AgeDate= null;
                 JnrAge = ""; SnrAge = "";
                 PentaLong = ""; PentaTotal = "";
                 Events.Clear();
@@ -489,11 +489,11 @@ namespace MSOOrganiser
                 Number = o.Number;
                 Title = o.Title;
                 Venue = o.Venue;
-                StartDate = o.StartDate.Value.ToString("dd/MM/yyyy");
-                FinishDate = (o.FinishDate.HasValue) ? o.FinishDate.Value.ToString("dd/MM/yyyy") : "";
+                StartDate = o.StartDate;
+                FinishDate = o.FinishDate;
                 MaxFee = (o.MaxFee.HasValue) ? o.MaxFee.Value.ToString("F2") : "";
                 MaxCon = (o.MaxCon.HasValue) ? o.MaxCon.Value.ToString("F2") : "";
-                AgeDate = (o.AgeDate.HasValue) ? o.AgeDate.Value.ToString("dd/MM/yyyy") : "";
+                AgeDate = o.AgeDate;
                 JnrAge = o.JnrAge.ToString();
                 SnrAge = o.SnrAge.ToString();
                 PentaLong = o.PentaLong.ToString();
@@ -526,16 +526,10 @@ namespace MSOOrganiser
                 errors.Add("Venue must be specified");
             if (!int.TryParse(YearOf, out i))
                 errors.Add("Invalid year");
-            if (!DateTime.TryParse(StartDate, out startDt))
-                errors.Add("Invalid start date");
-            if (!DateTime.TryParse(FinishDate, out endDt))
-                errors.Add("Invalid end date");
             if (!decimal.TryParse(MaxFee, out d))
                 errors.Add("Invalid MaxFee");
             if (!decimal.TryParse(MaxCon, out d))
                 errors.Add("Invalid Max Concession");
-            if (!DateTime.TryParse(AgeDate, out ageDt))
-                errors.Add("Invalid age-date");
             if (!int.TryParse(JnrAge, out i))
                 errors.Add("Invalid junior age");
             if (!int.TryParse(SnrAge, out i))
@@ -545,7 +539,7 @@ namespace MSOOrganiser
             if (!int.TryParse(PentaTotal, out i))
                 errors.Add("Invalid pentamind total events");
 
-            if (startDt > endDt)
+            if (StartDate > FinishDate)
                 errors.Add("Start date must be prior to End Date");
 
             return errors;
@@ -564,11 +558,11 @@ namespace MSOOrganiser
                     Number = this.Number,
                     Title = this.Title,
                     Venue = this.Venue,
-                    StartDate = DateTime.Parse(this.StartDate),
-                    FinishDate = DateTime.Parse(this.FinishDate),
+                    StartDate = this.StartDate,
+                    FinishDate = this.FinishDate,
                     MaxFee = decimal.Parse(this.MaxFee),
                     MaxCon = decimal.Parse(this.MaxCon),
-                    AgeDate = DateTime.Parse(this.AgeDate),
+                    AgeDate = this.AgeDate,
                     JnrAge = int.Parse(this.JnrAge),
                     SnrAge = int.Parse(this.SnrAge),
                     PentaLong = int.Parse(this.PentaLong),
@@ -590,11 +584,11 @@ namespace MSOOrganiser
                 o.Number = this.Number;
                 o.Title = this.Title;
                 o.Venue = this.Venue;
-                o.StartDate = DateTime.Parse(this.StartDate);
-                o.FinishDate = DateTime.Parse(this.FinishDate);
+                o.StartDate = this.StartDate;
+                o.FinishDate = this.FinishDate;
                 o.MaxFee = decimal.Parse(this.MaxFee);
                 o.MaxCon = decimal.Parse(this.MaxCon);
-                o.AgeDate = DateTime.Parse(this.AgeDate);
+                o.AgeDate = this.AgeDate;
                 o.JnrAge = int.Parse(this.JnrAge);
                 o.SnrAge = int.Parse(this.SnrAge);
                 o.PentaLong = int.Parse(this.PentaLong);

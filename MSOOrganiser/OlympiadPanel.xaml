@@ -58,9 +58,9 @@
                     </StackPanel>
                     <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
                         <Label Width="100">Start Date:</Label>
-                        <TextBox Text="{Binding StartDate, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="100"></TextBox>
+                        <DatePicker Width="100" SelectedDate="{Binding StartDate, Mode=TwoWay}" />
                         <Label Width="100">Finish Date:</Label>
-                        <TextBox Text="{Binding FinishDate, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="100"></TextBox>
+                        <DatePicker Width="100" SelectedDate="{Binding FinishDate, Mode=TwoWay}" />
                     </StackPanel>
                     <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
                         <Label Width="100">Maximum Fees:</Label>
@@ -71,7 +71,7 @@
                     </StackPanel>
                     <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
                         <Label Width="100">Age Date:</Label>
-                        <TextBox Text="{Binding AgeDate, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="100"></TextBox>
+                        <DatePicker Width="100" SelectedDate="{Binding AgeDate, Mode=TwoWay}" />
                         <Label>Junior Age:</Label>
                         <TextBox Text="{Binding JnrAge, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="32"></TextBox>
                         <Label>Senior Age:</Label>
