@@ -44,6 +44,7 @@ namespace MSOOrganiser
             public int EntrantId { get; set; }
             public int ContestantId { get; set; }
             public string Medal { get; set; }
+            public string JuniorMedal { get; set; }
             public string FirstName { get; set; }
             public string LastName { get; set; }
             public int Rank { get; set; }
@@ -151,6 +152,7 @@ namespace MSOOrganiser
                     EntrantId = e.e.EntryNumber,
                     ContestantId = e.c.Mind_Sport_ID,
                     Medal = e.e.Medal ?? "",
+                    JuniorMedal = e.e.Medal ?? "",
                     FirstName = e.c.Firstname,
                     LastName = e.c.Lastname,
                     Rank = e.e.Rank.HasValue ? e.e.Rank.Value : 0,

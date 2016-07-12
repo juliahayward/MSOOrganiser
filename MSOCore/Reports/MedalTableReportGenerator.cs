@@ -39,8 +39,7 @@ namespace MSOCore.Reports
             var context = DataEntitiesProvider.Provide();
             var entrants = context.Entrants.Where(x => x.OlympiadId == olympiadId)
                 .Join(context.Contestants, x => x.Mind_Sport_ID, c => c.Mind_Sport_ID, (e, c) => new { e, c })
-                .Where(ec => ec.e.Medal != null && ec.e.Medal != "")
-                .Select(ec => new { Nationality = ec.c.Nationality ?? "Other", Medal = ec.e.Medal })
+                .Select(ec => new { Nationality = ec.c.Nationality ?? "Other", Medal = ec.e.Medal, JuniorMedal = ec.e.JuniorMedal  })
                 .ToList();
 
             var g = entrants.Where(x => x.Medal == Medals.Gold).GroupBy(x => x.Nationality)
@@ -49,11 +48,11 @@ namespace MSOCore.Reports
                  .ToDictionary(x => x.Key, x => x.Count());
             var b = entrants.Where(x => x.Medal == Medals.Bronze).GroupBy(x => x.Nationality)
                 .ToDictionary(x => x.Key, x => x.Count());
-            var jg = entrants.Where(x => x.Medal == Medals.JnrGold).GroupBy(x => x.Nationality)
+            var jg = entrants.Where(x => x.JuniorMedal == Medals.JnrGold).GroupBy(x => x.Nationality)
                 .ToDictionary(x => x.Key, x => x.Count());
-            var js = entrants.Where(x => x.Medal == Medals.JnrSilver).GroupBy(x => x.Nationality)
+            var js = entrants.Where(x => x.JuniorMedal == Medals.JnrSilver).GroupBy(x => x.Nationality)
                 .ToDictionary(x => x.Key, x => x.Count());
-            var jb = entrants.Where(x => x.Medal == Medals.JnrBronze).GroupBy(x => x.Nationality)
+            var jb = entrants.Where(x => x.JuniorMedal == Medals.JnrBronze).GroupBy(x => x.Nationality)
                 .ToDictionary(x => x.Key, x => x.Count());
 
             List<MedalTableVm> results = new List<MedalTableVm>();

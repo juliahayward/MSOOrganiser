@@ -24,10 +24,10 @@ namespace MSOOrganiser
     {
         public IEnumerable<AddEventsToContestantWindowVm.EventVm> SelectedEvents { get; private set; }
 
-        public AddEventsToContestantWindow(int olympiadId, IEnumerable<string> selectedCodes, IEnumerable<string> nonEditableCodes)
+        public AddEventsToContestantWindow(int olympiadId, bool isConcession, IEnumerable<string> selectedCodes, IEnumerable<string> nonEditableCodes)
         {
             InitializeComponent();
-            DataContext = new AddEventsToContestantWindowVm(olympiadId, selectedCodes, nonEditableCodes);
+            DataContext = new AddEventsToContestantWindowVm(olympiadId, isConcession, selectedCodes, nonEditableCodes);
         }
 
         public AddEventsToContestantWindowVm ViewModel
@@ -54,31 +54,71 @@ namespace MSOOrganiser
     {
         public ObservableCollection<EventVm> Events { get; set; }
 
-        public AddEventsToContestantWindowVm(int olympiadId, IEnumerable<string> selectedEvents, IEnumerable<string> nonEditableCodes)
+        private string _filterText = "";
+        public string FilterText
         {
-            Events = new ObservableCollection<EventVm>();
+            get { return _filterText; }
+            set
+            {
+                if (value != _filterText)
+                {
+                    _filterText = value;
+                    FilterList();
+                    OnPropertyChanged("FilterText");
+                }
+            }
+        }
+
+        public AddEventsToContestantWindowVm(int olympiadId, bool isConcession, IEnumerable<string> selectedEvents, IEnumerable<string> nonEditableCodes)
+        {
             var context = DataEntitiesProvider.Provide();
+            var allFees = context.Fees.ToList();
+            var fees = (isConcession)
+                ? allFees.ToDictionary(x => x.Code, x => x.Concession)
+                : allFees.ToDictionary(x => x.Code, x => x.Adult);
+
+            Events = new ObservableCollection<EventVm>();
             foreach (var evt in context.Events
                 .Where(x => x.Code != null && x.Mind_Sport != null && x.OlympiadId == olympiadId)
-                .Select(x => new EventVm() { Id = x.EIN, Code = x.Code, Name = x.Mind_Sport })
+                .Select(x => new EventVm() { Id = x.EIN, Code = x.Code, Name = x.Mind_Sport, FeeCode = x.Entry_Fee, IsIncludedInMaxFee = (x.incMaxFee.HasValue && x.incMaxFee.Value) })
                 .ToList()
                 .Distinct(new EventVmCodeOnlyComparer())
                 .OrderBy(x => x.Code))
             {
                 evt.IsSelected = (selectedEvents.Contains(evt.Code));
                 evt.IsEnabled = !(nonEditableCodes.Contains(evt.Code));
+                evt.Fee = (evt.FeeCode == null) ? 0.0m : (fees[evt.FeeCode] ?? 0.0m);
                 Events.Add(evt);
             }
         }
 
-        public class EventVm
+        private void FilterList()
+        {
+            foreach (var evt in Events)
+            {
+                evt.Visibility = (evt.Name.ToLower().Contains(_filterText.ToLower()))
+                    ? Visibility.Visible
+                    : Visibility.Collapsed;
+            }
+        }
+
+        public class EventVm : VmBase
         {
             public int Id { get; set; }
             public string Code { get; set; }
             public string Name { get; set; }
             public string Text { get { return Code + " " + Name; } }
+            public string FeeCode { get; set; }
+            public decimal Fee { get; set; }
+            public bool IsIncludedInMaxFee { get; set; }
             public bool IsSelected { get; set; }
             public bool IsEnabled { get; set; }
+            private Visibility _Visibility = Visibility.Visible;
+            public Visibility Visibility
+            {
+                get { return _Visibility; }
+                set { if (value != _Visibility) { _Visibility = value; OnPropertyChanged("Visibility"); } }
+            }
             public string ToolTip { get { if (IsEnabled) return null; else return "Events that you already have a score for cannot be deselected"; } }
         }
 

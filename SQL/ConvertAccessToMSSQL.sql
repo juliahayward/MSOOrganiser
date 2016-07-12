@@ -294,6 +294,8 @@ CREATE TABLE EntryJsons
 ( 
 	Id INT IDENTITY(1,1) NOT NULL,
 	JsonText NVARCHAR(MAX) NOT NULL,
+	SubmittedDate DATETIME NULL,
+	ProcessedDate DATETIME NULL,
 	CONSTRAINT [PK_EntryJsons] PRIMARY KEY CLUSTERED 
 	(
 		[Id] ASC
@@ -321,6 +323,32 @@ SELECT DISTINCT Nationality from Names
 WHERE Nationality IS NOT NULL
 ORDER BY Nationality
 
+/*
+ * Don't want any disallow-zero-length constraints on users
+ */
+
+ ALTER TABLE [mso].[dbo].[Names] DROP CONSTRAINT SSMA_CC$Names$Address1$disallow_zero_length
+ALTER TABLE [mso].[dbo].[Names] DROP CONSTRAINT SSMA_CC$Names$Address2$disallow_zero_length
+ALTER TABLE [mso].[dbo].[Names] DROP CONSTRAINT SSMA_CC$Names$BCFCode$disallow_zero_length
+ALTER TABLE [mso].[dbo].[Names] DROP CONSTRAINT SSMA_CC$Names$City$disallow_zero_length
+ALTER TABLE [mso].[dbo].[Names] DROP CONSTRAINT SSMA_CC$Names$Country$disallow_zero_length
+ALTER TABLE [mso].[dbo].[Names] DROP CONSTRAINT SSMA_CC$Names$County$disallow_zero_length
+ALTER TABLE [mso].[dbo].[Names] DROP CONSTRAINT SSMA_CC$Names$DayPhone$disallow_zero_length
+ALTER TABLE [mso].[dbo].[Names] DROP CONSTRAINT SSMA_CC$Names$email$disallow_zero_length
+ALTER TABLE [mso].[dbo].[Names] DROP CONSTRAINT SSMA_CC$Names$EvePhone$disallow_zero_length
+ALTER TABLE [mso].[dbo].[Names] DROP CONSTRAINT SSMA_CC$Names$Fax$disallow_zero_length
+ALTER TABLE [mso].[dbo].[Names] DROP CONSTRAINT SSMA_CC$Names$FIDECode$disallow_zero_length
+ALTER TABLE [mso].[dbo].[Names] DROP CONSTRAINT SSMA_CC$Names$Firstname$disallow_zero_length
+ALTER TABLE [mso].[dbo].[Names] DROP CONSTRAINT SSMA_CC$Names$Initials$disallow_zero_length
+ALTER TABLE [mso].[dbo].[Names] DROP CONSTRAINT SSMA_CC$Names$Lastname$disallow_zero_length
+ALTER TABLE [mso].[dbo].[Names] DROP CONSTRAINT SSMA_CC$Names$Nationality$disallow_zero_length
+ALTER TABLE [mso].[dbo].[Names] DROP CONSTRAINT SSMA_CC$Names$Notes$disallow_zero_length
+ALTER TABLE [mso].[dbo].[Names] DROP CONSTRAINT SSMA_CC$Names$PostCode$disallow_zero_length
+ALTER TABLE [mso].[dbo].[Names] DROP CONSTRAINT SSMA_CC$Names$Title$disallow_zero_length
+
+/* Separate column for junior medal, as you cna win both */
+
+ALTER TABLE Entrants ADD JuniorMedal NVARCHAR(50) NULL
 
 
 

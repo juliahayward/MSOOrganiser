@@ -19,10 +19,14 @@ namespace MSOOrganiser.Converters
 
         public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {
-            if ((string)value == "")
+            if (value == null || (string)value == "")
                 return 0;
+
+            int output;
+            if (int.TryParse((string)value, out output))
+                return output;
             else
-                return int.Parse((string)value);
+                return 0;
         }
     }
 }

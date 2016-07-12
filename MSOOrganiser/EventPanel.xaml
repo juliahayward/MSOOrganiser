@@ -52,7 +52,7 @@
                     </StackPanel>
                     <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
                         <Label Width="100">Arbiter:</Label>
-                        <TextBox Text="{Binding Arbiter, Mode=TwoWay}" Width="160"></TextBox>
+                        <TextBox Text="{Binding Arbiter, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="160"></TextBox>
                     </StackPanel>
                     <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
                         <Label Width="100">Location:</Label>
@@ -90,17 +90,17 @@
                     </StackPanel>
                     <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
                         <Label Width="100">Prize Fund:</Label>
-                        <TextBox Text="{Binding PrizeFund, Mode=TwoWay, Converter={StaticResource ShowCurrencyConverter}}" Width="60"></TextBox>
+                        <TextBox Text="{Binding PrizeFund, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource ShowCurrencyConverter}}" Width="60"></TextBox>
                         <Label Width="40">1st:</Label>
-                        <TextBox Text="{Binding Prize1, Mode=TwoWay, Converter={StaticResource ShowCurrencyConverter}}" Width="60"></TextBox>
+                        <TextBox Text="{Binding Prize1, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource ShowCurrencyConverter}}" Width="60"></TextBox>
                         <Label Width="40">2nd:</Label>
-                        <TextBox Text="{Binding Prize2, Mode=TwoWay, Converter={StaticResource ShowCurrencyConverter}}" Width="60"></TextBox>
+                        <TextBox Text="{Binding Prize2, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource ShowCurrencyConverter}}" Width="60"></TextBox>
                         <Label Width="40">3rd:</Label>
-                        <TextBox Text="{Binding Prize3, Mode=TwoWay, Converter={StaticResource ShowCurrencyConverter}}" Width="60"></TextBox>
+                        <TextBox Text="{Binding Prize3, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource ShowCurrencyConverter}}" Width="60"></TextBox>
                     </StackPanel>
                     <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
                         <Label Width="160">Other prizes:</Label>
-                        <TextBox Text="{Binding OtherPrizes, Mode=TwoWay}" Width="240"></TextBox>
+                        <TextBox Text="{Binding OtherPrizes, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="240"></TextBox>
                     </StackPanel>
                     <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
                         <Label Width="160">Junior Medals:</Label>
@@ -109,19 +109,19 @@
                     <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
                         <Label Width="160">Junior cash prizes:</Label>
                         <Label Width="40">1st:</Label>
-                        <TextBox Text="{Binding JuniorPrize1, Mode=TwoWay, Converter={StaticResource ShowCurrencyConverter}}" Width="60"></TextBox>
+                        <TextBox Text="{Binding JuniorPrize1, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource ShowCurrencyConverter}}" Width="60"></TextBox>
                         <Label Width="40">2nd:</Label>
-                        <TextBox Text="{Binding JuniorPrize2, Mode=TwoWay, Converter={StaticResource ShowCurrencyConverter}}" Width="60"></TextBox>
+                        <TextBox Text="{Binding JuniorPrize2, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource ShowCurrencyConverter}}" Width="60"></TextBox>
                         <Label Width="40">3rd:</Label>
-                        <TextBox Text="{Binding JuniorPrize3, Mode=TwoWay, Converter={StaticResource ShowCurrencyConverter}}" Width="60"></TextBox>
+                        <TextBox Text="{Binding JuniorPrize3, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource ShowCurrencyConverter}}" Width="60"></TextBox>
                     </StackPanel>
                     <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
                         <Label Width="160">Other junior prizes:</Label>
-                        <TextBox Text="{Binding JuniorOtherPrizes, Mode=TwoWay}" Width="240"></TextBox>
+                        <TextBox Text="{Binding JuniorOtherPrizes, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="240"></TextBox>
                     </StackPanel>
                     <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
                         <Label Width="160">Notes:</Label>
-                        <TextBox Text="{Binding Notes, Mode=TwoWay}" Width="600"></TextBox>
+                        <TextBox Text="{Binding Notes, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="600"></TextBox>
                     </StackPanel>
                     <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
                         <Label Width="100" VerticalAlignment="Top">Sessions:</Label>
@@ -153,7 +153,20 @@
             </TabItem>
             <TabItem Header="Results">
                 <StackPanel Orientation="Vertical">
-                    <TextBlock>You can't add competitors here. Go to Competitors and find the right person.</TextBlock>
+                    <TextBlock>You can't add competitors here. Locate the required Competitor and add to their events list.</TextBlock>
+                    <StackPanel Orientation="Horizontal">
+                        <Label>Winners are those with the</Label>
+                        <ComboBox ItemsSource="{Binding ScoreModes}"
+                          DisplayMemberPath="Text"
+                          SelectedValuePath="Value"
+                          SelectedValue="{Binding HighScoresAreBest}"></ComboBox>
+                        <Label>scores, then the</Label>
+                        <ComboBox ItemsSource="{Binding ScoreModes}"
+                          DisplayMemberPath="Text"
+                          SelectedValuePath="Value"
+                          SelectedValue="{Binding HighTieBreaksAreBest}"></ComboBox>
+                        <Label>tiebreaks</Label>
+                    </StackPanel>
                     <DataGrid Name="dataGrid" CanUserAddRows="False" CanUserResizeColumns="True" CanUserSortColumns="True"
                               AutoGenerateColumns="False"
                             Width="920" Margin="0,20,0,0" ItemsSource="{Binding Entrants}">
@@ -161,7 +174,8 @@
                             <DataGridTextColumn IsReadOnly="True" Header="EntrantId" Binding="{Binding EntrantId}" />
                             <DataGridTextColumn IsReadOnly="True" Header="ContestantId" Binding="{Binding ContestantId}" />
                             <DataGridComboBoxColumn Width="80" Header="Medal"
-                                      SelectedItemBinding="{Binding Path=Medal, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                                      SelectedItemBinding="{Binding Path=Medal, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                      SortMemberPath="MedalSortValue">
                                 <DataGridComboBoxColumn.ElementStyle>
                                     <Style TargetType="ComboBox">
                                         <Setter Property="ItemsSource" Value="{Binding Medals}" />
@@ -170,6 +184,20 @@
                                 <DataGridComboBoxColumn.EditingElementStyle>
                                     <Style TargetType="ComboBox">
                                         <Setter Property="ItemsSource" Value="{Binding Medals}" />
+                                    </Style>
+                                </DataGridComboBoxColumn.EditingElementStyle>
+                            </DataGridComboBoxColumn>
+                            <DataGridComboBoxColumn Width="80" Header="Junior Medal"
+                                      SelectedItemBinding="{Binding Path=JuniorMedal, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                      SortMemberPath="JuniorMedalSortValue">
+                                <DataGridComboBoxColumn.ElementStyle>
+                                    <Style TargetType="ComboBox">
+                                        <Setter Property="ItemsSource" Value="{Binding JuniorMedals}" />
+                                    </Style>
+                                </DataGridComboBoxColumn.ElementStyle>
+                                <DataGridComboBoxColumn.EditingElementStyle>
+                                    <Style TargetType="ComboBox">
+                                        <Setter Property="ItemsSource" Value="{Binding JuniorMedals}" />
                                     </Style>
                                 </DataGridComboBoxColumn.EditingElementStyle>
                             </DataGridComboBoxColumn>
@@ -211,7 +239,22 @@
                             <DataGridCheckBoxColumn Header="Absent" Binding="{Binding Absent, Mode=TwoWay}" />
                             <DataGridTextColumn Header="TieBreak" Binding="{Binding TieBreak, Mode=TwoWay}" />
                             <DataGridTextColumn IsReadOnly="True" Header="Pentamind" Binding="{Binding PentaScore, Converter={StaticResource Show3DecPlacesConverter}}" />
-                            <DataGridTextColumn Header="TeamOrPair" Binding="{Binding TeamOrPair, Mode=TwoWay}"  />
+                            <!-- Show this if more than 2 in team -->
+                            <DataGridTextColumn Header="Team" Binding="{Binding TeamOrPair, Mode=TwoWay}"  />
+                            <!-- Show this if exactly 2 in team -->
+                            <DataGridComboBoxColumn Width="80" Header="Partner"
+                                      SelectedItemBinding="{Binding Path=TeamOrPair, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                                <DataGridComboBoxColumn.ElementStyle>
+                                    <Style TargetType="ComboBox">
+                                        <Setter Property="ItemsSource" Value="{Binding Partners}" />
+                                    </Style>
+                                </DataGridComboBoxColumn.ElementStyle>
+                                <DataGridComboBoxColumn.EditingElementStyle>
+                                    <Style TargetType="ComboBox">
+                                        <Setter Property="ItemsSource" Value="{Binding Partners}" />
+                                    </Style>
+                                </DataGridComboBoxColumn.EditingElementStyle>
+                            </DataGridComboBoxColumn>
                             <DataGridTextColumn IsReadOnly="True" Header="PIN" Binding="{Binding PIN}"  />
                             <DataGridTemplateColumn  MinWidth="100" Header="View">
                                 <DataGridTemplateColumn.CellTemplate>
@@ -222,9 +265,13 @@
                             </DataGridTemplateColumn>
                         </DataGrid.Columns>
                     </DataGrid>
-                    <Button Click="checkRanks_Click">Check Ranks</Button>
-                    <Button Click="calculatePenta_Click">Calculate Pentamind Scores</Button>
-                    <Button Click="calculatePenta10_Click">Calculate Pentamind Scores (2010 formula)</Button>
+                    <StackPanel Orientation="Horizontal">
+                        <Button Margin="4,4,4,4" Click="checkRanks_Click">Check Ranks</Button>
+                        <Button Margin="4,4,4,4" Click="calculateRanks_Click">Calculate Ranks</Button>
+                        <Button Margin="4,4,4,4" Click="calculatePenta_Click">Calculate Pentamind Scores</Button>
+                        <Button Margin="4,4,4,4" Click="calculatePenta10_Click">Calculate Pentamind Scores (2010 formula)</Button>
+                        <Button Margin="4,4,4,4" Click="print_Click">Print Results</Button>
+                    </StackPanel>
                 </StackPanel>
             </TabItem>
         </TabControl>

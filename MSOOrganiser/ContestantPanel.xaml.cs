@@ -1,5 +1,7 @@
 ﻿using JuliaHayward.Common.Environment;
+using JuliaHayward.Common.Logging;
 using MSOCore;
+using MSOCore.Calculators;
 using MSOCore.Models;
 using MSOOrganiser.Dialogs;
 using MSOOrganiser.Events;
@@ -8,6 +10,10 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
+using System.Configuration;
+using System.Data;
+using System.Data.Entity.Validation;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -63,7 +69,10 @@ namespace MSOOrganiser
 
         public void search_Click(object sender, RoutedEventArgs e)
         {
-            ViewModel.PopulateDropdown();
+            using (new SpinnyCursor())
+            {
+                ViewModel.PopulateDropdown();
+            }
         }
 
         public void clearSearch_Click(object sender, RoutedEventArgs e)
@@ -87,6 +96,12 @@ namespace MSOOrganiser
         {
             try
             {
+                if (ViewModel.EditingThePast)
+                {
+                    if (MessageBox.Show("You are editing data for a past Olympiad. Are you sure this is right?",
+                        "MSOOrganiser", MessageBoxButton.YesNo, MessageBoxImage.Warning, MessageBoxResult.No)
+                        == MessageBoxResult.No) return;
+                }
                 var errors = ViewModel.Validate();
                 if (!errors.Any())
                 {
@@ -103,7 +118,16 @@ namespace MSOOrganiser
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Something went wrong  - data not saved");
+                string message = (ex is DbEntityValidationException)
+                    ? ((DbEntityValidationException)ex).EntityValidationErrors.First().ValidationErrors.First().ErrorMessage
+                    : ex.Message;
+
+                MessageBox.Show("Something went wrong  - data not saved (" + message + ")");
+
+                var trelloKey = ConfigurationManager.AppSettings["TrelloKey"];
+                var trelloAuthKey = ConfigurationManager.AppSettings["TrelloAuthKey"];
+                var logger = new TrelloLogger(trelloKey, trelloAuthKey);
+                logger.Error("MSOWeb", message, ex.StackTrace);
             }
         }
 
@@ -128,7 +152,8 @@ namespace MSOOrganiser
         {
             var selectedEvents = ViewModel.Events.Select(x => x.EventCode);
             var nonEditableEvents = ViewModel.Events.Where(x => x.Rank != 0).Select(x => x.EventCode);
-            var dialog = new AddEventsToContestantWindow(ViewModel.CurrentOlympiadId, selectedEvents, nonEditableEvents);
+            var dialog = new AddEventsToContestantWindow(ViewModel.CurrentOlympiadId, 
+                ViewModel.IsJuniorForOlympiad, selectedEvents, nonEditableEvents);
             dialog.ShowDialog();
 
             if (dialog.DialogResult.Value)
@@ -140,7 +165,7 @@ namespace MSOOrganiser
                         var existingEvent = ViewModel.Events.FirstOrDefault(x => x.EventCode == evt.Code);
                         if (existingEvent == null)
                         {
-                            ViewModel.Events.Add(new ContestantPanelVm.EventVm() { EventCode = evt.Code, EventName = evt.Name, EventId = evt.Id });
+                            ViewModel.AddEvent(new ContestantPanelVm.EventVm() { EventCode = evt.Code, EventName = evt.Name, EventId = evt.Id, Fee = evt.Fee, StandardFee = evt.Fee, IncludedInMaxFee = evt.IsIncludedInMaxFee });
                             ViewModel.IsDirty = true;
                         }
                     }
@@ -149,11 +174,12 @@ namespace MSOOrganiser
                         var eventToDelete = ViewModel.Events.FirstOrDefault(x => x.EventCode == evt.Code);
                         if (eventToDelete != null)
                         {
-                            ViewModel.Events.Remove(eventToDelete);
+                            ViewModel.RemoveEvent(eventToDelete);
                             ViewModel.IsDirty = true;
                         }
                     }
                 }
+                ViewModel.ApportionCosts();
             }
         }
 
@@ -162,7 +188,7 @@ namespace MSOOrganiser
             var dialog = new AddPaymentToContestantDialog();
             if (dialog.ShowDialog().Value)
             {
-                ViewModel.Payments.Add(new ContestantPanelVm.PaymentVm()
+                ViewModel.AddPayment(new ContestantPanelVm.PaymentVm()
                 {
                     Amount = dialog.Payment.Amount,
                     Method = dialog.Payment.PaymentMethod,
@@ -203,18 +229,24 @@ namespace MSOOrganiser
         public class OlympiadVm
         {
             public string Text { get; set; }
-            public string Value { get; set; }
+            public int Value { get; set; }
         }
 
-        public class EventVm
+        public class EventVm  : VmBase
         {
             public int EventId { get; set; }
             public string EventCode { get; set; }
             public string EventName { get; set; }
             public bool Receipt { get; set; }
-            public decimal Fee { get; set; }
+            public decimal StandardFee { get; set; }    // Before we apply the max-fee apportioning
+            private decimal _fee;
+            public decimal Fee { get { return _fee; }
+                set { if (value != _fee) { _fee = value; OnPropertyChanged("Fee"); } }
+            }
+            public bool IncludedInMaxFee { get; set; }
             public string Partner { get; set; }
             public string Medal { get; set; }
+            public string JuniorMedal { get; set; }
             public int Rank { get; set; }
             public string Penta { get; set; }
             public string TieBreak { get; set; }
@@ -237,6 +269,7 @@ namespace MSOOrganiser
 
         public ObservableCollection<ContestantVm> Contestants { get; set; }
         public CollectionView FilteredContestants { get; set; }
+        public bool IsJuniorForOlympiad { get; set; }
         
         private string _contestantId;
         public string ContestantId
@@ -273,6 +306,8 @@ namespace MSOOrganiser
                 }
             }
         }
+
+        public bool EditingThePast { get; set; }
 
         private string _filterFirstName;
         public string FilterFirstName
@@ -345,10 +380,11 @@ namespace MSOOrganiser
 
         private void SetGenderForHonorific(string title)
         {
-            if (title == "Mr") 
+            var maleHonorifics = new[] { "Mr", "Master", "Sir" };
+            if (maleHonorifics.Contains(title))
                 IsMale = true;
 
-            var femaleHonorifics = new[] { "Mrs", "Ms", "Miss" };
+            var femaleHonorifics = new[] { "Mrs", "Ms", "Miss", "Lady" };
             if (femaleHonorifics.Contains(title)) 
                 IsMale = false;
         }
@@ -534,8 +570,9 @@ private bool _WantsNoNews;
                 }
             }
         }
-private string _DateOfBirth;
-        public string DateOfBirth
+
+        private DateTime? _DateOfBirth;
+        public DateTime? DateOfBirth
         {
             get
             {
@@ -551,6 +588,7 @@ private string _DateOfBirth;
                 }
             }
         }
+
 private bool _IsConcessional;
         public bool IsConcessional
         {
@@ -722,6 +760,18 @@ private string _Notes;
             }
         }
 
+        public string Totals
+        {
+            get
+            {
+                var totalFees = Events.Sum(x => x.Fee);
+                var totalPayment = Payments.Sum(x => x.Amount);
+                return "Total fees: £" + totalFees.ToString("F")
+                    + "      Total payments: £" + totalPayment.ToString("F")
+                    + ((totalFees <= totalPayment) ? "" : "     Owing: £" + (totalFees - totalPayment).ToString("F")); 
+            }
+        }
+
         public DateTime UpdatedAt { get; set; }
 
         #endregion
@@ -741,7 +791,11 @@ private string _Notes;
             Titles.Add(new TitleVm() { Text = "Mrs", Value = "Mrs" });
             Titles.Add(new TitleVm() { Text = "Ms", Value = "Ms" });
             Titles.Add(new TitleVm() { Text = "Miss", Value = "Miss" });
+            Titles.Add(new TitleVm() { Text = "Master", Value = "Master" });
             Titles.Add(new TitleVm() { Text = "Dr", Value = "Dr" });
+            Titles.Add(new TitleVm() { Text = "Prof", Value = "Prof" });
+            Titles.Add(new TitleVm() { Text = "Sir", Value = "Sir" });
+            Titles.Add(new TitleVm() { Text = "Lady", Value = "Lady" });
 
             if (Nationalities == null)
             {
@@ -755,6 +809,43 @@ private string _Notes;
             PopulateEvents();
             PopulatePayments();
         }
+
+        public void AddPayment(PaymentVm item)
+        {
+            Payments.Add(item);
+            OnPropertyChanged("Totals");
+        }
+
+        public void AddEvent(EventVm item)
+        {
+            Events.Add(item);
+            OnPropertyChanged("Totals");
+        }
+
+        public void ApportionCosts()
+        {
+            var context = DataEntitiesProvider.Provide();
+            var olympiad = context.Olympiad_Infoes.First(x => x.Id == CurrentOlympiadId);
+
+            var canApportion = (!IsJuniorForOlympiad) ? olympiad.MaxFee.HasValue : olympiad.MaxCon.HasValue;
+            if (!canApportion) return;
+
+            var maxFee = (!IsJuniorForOlympiad) ?
+                olympiad.MaxFee.Value : olympiad.MaxCon.Value;
+
+            var apportioner = new CostApportioner<EventVm>(
+                x => x.StandardFee, (e, f) => e.Fee = f, x => x.IncludedInMaxFee);
+            apportioner.ApportionCost(Events, maxFee);
+
+            OnPropertyChanged("Totals");
+        }
+
+        public void RemoveEvent(EventVm item)
+        {
+            Events.Remove(item);
+            OnPropertyChanged("Totals");
+        }
+
 
         public void PopulateDropdown()
         {
@@ -789,33 +880,46 @@ private string _Notes;
             var context = DataEntitiesProvider.Provide();
             foreach (var c in context.Olympiad_Infoes
                 .OrderByDescending(x => x.StartDate))
-                Olympiads.Add(new OlympiadVm { Text = c.FullTitle(), Value = c.Id.ToString() });
-            CurrentOlympiadId = int.Parse(Olympiads.First().Value);
+                Olympiads.Add(new OlympiadVm { Text = c.FullTitle(), Value = c.Id });
+            CurrentOlympiadId = Olympiads.First().Value;
         }
 
         public void PopulateEvents()
         {
             Events.Clear();
             if (ContestantId == null) return;
-            if (CurrentOlympiadId == null) return;
+
+            EditingThePast = (CurrentOlympiadId != Olympiads.First().Value);
 
             var context = DataEntitiesProvider.Provide();
             var olympiadId = CurrentOlympiadId;
+            var olympiad = context.Olympiad_Infoes.First(x => x.Id == CurrentOlympiadId);
+            IsJuniorForOlympiad = Contestant.IsJuniorForOlympiad(DateOfBirth, olympiad);
             var contestantId = int.Parse(ContestantId);
             var entrants = context.Entrants
                 .Join(context.Events, e => e.Game_Code, g => g.Code, (e, g) => new { e = e, g = g })
                 .Where(x => x.e.OlympiadId == olympiadId && x.g.OlympiadId == olympiadId && x.e.Mind_Sport_ID == contestantId)
-                .OrderBy(x => x.e.Game_Code).ToList();       
+                .OrderBy(x => x.e.Game_Code).ToList();  
+     
+            var allFees = context.Fees.ToList();
+            var fees = (IsJuniorForOlympiad)
+                ? allFees.ToDictionary(x => x.Code, x => x.Concession)
+                : allFees.ToDictionary(x => x.Code, x => x.Adult);
+
             foreach (var e in entrants)
             {
+                // TODO: this is really an EntrantVm not an EventVm
                 Events.Add(new EventVm()
                 {
-                    EventId = e.e.EntryNumber,
+                    EventId = e.e.EventId.Value,
                     Absent = false,
                     EventCode = e.e.Game_Code,
                     EventName = e.g.Mind_Sport,
                     Fee = e.e.Fee,
+                    StandardFee = fees[e.g.Entry_Fee].Value,
+                    IncludedInMaxFee = (e.g.incMaxFee.HasValue && e.g.incMaxFee.Value),
                     Medal = e.e.Medal ?? "",
+                    JuniorMedal = e.e.JuniorMedal ?? "",
                     Partner = e.e.Partner ?? "",
                     Penta = e.e.Penta_Score.HasValue ? e.e.Penta_Score.Value.ToString() : "",
                     Rank = e.e.Rank.HasValue ? e.e.Rank.Value : 0,
@@ -882,7 +986,7 @@ private string _Notes;
                 EvePhone = "";
                 Fax = "";
                 WantsNoNews = false;
-                DateOfBirth = "";
+                DateOfBirth = null;
                 IsConcessional = false;
                 Address1 = "";
                 Address2 = "";
@@ -909,7 +1013,7 @@ private string _Notes;
                 EvePhone = dbCon.EvePhone;
                 Fax = dbCon.Fax;
                 WantsNoNews = dbCon.No_News.HasValue ? dbCon.No_News.Value : true;
-                DateOfBirth = (dbCon.DateofBirth.HasValue) ? dbCon.DateofBirth.Value.ToString("dd/mm/yyyy") : "";
+                DateOfBirth = dbCon.DateofBirth;
                 IsConcessional = dbCon.Concessional.HasValue ? dbCon.Concessional.Value : true;
                 Address1 = dbCon.Address1;
                 Address2 = dbCon.Address2;
@@ -924,11 +1028,15 @@ private string _Notes;
             IsDirty = false;
             PopulateEvents();
             PopulatePayments();
+            OnPropertyChanged("Totals");
         }
 
         public List<string> Validate()
         {
             var errors = new List<string>();
+
+            if (!(string.IsNullOrEmpty(Email) || new EmailAddressAttribute().IsValid(Email)))
+                errors.Add(Email + " is not a valid email address");
 
             return errors;
         }
@@ -951,7 +1059,7 @@ private string _Notes;
                     EvePhone = this.EvePhone,
                     Fax = this.Fax,
                     No_News = this.WantsNoNews,
-                    DateofBirth = (string.IsNullOrEmpty(this.DateOfBirth)) ? (DateTime?)null : DateTime.Parse(this.DateOfBirth),
+                    DateofBirth = this.DateOfBirth,
                     Concessional = this.IsConcessional,
                     Address1 = this.Address1,
                     Address2 = this.Address2,
@@ -966,7 +1074,7 @@ private string _Notes;
                 context.Contestants.Add(dbCon);
                 id = dbCon.Mind_Sport_ID;
                 dbCon.Entrants = this.Events
-                    .Select(x => Entrant.NewEntrant(x.EventId, x.EventCode, CurrentOlympiadId, dbCon))
+                    .Select(x => Entrant.NewEntrant(x.EventId, x.EventCode, CurrentOlympiadId, dbCon, x.Fee))
                     .ToList();
                 dbCon.Payments = this.Payments
                     .Select(x => new Payment() { Payment1 = x.Amount, Payment_Method = x.Method, PaymentNumber = 0, Banked = x.Banked ? 1 : 0, MindSportsID = dbCon.Mind_Sport_ID, OlympiadId = CurrentOlympiadId, Name = dbCon})
@@ -988,9 +1096,7 @@ private string _Notes;
                 dbCon.EvePhone = EvePhone;
                 dbCon.Fax = Fax;
                 dbCon.No_News = WantsNoNews;
-                DateTime dt;
-                var success = DateTime.TryParse(DateOfBirth, out dt);
-                if (success) dbCon.DateofBirth = dt;
+                dbCon.DateofBirth = DateOfBirth;
                 dbCon.Concessional = IsConcessional;
                 dbCon.Address1 = Address1;
                 dbCon.Address2 = Address2;
@@ -1005,7 +1111,7 @@ private string _Notes;
                 // Add new events that aren't already in this olympiad for this person
                 foreach (var e in this.Events.Where(x => !dbCon.Entrants.Any(ee => ee.OlympiadId == CurrentOlympiadId && ee.Game_Code == x.EventCode)))
                 {
-                 dbCon.Entrants.Add(Entrant.NewEntrant(e.EventId, e.EventCode, CurrentOlympiadId, dbCon));
+                 dbCon.Entrants.Add(Entrant.NewEntrant(e.EventId, e.EventCode, CurrentOlympiadId, dbCon, e.Fee));
                 }
                 // Remove unwanted events from this olympiad
                 foreach (var de in dbCon.Entrants.Where(x => x.OlympiadId == CurrentOlympiadId && !this.Events.Any(ee => ee.EventCode == x.Game_Code)).ToList())

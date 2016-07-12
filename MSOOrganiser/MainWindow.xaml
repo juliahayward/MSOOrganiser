@@ -47,7 +47,7 @@
                     <MenuItem Header="Print Named Pairing Card for an Event" IsEnabled="False"/>
                     <MenuItem Header="View Pentamind Qualifiers" IsEnabled="False"/>
                     <MenuItem Header="Print Medal Table" Click="medalTable_Click"/>
-                    <MenuItem Header="Print Results" IsEnabled="False"/>
+                    <MenuItem Header="Print Results" Click="printResults_Click" />
                     <MenuItem Header="Pentamind Standings (NEW)" Click="pentamindStandings_Click" />
                     <MenuItem Header="Poker WC Standings (NEW)" Click="pokerStandings_Click" />
                     <MenuItem Header="Contestant listing for JW3 (.csv)" Click="contestantList_Click" />

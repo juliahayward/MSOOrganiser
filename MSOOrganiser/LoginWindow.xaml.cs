@@ -1,18 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using MSOCore;
+using MSOOrganiser.UIUtilities;
+using System;
 using System.Linq;
 using System.Security.Cryptography;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
-using MSOCore;
 
 namespace MSOOrganiser
 {
@@ -36,26 +28,32 @@ namespace MSOOrganiser
 
         private void loginButton_Click(object sender, RoutedEventArgs e)
         {
-            // this is not good - should pass all stuff out of dialog and 
-            DataEntitiesProvider.IsProduction = !testData.IsChecked.Value;
-
-            var context = DataEntitiesProvider.Provide();
-            var user = context.Users.FirstOrDefault(x => x.Name == usernameBox.Text);
-            if (user != null && VerifyPassword(context, user, passwordBox.Password))
+            using (new SpinnyCursor())
             {
-                UserId = user.PIN;
-                UserName = user.Name;
-                var login = new UserLogin() { LogInDate = DateTime.UtcNow, User = user };
-                user.UserLogins.Add(login);
-                context.SaveChanges();
-                UserLoginId = login.Id;
-                UseTestData = testData.IsChecked.Value;
-            }
-            else
-                UserId = 0;
+                // this is not good - should pass all stuff out of dialog and 
+                DataEntitiesProvider.IsProduction = !testData.IsChecked.Value;
 
-            this.DialogResult = true;
-            this.Close();
+                var context = DataEntitiesProvider.Provide();
+                var user = context.Users.FirstOrDefault(x => x.Name == usernameBox.Text);
+                if (user != null && VerifyPassword(context, user, passwordBox.Password))
+                {
+                    UserId = user.PIN;
+                    UserName = user.Name;
+                    var login = new UserLogin() { LogInDate = DateTime.UtcNow, User = user };
+                    user.UserLogins.Add(login);
+                    context.SaveChanges();
+                    UserLoginId = login.Id;
+                    UseTestData = testData.IsChecked.Value;
+                }
+                else
+                {
+                    UserId = 0;
+                    UserName = "";
+                }
+
+                this.DialogResult = true;
+                this.Close();
+            }
         }
 
         public int UserId { get; set; }

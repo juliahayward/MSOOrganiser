@@ -1,4 +1,5 @@
 ﻿using JuliaHayward.Common.Environment;
+using JuliaHayward.Common.Logging;
 using MSOCore;
 using MSOCore.Calculators;
 using MSOCore.Models;
@@ -9,6 +10,8 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Configuration;
+using System.Data.Entity.Validation;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -70,6 +73,12 @@ namespace MSOOrganiser
         {
             try
             {
+                if (ViewModel.EditingThePast)
+                {
+                    if (MessageBox.Show("You are editing data for a past Olympiad. Are you sure this is right?",
+                        "MSOOrganiser", MessageBoxButton.YesNo, MessageBoxImage.Warning, MessageBoxResult.No)
+                        == MessageBoxResult.No) return;
+                }
                 var errors = ViewModel.Validate();
                 if (!errors.Any())
                 {
@@ -86,7 +95,16 @@ namespace MSOOrganiser
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Something went wrong  - data not saved");
+                string message = (ex is DbEntityValidationException)
+                    ? ((DbEntityValidationException)ex).EntityValidationErrors.First().ValidationErrors.First().ErrorMessage
+                    : ex.Message;
+
+                MessageBox.Show("Something went wrong  - data not saved (" + message + ")");
+
+                var trelloKey = ConfigurationManager.AppSettings["TrelloKey"];
+                var trelloAuthKey = ConfigurationManager.AppSettings["TrelloAuthKey"];
+                var logger = new TrelloLogger(trelloKey, trelloAuthKey);
+                logger.Error("MSOWeb", message, ex.StackTrace);
             }
         }
 
@@ -167,6 +185,7 @@ namespace MSOOrganiser
         public ObservableCollection<OlympiadVm> Olympiads { get; set; }
         public ObservableCollection<EventVm> Events { get; set; }
         public ObservableCollection<LocationVm> Locations { get; set; }
+        public bool EditingThePast { get; set; }
 
         private int _OlympiadId;
         public int OlympiadId
@@ -461,7 +480,11 @@ namespace MSOOrganiser
             else
             {
                 var context = DataEntitiesProvider.Provide();
-                var o = context.Olympiad_Infoes.FirstOrDefault(x => x.Id == id);
+                // TODO This join could be eliminated if an Event had a do-not-delete flag. Still, it's
+                // better than not Including it.
+                var o = context.Olympiad_Infoes.Include("Events").Include("Events.Entrants")
+                    .FirstOrDefault(x => x.Id == id);
+                EditingThePast = !o.Current.Value;
                 YearOf = o.YearOf.ToString();
                 Number = o.Number;
                 Title = o.Title;
@@ -470,7 +493,7 @@ namespace MSOOrganiser
                 FinishDate = (o.FinishDate.HasValue) ? o.FinishDate.Value.ToString("dd/MM/yyyy") : "";
                 MaxFee = (o.MaxFee.HasValue) ? o.MaxFee.Value.ToString("F2") : "";
                 MaxCon = (o.MaxCon.HasValue) ? o.MaxCon.Value.ToString("F2") : "";
-                AgeDate = o.AgeDate.ToString();
+                AgeDate = (o.AgeDate.HasValue) ? o.AgeDate.Value.ToString("dd/MM/yyyy") : "";
                 JnrAge = o.JnrAge.ToString();
                 SnrAge = o.SnrAge.ToString();
                 PentaLong = o.PentaLong.ToString();
@@ -492,20 +515,26 @@ namespace MSOOrganiser
         public List<string> Validate()
         {
             int i;
-            DateTime dt;
+            DateTime startDt, endDt, ageDt;
             decimal d;
             var errors = new List<string>();
+            if (string.IsNullOrEmpty(Number))
+                errors.Add("Number must be specified");
+            if (string.IsNullOrEmpty(Title))
+                errors.Add("Title must be specified");
+            if (string.IsNullOrEmpty(Venue))
+                errors.Add("Venue must be specified");
             if (!int.TryParse(YearOf, out i))
                 errors.Add("Invalid year");
-            if (!DateTime.TryParse(StartDate, out dt))
+            if (!DateTime.TryParse(StartDate, out startDt))
                 errors.Add("Invalid start date");
-            if (!DateTime.TryParse(FinishDate, out dt))
+            if (!DateTime.TryParse(FinishDate, out endDt))
                 errors.Add("Invalid end date");
             if (!decimal.TryParse(MaxFee, out d))
                 errors.Add("Invalid MaxFee");
             if (!decimal.TryParse(MaxCon, out d))
                 errors.Add("Invalid Max Concession");
-            if (!DateTime.TryParse(AgeDate, out dt))
+            if (!DateTime.TryParse(AgeDate, out ageDt))
                 errors.Add("Invalid age-date");
             if (!int.TryParse(JnrAge, out i))
                 errors.Add("Invalid junior age");
@@ -515,6 +544,9 @@ namespace MSOOrganiser
                 errors.Add("Invalid penamind long events");
             if (!int.TryParse(PentaTotal, out i))
                 errors.Add("Invalid pentamind total events");
+
+            if (startDt > endDt)
+                errors.Add("Start date must be prior to End Date");
 
             return errors;
         }
@@ -541,9 +573,11 @@ namespace MSOOrganiser
                     SnrAge = int.Parse(this.SnrAge),
                     PentaLong = int.Parse(this.PentaLong),
                     PentaTotal = int.Parse(this.PentaTotal),
-                    Events = new List<Event>()
+                    Events = new List<Event>(),
+                    Current = false,    // will be sorted out later                      
                 };
                 context.Olympiad_Infoes.Add(o);
+                context.SaveChanges();
                 // So we don't have to do a full refresh of the combo
                 Olympiads.RemoveAt(0);
                 Olympiads.Insert(0, new OlympiadVm() { Text = o.FullTitle(), Id = o.Id });
@@ -565,6 +599,7 @@ namespace MSOOrganiser
                 o.SnrAge = int.Parse(this.SnrAge);
                 o.PentaLong = int.Parse(this.PentaLong);
                 o.PentaTotal = int.Parse(this.PentaTotal);
+                o.Current = false;      // will be sorted out later
             }
             context.SaveChanges();
             // Now update the events and locations. Need to do here to have the reference back to the Olympiad

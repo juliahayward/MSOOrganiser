@@ -20,6 +20,10 @@ using MSOOrganiser.Dialogs;
 using MSOCore.Extensions;
 using MSOOrganiser.UIUtilities;
 using JuliaHayward.Common.Environment;
+using System.Configuration;
+using JuliaHayward.Common.Logging;
+using System.Data.Entity.Validation;
+using MSOOrganiser.Reports;
 
 namespace MSOOrganiser
 {
@@ -60,17 +64,44 @@ namespace MSOOrganiser
         {
             ViewModel.PopulateDropdown(eventCode, olympiadId);
             ViewModel.Populate();
+            SetPairsColumnVisibility();
+        }
+          
+        private void SetPairsColumnVisibility()
+        {
+            if (ViewModel.NumberInTeam == 1)
+            {
+                dataGrid.Columns[12].Visibility = Visibility.Collapsed; // text box
+                dataGrid.Columns[13].Visibility = Visibility.Collapsed; // dropdown
+            }
+            else if (ViewModel.NumberInTeam == 2)
+            {
+                dataGrid.Columns[12].Visibility = Visibility.Collapsed;
+                dataGrid.Columns[13].Visibility = Visibility.Visible;
+            }
+            else
+            {
+                dataGrid.Columns[12].Visibility = Visibility.Visible;
+                dataGrid.Columns[13].Visibility = Visibility.Collapsed;
+            }
         }
 
         private void cancel_Click(object sender, RoutedEventArgs e)
         {
             ViewModel.Populate();
+            SetPairsColumnVisibility();
         }
 
         private void save_Click(object sender, RoutedEventArgs e)
         {
             try
             {
+                if (ViewModel.EditingThePast)
+                {
+                    if (MessageBox.Show("You are editing data for a past Olympiad. Are you sure this is right?",
+                        "MSOOrganiser", MessageBoxButton.YesNo, MessageBoxImage.Warning, MessageBoxResult.No)
+                        == MessageBoxResult.No) return;
+                }
                 var errors = ViewModel.Validate();
                 if (!errors.Any())
                 {
@@ -87,18 +118,35 @@ namespace MSOOrganiser
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Something went wrong  - data not saved");
+                string message = (ex is DbEntityValidationException)
+                    ? ((DbEntityValidationException)ex).EntityValidationErrors.First().ValidationErrors.First().ErrorMessage
+                    : ex.Message;
+
+                MessageBox.Show("Something went wrong  - data not saved (" + message + ")");
+
+                var trelloKey = ConfigurationManager.AppSettings["TrelloKey"];
+                var trelloAuthKey = ConfigurationManager.AppSettings["TrelloAuthKey"];
+                var logger = new TrelloLogger(trelloKey, trelloAuthKey);
+                logger.Error("MSOWeb", message, ex.StackTrace);
             }
+        }
+
+        public void print_Click(object sender, EventArgs e)
+        {
+            var printer = new SingleEventResultsPrinter(ViewModel.CurrentOlympiadId, ViewModel.EventCode);
+            printer.Print();
         }
 
         private void eventCombo_Changed(object sender, SelectionChangedEventArgs e)
         {
             ViewModel.Populate();
+            SetPairsColumnVisibility();
         }
 
         private void olympiadCombo_Changed(object sender, SelectionChangedEventArgs e)
         {
             ViewModel.Populate();
+            SetPairsColumnVisibility();
         }
 
         private void person_Click(object sender, RoutedEventArgs e)
@@ -117,6 +165,19 @@ namespace MSOOrganiser
             try
             {
                 calculator.Calculate(ViewModel.NumberInTeam, ViewModel.Entrants);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }
+
+        private void calculateRanks_Click(object sender, RoutedEventArgs args)
+        {
+            var checker = new RankCalculator();
+            try
+            {
+                checker.Calculate(ViewModel.NumberInTeam, ViewModel.HighScoresAreBest, ViewModel.Entrants);
             }
             catch (Exception ex)
             {
@@ -225,6 +286,18 @@ namespace MSOOrganiser
             public string Value { get; set; }
         }
 
+        public class ScoreModeVm
+        {
+            public string Text { get; set; }
+            public bool Value { get; set; }
+        }
+
+        public class PartnerVm
+        {
+            public string Text { get; set; }
+            public string Value { get; set; }
+        }
+
         // for table
         public class SessionVm : VmBase
         {
@@ -249,11 +322,27 @@ namespace MSOOrganiser
             public int EntrantId { get; set; }
             public int ContestantId { get; set; }
             public string Medal { get; set; }
+            public int MedalSortValue { get { return (string.IsNullOrEmpty(Medal)) ? 100 : (int)Enum.Parse(typeof(Medals), Medal); } }
+            public string JuniorMedal { get; set; }
+            public int JuniorMedalSortValue { get { return (string.IsNullOrEmpty(JuniorMedal)) ? 100 : (int)Enum.Parse(typeof(Medals), JuniorMedal); } }
             public string FirstName { get; set; }
             public string LastName { get; set; }
+            public string FullName { get { return FirstName + " " + LastName; } }
             public bool IsJunior { get; set; }
             public string Junior { get { return IsJunior ? "JNR" : "";  } }
-            public int Rank { get; set; }
+            private int _rank;
+            public int Rank 
+            {
+                get { return _rank; }
+                set
+                {
+                    if (_rank != value)
+                    {
+                        _rank = value;
+                        OnPropertyChanged("Rank");
+                    }
+                }
+            }
             public string Score { get; set; }
             public bool Absent { get; set; }
             public string TieBreak { get; set; }
@@ -274,6 +363,8 @@ namespace MSOOrganiser
             public string PIN { get; set; } // need this?
 
             public ObservableCollection<string> Medals { get { return _parent.Medals; } }
+            public ObservableCollection<string> JuniorMedals { get { return _parent.JuniorMedals1; } }
+            public ObservableCollection<string> Partners { get { return _parent.Partners; } }
         }
 
         public ResultsPanelVm()
@@ -285,15 +376,23 @@ namespace MSOOrganiser
             Types = new ObservableCollection<TypeVm>();
             Locations = new ObservableCollection<LocationVm>();
             Olympiads = new ObservableCollection<OlympiadVm>();
+            Partners = new ObservableCollection<string>();
+            ScoreModes = new ObservableCollection<ScoreModeVm>();
+
             Medals = StandardMedalsList();
+            JuniorMedals1 = JuniorMedalsList();
             EventCode = "";
 
+            PopulateScoreModes();
             PopulateDropdown();
             Populate();
         }
 
         #region bindable properties
+        public ObservableCollection<ScoreModeVm> ScoreModes { get; set; }
         public ObservableCollection<string> Medals { get; set; }
+        public ObservableCollection<string> JuniorMedals1 { get; set; } 
+        // TODO Other JuniorMedals should be HasJuniorMedals
         public ObservableCollection<TypeVm> Types { get; set; }
         public ObservableCollection<EntryFeeVm> Fees { get; set; }
         public ObservableCollection<EventVm> Events { get; set; }
@@ -301,7 +400,9 @@ namespace MSOOrganiser
         public ObservableCollection<SessionVm> Sessions { get; set; }
         public ObservableCollection<LocationVm> Locations { get; set; }
         public ObservableCollection<OlympiadVm> Olympiads { get; set; }
+        public ObservableCollection<string> Partners { get; set; }
         public int CurrentOlympiadId { get; set; }
+        public bool EditingThePast { get; set; }
         public string EventCode { get; set; }
         public int EventId { get; set; }        // EIN in database
 
@@ -682,7 +783,50 @@ namespace MSOOrganiser
             }
         }
 
+        private bool _highScoresAreBest = true;
+        public bool HighScoresAreBest
+        {
+            get
+            {
+                return _highScoresAreBest;
+            }
+            set
+            {
+                if (_highScoresAreBest != value)
+                {
+                    _highScoresAreBest = value;
+                    _IsDirty = true;
+                    OnPropertyChanged("HighScoresAreBest");
+                }
+            }
+        }
+
+        private bool _highTieBreaksAreBest = true;
+        public bool HighTieBreaksAreBest
+        {
+            get
+            {
+                return _highTieBreaksAreBest;
+            }
+            set
+            {
+                if (_highTieBreaksAreBest != value)
+                {
+                    _highTieBreaksAreBest = value;
+                    _IsDirty = true;
+                    OnPropertyChanged("HighTieBreaksAreBest");
+                }
+            }
+        }
+
         #endregion
+
+        private void PopulateScoreModes()
+        {
+            ScoreModes.Clear();
+            ScoreModes.Add(new ScoreModeVm() { Text = "Highest", Value = true });
+            ScoreModes.Add(new ScoreModeVm() { Text = "Lowest", Value = false });
+        }
 
         private ObservableCollection<string> StandardMedalsList()
         {
@@ -691,11 +835,19 @@ namespace MSOOrganiser
             list.Add("Gold");
             list.Add("Silver");
             list.Add("Bronze");
+            return list;
+        }
+
+        private ObservableCollection<string> JuniorMedalsList()
+        {
+            var list = new ObservableCollection<string>();
+            list.Add("");
             list.Add("Gold JNR");
             list.Add("Silver JNR");
             list.Add("Bronze JNR");
             return list;
         }
+
 
 
         public void PopulateDropdown(string eventCode = null, int olympiadId = -1)
@@ -719,7 +871,7 @@ namespace MSOOrganiser
                 Events.Add(new EventVm { Text = e.Code + " " + e.Mind_Sport, Value = e.Code });
 
             if (eventCode == null)
-                EventCode = Events.First().Value;
+                EventCode = (Events.Any()) ? Events.First().Value : null;
             else
                 EventCode = eventCode;
 
@@ -751,7 +903,13 @@ namespace MSOOrganiser
             
             var olympiadId = CurrentOlympiadId;
             var currentOlympiad = context.Olympiad_Infoes.First(x => x.Id == CurrentOlympiadId);
-            var evt = context.Events.First(x => x.OlympiadId == olympiadId && x.Code == EventCode);
+            EditingThePast = !currentOlympiad.Current.Value;
+            var evt = context.Events.FirstOrDefault(x => x.OlympiadId == olympiadId && x.Code == EventCode);
+            if (evt == null)
+            {
+                MessageBox.Show("Event " + EventCode + " didn't occur in " + currentOlympiad.YearOf);
+                return;
+            }
 
             EventId = evt.EIN;
             Arbiter = string.Join(", ", evt.Arbiters.Select(a => a.Name.FullName()));
@@ -785,7 +943,8 @@ namespace MSOOrganiser
                 Sessions.Add(new SessionVm() { Id = s.INDEX, Date = s.Date.Value, SessionCode = s.Session,
                     Start = s.Session1.StartTime.Value.ToString(@"hh\:mm"),
                     End = s.Session1.FinishTime.Value.ToString(@"hh\:mm"),
-                Worth = (int)s.Session1.Worth.Value });
+                    // Todo purge the nulls out of the database (needs a whole rethink anyway)
+                Worth = (s.Session1.Worth.HasValue) ? (int)s.Session1.Worth.Value : 0});
 
             var entrants = context.Entrants
                 .Join(context.Contestants, e => e.Mind_Sport_ID, c => c.Mind_Sport_ID, (e, c) => new { e = e, c = c })
@@ -793,7 +952,12 @@ namespace MSOOrganiser
                 .OrderBy(x => x.e.Rank)
                 .ThenBy(x => x.c.Lastname).ToList();
 
-            var juniorDate = DateTime.Now.AddYears(-currentOlympiad.JnrAge.Value - 1);
+            Partners.Clear();
+            foreach (var ec in entrants.OrderBy(ec => ec.c.FullName()))
+                Partners.Add(ec.c.FullName());
+
+
+            var juniorDate = currentOlympiad.AgeDate.Value.AddYears(-currentOlympiad.JnrAge.Value - 1);
 
             foreach (var e in entrants)
             {
@@ -802,6 +966,7 @@ namespace MSOOrganiser
                     EntrantId = e.e.EntryNumber,
                     ContestantId = e.c.Mind_Sport_ID,
                     Medal = e.e.Medal ?? "",
+                    JuniorMedal = e.e.JuniorMedal ?? "",
                     FirstName = e.c.Firstname,
                     LastName = e.c.Lastname,
                     IsJunior = e.c.DateofBirth.HasValue && e.c.DateofBirth > juniorDate, 
@@ -814,14 +979,32 @@ namespace MSOOrganiser
                     PIN = e.e.PIN.HasValue ? e.e.PIN.Value.ToString() : ""
                 });
             }
-
         }
 
         public List<string> Validate()
         {
             var errors = new List<string>();
 
+            ValidatePartners(errors);
+
             return errors;
+        }
+
+        private void ValidatePartners(List<string> errors)
+        {
+            if (NumberInTeam == 2)
+            {
+                foreach (var e1 in Entrants.Where(x => !x.Absent && x.Rank != 0))
+                {
+                    var e2 = Entrants.FirstOrDefault(x => x.FullName == e1.TeamOrPair);
+                    if (e2 == null)
+                        errors.Add(e1.FullName + " does not have a partner");
+                    else if (e2.TeamOrPair != e1.FullName)
+                        errors.Add(e1.FullName + " and " + e2.FullName + " have mismatched partners");
+                    else if (e2.Rank != e1.Rank)
+                        errors.Add("Partners " + e1.FullName + " and " + e2.FullName + " should have the same rank");
+                }
+            }
         }
 
         public void Save()
@@ -873,6 +1056,7 @@ namespace MSOOrganiser
                 var entrant = context.Entrants.First(x => x.EntryNumber == e.EntrantId);
                 entrant.Absent = e.Absent;
                 entrant.Medal = (string.IsNullOrEmpty(e.Medal)) ? null : e.Medal;
+                entrant.JuniorMedal = (string.IsNullOrEmpty(e.JuniorMedal)) ? null : e.JuniorMedal;
                 entrant.Rank = e.Rank;
                 entrant.Score = e.Score;
                 if (e.Rank > 0) entrant.Penta_Score = e.PentaScore; else entrant.Penta_Score = null;

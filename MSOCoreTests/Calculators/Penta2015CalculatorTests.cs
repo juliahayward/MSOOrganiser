@@ -129,6 +129,7 @@ namespace MSOCoreTests
 
     public class TestCalc : IPentaCalculable
     {
+        public string Score { get; set; }
         public int Rank { get; set; }
         public float PentaScore { get; set; }
         public bool Absent { get; set; }

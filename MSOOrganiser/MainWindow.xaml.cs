@@ -133,38 +133,50 @@ namespace MSOOrganiser
 
         private void olympiadsMenuItem_Click(object sender, RoutedEventArgs e)
         {
-            if (dockPanel.Children.Count > 2) dockPanel.Children.RemoveAt(2);
-            var panel = new OlympiadPanel();
-            panel.Populate();
-            panel.EventSelected += panel_EventSelected;
-            dockPanel.Children.Add(panel);
+            using (new SpinnyCursor())
+            {
+                if (dockPanel.Children.Count > 2) dockPanel.Children.RemoveAt(2);
+                var panel = new OlympiadPanel();
+                panel.Populate();
+                panel.EventSelected += panel_EventSelected;
+                dockPanel.Children.Add(panel);
+            }
         }
 
         private void competitorsMenuItem_Click(object sender, RoutedEventArgs e)
         {
-            if (dockPanel.Children.Count > 2) dockPanel.Children.RemoveAt(2);
-            var panel = new ContestantPanel();
-            panel.Populate();
-            panel.EventSelected += panel_EventSelected;
-            dockPanel.Children.Add(panel);
+            using (new SpinnyCursor())
+            {
+                if (dockPanel.Children.Count > 2) dockPanel.Children.RemoveAt(2);
+                var panel = new ContestantPanel();
+                panel.Populate();
+                panel.EventSelected += panel_EventSelected;
+                dockPanel.Children.Add(panel);
+            }
         }
 
         void panel_EventSelected(object sender, Events.EventEventArgs e)
         {
-            if (dockPanel.Children.Count > 2) dockPanel.Children.RemoveAt(2);
-            var panel = new EventPanel();
-            panel.Populate(e.EventCode, e.OlympiadId);
-            panel.ContestantSelected += panel_ContestantSelected;
-            dockPanel.Children.Add(panel);
+            using (new SpinnyCursor())
+            {
+                if (dockPanel.Children.Count > 2) dockPanel.Children.RemoveAt(2);
+                var panel = new EventPanel();
+                panel.Populate(e.EventCode, e.OlympiadId);
+                panel.ContestantSelected += panel_ContestantSelected;
+                dockPanel.Children.Add(panel);
+            }
         }
 
 
         private void gamesMenuItem_Click(object sender, RoutedEventArgs e)
         {
-            if (dockPanel.Children.Count > 2) dockPanel.Children.RemoveAt(2);
-            var panel = new GamePanel();
-            panel.Populate();
-            dockPanel.Children.Add(panel);
+            using (new SpinnyCursor())
+            {
+                if (dockPanel.Children.Count > 2) dockPanel.Children.RemoveAt(2);
+                var panel = new GamePanel();
+                panel.Populate();
+                dockPanel.Children.Add(panel);
+            }
         }
 
         private void nationalitiesMenuItem_Click(object sender, RoutedEventArgs e)
@@ -190,11 +202,14 @@ namespace MSOOrganiser
 
         void panel_ContestantSelected(object sender, Events.ContestantEventArgs e)
         {
-            if (dockPanel.Children.Count > 2) dockPanel.Children.RemoveAt(2);
-            var panel = new ContestantPanel();
-            panel.Populate(e.ContestantId);
-            panel.EventSelected += panel_EventSelected;
-            dockPanel.Children.Add(panel);
+            using (new SpinnyCursor())
+            {
+                if (dockPanel.Children.Count > 2) dockPanel.Children.RemoveAt(2);
+                var panel = new ContestantPanel();
+                panel.Populate(e.ContestantId);
+                panel.EventSelected += panel_EventSelected;
+                dockPanel.Children.Add(panel);
+            }
         }
 
         private void displayResultsMenuItem_Click(object sender, RoutedEventArgs e)
@@ -322,7 +337,7 @@ namespace MSOOrganiser
             //  1. Events per Session (for the right day; not normally independent)
             //  2. Todays Events (for the right day)
             //  3.
-            //  4.
+            //  4.  Event Results for today, concatenated
             //  5.  Traffic report (for the right day)
             //  6.  Income summary
             //  7.  Entry Summary
@@ -382,6 +397,11 @@ namespace MSOOrganiser
 
             context.SaveChanges();
             this.Status.Text = "";
+        }
+
+        private void printResults_Click(object sender, RoutedEventArgs e)
+        {
+            MessageBox.Show("Event results can be printed from the individual event panel");
         }
 
        

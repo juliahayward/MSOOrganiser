@@ -39,8 +39,8 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="JuliaHayward.Common, Version=0.1.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\MSOOrganiser\packages\JuliaHayward.Common.0.1.0.0\lib\net40\JuliaHayward.Common.dll</HintPath>
+    <Reference Include="JuliaHayward.Common, Version=0.1.1.30385, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\MSOOrganiser\packages\JuliaHayward.Common.0.1.1.30385\lib\net40\JuliaHayward.Common.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.CSharp" />

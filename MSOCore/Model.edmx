@@ -168,6 +168,7 @@
           <Property Name="SSMA_TimeStamp" Type="timestamp" Nullable="false" StoreGeneratedPattern="Computed" />
           <Property Name="OlympiadId" Type="int" />
           <Property Name="EventId" Type="int" />
+          <Property Name="JuniorMedal" Type="nvarchar" MaxLength="50" />
         </EntityType>
         <EntityType Name="EntryJsons">
           <Key>
@@ -175,6 +176,8 @@
           </Key>
           <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
           <Property Name="JsonText" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="SubmittedDate" Type="datetime" />
+          <Property Name="ProcessedDate" Type="datetime" />
         </EntityType>
         <EntityType Name="Event Resources">
           <Key>
@@ -755,6 +758,7 @@
           <Property Type="Int32" Name="OlympiadId" />
           <Property Type="Int32" Name="EventId" />
           <NavigationProperty Name="Event" Relationship="DataModel.FK__Entrants__EventI__4B7734FF" FromRole="Entrant" ToRole="Event" />
+          <Property Type="String" Name="JuniorMedal" MaxLength="50" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="Event_Resource">
           <Key>
@@ -1224,6 +1228,8 @@
           </Key>
           <Property Type="Int32" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Type="String" Name="JsonText" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Type="DateTime" Name="SubmittedDate" Precision="3" />
+          <Property Type="DateTime" Name="ProcessedDate" Precision="3" />
         </EntityType>
         <EntityType Name="Nationality">
           <Key>
@@ -1251,6 +1257,7 @@
           <EntitySetMapping Name="Entrants">
             <EntityTypeMapping TypeName="DataModel.Entrant">
               <MappingFragment StoreEntitySet="Entrants">
+                <ScalarProperty Name="JuniorMedal" ColumnName="JuniorMedal" />
                 <ScalarProperty Name="EventId" ColumnName="EventId" />
                 <ScalarProperty Name="OlympiadId" ColumnName="OlympiadId" />
                 <ScalarProperty Name="SSMA_TimeStamp" ColumnName="SSMA_TimeStamp" />
@@ -1588,6 +1595,8 @@
           <EntitySetMapping Name="EntryJsons">
             <EntityTypeMapping TypeName="DataModel.EntryJson">
               <MappingFragment StoreEntitySet="EntryJsons">
+                <ScalarProperty Name="ProcessedDate" ColumnName="ProcessedDate" />
+                <ScalarProperty Name="SubmittedDate" ColumnName="SubmittedDate" />
                 <ScalarProperty Name="JsonText" ColumnName="JsonText" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>

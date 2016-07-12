@@ -6,11 +6,12 @@
         Title="Add Event To Olympiad" Height="500" Width="500">
     <Grid>
         <StackPanel Orientation="Vertical">
+            <xctk:WatermarkTextBox Watermark="Search for..." Margin="10,10,10,0" Text="{Binding FilterText, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" ></xctk:WatermarkTextBox>
             <StackPanel Margin="10" Orientation="Horizontal">
                 <ListBox ItemsSource="{Binding Events}" Height="400" Width="462" ScrollViewer.VerticalScrollBarVisibility="Auto">
                     <ListBox.ItemTemplate>
                         <DataTemplate>
-                            <CheckBox Content="{Binding Text}" Tag="{Binding Code}" IsChecked="{Binding IsSelected, Mode=TwoWay}" IsEnabled="{Binding IsEnabled}" ToolTip="{Binding ToolTip}" ToolTipService.ShowOnDisabled="True" Margin="0,5,0,0"/>
+                            <CheckBox Content="{Binding Text}" Tag="{Binding Code}" IsChecked="{Binding IsSelected, Mode=TwoWay}" IsEnabled="{Binding IsEnabled}" ToolTip="{Binding ToolTip}" Visibility="{Binding Visibility, Mode=TwoWay}" ToolTipService.ShowOnDisabled="True" Margin="0,5,0,0"/>
                         </DataTemplate>
                     </ListBox.ItemTemplate>
                 </ListBox>

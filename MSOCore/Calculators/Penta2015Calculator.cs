@@ -8,6 +8,8 @@ namespace MSOCore.Calculators
 {
     public interface IPentaCalculable
     {
+        // TODO for v2, we need to make scores more sensible
+        string Score { get; set; }
         int Rank { get; set; }
         float PentaScore { get; set; }
         bool Absent { get; set; }
