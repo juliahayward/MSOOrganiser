@@ -89,11 +89,6 @@ namespace MSOCore.Reports
             return vm;
         }
 
-        /// <summary>
-        /// This solution relies on there only ever being two long events required - otherwise
-        /// complexity quickly rises up and kills you! The situation we code around is where either
-        /// the best or second-best long event is beaten by a short event in the same skill.
-        /// </summary>
         public List<PokerStandingsReportVm.EventScore>
             SelectBestScores(List<PokerStandingsReportVm.EventScore> allScores, int numAllowed)
         {

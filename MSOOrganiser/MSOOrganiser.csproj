@@ -160,6 +160,7 @@
       <DependentUpon>OlympiadPanel.xaml</DependentUpon>
     </Compile>
     <Compile Include="Reports\ContestantListCsvExporter.cs" />
+    <Compile Include="Reports\FlowDocumentPrinter.cs" />
     <Compile Include="Reports\PokerStandingsPrinter.cs" />
     <Compile Include="Reports\SingleEventResultsPrinter.cs" />
     <Compile Include="Reports\TrafficReportPrinter.cs" />

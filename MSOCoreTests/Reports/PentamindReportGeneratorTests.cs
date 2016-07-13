@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using MSOCore.Reports;
+using MSOCore.Calculators;
 
 namespace MSOCoreTests.Reports
 {
@@ -14,7 +15,7 @@ namespace MSOCoreTests.Reports
         [TestMethod]
         public void PRG_HandlesCaseOfDominatedLongEvent1_Correctly()
         {
-            var prg = new PentamindStandingsGenerator();
+            var prg = new PentamindMetaScoreCalculator();
 
             // Will overlook the best long session (AAAA) in order to pick up big AAA1
             // - because we can get long events BBBB and CCCC
@@ -36,7 +37,7 @@ namespace MSOCoreTests.Reports
                 { Score = 10, GameCode = "FF", IsLongSession = false, Code = "FFFF" }
             };
 
-            var score = prg.SelectBestScores(scores, 2, 5);
+            var score = prg.SelectBestScores(scores, 2, 5, 2015);
             Assert.AreEqual(5, score.Count());
             Assert.AreEqual(137, score.Sum(x => x.Score));
 
@@ -46,7 +47,7 @@ namespace MSOCoreTests.Reports
         [TestMethod]
         public void PRG_HandlesCaseOfDominatedLongEvent2_Correctly()
         {
-            var prg = new PentamindStandingsGenerator();
+            var prg = new PentamindMetaScoreCalculator();
 
             var scores = new List<PentamindStandingsGenerator.PentamindStandingsReportVm.EventScore>()
             {
@@ -67,7 +68,7 @@ namespace MSOCoreTests.Reports
 
             };
 
-            var score = prg.SelectBestScores(scores, 2, 5);
+            var score = prg.SelectBestScores(scores, 2, 5, 2015);
             Assert.AreEqual(5, score.Count());
             Assert.AreEqual(138, score.Sum(x => x.Score));
 
@@ -76,7 +77,7 @@ namespace MSOCoreTests.Reports
         [TestMethod]
         public void PRG_Prefers4WithLowerScoreOver4WithHigher()
         {
-            var prg = new PentamindStandingsGenerator();
+            var prg = new PentamindMetaScoreCalculator();
 
             // If you take either AA or BB for 100, you can't get five events with two big ones
             // so prefer the 
@@ -99,7 +100,7 @@ namespace MSOCoreTests.Reports
 
             };
 
-            var score = prg.SelectBestScores(scores, 2, 5);
+            var score = prg.SelectBestScores(scores, 2, 5, 2015);
             Assert.AreEqual(5, score.Count());
             Assert.AreEqual(47, score.Sum(x => x.Score));
 

@@ -3,7 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
         Icon="/MSOOrganiser;component/Resources/Logo.png"
-        Title="Add Event To Olympiad" Height="500" Width="500">
+        Title="Add Event To Olympiad" Height="522" Width="500">
     <Grid>
         <StackPanel Orientation="Vertical">
             <xctk:WatermarkTextBox Watermark="Search for..." Margin="10,10,10,0" Text="{Binding FilterText, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" ></xctk:WatermarkTextBox>

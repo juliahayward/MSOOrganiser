@@ -291,10 +291,28 @@ namespace MSOOrganiser
             printer.Print();
         }
 
+        private void juniorPentamindStandings_Click(object sender, RoutedEventArgs e)
+        {
+            var printer = new PentamindStandingsPrinter();
+            printer.PrintJunior();
+        }
+
+        private void seniorPentamindStandings_Click(object sender, RoutedEventArgs e)
+        {
+            var printer = new PentamindStandingsPrinter();
+            printer.PrintSenior();
+        }
+
         private void pokerStandings_Click(object sender, RoutedEventArgs e)
         {
             var printer = new PokerStandingsPrinter();
             printer.Print();
+        }
+
+        private void eurogamesStandings_Click(object sender, RoutedEventArgs e)
+        {
+            var printer = new PentamindStandingsPrinter();
+            printer.PrintEuro();
         }
 
         private void eventIncomeMenuItem_Click(object sender, RoutedEventArgs e)
@@ -333,6 +351,13 @@ namespace MSOOrganiser
 
         private void daysReportMenuItem_Click(object sender, RoutedEventArgs e)
         {
+            var docPrinter = new FlowDocumentPrinter();
+            docPrinter.PrintFlowDocuments(() => FlowDocumentsForDay());
+        }
+
+        private IEnumerable<FlowDocument> FlowDocumentsForDay()
+        {
+            yield return null;
             // This is a combination of existing reports
             //  1. Events per Session (for the right day; not normally independent)
             //  2. Todays Events (for the right day)
@@ -347,14 +372,16 @@ namespace MSOOrganiser
 
         private void trafficReport_Click(object sender, RoutedEventArgs e)
         {
+            var docPrinter = new FlowDocumentPrinter();
             var printer = new TrafficReportPrinter();
-            printer.Print();
+            docPrinter.PrintFlowDocument(() => printer.Print());
         }
 
         private void printEventsPerSessionMenuItem_Click(object sender, RoutedEventArgs e)
         {
+            var docPrinter = new FlowDocumentPrinter();
             var printer = new TrafficReportPrinter();
-            printer.PrintEventsPerSession();
+            docPrinter.PrintFlowDocument(() => printer.PrintEventsPerSession());
         }
 
         private void contestantList_Click(object sender, RoutedEventArgs e)
@@ -403,6 +430,7 @@ namespace MSOOrganiser
         {
             MessageBox.Show("Event results can be printed from the individual event panel");
         }
+
 
        
     }

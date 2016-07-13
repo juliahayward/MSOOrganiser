@@ -18,7 +18,33 @@ namespace MSOOrganiser.Reports
         {
             var rg = new PentamindStandingsGenerator();
             var results = rg.GetStandings(null);
+            Print(results, "Pentamind Standings");
+        }
 
+        public void PrintJunior()
+        {
+            var rg = new PentamindStandingsGenerator();
+            var results = rg.GetJuniorStandings(null);
+            Print(results, "Junior Pentamind Standings");
+        }
+
+        public void PrintSenior()
+        {
+            var rg = new PentamindStandingsGenerator();
+            var results = rg.GetSeniorStandings(null);
+            Print(results, "Senior Pentamind Standings");
+        }
+
+        public void PrintEuro()
+        {
+            var rg = new PentamindStandingsGenerator();
+            var results = rg.GetEuroStandings(null);
+            Print(results, "Eurogames WC Standings");
+        }
+
+
+        private void Print(PentamindStandingsGenerator.PentamindStandingsReportVm results, string title)
+        {
             PrintDialog dlg = new PrintDialog();
             if ((bool)dlg.ShowDialog().GetValueOrDefault())
             {
@@ -41,7 +67,7 @@ namespace MSOOrganiser.Reports
                 trow.Cells.Add(new TableCell(new Paragraph(new InlineUIContainer(image)) { Margin = new Thickness(10), FontSize = 10, FontWeight = FontWeights.Bold }));
                 var cell = new TableCell();
                 cell.Blocks.Add(new Paragraph(new Run(results.OlympiadTitle)) { Margin = new Thickness(10), FontSize = 24, FontWeight = FontWeights.Bold, TextAlignment = TextAlignment.Center });
-                cell.Blocks.Add(new Paragraph(new Run("Pentamind Standings")) { Margin = new Thickness(2), FontSize = 48, FontWeight = FontWeights.Bold, TextAlignment = TextAlignment.Center });
+                cell.Blocks.Add(new Paragraph(new Run(title)) { Margin = new Thickness(2), FontSize = 48, FontWeight = FontWeights.Bold, TextAlignment = TextAlignment.Center });
                 trow.Cells.Add(cell);
                 headerTable.RowGroups[0].Rows.Add(trow);
 
@@ -91,7 +117,7 @@ namespace MSOOrganiser.Reports
                 }
 
                 row = new TableRow();
-                row.Cells.Add(new TableCell(new Paragraph(new Run("Top 40 listed. Competitors need 5 events to qualify.")) { Margin = new Thickness(2), FontSize = 12, TextAlignment = TextAlignment.Center }) { ColumnSpan = 8 });
+                row.Cells.Add(new TableCell(new Paragraph(new Run("Top 40 as at " + DateTime.Now.ToString("dd/MM/yy HH:mm") + " listed. Competitors need 5 events to qualify.")) { Margin = new Thickness(2), FontSize = 12, TextAlignment = TextAlignment.Center }) { ColumnSpan = 8 });
                 bodyTable.RowGroups[0].Rows.Add(row);
 
                 doc.Blocks.Add(bodyTable);
