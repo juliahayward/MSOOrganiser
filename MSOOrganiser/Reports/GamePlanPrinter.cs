@@ -14,7 +14,7 @@ using System.Windows.Shapes;
 
 namespace MSOOrganiser.Reports
 {
-    public class GamePlanPrinter
+    public class GamePlanPrinter : FlowDocumentGeneratorBase
     {
         public void Print()
         {
@@ -25,10 +25,8 @@ namespace MSOOrganiser.Reports
             PrintDialog dlg = new PrintDialog();
             if ((bool)dlg.ShowDialog().GetValueOrDefault())
             {
-                FlowDocument doc = new FlowDocument();
+                FlowDocument doc = this.StandardOneColumnDocument();
 
-                doc.ColumnWidth = 770; // 96ths of an inch
-                doc.FontFamily = new FontFamily("Verdana");
                 var totalPages = results.Games.Count + 1;
 
                 // Top page
@@ -76,7 +74,7 @@ namespace MSOOrganiser.Reports
                     doc.Blocks.Add(HorizontalRule());
 
                     var detailsTable = new Table() { CellSpacing = 0 };
-                    detailsTable.Columns.Add(new TableColumn() { Width = new GridLength(770) });
+                    detailsTable.Columns.Add(new TableColumn() { Width = new GridLength(StandardOneColumnDocumentWidth) });
                     detailsTable.RowGroups.Add(new TableRowGroup());
 
                     trow = new TableRow();

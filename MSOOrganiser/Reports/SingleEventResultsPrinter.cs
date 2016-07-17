@@ -49,7 +49,7 @@ namespace MSOOrganiser.Reports
                 headerTable.RowGroups.Add(new TableRowGroup());
 
                 var trow = new TableRow();
-                trow.Cells.Add(new TableCell(new Paragraph(new Run(_eventCode)) { Margin = new Thickness(10), FontSize = 24, FontWeight = FontWeights.Bold, TextAlignment = TextAlignment.Center }));
+                trow.Cells.Add(new TableCell(new Paragraph(new Run(_eventCode)) { Margin = new Thickness(4), FontSize = 24, FontWeight = FontWeights.Bold, TextAlignment = TextAlignment.Center }));
                 trow.Cells.Add(new TableCell(new Paragraph(new Run(evt.Mind_Sport)) { Margin = new Thickness(2), FontSize = 16, FontWeight = FontWeights.Bold, TextAlignment = TextAlignment.Center }));
                 headerTable.RowGroups[0].Rows.Add(trow);
 

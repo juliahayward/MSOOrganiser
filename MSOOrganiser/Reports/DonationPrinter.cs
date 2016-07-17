@@ -13,7 +13,7 @@ using System.Windows.Media.Imaging;
 
 namespace MSOOrganiser.Reports
 {
-    public class DonationPrinter
+    public class DonationPrinter : FlowDocumentGeneratorBase
     {
         public void Print()
         {
@@ -26,10 +26,7 @@ namespace MSOOrganiser.Reports
             PrintDialog dlg = new PrintDialog();
             if ((bool)dlg.ShowDialog().GetValueOrDefault())
             {
-                FlowDocument doc = new FlowDocument();
-
-                doc.ColumnWidth = 770; // 96ths of an inch
-                doc.FontFamily = new FontFamily("Verdana");
+                FlowDocument doc = this.StandardOneColumnDocument();
 
                 /* ********** Header *********** */
 

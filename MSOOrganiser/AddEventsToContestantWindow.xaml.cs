@@ -37,6 +37,12 @@ namespace MSOOrganiser
 
         private void ok_Click(object sender, RoutedEventArgs e)
         {
+            var errors = ViewModel.Validate();
+            if (errors.Any())
+            {
+                MessageBox.Show(string.Join(Environment.NewLine, errors));
+                return;
+            }
             SelectedEvents = ViewModel.Events.ToList();
             this.DialogResult = true;
             this.Close();
@@ -80,7 +86,10 @@ namespace MSOOrganiser
             Events = new ObservableCollection<EventVm>();
             foreach (var evt in context.Events
                 .Where(x => x.Code != null && x.Mind_Sport != null && x.OlympiadId == olympiadId)
-                .Select(x => new EventVm() { Id = x.EIN, Code = x.Code, Name = x.Mind_Sport, FeeCode = x.Entry_Fee, IsIncludedInMaxFee = (x.incMaxFee.HasValue && x.incMaxFee.Value) })
+                .Select(x => new EventVm() { Id = x.EIN, Code = x.Code, Name = x.Mind_Sport, FeeCode = x.Entry_Fee, 
+                    IsIncludedInMaxFee = (x.incMaxFee.HasValue && x.incMaxFee.Value),
+                    Event = x
+                    })
                 .ToList()
                 .Distinct(new EventVmCodeOnlyComparer())
                 .OrderBy(x => x.Code))
@@ -89,6 +98,17 @@ namespace MSOOrganiser
                 evt.IsEnabled = !(nonEditableCodes.Contains(evt.Code));
                 evt.Fee = (evt.FeeCode == null) ? 0.0m : (fees[evt.FeeCode] ?? 0.0m);
                 Events.Add(evt);
+            }
+        }
+
+        public IEnumerable<string> Validate()
+        {
+            var events = Events.Where(x => x.IsSelected).OrderBy(x => x.Start).ToArray();
+            for (int i = 0; i < events.Count() - 1; i++)
+            {
+                if (events[i].End > events[i + 1].Start)
+                    yield return string.Format("Events {0} and {1} clash on {2}", events[i].Code, events[i + 1].Code,
+                        events[i].Start.ToString("ddd dd MMM"));
             }
         }
 
@@ -113,6 +133,21 @@ namespace MSOOrganiser
             public bool IsIncludedInMaxFee { get; set; }
             public bool IsSelected { get; set; }
             public bool IsEnabled { get; set; }
+            public Event Event { get; set; }
+            public DateTime Start
+            {
+                get
+                {
+                    return Event.Event_Sess.First().Date.Value + Event.Event_Sess.First().Session1.StartTime.Value;
+                }
+            }
+            public DateTime End
+            {
+                get
+                {
+                    return Event.Event_Sess.Last().Date.Value + Event.Event_Sess.Last().Session1.FinishTime.Value;
+                }
+            }
             private Visibility _Visibility = Visibility.Visible;
             public Visibility Visibility
             {

@@ -24,6 +24,14 @@ namespace MSOCore.Reports
             public string JnrGoldsStr { get { return (JnrGolds > 0) ? JnrGolds.ToString() : ""; } }
             public string JnrSilversStr { get { return (JnrSilvers > 0) ? JnrSilvers.ToString() : ""; } }
             public string JnrBronzesStr { get { return (JnrBronzes > 0) ? JnrBronzes.ToString() : ""; } }
+            public bool HasAMedal
+            {
+                get
+                {
+                    return Golds > 0 || Silvers > 0 || Bronzes > 0
+                        || JnrGolds > 0 || JnrSilvers > 0 || JnrBronzes > 0;
+                }
+            }
         }
 
         public IEnumerable<MedalTableVm> GetItemsForLatest()
@@ -70,9 +78,11 @@ namespace MSOCore.Reports
                     JnrBronzes = jb.ContainsKey(n) ? jb[n] : 0,
                 });
             }
-            return results.OrderByDescending(x => x.Golds)
+            return results.Where(r => r.HasAMedal)
+                .OrderByDescending(x => x.Golds)
                 .ThenByDescending(x => x.Silvers)
-                .ThenByDescending(x => x.Bronzes);
+                .ThenByDescending(x => x.Bronzes)
+                .ThenBy(x => x.Nationality);
         }
     }
 }

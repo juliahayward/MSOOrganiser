@@ -17,14 +17,11 @@ namespace MSOOrganiser.Reports
         /// "actualEvents" are games; the rest are things like T-shirts
         /// </summary>
         /// <param name="actualEvents"></param>
-        public void Print(bool actualEvents)
+        public FlowDocument Print(bool actualEvents)
         {
             var rg = new EventIncomeReportGenerator();
             var results = rg.GetItemsForLatest(actualEvents);
 
-            PrintDialog dlg = new PrintDialog();
-            if ((bool)dlg.ShowDialog().GetValueOrDefault())
-            {
                 FlowDocument doc = new FlowDocument();
                 
                 doc.ColumnWidth = 300; // 96ths of an inch
@@ -152,10 +149,7 @@ namespace MSOOrganiser.Reports
                 gtpara.Inlines.Add(gtfigure);
                 doc.Blocks.Add(gtpara);
 
-                DocumentPaginator paginator = ((IDocumentPaginatorSource)doc).DocumentPaginator;
-                dlg.PrintTicket.PageOrientation = System.Printing.PageOrientation.Landscape;
-                dlg.PrintDocument(paginator, "Event Income Summary");
-            }
+                return doc;
         }
     }
 }

@@ -12,7 +12,7 @@ using System.Windows.Media.Imaging;
 
 namespace MSOOrganiser.Reports
 {
-    class PentamindStandingsPrinter
+    class PentamindStandingsPrinter : FlowDocumentGeneratorBase
     {
         public void Print()
         {
@@ -48,10 +48,7 @@ namespace MSOOrganiser.Reports
             PrintDialog dlg = new PrintDialog();
             if ((bool)dlg.ShowDialog().GetValueOrDefault())
             {
-                FlowDocument doc = new FlowDocument();
-
-                doc.ColumnWidth = 770; // 96ths of an inch
-                doc.FontFamily = new FontFamily("Verdana");
+                FlowDocument doc = this.StandardOneColumnDocument();
 
                 /* ********** Header *********** */
 

@@ -239,8 +239,9 @@ namespace MSOOrganiser
 
         private void entrySummaryMenuItem_Click(object sender, RoutedEventArgs e)
         {
+            var documentPrinter = new FlowDocumentPrinter();
             var printer = new PrintEventEntriesSummaryReportPrinter();
-            printer.Print();
+            documentPrinter.PrintFlowDocument(() => printer.Print());
         }
 
         private void contactsMenuItem_Click(object sender, RoutedEventArgs e)
@@ -256,8 +257,9 @@ namespace MSOOrganiser
 
         private void medalTable_Click(object sender, RoutedEventArgs e)
         {
+            var docPrinter = new FlowDocumentPrinter();
             var printer = new MedalTablePrinter();
-            printer.Print();
+            docPrinter.PrintFlowDocument(() => printer.Print());
         }
 
         private void donationsMenuItem_Click(object sender, RoutedEventArgs e)
@@ -317,14 +319,16 @@ namespace MSOOrganiser
 
         private void eventIncomeMenuItem_Click(object sender, RoutedEventArgs e)
         {
+            var docPrinter = new FlowDocumentPrinter();
             var printer = new EventIncomeReportPrinter();
-            printer.Print(true);
+            docPrinter.PrintFlowDocument(() => printer.Print(true));
         }
 
         private void nonEventIncomeMenuItem_Click(object sender, RoutedEventArgs e)
         {
+            var docPrinter = new FlowDocumentPrinter();
             var printer = new EventIncomeReportPrinter();
-            printer.Print(false);
+            docPrinter.PrintFlowDocument(() => printer.Print(false));
         }
 
         private void gamePlanMenuItem_Click(object sender, RoutedEventArgs e)
@@ -344,30 +348,56 @@ namespace MSOOrganiser
             var dlg = new SelectDateDialog();
             if (dlg.ShowDialog().Value)
             {
-                var printer = new TodaysEventsPrinter();
-                printer.Print(dlg.SelectedDate);
+                var docPrinter = new FlowDocumentPrinter();
+                var printer = new TodaysEventsPrinter();    
+                docPrinter.PrintFlowDocument(() => printer.Print(dlg.SelectedDate));
             }
         }
 
         private void daysReportMenuItem_Click(object sender, RoutedEventArgs e)
         {
-            var docPrinter = new FlowDocumentPrinter();
-            docPrinter.PrintFlowDocuments(() => FlowDocumentsForDay());
+            var dlg = new SelectDateDialog();
+            if (dlg.ShowDialog().Value)
+            {
+                var docPrinter = new FlowDocumentPrinter();
+                docPrinter.PrintFlowDocuments(() => FlowDocumentsForDay(dlg.SelectedDate));
+            }
         }
 
-        private IEnumerable<FlowDocument> FlowDocumentsForDay()
+        private IEnumerable<FlowDocument> FlowDocumentsForDay(DateTime selectedDate)
         {
-            yield return null;
-            // This is a combination of existing reports
             //  1. Events per Session (for the right day; not normally independent)
+            var printer1 = new TrafficReportPrinter();
+            yield return printer1.PrintEventsPerSession(selectedDate);
+
             //  2. Todays Events (for the right day)
+            var printer2 = new TodaysEventsPrinter();
+            yield return printer2.Print(selectedDate);
+
+            // TODO TODO TODO 
+            // This is a combination of existing reports (1,2,3,5 are for today, rest are as at now
             //  3.
+
             //  4.  Event Results for today, concatenated
+            var printer4 = new TodaysEventsResultsPrinter();
+            yield return printer4.Print(selectedDate);
+
             //  5.  Traffic report (for the right day)
+            yield return printer1.Print(selectedDate);
+
             //  6.  Income summary
+            var printer6 = new EventIncomeReportPrinter();
+            yield return printer6.Print(true);
+
             //  7.  Entry Summary
+            var printer7 = new PrintEventEntriesSummaryReportPrinter();
+            yield return printer7.Print();
+            
             //  8.  Medal table
-            //  9.  Event Entries (for the right day)
+            var printer8 = new MedalTablePrinter();
+            yield return printer8.Print();
+
+            //  9.  Event Entries (for the right day TODO TODO doesn't work in Access??)
         }
 
         private void trafficReport_Click(object sender, RoutedEventArgs e)

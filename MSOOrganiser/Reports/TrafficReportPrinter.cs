@@ -15,11 +15,18 @@ namespace MSOOrganiser.Reports
 {
     public class TrafficReportPrinter
     {
-        public FlowDocument Print()
+        public FlowDocument Print(DateTime? selectedDate = null)
         {
             var rg = new TrafficReportGenerator();
             var results = rg.GetItemsForLatest();
 
+            DateTime startDate = results.StartDate;
+            DateTime endDate = results.EndDate;
+            if (selectedDate.HasValue)
+            {
+                startDate = selectedDate.Value;
+                endDate = selectedDate.Value;
+            }
 
             FlowDocument doc = new FlowDocument();
 
@@ -147,18 +154,25 @@ namespace MSOOrganiser.Reports
         }
     
       
-        public FlowDocument PrintEventsPerSession()
+        public FlowDocument PrintEventsPerSession(DateTime? selectedDate = null)
         {
             var rg = new TrafficReportGenerator();
             var results = rg.GetItemsForLatest();
 
+            DateTime startDate = results.StartDate;
+            DateTime endDate = results.EndDate;
+            if (selectedDate.HasValue)
+            {
+                startDate = selectedDate.Value;
+                endDate = selectedDate.Value;
+            }
 
             FlowDocument doc = new FlowDocument();
 
             doc.ColumnWidth = 300; // 96ths of an inch
             doc.FontFamily = new FontFamily("Verdana");
 
-            for (var date = results.StartDate; date <= results.EndDate; date = date.AddDays(1))
+            for (var date = startDate; date <= endDate; date = date.AddDays(1))
             {
                 Paragraph topPara = new Paragraph();
                 topPara.TextAlignment = TextAlignment.Left;
