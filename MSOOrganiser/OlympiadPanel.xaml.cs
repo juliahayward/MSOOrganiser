@@ -484,7 +484,7 @@ namespace MSOOrganiser
                 // better than not Including it.
                 var o = context.Olympiad_Infoes.Include("Events").Include("Events.Entrants")
                     .FirstOrDefault(x => x.Id == id);
-                EditingThePast = !o.Current.Value;
+                EditingThePast = !o.Current;
                 YearOf = o.YearOf.ToString();
                 Number = o.Number;
                 Title = o.Title;
@@ -647,7 +647,7 @@ namespace MSOOrganiser
             context.SaveChanges();
 
             // Make sure Current is set properly
-            var oldCurrents = context.Olympiad_Infoes.Where(x => x.Current.Value).ToList();
+            var oldCurrents = context.Olympiad_Infoes.Where(x => x.Current).ToList();
             oldCurrents.ForEach(ol => ol.Current = false);
             var newCurrent = context.Olympiad_Infoes.OrderByDescending(x => x.StartDate).First();
             newCurrent.Current = true;

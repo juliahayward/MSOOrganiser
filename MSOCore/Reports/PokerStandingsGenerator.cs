@@ -45,7 +45,7 @@ namespace MSOCore.Reports
         public PokerStandingsReportVm GetStandings()
         {
             var context = DataEntitiesProvider.Provide();
-            var currentOlympiad = context.Olympiad_Infoes.OrderByDescending(x => x.StartDate).Skip(1).First();
+            var currentOlympiad = context.Olympiad_Infoes.OrderByDescending(x => x.StartDate).First();
             // We had five events before the move to JW3, four after that.
             int numAllowed = (currentOlympiad.YearOf < 2013) ? 5 : 4;
 

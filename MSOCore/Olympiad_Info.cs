@@ -33,7 +33,7 @@ namespace MSOCore
         public Nullable<int> SnrAge { get; set; }
         public Nullable<int> PentaLong { get; set; }
         public Nullable<int> PentaTotal { get; set; }
-        public Nullable<bool> Current { get; set; }
+        public bool Current { get; set; }
         public byte[] SSMA_TimeStamp { get; set; }
         public int Id { get; set; }
     

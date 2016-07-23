@@ -296,6 +296,7 @@ CREATE TABLE EntryJsons
 	JsonText NVARCHAR(MAX) NOT NULL,
 	SubmittedDate DATETIME NULL,
 	ProcessedDate DATETIME NULL,
+	Notes NVARCHAR(MAX) NULL,
 	CONSTRAINT [PK_EntryJsons] PRIMARY KEY CLUSTERED 
 	(
 		[Id] ASC
@@ -349,6 +350,8 @@ ALTER TABLE [mso].[dbo].[Names] DROP CONSTRAINT SSMA_CC$Names$Title$disallow_zer
 /* Separate column for junior medal, as you cna win both */
 
 ALTER TABLE Entrants ADD JuniorMedal NVARCHAR(50) NULL
+
+ALTER TABLE [Olympiad Info] ALTER COLUMN [Current] BIT NOT NULL
 
 
 

@@ -22,6 +22,8 @@ using MSOOrganiser.UIUtilities;
 using System.Diagnostics;
 using AutoUpdaterForWPF;
 using MSOOrganiser.Data;
+using Newtonsoft.Json;
+using MSOCore.Calculators;
 
 namespace MSOOrganiser
 {
@@ -461,7 +463,72 @@ namespace MSOOrganiser
             MessageBox.Show("Event results can be printed from the individual event panel");
         }
 
+        private void prepayments_Click(object sender, RoutedEventArgs e)
+        {
+            var processor = new PaymentProcessor();
+            processor.ProcessAll();
+        }
 
-       
+        private void unspentFee_Click(object sender, RoutedEventArgs e)
+        {
+            var context = DataEntitiesProvider.Provide();
+            var olympiadId = context.Olympiad_Infoes.First(x => x.Current).Id;
+
+            var payments = context.Payments.Where(p => p.OlympiadId == olympiadId)
+                .GroupBy(x => x.MindSportsID)
+                .ToDictionary(x => x.Key, x => x.Sum(p => p.Payment1));
+            var fees = context.Entrants.Where(p => p.OlympiadId == olympiadId)
+                .GroupBy(x => x.Mind_Sport_ID)
+                .ToDictionary(x => x.Key, x => x.Sum(p => p.Fee));
+            var contestants = payments.Where(x => !fees.Keys.Contains(x.Key) || x.Value > fees[x.Key])
+                .Select(x => x.Key);
+
+            // Warning - can't do comparison inside SQL as Sum() can be NULL
+            var names = context.Contestants.Where(x => contestants.Contains(x.Mind_Sport_ID))
+                .ToList()
+                .Select(x => x.FullName());
+
+
+            if (names.Any())
+            {
+                MessageBox.Show("The following contestants have unspent fees:"
+                    + Environment.NewLine + string.Join(Environment.NewLine, names)); 
+            }
+            else
+            {
+                MessageBox.Show("There are no contestants with unspent fees");
+            }
+        }
+
+        private void unpaidFee_Click(object sender, RoutedEventArgs e)
+        {
+            var context = DataEntitiesProvider.Provide();
+            var olympiadId = context.Olympiad_Infoes.First(x => x.Current).Id;
+
+            var payments = context.Payments.Where(p => p.OlympiadId == olympiadId)
+                .GroupBy(x => x.MindSportsID)
+                .ToDictionary(x => x.Key, x => x.Sum(p => p.Payment1));
+            var fees = context.Entrants.Where(p => p.OlympiadId == olympiadId)
+                .GroupBy(x => x.Mind_Sport_ID)
+                .ToDictionary(x => x.Key, x => x.Sum(p => p.Fee));
+            var contestants = fees.Where(x => !payments.Keys.Contains(x.Key) || x.Value > payments[x.Key])
+                .Select(x => x.Key);
+
+            // Warning - can't do comparison inside SQL as Sum() can be NULL
+            var names = context.Contestants.Where(x => contestants.Contains(x.Mind_Sport_ID))
+                .ToList()
+                .Select(x => x.FullName());
+
+            if (names.Any())
+            {
+                MessageBox.Show("The following contestants have unpaid fees:"
+                    + Environment.NewLine + string.Join(Environment.NewLine, names));
+            }
+            else
+            {
+                MessageBox.Show("There are no contestants with unpaid fees");
+            }
+        }
     }
 }
+

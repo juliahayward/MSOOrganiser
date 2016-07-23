@@ -91,33 +91,29 @@
             <End Role="Session" EntitySet="Session" />
             <End Role="Event Sess" EntitySet="Event Sess" />
           </AssociationSet>
-          <AssociationSet Name="FK__Entrants__EventI__4B7734FF" Association="DataModel.Store.FK__Entrants__EventI__4B7734FF">
+          <AssociationSet Name="FK__Entrants__EventI__1975C517" Association="DataModel.Store.FK__Entrants__EventI__1975C517">
             <End Role="Events" EntitySet="Events" />
             <End Role="Entrants" EntitySet="Entrants" />
           </AssociationSet>
-          <AssociationSet Name="FK__Event Ses__Sessi__4C6B5938" Association="DataModel.Store.FK__Event Ses__Sessi__4C6B5938">
+          <AssociationSet Name="FK__Event Ses__Sessi__1A69E950" Association="DataModel.Store.FK__Event Ses__Sessi__1A69E950">
             <End Role="Session" EntitySet="Session" />
             <End Role="Event Sess" EntitySet="Event Sess" />
           </AssociationSet>
-          <AssociationSet Name="FK__Events__GameId__4A8310C6" Association="DataModel.Store.FK__Events__GameId__4A8310C6">
+          <AssociationSet Name="FK__Events__GameId__1699586C" Association="DataModel.Store.FK__Events__GameId__1699586C">
             <End Role="Games" EntitySet="Games" />
             <End Role="Events" EntitySet="Events" />
           </AssociationSet>
-          <AssociationSet Name="FK__Events__Olympiad__4D5F7D71" Association="DataModel.Store.FK__Events__Olympiad__4D5F7D71">
+          <AssociationSet Name="FK__Events__Olympiad__2022C2A6" Association="DataModel.Store.FK__Events__Olympiad__2022C2A6">
             <End Role="Olympiad Info" EntitySet="Olympiad Info" />
             <End Role="Events" EntitySet="Events" />
           </AssociationSet>
-          <AssociationSet Name="FK__Games__CategoryI__503BEA1C" Association="DataModel.Store.FK__Games__CategoryI__503BEA1C">
+          <AssociationSet Name="FK__Games__CategoryI__473C8FC7" Association="DataModel.Store.FK__Games__CategoryI__473C8FC7">
             <End Role="GameCategories" EntitySet="GameCategories" />
             <End Role="Games" EntitySet="Games" />
           </AssociationSet>
-          <AssociationSet Name="FK__Location__Olympi__46B27FE2" Association="DataModel.Store.FK__Location__Olympi__46B27FE2">
+          <AssociationSet Name="FK__Location__Olympi__12C8C788" Association="DataModel.Store.FK__Location__Olympi__12C8C788">
             <End Role="Olympiad Info" EntitySet="Olympiad Info" />
             <End Role="Location" EntitySet="Location" />
-          </AssociationSet>
-          <AssociationSet Name="FK_UserLogins_Users" Association="DataModel.Store.FK_UserLogins_Users">
-            <End Role="Users" EntitySet="Users" />
-            <End Role="UserLogins" EntitySet="UserLogins" />
           </AssociationSet>
           <AssociationSet Name="Payments$NamesPayments" Association="DataModel.Store.Payments$NamesPayments">
             <End Role="Names" EntitySet="Names" />
@@ -178,6 +174,7 @@
           <Property Name="JsonText" Type="nvarchar(max)" Nullable="false" />
           <Property Name="SubmittedDate" Type="datetime" />
           <Property Name="ProcessedDate" Type="datetime" />
+          <Property Name="Notes" Type="nvarchar(max)" />
         </EntityType>
         <EntityType Name="Event Resources">
           <Key>
@@ -375,7 +372,7 @@
           <Property Name="SnrAge" Type="int" />
           <Property Name="PentaLong" Type="int" />
           <Property Name="PentaTotal" Type="int" />
-          <Property Name="Current" Type="bit" />
+          <Property Name="Current" Type="bit" Nullable="false" />
           <Property Name="SSMA_TimeStamp" Type="timestamp" Nullable="false" StoreGeneratedPattern="Computed" />
           <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
         </EntityType>
@@ -546,7 +543,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Entrants__EventI__4B7734FF">
+        <Association Name="FK__Entrants__EventI__1975C517">
           <End Role="Events" Type="DataModel.Store.Events" Multiplicity="0..1" />
           <End Role="Entrants" Type="DataModel.Store.Entrants" Multiplicity="*" />
           <ReferentialConstraint>
@@ -558,7 +555,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Event Ses__Sessi__4C6B5938">
+        <Association Name="FK__Event Ses__Sessi__1A69E950">
           <End Role="Session" Type="DataModel.Store.Session" Multiplicity="0..1" />
           <End Role="Event Sess" Type="DataModel.Store.Event Sess" Multiplicity="*" />
           <ReferentialConstraint>
@@ -570,7 +567,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Events__GameId__4A8310C6">
+        <Association Name="FK__Events__GameId__1699586C">
           <End Role="Games" Type="DataModel.Store.Games" Multiplicity="0..1" />
           <End Role="Events" Type="DataModel.Store.Events" Multiplicity="*" />
           <ReferentialConstraint>
@@ -582,7 +579,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Events__Olympiad__4D5F7D71">
+        <Association Name="FK__Events__Olympiad__2022C2A6">
           <End Role="Olympiad Info" Type="DataModel.Store.Olympiad Info" Multiplicity="1" />
           <End Role="Events" Type="DataModel.Store.Events" Multiplicity="*" />
           <ReferentialConstraint>
@@ -594,7 +591,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Games__CategoryI__503BEA1C">
+        <Association Name="FK__Games__CategoryI__473C8FC7">
           <End Role="GameCategories" Type="DataModel.Store.GameCategories" Multiplicity="0..1" />
           <End Role="Games" Type="DataModel.Store.Games" Multiplicity="*" />
           <ReferentialConstraint>
@@ -606,7 +603,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Location__Olympi__46B27FE2">
+        <Association Name="FK__Location__Olympi__12C8C788">
           <End Role="Olympiad Info" Type="DataModel.Store.Olympiad Info" Multiplicity="0..1" />
           <End Role="Location" Type="DataModel.Store.Location" Multiplicity="*" />
           <ReferentialConstraint>
@@ -615,18 +612,6 @@
             </Principal>
             <Dependent Role="Location">
               <PropertyRef Name="OlympiadId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_UserLogins_Users">
-          <End Role="Users" Type="DataModel.Store.Users" Multiplicity="1" />
-          <End Role="UserLogins" Type="DataModel.Store.UserLogins" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Users">
-              <PropertyRef Name="PIN" />
-            </Principal>
-            <Dependent Role="UserLogins">
-              <PropertyRef Name="UserId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -927,7 +912,7 @@
           <Property Type="Int32" Name="SnrAge" />
           <Property Type="Int32" Name="PentaLong" />
           <Property Type="Int32" Name="PentaTotal" />
-          <Property Type="Boolean" Name="Current" />
+          <Property Type="Boolean" Name="Current" Nullable="false" />
           <Property Type="Binary" Name="SSMA_TimeStamp" Nullable="false" MaxLength="8" FixedLength="true" annotation:StoreGeneratedPattern="Computed" />
           <Property Type="Int32" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <NavigationProperty Name="Events" Relationship="DataModel.FK__Events__Olympiad__45BE5BA9" FromRole="Olympiad_Info" ToRole="Event" />
@@ -1230,6 +1215,7 @@
           <Property Type="String" Name="JsonText" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Type="DateTime" Name="SubmittedDate" Precision="3" />
           <Property Type="DateTime" Name="ProcessedDate" Precision="3" />
+          <Property Type="String" Name="Notes" MaxLength="Max" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="Nationality">
           <Key>
@@ -1595,6 +1581,7 @@
           <EntitySetMapping Name="EntryJsons">
             <EntityTypeMapping TypeName="DataModel.EntryJson">
               <MappingFragment StoreEntitySet="EntryJsons">
+                <ScalarProperty Name="Notes" ColumnName="Notes" />
                 <ScalarProperty Name="ProcessedDate" ColumnName="ProcessedDate" />
                 <ScalarProperty Name="SubmittedDate" ColumnName="SubmittedDate" />
                 <ScalarProperty Name="JsonText" ColumnName="JsonText" />

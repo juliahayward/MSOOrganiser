@@ -903,7 +903,7 @@ namespace MSOOrganiser
             
             var olympiadId = CurrentOlympiadId;
             var currentOlympiad = context.Olympiad_Infoes.First(x => x.Id == CurrentOlympiadId);
-            EditingThePast = !currentOlympiad.Current.Value;
+            EditingThePast = !currentOlympiad.Current;
             var evt = context.Events.FirstOrDefault(x => x.OlympiadId == olympiadId && x.Code == EventCode);
             if (evt == null)
             {

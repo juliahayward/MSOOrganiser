@@ -22,6 +22,10 @@
                     <MenuItem Header="Display results" Click="displayResultsMenuItem_Click"/>
                     <MenuItem Header="Edit Results" Click="resultsMenuItem_Click" />
                 </MenuItem>
+                <MenuItem Header="Quick Checks">
+                    <MenuItem Header="People with unspent fees" Click="unspentFee_Click"/>
+                    <MenuItem Header="People with unpaid fees" Click="unpaidFee_Click"/>
+                </MenuItem>
                 <MenuItem Header="Reports">
                     <MenuItem Header="Bulk Receipts" IsEnabled="False"/>
                     <MenuItem Header="View Max Fee / Penta Cards" IsEnabled="False" Click="maxFeePentaCards_Click"/>
@@ -59,6 +63,7 @@
                 </MenuItem>
                 <MenuItem Header="Misc">
                     <MenuItem Header="Print Misc Badges" IsEnabled="False"/>
+                    <MenuItem Header="Load pre-payments" Click="prepayments_Click" />
                 </MenuItem>
                 <MenuItem Header="Help">
                     <MenuItem Header="Show Help" Click="help_Click" />
