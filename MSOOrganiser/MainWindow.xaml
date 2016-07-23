@@ -34,7 +34,7 @@
                     <MenuItem Header="View Game Plan" Click="gamePlanMenuItem_Click"/>
                     <MenuItem Header="Sign In Sheets" IsEnabled="False"/>
                     <MenuItem Header="Parking Lists" Click="parkingListsMenuItem_Click" />
-                    <MenuItem Header="View Traffic Report" Click="trafficReport_Click"/>
+                    <MenuItem Header="People per room (Traffic Report)" Click="trafficReport_Click"/>
                     <MenuItem Header="View Location Use" Click="locationUse_Click"/>
                     <MenuItem Header="Banking" IsEnabled="False"/>
                     <MenuItem Header="Print Donations" Click="donationsMenuItem_Click"/>

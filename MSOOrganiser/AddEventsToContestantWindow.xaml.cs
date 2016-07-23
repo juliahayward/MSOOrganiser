@@ -41,7 +41,7 @@ namespace MSOOrganiser
             if (errors.Any())
             {
                 MessageBox.Show(string.Join(Environment.NewLine, errors));
-                return;
+               // return;
             }
             SelectedEvents = ViewModel.Events.ToList();
             this.DialogResult = true;

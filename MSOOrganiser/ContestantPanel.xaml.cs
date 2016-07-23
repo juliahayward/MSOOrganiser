@@ -180,6 +180,7 @@ namespace MSOOrganiser
                     }
                 }
                 ViewModel.ApportionCosts();
+                ViewModel.IsDirty = true;
             }
         }
 
@@ -1118,6 +1119,13 @@ private string _Notes;
                 {
                  dbCon.Entrants.Remove(de);
                 }
+                // Update changed events from this olympiad
+                foreach (var de in dbCon.Entrants.Where(x => x.OlympiadId == CurrentOlympiadId && this.Events.Any(ee => ee.EventCode == x.Game_Code)).ToList())
+                {
+                    // Fee may change because we've reached maximum fee and are apportioning
+                    de.Fee = this.Events.First(ee => ee.EventCode == de.Game_Code).Fee;
+                }
+                // Add new payments that aren't already in this olympiad for this person
                 foreach (var p in this.Payments.Where(x => !dbCon.Payments.Any(pp => pp.PaymentNumber == x.PaymentId)))
                 {
                     dbCon.Payments.Add(new Payment() { Payment1 = p.Amount, Payment_Method = p.Method, PaymentNumber = 0, Banked = p.Banked ? 1 : 0, MindSportsID = dbCon.Mind_Sport_ID, OlympiadId = CurrentOlympiadId, Name = dbCon });
