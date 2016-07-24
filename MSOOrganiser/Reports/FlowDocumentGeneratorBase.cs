@@ -6,6 +6,7 @@ namespace MSOOrganiser.Reports
     public class FlowDocumentGeneratorBase
     {
         public const int StandardOneColumnDocumentWidth = 770;
+        public const int StandardTwoColumnDocumentWidth = 378;
 
         public FlowDocument StandardOneColumnDocument()
         {

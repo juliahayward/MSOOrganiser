@@ -416,6 +416,17 @@ namespace MSOOrganiser
             docPrinter.PrintFlowDocument(() => printer.PrintEventsPerSession());
         }
 
+        private void eventLabelsMenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            MessageBox.Show("Please ensure that sticky labels are in the printer");
+
+            var docPrinter = new FlowDocumentPrinter();
+            var printer = new EventLabelsPrinter();
+            docPrinter.PrintFlowDocument(() => printer.Print());
+
+            MessageBox.Show("Please take the labels out of the printer now");
+        }
+
         private void contestantList_Click(object sender, RoutedEventArgs e)
         {
             var exporter = new ContestantListCsvExporter();
@@ -529,6 +540,8 @@ namespace MSOOrganiser
                 MessageBox.Show("There are no contestants with unpaid fees");
             }
         }
+
+ 
     }
 }
 

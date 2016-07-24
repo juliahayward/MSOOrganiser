@@ -60,7 +60,7 @@ namespace MSOOrganiser.Reports
                     trow.Cells.Add(cell);
                     cell = new BorderedTableCell();
                     cell.Blocks.Add(new Paragraph(new Run(evt.Code)) { Margin = new Thickness(10), FontSize = 12, FontWeight = FontWeights.Bold, TextAlignment = TextAlignment.Center });
-                    cell.Blocks.Add(new Paragraph(new Run(evt.SequenceNumber)) { Margin = new Thickness(2), FontSize = 64, FontWeight = FontWeights.Bold, TextAlignment = TextAlignment.Center });
+                    cell.Blocks.Add(new Paragraph(new Run(evt.SequenceNumber.ToString())) { Margin = new Thickness(2), FontSize = 64, FontWeight = FontWeights.Bold, TextAlignment = TextAlignment.Center });
                     trow.Cells.Add(cell);
 
                     headerTable.RowGroups[0].Rows.Add(trow);

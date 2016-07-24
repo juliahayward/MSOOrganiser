@@ -21,7 +21,7 @@ namespace MSOCore.Reports
             {
                 public string Title { get; set; }
                 public string Code { get; set; }
-                public string SequenceNumber { get; set; }
+                public int SequenceNumber { get; set; }
                 public string Location { get; set; }
                 public string PrizeGiving { get; set; }
                 public string Prize1 { get; set; }
@@ -83,6 +83,17 @@ namespace MSOCore.Reports
             return items;
         }
 
+        public MedalFormsVm GetItemsForLatest()
+        {
+            var context = DataEntitiesProvider.Provide();
+            var currentOlympiad = context.Olympiad_Infoes.OrderByDescending(x => x.StartDate).First();
+            var events = currentOlympiad.Events.Where(x => x.Event_Sess.Any());
+
+            var items = GetItemsForLatest(context, currentOlympiad, events);
+            items.OlympiadTitle = currentOlympiad.FullTitle();
+            return items;
+        }
+
         private MedalFormsVm GetItemsForLatest(DataEntities context, Olympiad_Info currentOlympiad, IEnumerable<Event> events)
         {
             var vm = new MedalFormsVm()
@@ -91,7 +102,7 @@ namespace MSOCore.Reports
                     {
                         Title = x.Mind_Sport,
                         Code = x.Code,
-                        SequenceNumber = x.Number.ToString(),
+                        SequenceNumber = x.Number,
                         StartDate = x.Event_Sess.Min(s => s.Date.Value),
                         EndDate = x.Event_Sess.Max(s => s.Date.Value),
                         StartTime = x.Event_Sess.Min(s => s.Session1.StartTime),
