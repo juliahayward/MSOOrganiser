@@ -427,6 +427,18 @@ namespace MSOOrganiser
             MessageBox.Show("Please take the labels out of the printer now");
         }
 
+        private void arbitersBadgesMenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            MessageBox.Show("Please ensure that YELLOW paper is in the printer");
+
+            var docPrinter = new FlowDocumentPrinter();
+            var printer = new ArbitersBadgesPrinter();
+            docPrinter.PrintFlowDocument(() => printer.Print());
+
+            MessageBox.Show("Please take the yellow paper out of the printer now");
+        }
+
+
         private void contestantList_Click(object sender, RoutedEventArgs e)
         {
             var exporter = new ContestantListCsvExporter();

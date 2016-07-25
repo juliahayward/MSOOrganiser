@@ -49,6 +49,7 @@
                     <MenuItem Header="Print Today's Event By Game" IsEnabled="False"/>
                     <MenuItem Header="View Medal Forms" Click="medalFormsMenuItem_Click" />
                     <MenuItem Header="Event Labels" Click="eventLabelsMenuItem_Click" />
+                    <MenuItem Header="Badges: Arbiters" Click="arbitersBadgesMenuItem_Click" />
                     <MenuItem Header="Print Named Pairing Card for an Event" IsEnabled="False"/>
                     <MenuItem Header="View Pentamind Qualifiers" IsEnabled="False"/>
                     <MenuItem Header="Print Medal Table" Click="medalTable_Click"/>

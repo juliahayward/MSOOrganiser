@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Printing;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -13,7 +14,8 @@ namespace MSOOrganiser.Reports
 {
     public class FlowDocumentPrinter
     {
-        public void PrintFlowDocument(Func<FlowDocument> documentProvider)
+        public void PrintFlowDocument(Func<FlowDocument> documentProvider,
+            PageOrientation pageOrientation = PageOrientation.Portrait)
         {
             PrintDialog dlg = new PrintDialog();
             if ((bool)dlg.ShowDialog().GetValueOrDefault())
@@ -25,13 +27,14 @@ namespace MSOOrganiser.Reports
                     DocumentPaginator paginator = ((IDocumentPaginatorSource)doc).DocumentPaginator;
                     FooteredDocumentPaginator wrapper = new FooteredDocumentPaginator(paginator,
                         paginator.PageSize, new Size(0.0, 0.0));
-                    dlg.PrintTicket.PageOrientation = System.Printing.PageOrientation.Landscape;
+                    dlg.PrintTicket.PageOrientation = pageOrientation;
                     dlg.PrintDocument(wrapper, "MSO Report");
                 }
             }
         }
 
-        public void PrintFlowDocuments(Func<IEnumerable<FlowDocument>> documentProvider)
+        public void PrintFlowDocuments(Func<IEnumerable<FlowDocument>> documentProvider,
+            PageOrientation pageOrientation = PageOrientation.Portrait)
         {
             PrintDialog dlg = new PrintDialog();
             if ((bool)dlg.ShowDialog().GetValueOrDefault())
@@ -43,7 +46,7 @@ namespace MSOOrganiser.Reports
                         DocumentPaginator paginator = ((IDocumentPaginatorSource)doc).DocumentPaginator;
                         FooteredDocumentPaginator wrapper = new FooteredDocumentPaginator(paginator,
                             paginator.PageSize, new Size(0.0, 0.0));
-                        dlg.PrintTicket.PageOrientation = System.Printing.PageOrientation.Landscape;
+                        dlg.PrintTicket.PageOrientation = pageOrientation;
                         dlg.PrintDocument(wrapper, "MSO Report");
                     }
                 }
