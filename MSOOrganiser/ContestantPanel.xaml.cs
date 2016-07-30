@@ -850,15 +850,18 @@ private string _Notes;
 
         public void PopulateDropdown()
         {
-            Contestants.Clear();
             var context = DataEntitiesProvider.Provide();
-    
-            if (FilterFirstName == "" && FilterLastName == "")
+            var searched = context.Contestants.Where(SearchPredicate).ToList();
+            if ((FilterFirstName != "" || FilterLastName != "") && !searched.Any())
+            {
+                MessageBox.Show("No matches found");
+            }
+
+            Contestants.Clear();
+            if ((FilterFirstName == "" && FilterLastName == "") || !searched.Any())
                 Contestants.Add(new ContestantVm { Text = "New Competitor", Value = "0" });
             
-            foreach (var c in context.Contestants
-                .Where(SearchPredicate)
-                .OrderBy(x => x.Lastname).ThenBy(x => x.Firstname))
+            foreach (var c in searched.OrderBy(x => x.Lastname).ThenBy(x => x.Firstname))
                 Contestants.Add(new ContestantVm { Text = c.Firstname + " " + c.Lastname, Value = c.Mind_Sport_ID.ToString() });
 
             ContestantId = Contestants.First().Value;

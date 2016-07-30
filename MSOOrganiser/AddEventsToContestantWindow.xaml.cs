@@ -103,7 +103,7 @@ namespace MSOOrganiser
 
         public IEnumerable<string> Validate()
         {
-            var events = Events.Where(x => x.IsSelected).OrderBy(x => x.Start).ToArray();
+            var events = Events.Where(x => x.IsSelected && x.HasStart).OrderBy(x => x.Start).ToArray();
             for (int i = 0; i < events.Count() - 1; i++)
             {
                 if (events[i].End > events[i + 1].Start)
@@ -134,6 +134,15 @@ namespace MSOOrganiser
             public bool IsSelected { get; set; }
             public bool IsEnabled { get; set; }
             public Event Event { get; set; }
+            public bool HasStart
+            {
+                get
+                {
+                    return Event.Event_Sess.Any()
+                        && Event.Event_Sess.First().Date.HasValue 
+                        && Event.Event_Sess.First().Session1.StartTime.HasValue;
+                }
+            }
             public DateTime Start
             {
                 get
