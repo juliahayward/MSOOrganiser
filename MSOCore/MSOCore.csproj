@@ -154,6 +154,7 @@
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Reports\ContestantMedalsGenerator.cs" />
+    <Compile Include="Reports\ArbiterScheduleReportGenerator.cs" />
     <Compile Include="Reports\EventEntrantsGenerator.cs" />
     <Compile Include="Reports\PentamindStandings4CatsGenerator.cs" />
     <Compile Include="Reports\PokerStandingsGenerator.cs" />

@@ -159,6 +159,7 @@
     <Compile Include="OlympiadPanel.xaml.cs">
       <DependentUpon>OlympiadPanel.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Reports\ArbiterSchedulePrinter.cs" />
     <Compile Include="Reports\ContestantListCsvExporter.cs" />
     <Compile Include="Reports\ArbitersBadgesPrinter.cs" />
     <Compile Include="Reports\EventLabelsPrinter.cs" />

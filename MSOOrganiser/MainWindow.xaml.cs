@@ -345,6 +345,13 @@ namespace MSOOrganiser
             printer.Print();
         }
 
+        private void arbiterSchedule_Click(object sender, RoutedEventArgs e)
+        {
+            var printer = new ArbiterSchedulePrinter();
+            printer.Print();
+        }
+
+
         private void printTodaysEventsMenuItem_Click(object sender, RoutedEventArgs e)
         {
             var dlg = new SelectDateDialog();
@@ -553,6 +560,7 @@ namespace MSOOrganiser
             }
         }
 
+   
  
     }
 }
