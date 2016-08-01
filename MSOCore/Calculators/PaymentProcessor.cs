@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -85,8 +86,7 @@ namespace MSOCore.Calculators
             var feeExpected = 0m;
             foreach (var parsedEntrant in parsedOrder.Entrants)
             {
-                var contestants = context.Contestants.Where(x => x.Firstname == parsedEntrant.FirstName
-                    && x.Lastname == parsedEntrant.LastName);
+                var contestants = context.Contestants.Where(ContestantSelector(parsedEntrant));
                 // Don't handle the case of people you can't verify yet
                 if (contestants.Count() != 1)
                     return;
@@ -107,8 +107,7 @@ namespace MSOCore.Calculators
             order.Notes = "Assigned to contestant(s) ";
             foreach (var parsedEntrant in parsedOrder.Entrants)
             {
-                var contestants = context.Contestants.Where(x => x.Firstname == parsedEntrant.FirstName
-                    && x.Lastname == parsedEntrant.LastName);
+                var contestants = context.Contestants.Where(ContestantSelector(parsedEntrant));
 
                 var thisPersonsFee = 0.0m;
                 if (parsedEntrant.DoB != null && DateTime.Parse(parsedEntrant.DoB) > olympiad.FirstDateOfBirthForJunior())
@@ -150,8 +149,7 @@ namespace MSOCore.Calculators
             var feeExpected = 0m;
             foreach (var parsedEntrant in parsedOrder.Entrants)
             {
-                var contestants = context.Contestants.Where(x => x.Firstname == parsedEntrant.FirstName
-                    && x.Lastname == parsedEntrant.LastName);
+                var contestants = context.Contestants.Where(ContestantSelector(parsedEntrant));
                 // Don't handle the case of people you can't verify yet
                 if (contestants.Count() > 1)
                     return;
@@ -175,8 +173,7 @@ namespace MSOCore.Calculators
             CreateEntrants(context, EntrantsToCreate);
             foreach (var parsedEntrant in parsedOrder.Entrants)
             {
-                var contestants = context.Contestants.Where(x => x.Firstname == parsedEntrant.FirstName
-                    && x.Lastname == parsedEntrant.LastName);
+                var contestants = context.Contestants.Where(ContestantSelector(parsedEntrant));
 
                 var thisPersonsFee = 0.0m;
                 if (parsedEntrant.DoB != null && DateTime.Parse(parsedEntrant.DoB) > olympiad.FirstDateOfBirthForJunior())
@@ -207,6 +204,24 @@ namespace MSOCore.Calculators
             }
 
             context.SaveChanges();
+        }
+
+        private Expression<Func<Contestant, bool>> ContestantSelector(ParsedOrder.Entrant parsedEntrant)
+        {
+            if (parsedEntrant.DoB == null)
+            {
+                return c =>
+                        c.Firstname == parsedEntrant.FirstName
+                        && c.Lastname == parsedEntrant.LastName;
+            }
+            else
+            {
+                var dob = DateTime.Parse(parsedEntrant.DoB);
+                return c =>
+                    c.Firstname == parsedEntrant.FirstName
+                    && c.Lastname == parsedEntrant.LastName
+                    && (!c.DateofBirth.HasValue || c.DateofBirth == dob); 
+            }
         }
 
         private void CreateEntrants(DataEntities context, List<ParsedOrder.Entrant> entrants)
