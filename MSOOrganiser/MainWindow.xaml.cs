@@ -495,8 +495,11 @@ namespace MSOOrganiser
 
         private void prepayments_Click(object sender, RoutedEventArgs e)
         {
-            var processor = new PaymentProcessor();
-            processor.ProcessAll();
+            using (new SpinnyCursor())
+            {
+                var processor = new PaymentProcessor();
+                processor.ProcessAll();
+            }
         }
 
         private void unspentFee_Click(object sender, RoutedEventArgs e)

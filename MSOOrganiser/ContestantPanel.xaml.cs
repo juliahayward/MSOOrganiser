@@ -9,23 +9,13 @@ using MSOOrganiser.UIUtilities;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Configuration;
-using System.Data;
 using System.Data.Entity.Validation;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace MSOOrganiser
 {
@@ -198,6 +188,14 @@ namespace MSOOrganiser
                 ViewModel.IsDirty = true;
             }
         }
+
+        private void addNew_Click(object sender, RoutedEventArgs e)
+        {
+            ViewModel.Contestants.Clear();
+            ViewModel.Contestants.Insert(0, new ContestantPanelVm.ContestantVm { Text = "New Contestant", Value = "0" });
+            ViewModel.ContestantId = "0";
+            ViewModel.PopulateContestant();
+        }
     }
 
     public class ContestantPanelVm : VmBase
@@ -356,9 +354,12 @@ namespace MSOOrganiser
                 {
                     _IsDirty = value;
                     OnPropertyChanged("IsDirty");
+                    OnPropertyChanged("IsNotDirty");
                 }
             }
         }
+
+        public bool IsNotDirty { get { return !IsDirty; } }
 
         private string _Title;
         public string Title 
