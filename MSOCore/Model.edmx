@@ -175,6 +175,7 @@
           <Property Name="SubmittedDate" Type="datetime" />
           <Property Name="ProcessedDate" Type="datetime" />
           <Property Name="Notes" Type="nvarchar(max)" />
+          <Property Name="ManualDoB" Type="datetime" />
         </EntityType>
         <EntityType Name="Event Resources">
           <Key>
@@ -1216,6 +1217,7 @@
           <Property Type="DateTime" Name="SubmittedDate" Precision="3" />
           <Property Type="DateTime" Name="ProcessedDate" Precision="3" />
           <Property Type="String" Name="Notes" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Type="DateTime" Name="ManualDoB" Precision="3" />
         </EntityType>
         <EntityType Name="Nationality">
           <Key>
@@ -1581,6 +1583,7 @@
           <EntitySetMapping Name="EntryJsons">
             <EntityTypeMapping TypeName="DataModel.EntryJson">
               <MappingFragment StoreEntitySet="EntryJsons">
+                <ScalarProperty Name="ManualDoB" ColumnName="ManualDoB" />
                 <ScalarProperty Name="Notes" ColumnName="Notes" />
                 <ScalarProperty Name="ProcessedDate" ColumnName="ProcessedDate" />
                 <ScalarProperty Name="SubmittedDate" ColumnName="SubmittedDate" />

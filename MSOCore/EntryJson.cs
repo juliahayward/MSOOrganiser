@@ -19,5 +19,6 @@ namespace MSOCore
         public Nullable<System.DateTime> SubmittedDate { get; set; }
         public Nullable<System.DateTime> ProcessedDate { get; set; }
         public string Notes { get; set; }
+        public Nullable<System.DateTime> ManualDoB { get; set; }
     }
 }

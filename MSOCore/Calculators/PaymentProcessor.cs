@@ -14,17 +14,21 @@ namespace MSOCore.Calculators
         {
             var context = DataEntitiesProvider.Provide();
             var olympiad = context.Olympiad_Infoes.First(x => x.Current);
-            var orders = context.EntryJsons.Where(x => x.ProcessedDate == null).OrderBy(x => x.Id).ToList();
+            var orders = context.EntryJsons.Where(x => x.ProcessedDate == null && x.Notes == null).OrderBy(x => x.Id).ToList();
             var entryFees = context.Fees.ToDictionary(x => x.Code, x => x);
             var alreadyDone = new List<string>();
 
             foreach (var order in orders)
             {
                 // Chop off outer quotes if necessary, and inner backslashes
-                var text = order.JsonText;
-                var parsedOrder = Parse(text);
+                var parsedOrder = Parse(order);
                 if (!parsedOrder.IsApproved) continue;
-                if (alreadyDone.Contains(parsedOrder.BookingId)) continue;
+                if (alreadyDone.Contains(parsedOrder.BookingId))
+                {
+                    order.Notes = "Duplicate";
+                    context.SaveChanges();
+                    continue;
+                }
 
                 if (parsedOrder.EventCode == null)
                     InsertMaxFeeOrder(context, olympiad, order, parsedOrder);
@@ -35,8 +39,10 @@ namespace MSOCore.Calculators
             }
         }
 
-        private ParsedOrder Parse(string text)
+        private ParsedOrder Parse(EntryJson order)
         {
+            var text = order.JsonText;
+
             if (text.StartsWith("\"")) 
                 text = text.Substring(1, text.Length - 2)
                     .Replace("\\", "")
@@ -47,6 +53,9 @@ namespace MSOCore.Calculators
             var parsedOrder = new ParsedOrder();
             parsedOrder.BookingId = obj.booking_id.Value;
             parsedOrder.EventCode = obj.event_id.Value;
+            // This is a special case...
+            if (parsedOrder.EventCode == "divingchess")
+                parsedOrder.EventCode = "CHDV";
             parsedOrder.BookingPrice = obj.booking_price.Value;
             parsedOrder.BookingSpaces = int.Parse(obj.booking_spaces.Value);
             parsedOrder.BookingStatus = int.Parse(obj.booking_status.Value.ToString());   // should be integer 1, sometimes string "1"
@@ -60,7 +69,8 @@ namespace MSOCore.Calculators
                     parsedEntrant.FirstName = entrant.first_name.Value;
                     parsedEntrant.LastName = entrant.last_name.Value;
                     parsedEntrant.Country = entrant.country_to_represent.Value;
-                    parsedEntrant.DoB = (entrant.date_of_birth != null) ? entrant.date_of_birth.Value : null;
+                    parsedEntrant.DoB = (entrant.date_of_birth != null) ? 
+                        DateTime.Parse(entrant.date_of_birth.Value) : order.ManualDoB;
                     parsedOrder.Entrants.Add(parsedEntrant);
                 }
             }
@@ -91,7 +101,7 @@ namespace MSOCore.Calculators
                 if (contestants.Count() != 1)
                     return;
 
-                if (parsedEntrant.DoB != null && DateTime.Parse(parsedEntrant.DoB) > olympiad.FirstDateOfBirthForJunior())
+                if (parsedEntrant.DoB != null && parsedEntrant.DoB > olympiad.FirstDateOfBirthForJunior())
                     feeExpected += olympiad.MaxCon.Value;
                 else
                     feeExpected += olympiad.MaxFee.Value;
@@ -100,6 +110,7 @@ namespace MSOCore.Calculators
             if (feeExpected != parsedOrder.BookingPrice)
             {
                 order.Notes = "Wrong fee";
+                context.SaveChanges();
                 return;
             }
 
@@ -110,7 +121,7 @@ namespace MSOCore.Calculators
                 var contestants = context.Contestants.Where(ContestantSelector(parsedEntrant));
 
                 var thisPersonsFee = 0.0m;
-                if (parsedEntrant.DoB != null && DateTime.Parse(parsedEntrant.DoB) > olympiad.FirstDateOfBirthForJunior())
+                if (parsedEntrant.DoB.HasValue && parsedEntrant.DoB.Value > olympiad.FirstDateOfBirthForJunior())
                     thisPersonsFee = olympiad.MaxCon.Value;
                 else
                     thisPersonsFee = olympiad.MaxFee.Value;
@@ -156,7 +167,7 @@ namespace MSOCore.Calculators
                 else if (contestants.Count() == 0)
                     EntrantsToCreate.Add(parsedEntrant);
 
-                if (parsedEntrant.DoB != null && DateTime.Parse(parsedEntrant.DoB) > olympiad.FirstDateOfBirthForJunior())
+                if (parsedEntrant.DoB.HasValue && parsedEntrant.DoB.Value > olympiad.FirstDateOfBirthForJunior())
                     feeExpected += eventFees[evt.Entry_Fee].Concession.Value;
                 else
                     feeExpected += eventFees[evt.Entry_Fee].Adult.Value;
@@ -165,6 +176,7 @@ namespace MSOCore.Calculators
             if (feeExpected != parsedOrder.BookingPrice)
             {
                 order.Notes = "Wrong fee";
+                context.SaveChanges();
                 return;
             }
 
@@ -176,7 +188,7 @@ namespace MSOCore.Calculators
                 var contestants = context.Contestants.Where(ContestantSelector(parsedEntrant));
 
                 var thisPersonsFee = 0.0m;
-                if (parsedEntrant.DoB != null && DateTime.Parse(parsedEntrant.DoB) > olympiad.FirstDateOfBirthForJunior())
+                if (parsedEntrant.DoB.HasValue && parsedEntrant.DoB.Value > olympiad.FirstDateOfBirthForJunior())
                     thisPersonsFee = eventFees[evt.Entry_Fee].Concession.Value;
                 else
                     thisPersonsFee = eventFees[evt.Entry_Fee].Concession.Value; ;
@@ -208,7 +220,7 @@ namespace MSOCore.Calculators
 
         private Expression<Func<Contestant, bool>> ContestantSelector(ParsedOrder.Entrant parsedEntrant)
         {
-            if (parsedEntrant.DoB == null)
+            if (parsedEntrant.DoB.HasValue)
             {
                 return c =>
                         c.Firstname == parsedEntrant.FirstName
@@ -216,7 +228,7 @@ namespace MSOCore.Calculators
             }
             else
             {
-                var dob = DateTime.Parse(parsedEntrant.DoB);
+                var dob = parsedEntrant.DoB.Value;
                 return c =>
                     c.Firstname == parsedEntrant.FirstName
                     && c.Lastname == parsedEntrant.LastName
@@ -233,7 +245,7 @@ namespace MSOCore.Calculators
                     Firstname = entrant.FirstName,
                     Lastname = entrant.LastName,
                     Nationality = entrant.Country,
-                    DateofBirth = (entrant.DoB != null) ? DateTime.Parse(entrant.DoB) : (DateTime?)null,
+                    DateofBirth = entrant.DoB,
                     Title = entrant.Title,
                     Male = (entrant.Title == "Mr")
                 };
@@ -267,7 +279,7 @@ namespace MSOCore.Calculators
                 public string FirstName { get; set; }
                 public string LastName { get; set; }
                 public string Country { get; set; }
-                public string DoB { get; set; }
+                public DateTime? DoB { get; set; }
             }
         }
 
