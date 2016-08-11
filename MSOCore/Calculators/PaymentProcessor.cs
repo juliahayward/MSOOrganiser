@@ -201,13 +201,13 @@ namespace MSOCore.Calculators
                     MindSportsID = contestants.First().Mind_Sport_ID,
                     OlympiadId = olympiad.Id,
                     Payment_Method = "MSO Website",
-                    Payment1 = (decimal)parsedOrder.BookingPrice,
+                    Payment1 = thisPersonsFee,
                     Year = olympiad.StartDate.Value.Year
                 });
 
                 // Put the contestant into the right event
                 var entrant = Entrant.NewEntrant(evt.EIN, evt.Code, olympiad.Id, thisContestant,
-                    (decimal)parsedOrder.BookingPrice);
+                    thisPersonsFee);
                 thisContestant.Entrants.Add(entrant);
 
                 // Update the order to avoid re-parsing
@@ -220,7 +220,7 @@ namespace MSOCore.Calculators
 
         private Expression<Func<Contestant, bool>> ContestantSelector(ParsedOrder.Entrant parsedEntrant)
         {
-            if (parsedEntrant.DoB.HasValue)
+            if (!parsedEntrant.DoB.HasValue)
             {
                 return c =>
                         c.Firstname == parsedEntrant.FirstName
