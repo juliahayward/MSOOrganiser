@@ -208,8 +208,6 @@ namespace MSOCore.Reports
         // Potential for de-duping this code
         public PentamindStandingsReportVm GetEuroStandings(int? year)
         {
-            year = 2015;
-
             var context = DataEntitiesProvider.Provide();
             var currentOlympiad = (year.HasValue)
                 ? context.Olympiad_Infoes.Where(x => x.StartDate.HasValue && x.StartDate.Value.Year == year.Value).First()
