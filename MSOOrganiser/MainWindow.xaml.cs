@@ -24,6 +24,9 @@ using AutoUpdaterForWPF;
 using MSOOrganiser.Data;
 using Newtonsoft.Json;
 using MSOCore.Calculators;
+using System.Timers;
+using MSOCore.Models;
+using System.Windows.Threading;
 
 namespace MSOOrganiser
 {
@@ -33,12 +36,38 @@ namespace MSOOrganiser
     public partial class MainWindow : Window
     {
         private bool _updateCheckDone = false;
+        private DispatcherTimer _databaseCheckTimer = new DispatcherTimer();
+
         private int LoggedInUserId { get; set; }
         private int UserLoginId { get; set; }
 
         public MainWindow()
         {
             InitializeComponent();
+
+            DataContext = new MainWindowVm();
+
+            _databaseCheckTimer.Interval = new TimeSpan(0, 0, 20);
+            _databaseCheckTimer.Tick += _databaseCheckTimer_Tick;
+        }
+
+        public MainWindowVm ViewModel
+        {
+            get { return DataContext as MainWindowVm;  }
+        }
+
+        void _databaseCheckTimer_Tick(object sender, EventArgs e)
+        {
+            try
+            {
+                var context = DataEntitiesProvider.Provide();
+                var thisOlympiad = context.Olympiad_Infoes.OrderByDescending(x => x.StartDate).First();
+                ViewModel.DbStatus = "Connected: " + DateTime.Now.ToString("HH:mm:ss");
+            }
+            catch (Exception ex)
+            {
+                ViewModel.DbStatus = "Connection failed: " + DateTime.Now.ToString("HH:mm:ss");
+            }
         }
 
         private void window_Loaded(object sender, EventArgs e)
@@ -58,6 +87,8 @@ namespace MSOOrganiser
             }
 
             WriteLoggedInUserToRegistry(loginBox.UserName);
+
+            _databaseCheckTimer.Start();
 
             LoggedInUserId = loginBox.UserId;
             UserLoginId = loginBox.UserLoginId;
@@ -565,6 +596,24 @@ namespace MSOOrganiser
 
    
  
+    }
+
+    public class MainWindowVm : VmBase
+    {
+        private string _dbStatus = "";
+
+        public string DbStatus
+        {
+            get { return _dbStatus; }
+            set
+            {
+                if (_dbStatus != value)
+                {
+                    _dbStatus = value;
+                    OnPropertyChanged("DbStatus");
+                }
+            }
+        }
     }
 }
 

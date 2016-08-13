@@ -86,9 +86,13 @@
                     </ItemsPanelTemplate>
                 </StatusBar.ItemsPanel>
                 <StatusBarItem Grid.Column="0">
-                    <TextBlock Name="Status" />
+                    <TextBlock Text="{Binding DbStatus}" />
                 </StatusBarItem>
                 <Separator Grid.Column ="1" />
+                <StatusBarItem Grid.Column="2">
+                    <TextBlock Name="Status" />
+                </StatusBarItem>
+                <Separator Grid.Column ="3" />
             </StatusBar>
             <StackPanel></StackPanel>
         </DockPanel>
