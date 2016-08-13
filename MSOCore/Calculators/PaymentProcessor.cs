@@ -191,7 +191,7 @@ namespace MSOCore.Calculators
                 if (parsedEntrant.DoB.HasValue && parsedEntrant.DoB.Value > olympiad.FirstDateOfBirthForJunior())
                     thisPersonsFee = eventFees[evt.Entry_Fee].Concession.Value;
                 else
-                    thisPersonsFee = eventFees[evt.Entry_Fee].Concession.Value; ;
+                    thisPersonsFee = eventFees[evt.Entry_Fee].Adult.Value;
 
                 var thisContestant = contestants.First();
                 // All OK
