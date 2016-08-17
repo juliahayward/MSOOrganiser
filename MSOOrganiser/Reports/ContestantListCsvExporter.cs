@@ -27,20 +27,22 @@ namespace MSOOrganiser.Reports
                 var olympiad = context.Olympiad_Infoes
                     .OrderByDescending(x => x.StartDate)
                     .First();
-                var contestants = context.Entrants.Where(x => x.OlympiadId == olympiad.Id && x.Name != null)
-                    .Select(x => x.Name)
+                var entrants = context.Entrants.Where(x => x.OlympiadId == olympiad.Id && x.Name != null)
                     .Distinct()
-                    .OrderBy(n => n.Lastname)
+                    .OrderBy(e => e.Name.Lastname)
+                    .ThenBy(e => e.Name.Firstname)
                     .ToList();
 
                 using (var fs = new FileStream(filename, FileMode.OpenOrCreate, FileAccess.Write))
                 {
                     using (var sw = new StreamWriter(fs))
                     {
-                        foreach (var c in contestants)
+                        foreach (var e in entrants)
                         {
                             sw.WriteLine(string.Join(",",
-                                c.Firstname, c.Lastname, c.Address1, c.Address2, c.City, c.County, c.Country, c.PostCode));
+                                e.Game_Code, e.Fee, 
+                                e.Name.Firstname, e.Name.Lastname, e.Name.Address1, e.Name.Address2,
+                                e.Name.City, e.Name.County, e.Name.Country, e.Name.PostCode));
                         }
                     }
                 }

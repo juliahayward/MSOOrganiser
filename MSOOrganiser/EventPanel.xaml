@@ -151,7 +151,7 @@
                     </StackPanel>
                 </StackPanel>
             </TabItem>
-            <TabItem Header="Results">
+            <TabItem Header="Results" IsSelected="True">
                 <StackPanel Orientation="Vertical">
                     <TextBlock>You can't add competitors here. Locate the required Competitor and add to their events list.</TextBlock>
                     <StackPanel Orientation="Horizontal">
@@ -168,7 +168,7 @@
                         <Label>tiebreaks</Label>
                     </StackPanel>
                     <DataGrid Name="dataGrid" CanUserAddRows="False" CanUserResizeColumns="True" CanUserSortColumns="True"
-                              AutoGenerateColumns="False"
+                              AutoGenerateColumns="False" Height="500"
                             Width="920" Margin="0,20,0,0" ItemsSource="{Binding Entrants}">
                         <DataGrid.Columns>
                             <DataGridTextColumn IsReadOnly="True" Header="EntrantId" Binding="{Binding EntrantId}" />
@@ -201,24 +201,6 @@
                                     </Style>
                                 </DataGridComboBoxColumn.EditingElementStyle>
                             </DataGridComboBoxColumn>
-                            <!-- DataGridTextColumn IsReadOnly="True" Header="Medal" Width="48" Binding="{Binding Medal}">
-                                <DataGridTextColumn.ElementStyle>
-                                    <Style TargetType="{x:Type TextBlock}">
-                                        <Style.Triggers>
-                                            <Trigger Property="Text" Value="Bronze">
-                                                <Setter Property="Background" Value="Brown"/>
-                                                <Setter Property="Foreground" Value="White"/>
-                                            </Trigger>
-                                            <Trigger Property="Text" Value="Silver">
-                                                <Setter Property="Background" Value="Silver"/>
-                                            </Trigger>
-                                            <Trigger Property="Text" Value="Gold">
-                                                <Setter Property="Background" Value="Gold"/>
-                                            </Trigger>
-                                        </Style.Triggers>
-                                    </Style>
-                                </DataGridTextColumn.ElementStyle>
-                            </DataGridTextColumn -->
                             <DataGridTextColumn IsReadOnly="True" Header="FirstName" Binding="{Binding FirstName}" />
                             <DataGridTextColumn IsReadOnly="True" Header="LastName" Binding="{Binding LastName}" />
                             <DataGridTextColumn IsReadOnly="True" Header="" Binding="{Binding Junior}" />
@@ -226,19 +208,28 @@
                                 <DataGridTextColumn.ElementStyle>
                                     <Style TargetType="TextBlock">
                                         <Setter Property="TextWrapping" Value="Wrap" />
+                                        <Setter Property="Background" Value="#EEEEEE" />
                                     </Style>
                                 </DataGridTextColumn.ElementStyle>
                                 <DataGridTextColumn.EditingElementStyle>
                                     <Style TargetType="TextBox">
                                         <Setter Property="TextWrapping" Value="Wrap" />
                                         <Setter Property="AcceptsReturn" Value="true" />
+                                        <Setter Property="Background" Value="#EEEEEE" />
                                     </Style>
                                 </DataGridTextColumn.EditingElementStyle>
                             </DataGridTextColumn>
                             <DataGridTextColumn Header="Score" Binding="{Binding Score, Mode=TwoWay}" />
                             <DataGridCheckBoxColumn Header="Absent" Binding="{Binding Absent, Mode=TwoWay}" />
                             <DataGridTextColumn Header="TieBreak" Binding="{Binding TieBreak, Mode=TwoWay}" />
-                            <DataGridTextColumn IsReadOnly="True" Header="Pentamind" Binding="{Binding PentaScore, Converter={StaticResource Show3DecPlacesConverter}}" />
+                            <DataGridTextColumn IsReadOnly="True" Header="Pentamind" Binding="{Binding PentaScore, Converter={StaticResource Show3DecPlacesConverter}}">
+                                <DataGridTextColumn.ElementStyle>
+                                    <Style TargetType="TextBlock">
+                                        <Setter Property="TextWrapping" Value="Wrap" />
+                                        <Setter Property="Background" Value="#EEEEEE" />
+                                    </Style>
+                                </DataGridTextColumn.ElementStyle>
+                            </DataGridTextColumn>
                             <!-- Show this if more than 2 in team -->
                             <DataGridTextColumn Header="Team" Binding="{Binding TeamOrPair, Mode=TwoWay}"  />
                             <!-- Show this if exactly 2 in team -->
@@ -255,7 +246,14 @@
                                     </Style>
                                 </DataGridComboBoxColumn.EditingElementStyle>
                             </DataGridComboBoxColumn>
-                            <DataGridTextColumn IsReadOnly="True" Header="PIN" Binding="{Binding PIN}"  />
+                            <DataGridTextColumn IsReadOnly="True" Header="PIN" Binding="{Binding PIN}">
+                                <DataGridTextColumn.ElementStyle>
+                                    <Style TargetType="TextBlock">
+                                        <Setter Property="TextWrapping" Value="Wrap" />
+                                        <Setter Property="Background" Value="#EEEEEE" />
+                                    </Style>
+                                </DataGridTextColumn.ElementStyle>
+                            </DataGridTextColumn>
                             <DataGridTemplateColumn  MinWidth="100" Header="View">
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
@@ -269,7 +267,6 @@
                         <Button Margin="4,4,4,4" Click="checkRanks_Click">Check Ranks</Button>
                         <Button Margin="4,4,4,4" Click="calculateRanks_Click">Calculate Ranks</Button>
                         <Button Margin="4,4,4,4" Click="calculatePenta_Click">Calculate Pentamind Scores</Button>
-                        <Button Margin="4,4,4,4" Click="calculatePenta10_Click">Calculate Pentamind Scores (2010 formula)</Button>
                         <Button Margin="4,4,4,4" Click="print_Click">Print Results</Button>
                     </StackPanel>
                 </StackPanel>

@@ -17,9 +17,12 @@ namespace MSOCore.Calculators
 
     public class Penta2015Calculator : PentaCalculator
     {
+        /// <summary>
+        /// See mail from Matthew H.
+        /// </summary>
         public override double Formula(int n, double p)
         {
-            // Spread linearly, imaginary rank 0 = 100; last place = 0;
+            // Spread linearly, rank 1 = 100; last place = 0;
             var myPentaScore = 100 * (n - p) / (n - 1);
 
             // * All * events - introduce a fudge factor

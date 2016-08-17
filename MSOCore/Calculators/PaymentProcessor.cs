@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
@@ -8,10 +9,18 @@ using System.Threading.Tasks;
 
 namespace MSOCore.Calculators
 {
+    public class PaymentProcessorResult
+    {
+        public int SingleEventOrders { get; set; }
+        public int MaxFeeOrders { get; set; }
+    }
+
     public class PaymentProcessor
     {
-        public void ProcessAll()
+        public PaymentProcessorResult ProcessAll()
         {
+            var result = new PaymentProcessorResult();
+
             var context = DataEntitiesProvider.Provide();
             var olympiad = context.Olympiad_Infoes.First(x => x.Current);
             var orders = context.EntryJsons.Where(x => x.ProcessedDate == null && x.Notes == null).OrderBy(x => x.Id).ToList();
@@ -31,12 +40,19 @@ namespace MSOCore.Calculators
                 }
 
                 if (parsedOrder.EventCode == null)
+                {
                     InsertMaxFeeOrder(context, olympiad, order, parsedOrder);
+                    result.MaxFeeOrders += parsedOrder.BookingSpaces;
+                }
                 else
+                {
                     InsertSingleEventOrder(context, olympiad, order, parsedOrder, entryFees);
+                    result.SingleEventOrders += parsedOrder.BookingSpaces;
+                }
 
                 alreadyDone.Add(parsedOrder.BookingId);
             }
+            return result;
         }
 
         private ParsedOrder Parse(EntryJson order)
@@ -66,12 +82,16 @@ namespace MSOCore.Calculators
                 {
                     var parsedEntrant = new ParsedOrder.Entrant();
                     parsedEntrant.Title = entrant.title.Value;
-                    parsedEntrant.FirstName = entrant.first_name.Value;
-                    parsedEntrant.LastName = entrant.last_name.Value;
+                    parsedEntrant.FirstName = TitleCase(entrant.first_name.Value);
+                    parsedEntrant.LastName = TitleCase(entrant.last_name.Value);
                     parsedEntrant.Country = entrant.country_to_represent.Value;
                     parsedEntrant.DoB = (entrant.date_of_birth != null) ? 
-                        DateTime.Parse(entrant.date_of_birth.Value) : order.ManualDoB;
+                        DateTime.Parse(entrant.date_of_birth.Value) : null;
                     parsedOrder.Entrants.Add(parsedEntrant);
+
+                    // Override if necessary
+                    if (order.ManualDoB != null)
+                        parsedEntrant.DoB = order.ManualDoB;
                 }
             }
             parsedOrder.Timestamp = obj.timestamp.Value;
@@ -88,18 +108,27 @@ namespace MSOCore.Calculators
             return parsedOrder;
         }
 
+        private string TitleCase(string input)
+        {
+            TextInfo textInfo = new CultureInfo("en-GB", false).TextInfo;
+            return textInfo.ToTitleCase(input.ToLower());
+        }
+
         private void InsertMaxFeeOrder(DataEntities context, Olympiad_Info olympiad, EntryJson order, ParsedOrder parsedOrder)
         {
             // Something wrong with the order
             if (parsedOrder.BookingSpaces != parsedOrder.Entrants.Count()) return;
+            List<ParsedOrder.Entrant> EntrantsToCreate = new List<ParsedOrder.Entrant>();
 
             var feeExpected = 0m;
             foreach (var parsedEntrant in parsedOrder.Entrants)
             {
                 var contestants = context.Contestants.Where(ContestantSelector(parsedEntrant));
                 // Don't handle the case of people you can't verify yet
-                if (contestants.Count() != 1)
+                if (contestants.Count() > 1)
                     return;
+                else if (contestants.Count() == 0)
+                    EntrantsToCreate.Add(parsedEntrant);
 
                 if (parsedEntrant.DoB != null && parsedEntrant.DoB > olympiad.FirstDateOfBirthForJunior())
                     feeExpected += olympiad.MaxCon.Value;
@@ -116,6 +145,7 @@ namespace MSOCore.Calculators
 
             // All OK - can change entities now.
             order.Notes = "Assigned to contestant(s) ";
+            CreateEntrants(context, EntrantsToCreate);
             foreach (var parsedEntrant in parsedOrder.Entrants)
             {
                 var contestants = context.Contestants.Where(ContestantSelector(parsedEntrant));

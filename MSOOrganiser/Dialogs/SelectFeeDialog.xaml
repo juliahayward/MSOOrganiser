@@ -1,0 +1,21 @@
+﻿<Window x:Class="MSOOrganiser.Dialogs.SelectFeeDialog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:local="clr-namespace:MSOOrganiser.Converters"
+        Title="Select event Fee" Height="150" Width="400">
+    <Window.Resources>
+        <local:ShowCurrencyConverter x:Key="ShowCurrencyConverter" />
+    </Window.Resources>
+    <Grid>
+        <StackPanel Orientation="Vertical">
+            <StackPanel Margin="10" Orientation="Horizontal">
+                <Label>Amount:</Label>
+                <TextBox Width="240" Text="{Binding Fee, Converter={StaticResource ShowCurrencyConverter}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="10,0,0,0"></TextBox>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal">
+                <Button Margin="10" Width="150" Click="ok_Click">OK</Button>
+                <Button Margin="10" Width="150" Click="cancel_Click">Cancel</Button>
+            </StackPanel>
+        </StackPanel>
+    </Grid>
+</Window>

@@ -138,6 +138,18 @@ namespace MSOOrganiser
             }
         }
 
+        private void editFee_Click(object sender, RoutedEventArgs e)
+        {
+            var entrant = ((FrameworkElement)sender).DataContext as ContestantPanelVm.EventVm;
+            var dialog = new SelectFeeDialog();
+            dialog.ShowDialog();
+            if (dialog.DialogResult.Value)
+            {
+                entrant.Fee = dialog.Fee;
+            }
+            ViewModel.UpdateTotals();
+        }
+
         private void addEvent_Click(object sender, RoutedEventArgs e)
         {
             var selectedEvents = ViewModel.Events.Select(x => x.EventCode);
@@ -155,7 +167,7 @@ namespace MSOOrganiser
                         var existingEvent = ViewModel.Events.FirstOrDefault(x => x.EventCode == evt.Code);
                         if (existingEvent == null)
                         {
-                            ViewModel.AddEvent(new ContestantPanelVm.EventVm() { EventCode = evt.Code, EventName = evt.Name, EventId = evt.Id, Fee = evt.Fee, StandardFee = evt.Fee, IncludedInMaxFee = evt.IsIncludedInMaxFee });
+                            ViewModel.AddEvent(new ContestantPanelVm.EventVm() { EventCode = evt.Code, EventName = evt.Name, EventId = evt.Id, Fee = evt.Fee, StandardFee = evt.Fee, IncludedInMaxFee = evt.IsIncludedInMaxFee, IsEvent = (evt.Event.Number > 0) });
                             ViewModel.IsDirty = true;
                         }
                     }
@@ -243,6 +255,15 @@ namespace MSOOrganiser
                 set { if (value != _fee) { _fee = value; OnPropertyChanged("Fee"); } }
             }
             public bool IncludedInMaxFee { get; set; }
+            public bool IsEvent { get; set; }
+            public Visibility ResultsButtonVisibility
+            {
+                get { return (IsEvent) ? Visibility.Visible : Visibility.Collapsed; }
+            }
+            public Visibility EditFeeButtonVisibility
+            {
+                get { return (IsEvent) ? Visibility.Collapsed : Visibility.Visible; }
+            }
             public string Partner { get; set; }
             public string Medal { get; set; }
             public string JuniorMedal { get; set; }
@@ -842,6 +863,11 @@ private string _Notes;
             OnPropertyChanged("Totals");
         }
 
+        public void UpdateTotals()
+        {
+            OnPropertyChanged("Totals");
+        }
+
         public void RemoveEvent(EventVm item)
         {
             Events.Remove(item);
@@ -923,6 +949,7 @@ private string _Notes;
                     Fee = e.e.Fee,
                     StandardFee = fees[e.g.Entry_Fee].Value,
                     IncludedInMaxFee = (e.g.incMaxFee.HasValue && e.g.incMaxFee.Value),
+                    IsEvent = (e.g.Number > 0),
                     Medal = e.e.Medal ?? "",
                     JuniorMedal = e.e.JuniorMedal ?? "",
                     Partner = e.e.Partner ?? "",
@@ -1116,12 +1143,13 @@ private string _Notes;
                 // Add new events that aren't already in this olympiad for this person
                 foreach (var e in this.Events.Where(x => !dbCon.Entrants.Any(ee => ee.OlympiadId == CurrentOlympiadId && ee.Game_Code == x.EventCode)))
                 {
-                 dbCon.Entrants.Add(Entrant.NewEntrant(e.EventId, e.EventCode, CurrentOlympiadId, dbCon, e.Fee));
+                    dbCon.Entrants.Add(Entrant.NewEntrant(e.EventId, e.EventCode, CurrentOlympiadId, dbCon, e.Fee));
                 }
                 // Remove unwanted events from this olympiad
                 foreach (var de in dbCon.Entrants.Where(x => x.OlympiadId == CurrentOlympiadId && !this.Events.Any(ee => ee.EventCode == x.Game_Code)).ToList())
                 {
-                 dbCon.Entrants.Remove(de);
+                    dbCon.Entrants.Remove(de);
+                    context.Entrants.Remove(de);
                 }
                 // Update changed events from this olympiad
                 foreach (var de in dbCon.Entrants.Where(x => x.OlympiadId == CurrentOlympiadId && this.Events.Any(ee => ee.EventCode == x.Game_Code)).ToList())

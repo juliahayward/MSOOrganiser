@@ -140,7 +140,7 @@
                             Width="920" Margin="0,20,0,0" IsReadOnly="True" ItemsSource="{Binding Events}">
                         <DataGrid.Columns>
                             <DataGridTextColumn Header="EventId" Binding="{Binding EventId}" />
-                            <DataGridTextColumn Header="EventCode" Binding="{Binding EventCode}" />
+                            <DataGridTextColumn Header="Code" Binding="{Binding EventCode}" />
                             <DataGridTextColumn Header="EventName" Binding="{Binding EventName}" />
                             <DataGridCheckBoxColumn Header="Receipt" Binding="{Binding Receipt}" />
                             <DataGridTextColumn Header="Fee" Binding="{Binding Fee, Converter={StaticResource ShowCurrencyConverter}}" />
@@ -185,10 +185,13 @@
                             <DataGridTextColumn Header="Pentamind" Binding="{Binding Penta}" />
                             <DataGridTextColumn Header="TieBreak" Binding="{Binding TieBreak}" />
                             <DataGridCheckBoxColumn Header="Absent" Binding="{Binding Absent}" />
-                            <DataGridTemplateColumn  MinWidth="100" Header="View">
+                            <DataGridTemplateColumn  MinWidth="100" Header="Actions">
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
-                                        <Button Click="event_Click">View Results</Button>
+                                        <StackPanel Orientation="Horizontal">
+                                            <Button Visibility="{Binding ResultsButtonVisibility}" Click="event_Click">View Results</Button>
+                                            <Button Visibility="{Binding EditFeeButtonVisibility}" Click="editFee_Click">Edit Fee</Button>
+                                        </StackPanel>
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellTemplate>
                             </DataGridTemplateColumn>

@@ -526,11 +526,14 @@ namespace MSOOrganiser
 
         private void prepayments_Click(object sender, RoutedEventArgs e)
         {
+            PaymentProcessorResult result;
             using (new SpinnyCursor())
             {
                 var processor = new PaymentProcessor();
-                processor.ProcessAll();
+                result = processor.ProcessAll();
             }
+            MessageBox.Show("Loaded " + result.SingleEventOrders + " single-event orders and "
+                + Environment.NewLine + result.MaxFeeOrders + " all-you-can-play orders");
         }
 
         private void unspentFee_Click(object sender, RoutedEventArgs e)

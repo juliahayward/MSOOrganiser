@@ -133,6 +133,9 @@
     <Compile Include="Dialogs\AddSessionToEventDialog.xaml.cs">
       <DependentUpon>AddSessionToEventDialog.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Dialogs\SelectFeeDialog.xaml.cs">
+      <DependentUpon>SelectFeeDialog.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Dialogs\SelectDateDialog.xaml.cs">
       <DependentUpon>SelectDateDialog.xaml</DependentUpon>
     </Compile>
@@ -215,6 +218,10 @@
     <Page Include="Dialogs\AddSessionToEventDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Dialogs\SelectFeeDialog.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="Dialogs\SelectDateDialog.xaml">
       <Generator>MSBuild:Compile</Generator>

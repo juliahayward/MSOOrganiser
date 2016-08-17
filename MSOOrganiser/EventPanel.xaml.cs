@@ -94,6 +94,10 @@ namespace MSOOrganiser
 
         private void save_Click(object sender, RoutedEventArgs e)
         {
+            // TODO DI the relevant bits into vm and call methods there
+            calculateRanks_Click(sender, e);
+            calculatePenta_Click(sender, e);
+
             try
             {
                 if (ViewModel.EditingThePast)
@@ -164,7 +168,7 @@ namespace MSOOrganiser
             var calculator = new Penta2015Calculator();
             try
             {
-                calculator.Calculate(ViewModel.NumberInTeam, ViewModel.Entrants);
+                calculator.Calculate(ViewModel.NumberInTeam, ViewModel.Entrants, ViewModel.Pentamind);
             }
             catch (Exception ex)
             {
@@ -191,19 +195,6 @@ namespace MSOOrganiser
             try
             {
                 checker.Check(ViewModel.NumberInTeam, ViewModel.Entrants);
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message);
-            }
-        }
-
-        private void calculatePenta10_Click(object sender, RoutedEventArgs e)
-        {
-            var calculator = new Penta2010Calculator();
-            try
-            {
-                calculator.Calculate(ViewModel.NumberInTeam, ViewModel.Entrants);
             }
             catch (Exception ex)
             {
