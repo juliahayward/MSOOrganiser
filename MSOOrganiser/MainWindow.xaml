@@ -66,7 +66,7 @@
                 </MenuItem>
                 <MenuItem Header="Misc">
                     <MenuItem Header="Print Misc Badges" IsEnabled="False"/>
-                    <MenuItem Header="Load pre-payments" Click="prepayments_Click" />
+                    <MenuItem Header="Load online entries" Click="prepayments_Click" />
                 </MenuItem>
                 <MenuItem Header="Help">
                     <MenuItem Header="Show Help" Click="help_Click" />

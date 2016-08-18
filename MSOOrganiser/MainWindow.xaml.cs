@@ -63,6 +63,10 @@ namespace MSOOrganiser
                 var context = DataEntitiesProvider.Provide();
                 var thisOlympiad = context.Olympiad_Infoes.OrderByDescending(x => x.StartDate).First();
                 ViewModel.DbStatus = "Connected: " + DateTime.Now.ToString("HH:mm:ss");
+
+                var entries = context.EntryJsons.Where(x => x.ProcessedDate == null && x.Notes == null);
+                if (entries.Count() > 0)
+                    ViewModel.DbStatus = "There are online entries ready to load";
             }
             catch (Exception ex)
             {
