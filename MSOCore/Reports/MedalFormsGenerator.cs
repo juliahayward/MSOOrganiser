@@ -36,21 +36,13 @@ namespace MSOCore.Reports
                 public DateTime? EndDate { get; set; }
                 public TimeSpan? EndTime { get; set; }
 
-                public string StartDateString
+                public string DateString
                 {
                     get
                     {
-                        if (!StartDate.HasValue) return "";
-                        return StartDate.Value.Add(StartTime.Value).ToString("dd MMM yyyy HH:mm");
-                    }
-                }
-
-                public string EndDateString
-                {
-                    get
-                    {
-                        if (!EndDate.HasValue) return "";
-                        return EndDate.Value.Add(EndTime.Value).ToString("dd MMM yyyy HH:mm");
+                        if (!StartDate.HasValue || !EndDate.HasValue) return "";
+                        return StartDate.Value.Add(StartTime.Value).ToString("dd MMM yyyy HH:mm")
+                            + " - " + EndDate.Value.Add(EndTime.Value).ToString("HH:mm");
                     }
                 }
             }
@@ -115,6 +107,7 @@ namespace MSOCore.Reports
                         OtherPrizes = x.Other_Prizes == null ? "" : x.Other_Prizes,
                         JuniorPrizes = string.Join(", ", (new string[] { x.JNR_1st_Prize, x.JNR_2nd_Prize, x.JNR_3rd_Prize, x.JNR_Other_Prizes}).Where(p => p != null)),
                     })
+                    .OrderBy(x => x.SequenceNumber)
                     .ToList()
             };
 

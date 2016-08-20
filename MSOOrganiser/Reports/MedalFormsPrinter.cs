@@ -42,8 +42,8 @@ namespace MSOOrganiser.Reports
                 {
 
                     /* ********** Header *********** */
-
-                    Table headerTable = new Table() { CellSpacing = 0, BreakPageBefore = !isFirst };
+                    var section = new Section() { BreakPageBefore = !isFirst };
+                    Table headerTable = new Table() { CellSpacing = 0 };
                     headerTable.Columns.Add(new TableColumn() { Width = new GridLength(170) });
                     headerTable.Columns.Add(new TableColumn() { Width = new GridLength(480) });
                     headerTable.Columns.Add(new TableColumn() { Width = new GridLength(120) });
@@ -65,25 +65,20 @@ namespace MSOOrganiser.Reports
 
                     headerTable.RowGroups[0].Rows.Add(trow);
 
-                    doc.Blocks.Add(headerTable);
+                    section.Blocks.Add(headerTable);
+                    doc.Blocks.Add(section);
 
                     /************ Event metadata ********/
 
                     Table metaTable = new Table() { CellSpacing = 0 };
-                    metaTable.Columns.Add(new TableColumn() { Width = new GridLength(100) });
-                    metaTable.Columns.Add(new TableColumn() { Width = new GridLength(240) });
-                    metaTable.Columns.Add(new TableColumn() { Width = new GridLength(240) });
+                    metaTable.Columns.Add(new TableColumn() { Width = new GridLength(256) });
+                    metaTable.Columns.Add(new TableColumn() { Width = new GridLength(256) });
+                    metaTable.Columns.Add(new TableColumn() { Width = new GridLength(256) });
                     metaTable.RowGroups.Add(new TableRowGroup());
 
                     trow = new TableRow();
-                    trow.Cells.Add(new TableCell());
-                    trow.Cells.Add(new TableCell(new Paragraph(new Run("Start: " + evt.StartDateString)) { Margin = new Thickness(2), FontSize = 10 }));
+                    trow.Cells.Add(new TableCell(new Paragraph(new Run("Times: " + evt.DateString)) { Margin = new Thickness(2), FontSize = 10 }));
                     trow.Cells.Add(new TableCell(new Paragraph(new Run("Location: " + evt.Location)) { Margin = new Thickness(2), FontSize = 10 }));
-                    metaTable.RowGroups[0].Rows.Add(trow);
-
-                    trow = new TableRow();
-                    trow.Cells.Add(new TableCell());
-                    trow.Cells.Add(new TableCell(new Paragraph(new Run("End: " + evt.EndDateString)) { Margin = new Thickness(2), FontSize = 10 }));
                     trow.Cells.Add(new TableCell(new Paragraph(new Run("Prize Giving: " + evt.PrizeGiving)) { Margin = new Thickness(2), FontSize = 10 }));
                     metaTable.RowGroups[0].Rows.Add(trow);
 
@@ -92,9 +87,9 @@ namespace MSOOrganiser.Reports
                     /* top 3 */
 
                     Table top3Table = new Table() { CellSpacing = 0 };
-                    top3Table.Columns.Add(new TableColumn() { Width = new GridLength(256) });
-                    top3Table.Columns.Add(new TableColumn() { Width = new GridLength(256) });
-                    top3Table.Columns.Add(new TableColumn() { Width = new GridLength(256) });
+                    top3Table.Columns.Add(new TableColumn() { Width = new GridLength(250) });
+                    top3Table.Columns.Add(new TableColumn() { Width = new GridLength(250) });
+                    top3Table.Columns.Add(new TableColumn() { Width = new GridLength(250) });
                     top3Table.RowGroups.Add(new TableRowGroup());
 
                     trow = new TableRow();
@@ -144,11 +139,11 @@ namespace MSOOrganiser.Reports
 
                     Table mainTable = new Table() { CellSpacing = 0 };
                     mainTable.Columns.Add(new TableColumn() { Width = new GridLength(60) });
-                    mainTable.Columns.Add(new TableColumn() { Width = new GridLength(155) });
-                    mainTable.Columns.Add(new TableColumn() { Width = new GridLength(155) });
+                    mainTable.Columns.Add(new TableColumn() { Width = new GridLength(170) });
+                    mainTable.Columns.Add(new TableColumn() { Width = new GridLength(170) });
                     mainTable.Columns.Add(new TableColumn() { Width = new GridLength(100) });
-                    mainTable.Columns.Add(new TableColumn() { Width = new GridLength(100) });
-                    mainTable.Columns.Add(new TableColumn() { Width = new GridLength(200) });
+                    mainTable.Columns.Add(new TableColumn() { Width = new GridLength(120) });
+                    mainTable.Columns.Add(new TableColumn() { Width = new GridLength(130) });
                     mainTable.RowGroups.Add(new TableRowGroup());
 
                     trow = new TableRow();
@@ -209,7 +204,7 @@ namespace MSOOrganiser.Reports
                     doc.Blocks.Add(Block);
 
                     Table page2Outer = new Table() { CellSpacing = 0 };
-                    page2Outer.Columns.Add(new TableColumn() { Width = new GridLength(440) });
+                    page2Outer.Columns.Add(new TableColumn() { Width = new GridLength(420) });
                     page2Outer.Columns.Add(new TableColumn() { Width = new GridLength(330) });
                     page2Outer.RowGroups.Add(new TableRowGroup());
 
@@ -226,10 +221,10 @@ namespace MSOOrganiser.Reports
 
                     Table page2Left = new Table() { CellSpacing = 0, BorderBrush = Brushes.Black, BorderThickness = new Thickness(1) };
                     page2Left.Columns.Add(new TableColumn() { Width = new GridLength(160) });
+                    page2Left.Columns.Add(new TableColumn() { Width = new GridLength(60) });
                     page2Left.Columns.Add(new TableColumn() { Width = new GridLength(65) });
-                    page2Left.Columns.Add(new TableColumn() { Width = new GridLength(65) });
-                    page2Left.Columns.Add(new TableColumn() { Width = new GridLength(100) });
-                    page2Left.Columns.Add(new TableColumn() { Width = new GridLength(40) });
+                    page2Left.Columns.Add(new TableColumn() { Width = new GridLength(90) });
+                    page2Left.Columns.Add(new TableColumn() { Width = new GridLength(35) });
                     page2Left.RowGroups.Add(new TableRowGroup());
 
                     trow = new TableRow();

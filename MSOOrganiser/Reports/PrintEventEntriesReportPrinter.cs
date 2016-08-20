@@ -83,7 +83,8 @@ namespace MSOOrganiser.Reports
         }
 
         private void AddEventToDoc(string EventCode, Olympiad_Info currentOlympiad, 
-            Event evt, IEnumerable<Entrant> entrants, DateTime juniorDate, FlowDocument doc, bool isFirst)
+            Event evt, IEnumerable<Entrant> entrants, DateTime juniorDate, FlowDocument doc, 
+            bool isFirst)
         {
             Section topSection = new Section();
             topSection.BorderBrush = Brushes.Black;
