@@ -29,7 +29,7 @@ namespace MSOCore.Calculators
         public void ApportionCost(IEnumerable<T> events, decimal apportionableCost)
         {
             var rawCosts = events.Where(_isApportionableGetter).Sum(_costGetter);
-            if (apportionableCost >= rawCosts)
+            if (apportionableCost >= rawCosts || rawCosts == 0)
                 return;
 
             foreach (var evt in events.Where(_isApportionableGetter))
