@@ -947,7 +947,7 @@ private string _Notes;
                     EventCode = e.e.Game_Code,
                     EventName = e.g.Mind_Sport,
                     Fee = e.e.Fee,
-                    StandardFee = fees[e.g.Entry_Fee].Value,
+                    StandardFee = (e.g.Entry_Fee != null) ? fees[e.g.Entry_Fee].Value : 0,
                     IncludedInMaxFee = (e.g.incMaxFee.HasValue && e.g.incMaxFee.Value),
                     IsEvent = (e.g.Number > 0),
                     Medal = e.e.Medal ?? "",
