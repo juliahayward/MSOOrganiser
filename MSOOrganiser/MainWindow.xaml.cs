@@ -88,6 +88,8 @@ namespace MSOOrganiser
             {
                 MessageBox.Show("Invalid user/password");
                 this.Close();
+                Application.Current.Shutdown();
+                return;
             }
 
             WriteLoggedInUserToRegistry(loginBox.UserName);
@@ -140,6 +142,8 @@ namespace MSOOrganiser
         private void window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
             if (!_updateCheckDone)
+                return;
+            if (LoggedInUserId == 0)
                 return;
 
             var context = DataEntitiesProvider.Provide();
