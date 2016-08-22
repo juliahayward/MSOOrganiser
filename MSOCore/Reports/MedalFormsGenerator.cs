@@ -12,7 +12,9 @@ namespace MSOCore.Reports
         {
             public class EntrantVm
             {
-                public string Name { get; set; }
+                public string FirstName { get; set; }
+                public string LastName { get; set; }
+                public string Name { get { return FirstName + " " + LastName.ToUpper(); } }
                 public string Nationality { get; set; }
                 public string Junior { get; set; }
             }
@@ -120,11 +122,12 @@ namespace MSOCore.Reports
                     .ToList()
                     .Select(ec => new MedalFormsVm.EntrantVm()
                     {
-                        Name = ec.c.Firstname + " " + ec.c.Lastname,
+                        FirstName = ec.c.Firstname,
+                        LastName = ec.c.Lastname,
                         Nationality = ec.c.Nationality,
                         Junior = (ec.c.DateofBirth.HasValue && ec.c.DateofBirth > juniorDate) ? "JNR" : ""
                     })
-                    .OrderBy(x => x.Name);
+                    .OrderBy(x => x.LastName);
 
                 evt.Entrants = entrants;
             }
