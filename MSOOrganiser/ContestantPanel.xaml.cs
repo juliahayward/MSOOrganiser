@@ -789,9 +789,12 @@ private string _Notes;
             {
                 var totalFees = Events.Sum(x => x.Fee);
                 var totalPayment = Payments.Sum(x => x.Amount);
-                return "Total fees: £" + totalFees.ToString("F")
+                var paymentString = "Total fees: £" + totalFees.ToString("F")
                     + "      Total payments: £" + totalPayment.ToString("F")
-                    + ((totalFees <= totalPayment) ? "" : "     Owing: £" + (totalFees - totalPayment).ToString("F")); 
+                    + ((totalFees <= totalPayment) ? "" : "     Owing: £" + (totalFees - totalPayment).ToString("F"));
+
+                var eventsString = "        Total events: " + Events.Count();
+                return paymentString + eventsString;
             }
         }
 
