@@ -57,6 +57,10 @@ namespace MSOCore.Calculators
 
         private ParsedOrder Parse(EntryJson order)
         {
+            // This catches people who only enter day and month for dob - they come through as
+            // the current year
+            var validDateCutoff = DateTime.Now.AddYears(-1);
+            
             var text = order.JsonText;
 
             if (text.StartsWith("\"")) 
@@ -87,6 +91,8 @@ namespace MSOCore.Calculators
                     parsedEntrant.Country = entrant.country_to_represent.Value;
                     parsedEntrant.DoB = (entrant.date_of_birth != null) ? 
                         DateTime.Parse(entrant.date_of_birth.Value) : null;
+                    if (parsedEntrant.DoB > validDateCutoff)
+                        parsedEntrant.DoB = null;
                     parsedOrder.Entrants.Add(parsedEntrant);
 
                     // Override if necessary
