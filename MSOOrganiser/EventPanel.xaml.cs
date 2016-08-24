@@ -1049,7 +1049,8 @@ namespace MSOOrganiser
                 entrant.Medal = (string.IsNullOrEmpty(e.Medal)) ? null : e.Medal;
                 entrant.JuniorMedal = (string.IsNullOrEmpty(e.JuniorMedal)) ? null : e.JuniorMedal;
                 entrant.Rank = e.Rank;
-                entrant.Score = e.Score;
+                // zero length constraint
+                entrant.Score = (string.IsNullOrWhiteSpace(e.Score)) ? null : e.Score;
                 if (e.Rank > 0) entrant.Penta_Score = e.PentaScore; else entrant.Penta_Score = null;
                 entrant.Tie_break = e.TieBreak;
                 entrant.Partner = e.TeamOrPair;
