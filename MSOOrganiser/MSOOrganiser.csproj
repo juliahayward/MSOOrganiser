@@ -165,6 +165,8 @@
     <Compile Include="Reports\ArbiterSchedulePrinter.cs" />
     <Compile Include="Reports\ContestantListCsvExporter.cs" />
     <Compile Include="Reports\ArbitersBadgesPrinter.cs" />
+    <Compile Include="Reports\PeopleOwingMoneyReportPrinter.cs" />
+    <Compile Include="Reports\TotalIncomeByMethodReportPrinter.cs" />
     <Compile Include="Reports\EventLabelsPrinter.cs" />
     <Compile Include="Reports\FlowDocumentGeneratorBase.cs" />
     <Compile Include="Reports\TodaysEventResultsPrinter.cs" />
