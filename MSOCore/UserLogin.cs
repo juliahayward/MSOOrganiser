@@ -18,6 +18,8 @@ namespace MSOCore
         public int UserId { get; set; }
         public System.DateTime LogInDate { get; set; }
         public Nullable<System.DateTime> LogOutDate { get; set; }
+        public string Application { get; set; }
+        public string Version { get; set; }
     
         public virtual User User { get; set; }
     }

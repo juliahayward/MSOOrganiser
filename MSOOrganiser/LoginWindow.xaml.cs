@@ -2,6 +2,7 @@
 using MSOOrganiser.UIUtilities;
 using System;
 using System.Linq;
+using System.Reflection;
 using System.Security.Cryptography;
 using System.Windows;
 using System.Windows.Input;
@@ -39,7 +40,13 @@ namespace MSOOrganiser
                 {
                     UserId = user.PIN;
                     UserName = user.Name;
-                    var login = new UserLogin() { LogInDate = DateTime.UtcNow, User = user };
+                    var login = new UserLogin()
+                    {
+                        LogInDate = DateTime.UtcNow,
+                        User = user,
+                        Application = Assembly.GetExecutingAssembly().GetName().Name,
+                        Version = Assembly.GetExecutingAssembly().GetName().Version.ToString()
+                    };
                     user.UserLogins.Add(login);
                     context.SaveChanges();
                     UserLoginId = login.Id;

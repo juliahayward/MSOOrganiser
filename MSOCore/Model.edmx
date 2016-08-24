@@ -465,6 +465,8 @@
           <Property Name="UserId" Type="int" Nullable="false" />
           <Property Name="LogInDate" Type="datetime" Nullable="false" />
           <Property Name="LogOutDate" Type="datetime" />
+          <Property Name="Application" Type="nvarchar(max)" />
+          <Property Name="Version" Type="nvarchar(max)" />
         </EntityType>
         <EntityType Name="Users">
           <Key>
@@ -1070,6 +1072,8 @@
           <Property Type="DateTime" Name="LogInDate" Nullable="false" Precision="3" />
           <Property Type="DateTime" Name="LogOutDate" Precision="3" />
           <NavigationProperty Name="User" Relationship="DataModel.FK_UserLogins_Users" FromRole="UserLogin" ToRole="User" />
+          <Property Type="String" Name="Application" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="Version" MaxLength="Max" FixedLength="false" Unicode="true" />
         </EntityType>
         <Association Name="FK_UserLogins_Users">
           <End Type="DataModel.User" Role="User" Multiplicity="1" />
@@ -1536,6 +1540,8 @@
           <EntitySetMapping Name="UserLogins">
             <EntityTypeMapping TypeName="DataModel.UserLogin">
               <MappingFragment StoreEntitySet="UserLogins">
+                <ScalarProperty Name="Version" ColumnName="Version" />
+                <ScalarProperty Name="Application" ColumnName="Application" />
                 <ScalarProperty Name="LogOutDate" ColumnName="LogOutDate" />
                 <ScalarProperty Name="LogInDate" ColumnName="LogInDate" />
                 <ScalarProperty Name="UserId" ColumnName="UserId" />
