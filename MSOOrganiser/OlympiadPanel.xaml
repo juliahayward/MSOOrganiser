@@ -102,6 +102,7 @@
                                 <DataGridTextColumn Header="ID" Binding="{Binding Id}" />
                                 <DataGridTextColumn Header="Code" Binding="{Binding Code}" />
                                 <DataGridTextColumn Header="Name" Binding="{Binding Name}" />
+                                <DataGridTextColumn Header="Status" Binding="{Binding Status}" />
                                 <DataGridTemplateColumn  MinWidth="100" Header="Actions">
                                     <DataGridTemplateColumn.CellTemplate>
                                         <DataTemplate>

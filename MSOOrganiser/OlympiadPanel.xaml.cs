@@ -126,7 +126,7 @@ namespace MSOOrganiser
                 if (ViewModel.Events.Any(x => x.Code == evt.Code))
                     MessageBox.Show("Olympiad already contains event " + evt.Code);
 
-                ViewModel.Events.Add(new OlympiadPanelVm.EventVm() { Code = evt.Code, Name = evt.Name, Id = 0 });
+                ViewModel.Events.Add(new OlympiadPanelVm.EventVm() { Code = evt.Code, Name = evt.Name, Id = 0, Status = "New" });
                 ViewModel.IsDirty = true;
             }
         }
@@ -172,7 +172,30 @@ namespace MSOOrganiser
             public int Id { get; set; }
             public string Code { get; set; }
             public string Name { get; set; }
+            public string Status { get; set; }
             public bool CanDelete { get; set; }
+
+            public EventVm()
+            {
+            }
+
+            public EventVm(Event e)
+            {
+                Id = e.EIN;
+                Code = e.Code;
+                Name = e.Mind_Sport;
+                CanDelete = !e.Entrants.Any(x => x.Rank.HasValue && x.Rank > 0);
+                if (!e.Entrants.Any())
+                    Status = "In database, empty";
+                else if (CanDelete && e.Event_Sess.Any(s => s.ActualStart < DateTime.Now))
+                    Status = "In progress";
+                else if (CanDelete && e.Event_Sess.All(s => s.ActualEnd < DateTime.Now))
+                    Status = "Awaiting results";
+                else if (CanDelete)
+                    Status = "Taking entries";
+                else
+                    Status = "Complete";
+            }
         }
 
         public class LocationVm
@@ -501,7 +524,7 @@ namespace MSOOrganiser
                 Events.Clear();
                 foreach (var e in o.Events.OrderBy(x => x.Code))
                 {
-                    Events.Add(new EventVm() { Id = e.EIN, Code = e.Code, Name = e.Mind_Sport, CanDelete = !e.Entrants.Any(x => x.Rank.HasValue && x.Rank > 0) });
+                    Events.Add(new EventVm(e));
                 }
                 Locations.Clear();
                 foreach (var l in o.Locations.OrderBy(x => x.Location1))
