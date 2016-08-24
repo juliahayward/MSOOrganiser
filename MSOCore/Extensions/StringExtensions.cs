@@ -16,6 +16,14 @@ namespace MSOCore.Extensions
                         .Replace(" ", "_").ToLower();
         }
 
+        public static string Ordinal(this string number)
+        {
+            if (number.EndsWith("1")) return number + "st";
+            if (number.EndsWith("2") && !number.EndsWith("12")) return number + "nd";
+            if (number.EndsWith("3") && !number.EndsWith("13")) return number + "rd";
+            return number + "th";
+        }
+
         public static int MedalRank(this string medal)
         {
             if (medal == null)

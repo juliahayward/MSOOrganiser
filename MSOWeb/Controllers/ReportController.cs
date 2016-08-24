@@ -73,6 +73,25 @@ namespace MSOWeb.Controllers
             return View(model);
         }
 
+        public ActionResult EurogamesStandings(int? year)
+        {
+            var generator = new PentamindStandingsGenerator();
+
+            var model = generator.GetEuroStandings(year);
+
+            return View(model);
+        }
+
+        public ActionResult EventResults(int? year, string eventCode)
+        {
+            var generator = new EventResultsGenerator();
+
+            if (!year.HasValue) year = DateTime.Now.Year;
+            var model = generator.GetModel(year.Value, eventCode);
+
+            return View(model);
+        }
+
         // For evaluation only
         public ActionResult PentamindStandings4Cats(int? year)
         {

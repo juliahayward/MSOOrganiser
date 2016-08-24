@@ -25,6 +25,18 @@ namespace MSOCore
             return IsJuniorForOlympiad(this.DateofBirth, olympiad);
         }
 
+        public static bool IsSeniorForOlympiad(DateTime? dateofBirth, Olympiad_Info olympiad)
+        {
+            // If JnrAge is 18, then we can be 19 years minus a day (hence >, not >=) on the AgeDate
+            var requiredDob = olympiad.AgeDate.Value.AddYears(-olympiad.SnrAge.Value);
+            return (dateofBirth.HasValue && dateofBirth <= requiredDob);
+        }
+
+        public bool IsSeniorForOlympiad(Olympiad_Info olympiad)
+        {
+            return IsSeniorForOlympiad(this.DateofBirth, olympiad);
+        }
+
         public string JuniorFlagForOlympiad(Olympiad_Info olympiad)
         {
             return (IsJuniorForOlympiad(olympiad)) ? "JNR" : "";

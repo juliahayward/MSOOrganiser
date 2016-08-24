@@ -1,0 +1,52 @@
+﻿@using MSOCore.Extensions;
+@model MSOCore.Reports.EventResultsGenerator.EventResultsVm
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<style type="text/css">
+    .jmhTable {
+        border: 1px black solid; 
+        width: 400px; 
+        margin-left: 100px
+    }
+    .jmhTable td {
+        vertical-align: middle;
+    }
+    .jmhPaddedHeader {
+        margin: 4px;
+        display: block;
+    }
+    .jmhPadded {
+        margin: 4px;
+        display: block;
+    }
+</style>
+
+<h1 class="entry-title">Medals for @Model.Year @Model.EventName (@Model.EventCode)</h1>
+
+        <table class="jmhTable">
+            <tr>
+                <td colspan="6" style="background: AliceBlue"><span class="jmhPaddedHeader">@Model.EventName</span></td>
+            </tr>
+        @foreach (var entrant in Model.Entrants)
+        {
+            <tr>
+                <td style="width: 50px;"><div class="jmhPadded">@entrant.Rank.ToString().Ordinal()</div></td>
+                <td style="width:100px;"><div class="jmhPadded">@entrant.Medal</div></td>
+                <td style="width:100px;"><div class="jmhPadded">@entrant.JuniorMedal</div></td>
+                <td style="width: 50px;"><div class="jmhPadded">@entrant.Score</div></td>
+                <td style="width:240px;"><div class="jmhPadded">
+                    <a href="./ContestantMedals?contestantId=@entrant.ContestantId">@entrant.Name</a>
+                                         </div></td>
+                <td><img class="jmhPadded" src="@entrant.Flag"  alt="@entrant.Nationality" title="@entrant.Nationality"/></td>
+            </tr>
+        }
+        @if (!Model.Entrants.Any())
+        {
+            <tr>
+                <td colspan="6">Results will be published here as soon as they have been verified by the Arbiters</td>
+            </tr>
+        }
+        </table>
+        <p></p>

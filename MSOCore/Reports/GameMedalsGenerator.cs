@@ -41,14 +41,14 @@ namespace MSOCore.Reports
             var retval = new GameMedalsVm { GameName = game.Mind_Sport };
 
             retval.Medals = context.Entrants
-                .Where(x => x.Game_Code.StartsWith(gameCode) && (x.Medal != null || x.JuniorMedal != null) && x.Year < 7000)
+                .Where(x => x.Game_Code.StartsWith(gameCode) && (x.Medal != null || x.JuniorMedal != null))
                 .Join(context.Contestants, e => e.Mind_Sport_ID, c => c.Mind_Sport_ID, (e, c) => new { e, c })
                 .Join(context.Events,
-                        ec => new { Code = ec.e.Game_Code, ec.e.Year }, ev => new { ev.Code, ev.Year }, 
+                        ec => new { Code = ec.e.Game_Code, OlympiadId = ec.e.OlympiadId.Value }, ev => new { ev.Code, ev.OlympiadId }, 
                         (ec, ev) => new { ec, ev })
                 .Select(ecv => new GameMedalsVm.MedalVm()
                 {
-                    Year = ecv.ec.e.Year.Value,
+                    Year = ecv.ev.Olympiad_Info.YearOf.Value,
                     EventCode = ecv.ev.Code,
                     EventName = ecv.ev.Mind_Sport,
                     Medal = ecv.ec.e.Medal ?? ecv.ec.e.JuniorMedal,
@@ -59,6 +59,7 @@ namespace MSOCore.Reports
                     Nationality = ecv.ec.c.Nationality ?? "default"
                 })
                 .ToList()
+                .Where(x => x.Year < 7002)
                 .OrderByDescending(x => x.Year).ThenBy(x => x.EventCode).ThenBy(x => x.Rank).ThenBy(x => x.Medal.MedalRank());
 
             return retval;

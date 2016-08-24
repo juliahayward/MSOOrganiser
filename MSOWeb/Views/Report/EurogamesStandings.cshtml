@@ -21,23 +21,19 @@
     }
 </style>
 
-<h1 class="entry-title">Pentamind Standings: @Model.OlympiadTitle</h1>
+<h1 class="entry-title">Eurogames Standings: @Model.OlympiadTitle</h1>
 
 @{ var i = 1; }
 
 <table class="jmhTable">
     <tr  style="background: AliceBlue">
-        <td></td>
-        <td></td>
         <td><span class="jmhPaddedHeader">Name</span></td>
         <td><span class="jmhPaddedHeader">Score</span></td>
         <td colspan="5"><span class="jmhPaddedHeader">Individual events</span></td>
     </tr>
-    @foreach (var item in Model.Standings.Take(100))
+    @foreach (var item in Model.Standings.Take(40))
     {    
     <tr>
-        <td><span class="jmhPadded">@item.JuniorFlag</span><span class="jmhPadded">@item.SeniorFlag</span></td>
-        <td><span class="jmhPadded">@item.FemaleFlag</span></td>
         <td><span class="jmhPadded">@item.Name</span></td>
         <td style="width: 100px;"><span class="jmhPadded">@item.TotalScoreStr</span></td>
         <td style="font-size: small"><span class="jmhPadded">@item.ScoreStr(0)</span></td>
@@ -51,4 +47,4 @@
     }
 </table>
 
-<h3>Top 100 listed. Competitors need 5 events to qualify.</h3>
+<h3>Top 40 listed. Competitors need 5 events to qualify.</h3>

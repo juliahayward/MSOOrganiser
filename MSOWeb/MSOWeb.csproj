@@ -176,6 +176,8 @@
     <Content Include="Views\Report\PentamindStandings4Cats.cshtml" />
     <Content Include="Views\Event\Entrants.cshtml" />
     <Content Include="Views\Report\Error.cshtml" />
+    <Content Include="Views\Report\EventResults.cshtml" />
+    <Content Include="Views\Report\EurogamesStandings.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

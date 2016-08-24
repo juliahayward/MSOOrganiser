@@ -31,7 +31,11 @@ namespace MSOCore.Reports
                 public int ContestantId { get; set; }
                 public string Name { get; set; }
                 public bool IsMale { get; set; }
+                public bool IsJunior { get; set; }
+                public bool IsSenior { get; set; }
                 public string FemaleFlag { get { return (IsMale) ? "" : "W"; } }
+                public string JuniorFlag { get { return (IsJunior) ? "Jnr" : ""; } }
+                public string SeniorFlag { get { return (IsSenior) ? "Snr" : ""; } }
                 public double TotalScore { get; set; }
                 public string TotalScoreStr { get { return string.Format("{0:0.00}", TotalScore); } }
                 public List<EventScore> Scores { get; set; }
@@ -68,7 +72,7 @@ namespace MSOCore.Reports
                 .ToList();
 
             var calc = new PentamindMetaScoreCalculator();
-
+  
             var standings = new List<PentamindStandingsReportVm.ContestantStanding>();
             foreach (var r in results)
             {
@@ -76,7 +80,9 @@ namespace MSOCore.Reports
                 {
                     ContestantId = r.Key,
                     Name = r.First().c.FullName(),
-                    IsMale = r.First().c.Male
+                    IsMale = r.First().c.Male,
+                    IsJunior = r.First().c.IsJuniorForOlympiad(currentOlympiad),
+                    IsSenior = r.First().c.IsSeniorForOlympiad(currentOlympiad)
                 };
 
                 standing.Scores = r.Select(x => new PentamindStandingsReportVm.EventScore()
@@ -212,7 +218,6 @@ namespace MSOCore.Reports
             var currentOlympiad = (year.HasValue)
                 ? context.Olympiad_Infoes.Where(x => x.StartDate.HasValue && x.StartDate.Value.Year == year.Value).First()
                 : context.Olympiad_Infoes.OrderByDescending(x => x.StartDate).First();
-            var lastDobForSenior = currentOlympiad.LastDateOfBirthForSenior();
 
             var vm = new PentamindStandingsReportVm();
             vm.OlympiadTitle = currentOlympiad.FullTitle();
@@ -226,7 +231,6 @@ namespace MSOCore.Reports
                 .Where(x => x.OlympiadId == currentOlympiad.Id && !x.Absent && x.Rank.HasValue && x.Penta_Score.HasValue
                     && x.Event.Game.GameCategory.Id == 3)
                 .Join(context.Contestants, e => e.Mind_Sport_ID, c => c.Mind_Sport_ID, (e, c) => new { e, c })
-                .Where(x => x.c.DateofBirth.HasValue && x.c.DateofBirth.Value <= lastDobForSenior)
                 .GroupBy(x => x.c.Mind_Sport_ID)
                 .ToList();
 
@@ -239,7 +243,7 @@ namespace MSOCore.Reports
                 {
                     ContestantId = r.Key,
                     Name = r.First().c.FullName(),
-                    IsMale = r.First().c.Male
+                    IsMale = r.First().c.Male,
                 };
 
                 standing.Scores = r.Select(x => new PentamindStandingsReportVm.EventScore()
