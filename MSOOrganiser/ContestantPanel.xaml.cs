@@ -148,6 +148,7 @@ namespace MSOOrganiser
                 entrant.Fee = dialog.Fee;
             }
             ViewModel.UpdateTotals();
+            ViewModel.IsDirty = true;
         }
 
         private void addEvent_Click(object sender, RoutedEventArgs e)
