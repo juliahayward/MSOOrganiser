@@ -148,6 +148,7 @@
     <Compile Include="EventEntriesReportPicker.xaml.cs">
       <DependentUpon>EventEntriesReportPicker.xaml</DependentUpon>
     </Compile>
+    <Compile Include="GlobalSettings.cs" />
     <Compile Include="PasswordChangeWindow.xaml.cs">
       <DependentUpon>PasswordChangeWindow.xaml</DependentUpon>
     </Compile>

@@ -96,6 +96,7 @@ namespace MSOOrganiser
 
             _databaseCheckTimer.Start();
 
+            GlobalSettings.LoggedInUser = loginBox.UserName;
             LoggedInUserId = loginBox.UserId;
             UserLoginId = loginBox.UserLoginId;
             this.Title += " --- logged in as " + loginBox.UserName
