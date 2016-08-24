@@ -190,8 +190,8 @@
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
                                         <StackPanel Orientation="Horizontal">
-                                            <Button Visibility="{Binding ResultsButtonVisibility}" Click="event_Click">View Results</Button>
                                             <Button Visibility="{Binding EditFeeButtonVisibility}" Click="editFee_Click">Edit Fee</Button>
+                                            <Button Visibility="{Binding ResultsButtonVisibility}" Click="event_Click">View Results</Button>
                                         </StackPanel>
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellTemplate>

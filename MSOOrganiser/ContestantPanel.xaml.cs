@@ -263,7 +263,8 @@ namespace MSOOrganiser
             }
             public Visibility EditFeeButtonVisibility
             {
-                get { return (IsEvent) ? Visibility.Collapsed : Visibility.Visible; }
+                get { return (!IsEvent || GlobalSettings.LoggedInUserIsAdmin) 
+                    ? Visibility.Visible : Visibility.Collapsed; }
             }
             public string Partner { get; set; }
             public string Medal { get; set; }
