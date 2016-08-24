@@ -45,7 +45,7 @@ namespace MSOOrganiser
         {
             InitializeComponent();
 
-            DataContext = new MainWindowVm();
+            DataContext = new MainWindowVm(new PaymentProcessor());
 
             _databaseCheckTimer.Interval = new TimeSpan(0, 0, 20);
             _databaseCheckTimer.Tick += _databaseCheckTimer_Tick;
@@ -64,9 +64,7 @@ namespace MSOOrganiser
                 var thisOlympiad = context.Olympiad_Infoes.OrderByDescending(x => x.StartDate).First();
                 ViewModel.DbStatus = "Connected: " + DateTime.Now.ToString("HH:mm:ss");
 
-                var entries = context.EntryJsons.Where(x => x.ProcessedDate == null && x.Notes == null);
-                if (entries.Count() > 0)
-                    ViewModel.DbStatus = "There are online entries ready to load";
+                ViewModel.CheckForEntries();
             }
             catch (Exception ex)
             {
@@ -622,13 +620,23 @@ namespace MSOOrganiser
             }
         }
 
-
-   
- 
+        private void releaseNotes_Click(object sender, RoutedEventArgs e)
+        {
+            Process.Start("http://apps.juliahayward.com/msoorganiser/1.0.2/ReleaseNotes.html");
+        }
     }
+
 
     public class MainWindowVm : VmBase
     {
+        private readonly PaymentProcessor _paymentProcessor;
+
+        public MainWindowVm(PaymentProcessor paymentProcessor)
+        {
+            _paymentProcessor = paymentProcessor;
+        }
+
+
         private string _dbStatus = "";
 
         public string DbStatus
@@ -640,6 +648,24 @@ namespace MSOOrganiser
                 {
                     _dbStatus = value;
                     OnPropertyChanged("DbStatus");
+                }
+            }
+        }
+
+        public void CheckForEntries()
+        {
+            var context = DataEntitiesProvider.Provide();
+            var entries = context.EntryJsons.Where(x => x.ProcessedDate == null && x.Notes == null);
+            if (entries.Count() > 0)
+            {
+                if (GlobalSettings.AutomaticallyLoadEntries)
+                {
+                    var result = _paymentProcessor.ProcessAll();
+                    DbStatus = "Loaded " + result.SingleEventOrders + " orders";
+                }
+                else
+                {
+                    DbStatus = "There are online entries ready to load";
                 }
             }
         }

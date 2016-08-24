@@ -17,5 +17,7 @@ namespace MSOOrganiser
         public static string LoggedInUser { get; set; }
 
         public static bool LoggedInUserIsAdmin { get { return LoggedInUser == "Tony" || LoggedInUser == "Julia"; } }
+
+        public static bool AutomaticallyLoadEntries { get { return LoggedInUser == "Tony" || LoggedInUser == "Julia"; } }
     }
 }

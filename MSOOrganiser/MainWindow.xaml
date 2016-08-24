@@ -76,6 +76,7 @@
                     <MenuItem Header="Show Help" Click="help_Click" />
                     <Separator/>
                     <MenuItem Header="About MSOOrganiser" Click="about_Click" />
+                    <MenuItem Header="Release notes" Click="releaseNotes_Click" />
                 </MenuItem>
             </Menu>
             <StatusBar DockPanel.Dock="Bottom">

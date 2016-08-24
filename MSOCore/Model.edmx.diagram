@@ -29,7 +29,7 @@
         <AssociationConnector Association="DataModel.Event_Sess_EventsEvent_Sess" />
         <AssociationConnector Association="DataModel.Event_Sess_SessionEvent_Sess" />
         <AssociationConnector Association="DataModel.Payments_NamesPayments" />
-        <EntityTypeShape EntityType="DataModel.UserLogin" Width="1.5" PointX="3.875" PointY="25.25" />
+        <EntityTypeShape EntityType="DataModel.UserLogin" Width="1.5" PointX="3.75" PointY="23.25" />
         <AssociationConnector Association="DataModel.FK_UserLogins_Users" />
         <EntityTypeShape EntityType="DataModel.Fee" Width="1.5" PointX="11.25" PointY="24.125" />
         <EntityTypeShape EntityType="DataModel.Arbiter" Width="1.5" PointX="6.875" PointY="0.5" />
