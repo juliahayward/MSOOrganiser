@@ -372,6 +372,22 @@ namespace MSOOrganiser
             docPrinter.PrintFlowDocument(() => printer.Print(false));
         }
 
+        private void totalIncomeByMethodMenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            var docPrinter = new FlowDocumentPrinter();
+            var printer = new TotalIncomeByMethodReportPrinter();
+            docPrinter.PrintFlowDocument(() => printer.Print(true));
+        }
+
+        private void peopleOwingMoneyMenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            var docPrinter = new FlowDocumentPrinter();
+            var printer = new PeopleOwingMoneyReportPrinter();
+            docPrinter.PrintFlowDocument(() => printer.Print(true));
+        }
+
+  
+
         private void gamePlanMenuItem_Click(object sender, RoutedEventArgs e)
         {
             var printer = new GamePlanPrinter();
@@ -604,6 +620,7 @@ namespace MSOOrganiser
                 MessageBox.Show("There are no contestants with unpaid fees");
             }
         }
+
 
    
  
