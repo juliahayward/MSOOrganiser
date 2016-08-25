@@ -92,39 +92,30 @@
                 </StackPanel>
             </TabItem>
             <TabItem Header="Events">
-                <StackPanel Orientation="Vertical">
-                <Button Click="addEvent_Click">Add Event</Button>
-                    <Grid Height="400">
+                <DockPanel>
+                <Button DockPanel.Dock="Top" Click="addEvent_Click">Add Event</Button>
                         <DataGrid Name="dataGrid" CanUserAddRows="False" CanUserResizeColumns="True" CanUserSortColumns="True"
                             AutoGenerateColumns="False" 
-                            Width="920" Margin="0,10,0,0" IsReadOnly="True" ItemsSource="{Binding Events}">
+                            Margin="10,10,10,0" IsReadOnly="True" ItemsSource="{Binding Events}">
                             <DataGrid.Columns>
                                 <DataGridTextColumn Header="ID" Binding="{Binding Id}" />
                                 <DataGridTextColumn Header="Code" Binding="{Binding Code}" />
-                                <DataGridTextColumn Header="Name" Binding="{Binding Name}" />
-                                <DataGridTextColumn Header="Status" Binding="{Binding Status}" />
-                                <DataGridTemplateColumn  MinWidth="100" Header="Actions">
+                                <DataGridTextColumn Header="Name" Width="*" Binding="{Binding Name}" />
+                            <DataGridTextColumn Header="Times" Binding="{Binding Dates}" />
+                            <DataGridTextColumn Header="Status" Binding="{Binding Status}" />
+                                <DataGridTemplateColumn MinWidth="100" Header="Actions">
                                     <DataGridTemplateColumn.CellTemplate>
                                         <DataTemplate>
-                                            <Grid>
+                                            <StackPanel Orientation="Horizontal">
                                                 <Button Click="editEvent_Click">Event Details</Button>
-                                            </Grid>
-                                        </DataTemplate>
-                                    </DataGridTemplateColumn.CellTemplate>
-                                </DataGridTemplateColumn>
-                                <DataGridTemplateColumn  MinWidth="100" Header="">
-                                    <DataGridTemplateColumn.CellTemplate>
-                                        <DataTemplate>
-                                            <Grid>
                                                 <Button Click="deleteEvent_Click" Visibility="{Binding CanDelete, Converter={StaticResource BoolToVisibilityConverter}}">Delete</Button>
-                                            </Grid>
+                                            </StackPanel>
                                         </DataTemplate>
                                     </DataGridTemplateColumn.CellTemplate>
                                 </DataGridTemplateColumn>
                             </DataGrid.Columns>
                         </DataGrid>
-                    </Grid>
-                </StackPanel>
+                </DockPanel>
             </TabItem>
         </TabControl>
     </StackPanel>

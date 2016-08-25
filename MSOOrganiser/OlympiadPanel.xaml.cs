@@ -174,6 +174,7 @@ namespace MSOOrganiser
             public string Name { get; set; }
             public string Status { get; set; }
             public bool CanDelete { get; set; }
+            public string Dates { get; set; }
 
             public EventVm()
             {
@@ -195,6 +196,12 @@ namespace MSOOrganiser
                     Status = "Taking entries";
                 else
                     Status = "Complete";
+
+                if (e.Event_Sess.Any())
+                {
+                    Dates = e.Event_Sess.Min(s => s.ActualStart).ToString("ddd dd MMM hh:mm")
+                        + " - " + e.Event_Sess.Max(s => s.ActualEnd).ToString("hh:mm");
+                }
             }
         }
 
