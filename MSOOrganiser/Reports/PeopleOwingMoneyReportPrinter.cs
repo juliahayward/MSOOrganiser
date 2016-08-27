@@ -49,39 +49,43 @@ namespace MSOOrganiser.Reports
                     para.FontWeight = FontWeights.Normal;
                     para.FontSize = 10;
 
-                    Figure figure = new Figure();
-                    figure.CanDelayPlacement = false;
-                    figure.BorderBrush = Brushes.Black;
-                    figure.BorderThickness = new Thickness(1);
-
-                    Table table = new Table() { CellSpacing = 0 };
-                    table.Columns.Add(new TableColumn() { Width = new GridLength(200) }); 
-                    table.Columns.Add(new TableColumn() { Width = new GridLength(50) });
-                    table.Columns.Add(new TableColumn() { Width = new GridLength(50) });
-                    table.RowGroups.Add(new TableRowGroup());
-
-                    var row = new TableRow();
-                    row.Cells.Add(new TableCell(new Paragraph(new Run("Name")) { Margin = new Thickness(2), FontSize = 10 }));
-                    row.Cells.Add(new TableCell(new Paragraph(new Run("Paid")) { Margin = new Thickness(2), FontSize = 10 }));
-                    row.Cells.Add(new TableCell(new Paragraph(new Run("Owing")) { Margin = new Thickness(2), FontSize = 10, TextAlignment = TextAlignment.Right }));
-                    table.RowGroups[0].Rows.Add(row);
-
-                    var subtotal = 0m;
-
-                    foreach (var fee in results.Fees)
+                    for (int i = 0; i <= Math.Floor((results.Fees.Count() - 1) / 50.0); i++)
                     {
-                        row = new TableRow();
-                        row.Cells.Add(new TableCell(new Paragraph(new Run(fee.Name)) { Margin = new Thickness(2), FontSize = 10 }));
-                        row.Cells.Add(new TableCell(new Paragraph(new Run(fee.Paid.ToString("C"))) { Margin = new Thickness(2), FontSize = 10 }));
-                        row.Cells.Add(new TableCell(new Paragraph(new Run(fee.Owed.ToString("C"))) { Margin = new Thickness(2), FontSize = 10, TextAlignment = TextAlignment.Right }));
+
+                        Figure figure = new Figure();
+                        figure.CanDelayPlacement = false;
+                        figure.BorderBrush = Brushes.Black;
+                        figure.BorderThickness = new Thickness(1);
+
+                        Table table = new Table() { CellSpacing = 0 };
+                        table.Columns.Add(new TableColumn() { Width = new GridLength(200) });
+                        table.Columns.Add(new TableColumn() { Width = new GridLength(50) });
+                        table.Columns.Add(new TableColumn() { Width = new GridLength(50) });
+                        table.RowGroups.Add(new TableRowGroup());
+
+                        var row = new TableRow();
+                        row.Cells.Add(new TableCell(new Paragraph(new Run("Name")) { Margin = new Thickness(2), FontSize = 10 }));
+                        row.Cells.Add(new TableCell(new Paragraph(new Run("Paid")) { Margin = new Thickness(2), FontSize = 10 }));
+                        row.Cells.Add(new TableCell(new Paragraph(new Run("Owing")) { Margin = new Thickness(2), FontSize = 10, TextAlignment = TextAlignment.Right }));
                         table.RowGroups[0].Rows.Add(row);
-                        grandTotal += fee.Owed;
+
+                        var subtotal = 0m;
+
+                        foreach (var fee in results.Fees.Skip(i * 50).Take(50))
+                        {
+                            row = new TableRow();
+                            row.Cells.Add(new TableCell(new Paragraph(new Run(fee.Name)) { Margin = new Thickness(2), FontSize = 10 }));
+                            row.Cells.Add(new TableCell(new Paragraph(new Run(fee.Paid.ToString("C"))) { Margin = new Thickness(2), FontSize = 10 }));
+                            row.Cells.Add(new TableCell(new Paragraph(new Run(fee.Owed.ToString("C"))) { Margin = new Thickness(2), FontSize = 10, TextAlignment = TextAlignment.Right }));
+                            table.RowGroups[0].Rows.Add(row);
+                            grandTotal += fee.Owed;
+                        }
+
+                        figure.Blocks.Add(table);
+                        para.Inlines.Add(figure);
+
+                        topSection.Blocks.Add(para);
                     }
-
-                    figure.Blocks.Add(table);
-                    para.Inlines.Add(figure);
-                    topSection.Blocks.Add(para);
-
                     doc.Blocks.Add(topSection);
 
                 Paragraph gtpara = new Paragraph();
