@@ -163,6 +163,7 @@ namespace MSOOrganiser
             }
         }
 
+        // no button any more
         private void calculatePenta_Click(object sender, RoutedEventArgs e)
         {
             var calculator = new Penta2015Calculator();
@@ -176,6 +177,7 @@ namespace MSOOrganiser
             }
         }
 
+        // no button any more
         private void calculateRanks_Click(object sender, RoutedEventArgs args)
         {
             var checker = new RankCalculator();
@@ -189,6 +191,7 @@ namespace MSOOrganiser
             }
         }
 
+        // no button any more
         private void checkRanks_Click(object sender, RoutedEventArgs e)
         {
             var checker = new RankChecker();
@@ -810,7 +813,27 @@ namespace MSOOrganiser
             }
         }
 
+        public string Totals
+        {
+            get
+            {
+                if (Entrants.Any(x => x.Absent))
+                {
+                    return string.Format("Total contestants: {0} (plus {1} absent)",
+                        Entrants.Count(x => !x.Absent),
+                        Entrants.Count(x => x.Absent));
+                }
+                else
+                {
+                    return string.Format("Total contestants: {0}",
+                        Entrants.Count(x => !x.Absent));
+                }
+            }
+        }
+
         #endregion
+
+
 
         private void PopulateScoreModes()
         {
@@ -1061,6 +1084,9 @@ namespace MSOOrganiser
             // Now set the Number. This has to be done in conjunction with other events.
             var indexer = new EventIndexer();
             indexer.IndexEvents(CurrentOlympiadId);
+
+            // Can't see a better place to do this for now.
+            OnPropertyChanged("Totals");
         }
     }
 }

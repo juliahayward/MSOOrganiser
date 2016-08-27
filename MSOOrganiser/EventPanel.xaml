@@ -170,9 +170,7 @@
                         </StackPanel>
                     </StackPanel>
                     <StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal">
-                        <Button Margin="4,4,4,4" Click="checkRanks_Click">Check Ranks</Button>
-                        <Button Margin="4,4,4,4" Click="calculateRanks_Click">Calculate Ranks</Button>
-                        <Button Margin="4,4,4,4" Click="calculatePenta_Click">Calculate Pentamind Scores</Button>
+                        <TextBlock FontWeight="Bold" FontSize="16" Margin="10,10,10,10" Text="{Binding Totals}"/>
                         <Button Margin="4,4,4,4" Click="print_Click">Print Results</Button>
                     </StackPanel>
                     <DataGrid Name="dataGrid" CanUserAddRows="False" CanUserResizeColumns="True" CanUserSortColumns="True"
