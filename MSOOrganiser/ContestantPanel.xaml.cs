@@ -5,6 +5,7 @@ using MSOCore.Calculators;
 using MSOCore.Models;
 using MSOOrganiser.Dialogs;
 using MSOOrganiser.Events;
+using MSOOrganiser.Reports;
 using MSOOrganiser.UIUtilities;
 using System;
 using System.Collections.Generic;
@@ -208,6 +209,13 @@ namespace MSOOrganiser
             ViewModel.Contestants.Insert(0, new ContestantPanelVm.ContestantVm { Text = "New Contestant", Value = "0" });
             ViewModel.ContestantId = "0";
             ViewModel.PopulateContestant();
+        }
+
+        private void print_Click(object sender, RoutedEventArgs e)
+        {
+            var documentPrinter = new FlowDocumentPrinter();
+            var printer = new ContestantResultsPrinter();
+            documentPrinter.PrintFlowDocument(() => printer.Print(ViewModel));
         }
     }
 
