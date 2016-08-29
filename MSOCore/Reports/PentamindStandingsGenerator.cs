@@ -251,7 +251,7 @@ namespace MSOCore.Reports
                     Code = x.e.Game_Code,
                     GameCode = x.e.Game_Code.Substring(0, 2),
                     Score = (double)x.e.Penta_Score,
-                    IsLongSession = longSessionEvents.Contains(x.e.Game_Code),
+                    IsLongSession = true, // No long game rule in eurogames // longSessionEvents.Contains(x.e.Game_Code),
                     IsEuroGame = (x.e.Event.Game.GameCategory.Id == 3)
                 }).ToList();
 
