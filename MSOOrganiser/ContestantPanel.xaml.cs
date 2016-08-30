@@ -956,7 +956,7 @@ private string _Notes;
                 Events.Add(new EventVm()
                 {
                     EventId = e.e.EventId.Value,
-                    Absent = false,
+                    Absent = e.e.Absent,
                     EventCode = e.e.Game_Code,
                     EventName = e.g.Mind_Sport,
                     Fee = e.e.Fee,

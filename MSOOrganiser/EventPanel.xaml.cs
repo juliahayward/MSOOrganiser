@@ -993,6 +993,8 @@ namespace MSOOrganiser
                     PIN = e.e.PIN.HasValue ? e.e.PIN.Value.ToString() : ""
                 });
             }
+
+            OnPropertyChanged("Totals");
         }
 
         public List<string> Validate()
