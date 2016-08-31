@@ -1,31 +1,18 @@
-﻿using System;
+﻿using AutoUpdaterForWPF;
+using MSOCore;
+using MSOCore.Calculators;
+using MSOCore.Models;
+using MSOOrganiser.Data;
+using MSOOrganiser.Dialogs;
+using MSOOrganiser.Reports;
+using MSOOrganiser.UIUtilities;
+using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
-using System.Data.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-using System.Data.OleDb;
-using System.Data;
-using MSOCore;
-using MSOOrganiser.Reports;
-using MSOOrganiser.Dialogs;
-using MSOOrganiser.UIUtilities;
-using System.Diagnostics;
-using AutoUpdaterForWPF;
-using MSOOrganiser.Data;
-using Newtonsoft.Json;
-using MSOCore.Calculators;
-using System.Timers;
-using MSOCore.Models;
 using System.Windows.Threading;
 
 namespace MSOOrganiser
@@ -75,30 +62,7 @@ namespace MSOOrganiser
         private void window_Loaded(object sender, EventArgs e)
         {
             CheckForUpdates();
-
             ConnectionStringUpdater.Update();
-
-            var lastLoggedIn = GetLastLoggedInUser();
-
-            var loginBox = new LoginWindow(lastLoggedIn);
-            loginBox.ShowDialog();
-            if (loginBox.UserId == 0)
-            {
-                MessageBox.Show("Invalid user/password");
-                this.Close();
-                Application.Current.Shutdown();
-                return;
-            }
-
-            WriteLoggedInUserToRegistry(loginBox.UserName);
-
-            _databaseCheckTimer.Start();
-
-            GlobalSettings.LoggedInUser = loginBox.UserName;
-            LoggedInUserId = loginBox.UserId;
-            UserLoginId = loginBox.UserLoginId;
-            this.Title += " --- logged in as " + loginBox.UserName
-                + " --- " + DataEntitiesProvider.Description();
 
             if (dockPanel.Children.Count > 2) dockPanel.Children.RemoveAt(2);
             var panel = new StartupPanel();
@@ -145,18 +109,7 @@ namespace MSOOrganiser
             if (LoggedInUserId == 0)
                 return;
 
-            var context = DataEntitiesProvider.Provide();
-            var user = context.Users.Find(LoggedInUserId);
-            if (user != null)
-            {
-                var login = user.UserLogins.Where(x => x.Id == UserLoginId && x.LogOutDate == null)
-                    .OrderByDescending(x => x.LogInDate).FirstOrDefault();
-                if (login != null)
-                {
-                    login.LogOutDate = DateTime.UtcNow;
-                    context.SaveChanges();
-                }
-            }
+            logOut_Click(null, null);
         }
 
 
@@ -624,6 +577,53 @@ namespace MSOOrganiser
         {
             Process.Start("http://apps.juliahayward.com/msoorganiser/1.0.2/ReleaseNotes.html");
         }
+
+        private void logIn_Click(object sender, RoutedEventArgs e)
+        {
+            var lastLoggedIn = GetLastLoggedInUser();
+
+            var loginBox = new LoginWindow(lastLoggedIn);
+            loginBox.ShowDialog();
+            if (loginBox.UserId == 0)
+            {
+                MessageBox.Show("Invalid user/password");
+                return;
+            }
+
+            WriteLoggedInUserToRegistry(loginBox.UserName);
+
+            _databaseCheckTimer.Start();
+
+            GlobalSettings.LoggedInUser = loginBox.UserName;
+            LoggedInUserId = loginBox.UserId;
+            UserLoginId = loginBox.UserLoginId;
+            this.Title += " --- logged in as " + loginBox.UserName
+                + " --- " + DataEntitiesProvider.Description();
+
+            ViewModel.IsLoggedIn = true;
+        }
+
+        private void logOut_Click(object sender, RoutedEventArgs e)
+        {
+            var context = DataEntitiesProvider.Provide();
+            var user = context.Users.Find(LoggedInUserId);
+            if (user != null)
+            {
+                var login = user.UserLogins.Where(x => x.Id == UserLoginId && x.LogOutDate == null)
+                    .OrderByDescending(x => x.LogInDate).FirstOrDefault();
+                if (login != null)
+                {
+                    login.LogOutDate = DateTime.UtcNow;
+                    context.SaveChanges();
+                }
+            }
+
+            if (dockPanel.Children.Count > 2) dockPanel.Children.RemoveAt(2);
+            var panel = new StartupPanel();
+            dockPanel.Children.Add(panel);
+
+            ViewModel.IsLoggedIn = false;
+        }
     }
 
 
@@ -636,6 +636,19 @@ namespace MSOOrganiser
             _paymentProcessor = paymentProcessor;
         }
 
+        private bool _isLoggedIn = false;
+        public bool IsLoggedIn
+        {
+            get { return _isLoggedIn; }
+            set
+            {
+                if (_isLoggedIn != value)
+                {
+                    _isLoggedIn = value;
+                    OnPropertyChanged("IsLoggedIn");
+                }
+            }
+        }
 
         private string _dbStatus = "";
 

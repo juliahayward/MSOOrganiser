@@ -1,32 +1,49 @@
 ﻿<Window x:Class="MSOOrganiser.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:local="clr-namespace:MSOOrganiser.Converters"
         Title="Mind Sports Olympiad" Height="800" Width="1020"
         Icon="/MSOOrganiser;component/Resources/Logo.png"
         Loaded="window_Loaded"
         Closing="window_Closing">
+    <Window.Resources>
+        <local:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" />
+        <local:BoolToInvisibilityConverter x:Key="BoolToInvisibilityConverter" />
+    </Window.Resources>
     <Grid>
         <DockPanel x:Name="dockPanel">
             <Menu DockPanel.Dock="Top">
-                <MenuItem Header="_File">
+                <MenuItem Header="Log In" Click="logIn_Click" 
+                          Visibility="{Binding IsLoggedIn, Converter={StaticResource BoolToInvisibilityConverter}}"/>
+                <MenuItem Header="Log Out" Click="logOut_Click"
+                          Visibility="{Binding IsLoggedIn, Converter={StaticResource BoolToVisibilityConverter}}" />
+                <MenuItem Header="_File"
+                          Visibility="{Binding IsLoggedIn, Converter={StaticResource BoolToVisibilityConverter}}">
                     <MenuItem Header="Change Password" Click="changePasswordMenuItem_Click"/>
                     <MenuItem Header="_Exit" Click="exitMenuItem_Click"/>
                 </MenuItem>
-                <MenuItem Header="Olympiads" Click="olympiadsMenuItem_Click"/>
-                <MenuItem Header="Games" Click="gamesMenuItem_Click"/>
-                <MenuItem Header="Competitors" Click="competitorsMenuItem_Click"/>
-                <MenuItem Header="Events">
+                <MenuItem Header="Olympiads" Click="olympiadsMenuItem_Click"
+                          Visibility="{Binding IsLoggedIn, Converter={StaticResource BoolToVisibilityConverter}}"/>
+                <MenuItem Header="Games" Click="gamesMenuItem_Click"
+                          Visibility="{Binding IsLoggedIn, Converter={StaticResource BoolToVisibilityConverter}}"/>
+                <MenuItem Header="Competitors" Click="competitorsMenuItem_Click"
+                          Visibility="{Binding IsLoggedIn, Converter={StaticResource BoolToVisibilityConverter}}"/>
+                <MenuItem Header="Events"
+                          Visibility="{Binding IsLoggedIn, Converter={StaticResource BoolToVisibilityConverter}}">
                     <MenuItem Header="Copy from Previous Year" Click="copyEventsMenuItem_Click"/>
                 </MenuItem>
-                <MenuItem Header="Results">
+                <MenuItem Header="Results"
+                          Visibility="{Binding IsLoggedIn, Converter={StaticResource BoolToVisibilityConverter}}">
                     <MenuItem Header="Display results" Click="displayResultsMenuItem_Click"/>
                     <MenuItem Header="Edit Results" Click="resultsMenuItem_Click" />
                 </MenuItem>
-                <MenuItem Header="Quick Checks">
+                <MenuItem Header="Quick Checks"
+                          Visibility="{Binding IsLoggedIn, Converter={StaticResource BoolToVisibilityConverter}}">
                     <MenuItem Header="People with unspent fees" Click="unspentFee_Click"/>
                     <MenuItem Header="People with unpaid fees" Click="unpaidFee_Click"/>
                 </MenuItem>
-                <MenuItem Header="Reports">
+                <MenuItem Header="Reports"
+                          Visibility="{Binding IsLoggedIn, Converter={StaticResource BoolToVisibilityConverter}}">
                     <MenuItem Header="Bulk Receipts" IsEnabled="False"/>
                     <MenuItem Header="View Max Fee / Penta Cards" IsEnabled="False" Click="maxFeePentaCards_Click"/>
                     <MenuItem Header="Bulk Max Fee" IsEnabled="False"/>
@@ -68,7 +85,8 @@
                     </MenuItem>
                     <MenuItem Header="Contestant listing for JW3 (.csv)" Click="contestantList_Click" />
                 </MenuItem>
-                <MenuItem Header="Misc">
+                <MenuItem Header="Misc"
+                          Visibility="{Binding IsLoggedIn, Converter={StaticResource BoolToVisibilityConverter}}">
                     <MenuItem Header="Print Misc Badges" IsEnabled="False"/>
                     <MenuItem Header="Load online entries" Click="prepayments_Click" />
                 </MenuItem>

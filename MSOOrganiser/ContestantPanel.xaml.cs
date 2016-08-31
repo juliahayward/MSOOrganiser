@@ -339,7 +339,7 @@ namespace MSOOrganiser
 
         public bool EditingThePast { get; set; }
 
-        private string _filterFirstName;
+        private string _filterFirstName = "";
         public string FilterFirstName
         {
             get
@@ -356,7 +356,7 @@ namespace MSOOrganiser
             }
         }
 
-        private string _filterLastName;
+        private string _filterLastName = "";
         public string FilterLastName
         {
             get
@@ -890,19 +890,28 @@ private string _Notes;
 
         public void PopulateDropdown()
         {
-            var context = DataEntitiesProvider.Provide();
-            var searched = context.Contestants.Where(SearchPredicate).ToList();
-            if ((FilterFirstName != "" || FilterLastName != "") && !searched.Any())
-            {
-                MessageBox.Show("No matches found");
-            }
-
             Contestants.Clear();
-            if ((FilterFirstName == "" && FilterLastName == "") || !searched.Any())
+
+            // Don't search if neither name provided
+            if (FilterFirstName == "" && FilterLastName == "")
+            {
                 Contestants.Add(new ContestantVm { Text = "New Competitor", Value = "0" });
-            
-            foreach (var c in searched.OrderBy(x => x.Lastname).ThenBy(x => x.Firstname))
-                Contestants.Add(new ContestantVm { Text = c.Firstname + " " + c.Lastname, Value = c.Mind_Sport_ID.ToString() });
+            }
+            else
+            {
+                var context = DataEntitiesProvider.Provide();
+                var searched = context.Contestants.Where(SearchPredicate).ToList();
+                if (!searched.Any())
+                {
+                    MessageBox.Show("No matches found");
+                    Contestants.Add(new ContestantVm { Text = "New Competitor", Value = "0" });
+                }
+                else
+                {
+                    foreach (var c in searched.OrderBy(x => x.Lastname).ThenBy(x => x.Firstname))
+                        Contestants.Add(new ContestantVm { Text = c.Firstname + " " + c.Lastname, Value = c.Mind_Sport_ID.ToString() });
+                }
+            }
 
             ContestantId = Contestants.First().Value;
         }
