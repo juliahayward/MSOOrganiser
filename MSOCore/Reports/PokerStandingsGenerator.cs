@@ -29,6 +29,7 @@ namespace MSOCore.Reports
                 public bool IsMale { get; set; }
                 public string FemaleFlag { get { return (IsMale) ? "" : "W"; } }
                 public double TotalScore { get; set; }
+                public bool IsValid { get; set; }
                 public string TotalScoreStr { get { return string.Format("{0:0.00}", TotalScore); } }
                 public List<EventScore> Scores { get; set; }
                 public string ScoreStr(int place)
@@ -82,6 +83,7 @@ namespace MSOCore.Reports
 
                 standing.Scores = SelectBestScores(standing.Scores, numAllowed);
                 standing.TotalScore = standing.Scores.Sum(x => x.Score);
+                standing.IsValid = (standing.Scores.Count() == numAllowed);
                 standings.Add(standing);
             }
 

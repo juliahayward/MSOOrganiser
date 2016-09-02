@@ -27,6 +27,7 @@ using MSOCore.Calculators;
 using System.Timers;
 using MSOCore.Models;
 using System.Windows.Threading;
+using MSOCore.Reports;
 
 namespace MSOOrganiser
 {
@@ -617,6 +618,69 @@ namespace MSOOrganiser
             else
             {
                 MessageBox.Show("There are no contestants with unpaid fees");
+            }
+        }
+
+        private void freezeMetaGames_Click(object sender, RoutedEventArgs e)
+        {
+            var context = DataEntitiesProvider.Provide();
+            var currentOlympiad = context.Olympiad_Infoes.First(x => x.Current);
+
+            // First of all, for each pentamind qualifier make a PEWC entry
+            var pentamindStandingsGenerator = new PentamindStandingsGenerator();
+            var standings = pentamindStandingsGenerator.GetStandings(null);
+            foreach (var standing in standings.Standings)
+            {
+                if (!standing.IsValid) continue;
+
+                var contestant = context.Contestants.FirstOrDefault(x => x.Mind_Sport_ID == standing.ContestantId);
+                var evt = context.Events.FirstOrDefault(x => x.OlympiadId == currentOlympiad.Id && x.Code == "PEWC");
+                var entry = context.Entrants.FirstOrDefault(x => x.OlympiadId == currentOlympiad.Id 
+                                        && x.Game_Code == "PEWC" && x.Mind_Sport_ID == standing.ContestantId);
+                if (entry == null)
+                {
+                    entry = Entrant.NewEntrant(evt.EIN, "PEWC", currentOlympiad.Id, contestant, 0m);
+                    context.Entrants.Add(entry);
+                }
+                entry.Score = standing.TotalScoreStr;
+                context.SaveChanges();
+            }
+            // Next a Eurogames one
+            var eurostandings = pentamindStandingsGenerator.GetEuroStandings(null);
+            foreach (var standing in eurostandings.Standings)
+            {
+                if (!standing.IsValid) continue;
+
+                var contestant = context.Contestants.FirstOrDefault(x => x.Mind_Sport_ID == standing.ContestantId);
+                var evt = context.Events.FirstOrDefault(x => x.OlympiadId == currentOlympiad.Id && x.Code == "EGWC");
+                var entry = context.Entrants.FirstOrDefault(x => x.OlympiadId == currentOlympiad.Id
+                                        && x.Game_Code == "EGWC" && x.Mind_Sport_ID == standing.ContestantId);
+                if (entry == null)
+                {
+                    entry = Entrant.NewEntrant(evt.EIN, "EGWC", currentOlympiad.Id, contestant, 0m);
+                    context.Entrants.Add(entry);
+                }
+                entry.Score = standing.TotalScoreStr;
+                context.SaveChanges();
+            }
+            // Next a Poker one
+            var pokerStandingsGenerator = new PokerStandingsGenerator();
+            var pokerstandings = pokerStandingsGenerator.GetStandings();
+            foreach (var standing in pokerstandings.Standings)
+            {
+                if (!standing.IsValid) continue;
+
+                var contestant = context.Contestants.FirstOrDefault(x => x.Mind_Sport_ID == standing.ContestantId);
+                var evt = context.Events.FirstOrDefault(x => x.OlympiadId == currentOlympiad.Id && x.Code == "POAC");
+                var entry = context.Entrants.FirstOrDefault(x => x.OlympiadId == currentOlympiad.Id
+                                        && x.Game_Code == "POAC" && x.Mind_Sport_ID == standing.ContestantId);
+                if (entry == null)
+                {
+                    entry = Entrant.NewEntrant(evt.EIN, "POAC", currentOlympiad.Id, contestant, 0m);
+                    context.Entrants.Add(entry);
+                }
+                entry.Score = standing.TotalScoreStr;
+                context.SaveChanges();
             }
         }
 

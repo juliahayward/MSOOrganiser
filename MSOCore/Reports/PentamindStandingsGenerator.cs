@@ -39,6 +39,7 @@ namespace MSOCore.Reports
                 public double TotalScore { get; set; }
                 public string TotalScoreStr { get { return string.Format("{0:0.00}", TotalScore); } }
                 public List<EventScore> Scores { get; set; }
+                public bool IsValid { get; set; }
                 public string ScoreStr(int place)
                 {
                     var score = Scores.ElementAtOrDefault(place);
@@ -96,6 +97,7 @@ namespace MSOCore.Reports
 
                 standing.Scores = calc.SelectBestScores(standing.Scores, pentaLong, pentaTotal, currentOlympiad.StartDate.Value.Year);
                 standing.TotalScore = standing.Scores.Sum(x => x.Score);
+                standing.IsValid = (standing.Scores.Count() == pentaTotal);
                 standings.Add(standing);
             }
 
@@ -257,6 +259,7 @@ namespace MSOCore.Reports
 
                 standing.Scores = calc.SelectBestScores(standing.Scores, pentaLong, pentaTotal, currentOlympiad.StartDate.Value.Year);
                 standing.TotalScore = standing.Scores.Sum(x => x.Score);
+                standing.IsValid = (standing.Scores.Count() == pentaTotal);
                 standings.Add(standing);
             }
 
