@@ -89,6 +89,7 @@
                           Visibility="{Binding IsLoggedIn, Converter={StaticResource BoolToVisibilityConverter}}">
                     <MenuItem Header="Print Misc Badges" IsEnabled="False"/>
                     <MenuItem Header="Load online entries" Click="prepayments_Click" />
+                    <MenuItem Header="Freeze metagame standings" Click="freezeMetaGames_Click" />
                 </MenuItem>
                 <MenuItem Header="Help">
                     <MenuItem Header="Show Help" Click="help_Click" />
