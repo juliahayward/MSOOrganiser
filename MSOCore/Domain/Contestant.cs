@@ -13,6 +13,13 @@ namespace MSOCore
             return Firstname + " " + Lastname;
         }
 
+        public string FullNameWithInitials()
+        {
+            return Firstname + " " 
+                + (string.IsNullOrEmpty(Initials) ? "" : Initials + " ")
+                + Lastname;
+        }
+
         public static bool IsJuniorForOlympiad(DateTime? dateofBirth, Olympiad_Info olympiad)
         {
             // If JnrAge is 18, then we can be 19 years minus a day (hence >, not >=) on the AgeDate

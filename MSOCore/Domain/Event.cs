@@ -8,6 +8,17 @@ namespace MSOCore
 {
     public partial class Event
     {
+        public DateTime? Start
+        {
+            get
+            {
+                if (Event_Sess.Any())
+                    return Event_Sess.OrderBy(x => x.ActualStart).First().ActualStart;
+                else
+                    return null;
+            }
+        }
+
         /// <summary>
         /// Make a copy of this event, but with ID 0 ready to be created, and no Entrants.
         /// </summary>

@@ -46,23 +46,26 @@ namespace MSOOrganiser.Reports
             /************ Main body *************/
 
             Table bodyTable = new Table() { CellSpacing = 0 };
-            bodyTable.Columns.Add(new TableColumn() { Width = new GridLength(450) });
-            bodyTable.Columns.Add(new TableColumn() { Width = new GridLength(100) });
+            bodyTable.Columns.Add(new TableColumn() { Width = new GridLength(350) });
+            bodyTable.Columns.Add(new TableColumn() { Width = new GridLength(120) }); 
+            bodyTable.Columns.Add(new TableColumn() { Width = new GridLength(80) });
             bodyTable.Columns.Add(new TableColumn() { Width = new GridLength(100) });
             bodyTable.Columns.Add(new TableColumn() { Width = new GridLength(100) });
             bodyTable.RowGroups.Add(new TableRowGroup());
 
             var row = new TableRow();
             row.Cells.Add(new TableCell(new Paragraph(new Run("Name")) { Margin = new Thickness(2), FontSize = 10 }));
+            row.Cells.Add(new TableCell(new Paragraph(new Run("Date")) { Margin = new Thickness(2), FontSize = 10 }));
             row.Cells.Add(new TableCell(new Paragraph(new Run("Rank")) { Margin = new Thickness(2), FontSize = 12 }));
             row.Cells.Add(new TableCell(new Paragraph(new Run("Medal")) { Margin = new Thickness(2), FontSize = 10 }));
             row.Cells.Add(new TableCell(new Paragraph(new Run("Pentamind Pts")) { Margin = new Thickness(2), FontSize = 12 }));
             bodyTable.RowGroups[0].Rows.Add(row);
 
-            foreach (var evt in contestant.Events)
+            foreach (var evt in contestant.Events.OrderBy(x => x.Date))
             {
                 row = new TableRow();
-                row.Cells.Add(new TableCell(new Paragraph(new Run(evt.EventName)) { Margin = new Thickness(2), FontSize = 12 }));
+                row.Cells.Add(new TableCell(new Paragraph(new Run(evt.EventName)) { Margin = new Thickness(2), FontSize = 12, TextAlignment = TextAlignment.Left }));
+                row.Cells.Add(new TableCell(new Paragraph(new Run(evt.FormattedDate)) { Margin = new Thickness(2), FontSize = 12 }));
                 var rankString = (evt.Rank > 0) ? evt.Rank.ToString().Ordinal() : "";
                 row.Cells.Add(new TableCell(new Paragraph(new Run(rankString)) { Margin = new Thickness(2), FontSize = 12 }));
                 row.Cells.Add(new TableCell(new Paragraph(new Run(evt.Medal + " " + evt.JuniorMedal)) { Margin = new Thickness(2), FontSize = 12 }));

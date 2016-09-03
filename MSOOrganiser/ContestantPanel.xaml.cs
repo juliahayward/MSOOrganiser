@@ -257,6 +257,10 @@ namespace MSOOrganiser
             public int EventId { get; set; }
             public string EventCode { get; set; }
             public string EventName { get; set; }
+            public DateTime? Date { get; set; }
+            public string FormattedDate { get {
+                return (Date.HasValue) ? Date.Value.ToString("ddd dd, HH:mm") : "";
+            } }
             public bool Receipt { get; set; }
             public decimal StandardFee { get; set; }    // Before we apply the max-fee apportioning
             private decimal _fee;
@@ -908,8 +912,11 @@ private string _Notes;
                 }
                 else
                 {
+                    if (searched.Count() > 1)
+                        MessageBox.Show(string.Format("{0} matches found", searched.Count()));
+
                     foreach (var c in searched.OrderBy(x => x.Lastname).ThenBy(x => x.Firstname))
-                        Contestants.Add(new ContestantVm { Text = c.Firstname + " " + c.Lastname, Value = c.Mind_Sport_ID.ToString() });
+                        Contestants.Add(new ContestantVm { Text = c.FullNameWithInitials(), Value = c.Mind_Sport_ID.ToString() });
                 }
             }
 
@@ -922,7 +929,7 @@ private string _Notes;
             var context = DataEntitiesProvider.Provide();
             foreach (var c in context.Contestants
                 .Where(x => x.Mind_Sport_ID == contestantId))
-                Contestants.Add(new ContestantVm { Text = c.Firstname + " " + c.Lastname, Value = c.Mind_Sport_ID.ToString() });
+                Contestants.Add(new ContestantVm { Text = c.FullNameWithInitials(), Value = c.Mind_Sport_ID.ToString() });
 
             ContestantId = Contestants.First().Value;
         }
@@ -978,7 +985,8 @@ private string _Notes;
                     Penta = e.e.Penta_Score.HasValue ? e.e.Penta_Score.Value.ToString() : "",
                     Rank = e.e.Rank.HasValue ? e.e.Rank.Value : 0,
                     Receipt = e.e.Receipt.Value,
-                    TieBreak = e.e.Tie_break ?? ""
+                    TieBreak = e.e.Tie_break ?? "",
+                    Date = e.e.Event.Start
                 });
             }
         }

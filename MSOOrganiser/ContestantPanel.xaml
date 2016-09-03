@@ -210,7 +210,7 @@
                     </DataGrid>
                     <StackPanel Orientation="Horizontal">
                         <TextBlock FontWeight="Bold" FontSize="16" Margin="10,10,10,10" Text="{Binding Totals}"/>
-                        <Button Margin="4,4,4,4" Click="print_Click">Print Results</Button>
+                        <Button Margin="4,4,4,4" Click="print_Click">Print Schedule/Results</Button>
                     </StackPanel>
                 </StackPanel>
             </TabItem>
