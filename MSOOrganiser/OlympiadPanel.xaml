@@ -98,7 +98,8 @@
                             AutoGenerateColumns="False" 
                             Margin="10,10,10,0" IsReadOnly="True" ItemsSource="{Binding Events}">
                             <DataGrid.Columns>
-                                <DataGridTextColumn Header="ID" Binding="{Binding Id}" />
+                            <DataGridTextColumn Header="#" Binding="{Binding SequenceNumber}" />
+                            <DataGridTextColumn Header="ID" Binding="{Binding Id}" />
                                 <DataGridTextColumn Header="Code" Binding="{Binding Code}" />
                                 <DataGridTextColumn Header="Name" Width="*" Binding="{Binding Name}" />
                             <DataGridTextColumn Header="Times" Binding="{Binding Dates}" />

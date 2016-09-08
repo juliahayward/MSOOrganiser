@@ -129,7 +129,7 @@ namespace MSOOrganiser
         {
             using (new SpinnyCursor())
             {
-                if (dockPanel.Children.Count > 2) dockPanel.Children.RemoveAt(2);
+                if (dockPanel.Children.Count > 3) dockPanel.Children.RemoveAt(3);
                 var panel = new OlympiadPanel();
                 panel.Populate();
                 panel.EventSelected += panel_EventSelected;
@@ -141,7 +141,7 @@ namespace MSOOrganiser
         {
             using (new SpinnyCursor())
             {
-                if (dockPanel.Children.Count > 2) dockPanel.Children.RemoveAt(2);
+                if (dockPanel.Children.Count > 3) dockPanel.Children.RemoveAt(3);
                 var panel = new ContestantPanel();
                 panel.Populate();
                 panel.EventSelected += panel_EventSelected;
@@ -153,7 +153,7 @@ namespace MSOOrganiser
         {
             using (new SpinnyCursor())
             {
-                if (dockPanel.Children.Count > 2) dockPanel.Children.RemoveAt(2);
+                if (dockPanel.Children.Count > 3) dockPanel.Children.RemoveAt(3);
                 var panel = new EventPanel();
                 panel.Populate(e.EventCode, e.OlympiadId);
                 panel.ContestantSelected += panel_ContestantSelected;
@@ -166,7 +166,7 @@ namespace MSOOrganiser
         {
             using (new SpinnyCursor())
             {
-                if (dockPanel.Children.Count > 2) dockPanel.Children.RemoveAt(2);
+                if (dockPanel.Children.Count > 3) dockPanel.Children.RemoveAt(3);
                 var panel = new GamePanel();
                 panel.Populate();
                 dockPanel.Children.Add(panel);
@@ -177,7 +177,7 @@ namespace MSOOrganiser
         {
             Cursor = Cursors.Wait;
 
-            if (dockPanel.Children.Count > 2) dockPanel.Children.RemoveAt(2);
+            if (dockPanel.Children.Count > 3) dockPanel.Children.RemoveAt(3);
             var panel = new NationalityReport();
            // panel.Populate();
             dockPanel.Children.Add(panel);
@@ -187,7 +187,7 @@ namespace MSOOrganiser
 
         private void resultsMenuItem_Click(object sender, RoutedEventArgs e)
         {
-            if (dockPanel.Children.Count > 2) dockPanel.Children.RemoveAt(2);
+            if (dockPanel.Children.Count > 3) dockPanel.Children.RemoveAt(3);
             var panel = new EventPanel();
             panel.Populate();
             panel.ContestantSelected += panel_ContestantSelected;
@@ -198,7 +198,7 @@ namespace MSOOrganiser
         {
             using (new SpinnyCursor())
             {
-                if (dockPanel.Children.Count > 2) dockPanel.Children.RemoveAt(2);
+                if (dockPanel.Children.Count > 3) dockPanel.Children.RemoveAt(3);
                 var panel = new ContestantPanel();
                 panel.Populate(e.ContestantId);
                 panel.EventSelected += panel_EventSelected;
@@ -208,7 +208,7 @@ namespace MSOOrganiser
 
         private void displayResultsMenuItem_Click(object sender, RoutedEventArgs e)
         {
-            if (dockPanel.Children.Count > 2) dockPanel.Children.RemoveAt(2);
+            if (dockPanel.Children.Count > 3) dockPanel.Children.RemoveAt(3);
             var panel = new DisplayResultsPanel();
             dockPanel.Children.Add(panel);
         }

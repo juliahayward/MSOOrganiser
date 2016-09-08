@@ -169,6 +169,7 @@ namespace MSOOrganiser
 
         public class EventVm
         {
+            public int SequenceNumber { get; set; }
             public int Id { get; set; }
             public string Code { get; set; }
             public string Name { get; set; }
@@ -182,6 +183,7 @@ namespace MSOOrganiser
 
             public EventVm(Event e)
             {
+                SequenceNumber = e.Number;
                 Id = e.EIN;
                 Code = e.Code;
                 Name = e.Mind_Sport;

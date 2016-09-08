@@ -25,13 +25,13 @@
                           SelectionChanged="contestantCombo_Changed">
                 </ComboBox>
                 <Label Margin="0,10,0,0">Search for:</Label>
-                <xctk:WatermarkTextBox Watermark="First Name" Margin="10,10,10,10" Text="{Binding FilterFirstName, Mode=TwoWay}" Width="100"></xctk:WatermarkTextBox>
+                <xctk:WatermarkTextBox Watermark="First Name" Margin="0,10,10,10" Text="{Binding FilterFirstName, Mode=TwoWay}" Width="100"></xctk:WatermarkTextBox>
                 <xctk:WatermarkTextBox Watermark="Surname" Margin="0,10,10,10" Text="{Binding FilterLastName, Mode=TwoWay}" Width="100"></xctk:WatermarkTextBox>
-                <Button Margin="10,10,10,10" Click="search_Click">Search</Button>
-                <Button Margin="10,10,10,10" Click="clearSearch_Click">Clear</Button>
-                <Button Margin="10,10,10,10" IsEnabled="{Binding IsNotDirty}" Click="addNew_Click">Add New</Button>
-                <Button Margin="10,10,10,10" IsEnabled="{Binding IsDirty}" Click="save_Click">Save</Button>
-                <Button Margin="10,10,10,10" IsEnabled="{Binding IsDirty}" Click="cancel_Click">Cancel</Button>
+                <Button Margin="0,10,10,10" Click="search_Click">Search</Button>
+                <Button Margin="0,10,10,10" Click="clearSearch_Click">Clear</Button>
+                <Button Margin="0,10,10,10" IsEnabled="{Binding IsNotDirty}" Click="addNew_Click">Add New</Button>
+                <Button Margin="0,10,10,10" IsEnabled="{Binding IsDirty}" Click="save_Click">Save</Button>
+                <Button Margin="0,10,10,10" IsEnabled="{Binding IsDirty}" Click="cancel_Click">Cancel</Button>
             </StackPanel>
         </Border>
         <TextBlock FontWeight="Bold" FontSize="16" Margin="10,10,10,10" Text="{Binding Name}"/>
