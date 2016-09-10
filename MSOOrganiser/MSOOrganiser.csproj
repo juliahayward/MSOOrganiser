@@ -194,6 +194,9 @@
       <DependentUpon>StartupPanel.xaml</DependentUpon>
     </Compile>
     <Compile Include="StatusEventArgs.cs" />
+    <Compile Include="SummaryPanel.xaml.cs">
+      <DependentUpon>SummaryPanel.xaml</DependentUpon>
+    </Compile>
     <Compile Include="UIUtilities\SpinnyCursor.cs" />
     <Page Include="AddEventToOlympiadWindow.xaml">
       <SubType>Designer</SubType>
@@ -286,6 +289,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="StartupPanel.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="SummaryPanel.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

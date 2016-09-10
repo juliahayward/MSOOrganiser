@@ -19,6 +19,12 @@ namespace MSOCore
             }
         }
 
+        public string ShortName()
+        {
+            return this.Mind_Sport.Replace("Olympiad Championship", "")
+                .Replace("World Championship", "");
+        }
+
         /// <summary>
         /// Make a copy of this event, but with ID 0 ready to be created, and no Entrants.
         /// </summary>
