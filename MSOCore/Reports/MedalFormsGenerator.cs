@@ -10,6 +10,8 @@ namespace MSOCore.Reports
     {
         public class MedalFormsVm
         {
+            public string ResultsVerifier { get; set; }
+
             public class EntrantVm
             {
                 public string FirstName { get; set; }
@@ -62,6 +64,8 @@ namespace MSOCore.Reports
 
             var items = GetItemsForLatest(context, currentOlympiad, events); 
             items.OlympiadTitle = currentOlympiad.FullTitle();
+            items.ResultsVerifier = context.GlobalSettings.First(x => x.Name == "ResultVerifier").Value;
+
             return items;
         }
 
@@ -74,6 +78,8 @@ namespace MSOCore.Reports
 
             var items = GetItemsForLatest(context, currentOlympiad, events);
             items.OlympiadTitle = currentOlympiad.FullTitle();
+            items.ResultsVerifier = context.GlobalSettings.First(x => x.Name == "ResultVerifier").Value;
+
             return items;
         }
 
@@ -85,6 +91,8 @@ namespace MSOCore.Reports
 
             var items = GetItemsForLatest(context, currentOlympiad, events);
             items.OlympiadTitle = currentOlympiad.FullTitle();
+            items.ResultsVerifier = context.GlobalSettings.First(x => x.Name == "ResultVerifier").Value;
+
             return items;
         }
 

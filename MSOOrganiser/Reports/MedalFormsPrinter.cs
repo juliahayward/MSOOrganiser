@@ -191,7 +191,7 @@ namespace MSOOrganiser.Reports
                     trow.Cells.Add(cell);
                     cell = new BorderedTableCell(new Paragraph(new Run("Arbiter:")) { FontSize = 12 });
                     trow.Cells.Add(cell);
-                    cell = new BorderedTableCell(new Paragraph(new Run("Verified by D Levy / T Corfe:")) { FontSize = 12 });
+                    cell = new BorderedTableCell(new Paragraph(new Run("Verified by " + results.ResultsVerifier +":")) { FontSize = 12 });
                     trow.Cells.Add(cell);
                     footerTable.RowGroups[0].Rows.Add(trow);
 
