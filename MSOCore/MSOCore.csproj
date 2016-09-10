@@ -108,6 +108,9 @@
     <Compile Include="GameCategory.cs">
       <DependentUpon>Model.tt</DependentUpon>
     </Compile>
+    <Compile Include="GlobalSetting.cs">
+      <DependentUpon>Model.tt</DependentUpon>
+    </Compile>
     <Compile Include="Information.cs">
       <DependentUpon>Model.tt</DependentUpon>
     </Compile>

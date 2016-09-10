@@ -24,6 +24,7 @@
           <EntitySet Name="Fees" EntityType="DataModel.Store.Fees" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="GameCategories" EntityType="DataModel.Store.GameCategories" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="Games" EntityType="DataModel.Store.Games" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="GlobalSettings" EntityType="DataModel.Store.GlobalSettings" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="Information" EntityType="DataModel.Store.Information" store:Type="Tables" store:Schema="dbo" store:Name="Information">
             <DefiningQuery>SELECT 
       [Information].[Mind Sport ID] AS [Mind Sport ID], 
@@ -270,6 +271,14 @@
           <Property Name="SSMA_TimeStamp" Type="timestamp" Nullable="false" StoreGeneratedPattern="Computed" />
           <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
           <Property Name="CategoryId" Type="int" />
+        </EntityType>
+        <EntityType Name="GlobalSettings">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="nvarchar" Nullable="false" MaxLength="50" />
+          <Property Name="Value" Type="nvarchar" Nullable="false" MaxLength="50" />
         </EntityType>
         <!--Errors Found During Generation:
       warning 6002: The table/view 'mso.dbo.Information' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.
@@ -710,6 +719,7 @@
           </AssociationSet>
           <EntitySet Name="EntryJsons" EntityType="DataModel.EntryJson" />
           <EntitySet Name="Nationalities" EntityType="DataModel.Nationality" />
+          <EntitySet Name="GlobalSettings" EntityType="DataModel.GlobalSetting" />
         </EntityContainer>
         <EntityType Name="Badges___Misc">
           <Key>
@@ -1230,6 +1240,14 @@
           <Property Type="Int32" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Type="String" Name="Name" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
         </EntityType>
+        <EntityType Name="GlobalSetting">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Type="Int32" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="String" Name="Name" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="Value" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -1601,6 +1619,15 @@
           <EntitySetMapping Name="Nationalities">
             <EntityTypeMapping TypeName="DataModel.Nationality">
               <MappingFragment StoreEntitySet="Nationalities">
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="GlobalSettings">
+            <EntityTypeMapping TypeName="DataModel.GlobalSetting">
+              <MappingFragment StoreEntitySet="GlobalSettings">
+                <ScalarProperty Name="Value" ColumnName="Value" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>

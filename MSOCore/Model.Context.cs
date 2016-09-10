@@ -52,5 +52,6 @@ namespace MSOCore
         public DbSet<GameCategory> GameCategories { get; set; }
         public DbSet<EntryJson> EntryJsons { get; set; }
         public DbSet<Nationality> Nationalities { get; set; }
+        public DbSet<GlobalSetting> GlobalSettings { get; set; }
     }
 }

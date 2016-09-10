@@ -15,6 +15,7 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Threading;
 using MSOCore.Reports;
+using System.Reflection;
 
 namespace MSOOrganiser
 {
@@ -644,6 +645,20 @@ namespace MSOOrganiser
 
         private void logIn_Click(object sender, RoutedEventArgs e)
         {
+            var context = DataEntitiesProvider.Provide();
+            var minVersionStr = context.GlobalSettings.FirstOrDefault(x => x.Name == "MinimumSupportedVersion");
+            if (minVersionStr != null)
+            {
+                var minVersion = Version.Parse(minVersionStr.Value);
+                var thisVersion = Assembly.GetExecutingAssembly().GetName().Version;
+                if (thisVersion < minVersion)
+                {
+                    MessageBox.Show("This version is not supported any more because of database changes. Please get an update");
+                    return;
+                }
+            }
+
+
             var lastLoggedIn = GetLastLoggedInUser();
 
             var loginBox = new LoginWindow(lastLoggedIn);
