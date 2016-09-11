@@ -188,16 +188,7 @@ namespace MSOOrganiser
                 Code = e.Code;
                 Name = e.Mind_Sport;
                 CanDelete = !e.Entrants.Any(x => x.Rank.HasValue && x.Rank > 0);
-                if (!e.Entrants.Any())
-                    Status = "In database, empty";
-                else if (CanDelete && e.Event_Sess.Any(s => s.ActualStart < DateTime.Now))
-                    Status = "In progress";
-                else if (CanDelete && e.Event_Sess.All(s => s.ActualEnd < DateTime.Now))
-                    Status = "Awaiting results";
-                else if (CanDelete)
-                    Status = "Taking entries";
-                else
-                    Status = "Complete";
+                Status = e.Status();
 
                 if (e.Event_Sess.Any())
                 {

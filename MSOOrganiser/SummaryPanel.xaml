@@ -13,10 +13,10 @@
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
             <TextBlock Grid.Row="0" FontWeight="Bold" FontSize="16" Margin="10,10,10,0">Summary</TextBlock>
-            <ProgressBar Grid.Row="1" Margin="10,0,10,10" Maximum="77" Value="12"></ProgressBar>
+            <ProgressBar Grid.Row="1" Margin="10,0,10,10" Maximum="{Binding ProgressMaximum}" Value="{Binding ProgressValue}"></ProgressBar>
 
-            <ScrollViewer Grid.Row="2" CanContentScroll="True" VerticalScrollBarVisibility="Visible">
-            <ItemsControl ItemsSource="{Binding Events}">
+            <ScrollViewer Grid.Row="2" CanContentScroll="True" VerticalScrollBarVisibility="Auto">
+            <ItemsControl ItemsSource="{Binding Events}" Margin="0,0,10,0">
                 <ItemsControl.ItemsPanel>
                     <ItemsPanelTemplate>
                             <StackPanel Orientation="Vertical"/>
@@ -28,8 +28,8 @@
                             <TextBlock FontWeight="Bold" FontSize="16" Margin="0,10,10,10" Text="{Binding Id}"></TextBlock>
                             <StackPanel Orientation="Vertical">
                                 <TextBlock FontWeight="Bold" FontSize="12" Text="{Binding Name}"></TextBlock>
-                                <TextBlock>Wednesday 10:15-16:00       21 competitors</TextBlock>
-                                <TextBlock>In progress</TextBlock>
+                                <TextBlock Text="{Binding DateAndCompetitors}"></TextBlock>
+                                <TextBlock Text="{Binding Status}"></TextBlock>
                             </StackPanel>
                         </StackPanel>
                     </DataTemplate>

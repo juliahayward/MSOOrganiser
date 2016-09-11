@@ -19,10 +19,56 @@ namespace MSOCore
             }
         }
 
+        public DateTime? End
+        {
+            get
+            {
+                if (Event_Sess.Any())
+                    return Event_Sess.OrderBy(x => x.ActualStart).Last().ActualEnd;
+                else
+                    return null;
+            }
+        }
+
         public string ShortName()
         {
             return this.Mind_Sport.Replace("Olympiad Championship", "")
                 .Replace("World Championship", "");
+        }
+
+        public string Status()
+        {
+            var hasNoScoredEntrants = !Entrants.Any(x => x.Rank.HasValue && x.Rank > 0);
+            var hasAllScoredEntrants = Entrants.All(x => (x.Rank.HasValue && x.Rank > 0) || x.Absent);
+            if (!Entrants.Any())
+                return "In database, empty";
+            else if (hasNoScoredEntrants && Event_Sess.All(s => s.ActualEnd < DateTime.Now))
+                return "Awaiting results";
+            else if (hasNoScoredEntrants && Event_Sess.Any(s => s.ActualStart < DateTime.Now))
+                return "In progress";
+            else if (hasNoScoredEntrants)
+                return "Taking entries";
+            else if (hasAllScoredEntrants)
+                return "Complete";
+            else
+                return "Results being entered";
+        }
+
+        public double FractionDone()
+        {
+            var hasNoScoredEntrants = !Entrants.Any(x => x.Rank.HasValue && x.Rank > 0);
+            var hasAllScoredEntrants = Entrants.All(x => (x.Rank.HasValue && x.Rank > 0) || x.Absent);
+            if (!Entrants.Any())
+                return 0.0;
+            else if (hasNoScoredEntrants && Event_Sess.All(s => s.ActualEnd < DateTime.Now))
+                return 0.666;
+            else if (hasNoScoredEntrants && Event_Sess.Any(s => s.ActualStart < DateTime.Now))
+                return 0.333;
+            else if (hasNoScoredEntrants)
+                return 0.0;
+            else if (hasAllScoredEntrants)
+                return 1.0;
+            else return 0.9;
         }
 
         /// <summary>
