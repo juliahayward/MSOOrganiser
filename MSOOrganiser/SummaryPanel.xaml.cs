@@ -30,6 +30,11 @@ namespace MSOOrganiser
 
             DataContext = new SummaryPanelVm();
 
+            MainWindow.UserLoggedIn += MainWindow_UserLoggedIn;
+        }
+
+        void MainWindow_UserLoggedIn(object sender, EventArgs e)
+        {
             ViewModel.Populate();
         }
 
@@ -51,20 +56,51 @@ namespace MSOOrganiser
             {
                 get
                 {
-                    return Dates + "     " + NumCompetitors + " competitors";
+                    return Dates + "     " + NumCompetitors + " entries";
                 }
             }
             public double FractionDone { get; set; }
             public string Status { get; set; }
         }
 
-        public double ProgressValue { get; set; }
-        public double ProgressMaximum { get; set; }
+        private double _progressValue = 0.0;
+        public double ProgressValue
+        {
+            get
+            { return _progressValue; }
+            set
+            {
+                if (value != _progressValue)
+                {
+                    _progressValue = value;
+                    OnPropertyChanged("ProgressValue");
+                }
+            }
+        }
+
+        private double _progressMaximum = 1.0;
+        public double ProgressMaximum
+        {
+            get { return _progressMaximum; }
+            set
+            {
+                if (value != _progressMaximum)
+                {
+                    _progressMaximum = value;
+                    OnPropertyChanged("ProgressMaximum");
+                }
+            }
+        }
         public ObservableCollection<EventVm> Events { get; set; }
+
+        public SummaryPanelVm()
+        {
+            Events = new ObservableCollection<EventVm>();
+        }
 
         public void Populate()
         {
-            Events = new ObservableCollection<EventVm>();
+            Events.Clear();
 
             var context = DataEntitiesProvider.Provide();
             var currentOlympiad = context.Olympiad_Infoes.First(x => x.Current);

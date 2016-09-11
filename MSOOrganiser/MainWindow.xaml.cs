@@ -30,6 +30,9 @@ namespace MSOOrganiser
         private int LoggedInUserId { get; set; }
         private int UserLoginId { get; set; }
 
+        public delegate void UserLoggedInEventHandler(object sender, EventArgs e);
+        public static event UserLoggedInEventHandler UserLoggedIn; 
+
         public MainWindow()
         {
             InitializeComponent();
@@ -680,6 +683,7 @@ namespace MSOOrganiser
                 + " --- " + DataEntitiesProvider.Description();
 
             ViewModel.IsLoggedIn = true;
+            UserLoggedIn(this, new EventArgs());
         }
 
         private void logOut_Click(object sender, RoutedEventArgs e)
