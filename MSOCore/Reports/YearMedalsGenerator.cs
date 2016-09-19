@@ -21,6 +21,14 @@ namespace MSOCore.Reports
                 public string EventCode { get; set; }
                 public string EventName { get; set; }
                 public string Medal { get; set; }
+                public string JuniorMedal { get; set; }
+                public string Medals { 
+                    get 
+                    { 
+                        var won = new [] { Medal, JuniorMedal };
+                        return string.Join(",<br>", won.Where(x => !string.IsNullOrEmpty(x))); 
+                    }
+                }
                 public int Rank { get; set; }
                 public int ContestantId { get; set; }
                 public string FirstName { get; set; }
@@ -41,7 +49,8 @@ namespace MSOCore.Reports
 
             var games = context.Games.ToDictionary(x => x.Code, x => x);
 
-            retval.Medals = context.Entrants.Where(x => x.OlympiadId.Value == olympiadId && x.Medal != null)
+            retval.Medals = context.Entrants.Where(x => x.OlympiadId.Value == olympiadId 
+                    && (x.Medal != null || x.JuniorMedal != null))
                 .Join(context.Contestants, e => e.Mind_Sport_ID, c => c.Mind_Sport_ID, (e, c) => new { e, c })
                 .Join(context.Events.Where(x => x.OlympiadId == olympiadId),
                         ec => ec.e.Game_Code, ev => ev.Code, (ec, ev) => new { ec, ev })
@@ -50,6 +59,7 @@ namespace MSOCore.Reports
                     EventCode = ecv.ev.Code,
                     EventName = ecv.ev.Mind_Sport,
                     Medal = ecv.ec.e.Medal,
+                    JuniorMedal = ecv.ec.e.JuniorMedal,
                     Rank = ecv.ec.e.Rank.Value,
                     ContestantId = ecv.ec.c.Mind_Sport_ID,
                     FirstName = ecv.ec.c.Firstname,
@@ -57,7 +67,10 @@ namespace MSOCore.Reports
                     Nationality = ecv.ec.c.Nationality ?? "default"
                 })
                 .ToList()
-                .OrderBy(x => x.EventCode).ThenBy(x => x.Rank).ThenBy(x => x.Medal.MedalRank());
+                .OrderBy(x => x.EventCode)
+                .ThenBy(x => x.Rank)
+                .ThenBy(x => x.Medal.MedalRank())
+                .ThenBy(x => x.JuniorMedal.MedalRank());
 
             foreach (var medal in retval.Medals)
             {

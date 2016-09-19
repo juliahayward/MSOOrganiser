@@ -24,6 +24,11 @@ namespace MSOCore.Extensions
             return number + "th";
         }
 
+        /// <summary>
+        /// Note that both medals and juniors start with G / S / B
+        /// </summary>
+        /// <param name="medal"></param>
+        /// <returns></returns>
         public static int MedalRank(this string medal)
         {
             if (medal == null)

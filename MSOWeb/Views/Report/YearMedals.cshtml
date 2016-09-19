@@ -36,7 +36,7 @@
         @foreach (var medal in Model.Medals.Where(x => x.EventName == eventName))
         {
             <tr>
-                <td style="width:100px;"><div class="jmhPadded">@medal.Medal</div></td>
+                <td style="width:100px;"><div class="jmhPadded">@Html.Raw(medal.Medals)</div></td>
                 <td style="width:240px;"><div class="jmhPadded">
                     <a href="./ContestantMedals?contestantId=@medal.ContestantId">@medal.Name</a>
                                          </div></td>
