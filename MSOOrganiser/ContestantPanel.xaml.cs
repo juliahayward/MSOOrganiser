@@ -978,14 +978,6 @@ private string _Notes;
                 .Join(context.Events, e => e.Game_Code, g => g.Code, (e, g) => new { e = e, g = g })
                 .Where(x => x.e.OlympiadId == olympiadId && x.g.OlympiadId == olympiadId && x.e.Mind_Sport_ID == contestantId)
                 .OrderBy(x => x.e.Game_Code).ToList();
-
-            var years = context.Entrants
-                // Shouldn't be necessary but dipping into historic data is error-prone
-                .Where(e => e.Mind_Sport_ID == contestantId && e.Event != null && e.Event.Olympiad_Info != null)
-                .Select(e => e.Event.Olympiad_Info.YearOf.Value)
-                .Distinct()
-                .OrderBy(y => y);
-            CompetedIn = NumberListContractor.Contract(years);
      
             var allFees = context.Fees.ToList();
             var fees = (IsJuniorForOlympiad)
@@ -1086,6 +1078,7 @@ private string _Notes;
                 FIDECode = "";
                 Notes = "";
                 UpdatedAt = DateTime.Now;
+                CompetedIn = "";
             }
             else
             {
@@ -1112,7 +1105,16 @@ private string _Notes;
                 BCFCode = dbCon.BCFCode;
                 FIDECode = dbCon.FIDECode;
                 Notes = dbCon.Notes;
+
+                var years = context.Entrants
+                    // Shouldn't be necessary but dipping into historic data is error-prone
+                    .Where(e => e.Mind_Sport_ID == id && e.Event != null && e.Event.Olympiad_Info != null)
+                    .Select(e => e.Event.Olympiad_Info.YearOf.Value)
+                    .Distinct()
+                    .OrderBy(y => y);
+                CompetedIn = NumberListContractor.Contract(years);
             }
+
             IsDirty = false;
             PopulateEvents();
             PopulatePayments();
