@@ -41,7 +41,8 @@ namespace MSOOrganiser.Reports
                         {
                             sw.WriteLine(string.Join(",",
                                 e.Game_Code, e.Fee, 
-                                e.Name.Firstname, e.Name.Lastname, e.Name.Address1, e.Name.Address2,
+                                e.Name.Firstname, e.Name.Lastname, e.Name.email,
+                                e.Name.Address1, e.Name.Address2,
                                 e.Name.City, e.Name.County, e.Name.Country, e.Name.PostCode));
                         }
                     }
