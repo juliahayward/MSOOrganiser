@@ -7,7 +7,7 @@
              xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
              xmlns:local="clr-namespace:MSOOrganiser.Converters"
              mc:Ignorable="d" 
-             d:DesignHeight="600" d:DesignWidth="1000">
+             d:DesignHeight="700" d:DesignWidth="1000">
     <UserControl.Resources>
         <local:ShowBlankIfZeroIntConverter x:Key="ShowBlankIfZeroIntConverter" />
         <local:ShowCurrencyConverter x:Key="ShowCurrencyConverter" />
@@ -103,6 +103,10 @@
                     <StackPanel Orientation="Horizontal" Margin="0,0,0,0">
                         <Label Width="100">Country:</Label>
                         <TextBox Text="{Binding Country, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="100" MaxLength="50"></TextBox>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" Margin="0,20,0,0">
+                        <Label Width="100">Competed in:</Label>
+                        <TextBlock Text="{Binding CompetedIn}" Width="740"></TextBlock>
                     </StackPanel>
                     <StackPanel Orientation="Horizontal" Margin="0,20,0,0">
                         <Label Width="100">Notes:</Label>

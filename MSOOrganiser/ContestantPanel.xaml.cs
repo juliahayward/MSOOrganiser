@@ -797,6 +797,24 @@ private string _Notes;
             }
         }
 
+        private string _competedIn;
+        public string CompetedIn
+        {
+            get
+            {
+                return _competedIn;
+            }
+            set
+            {
+                if (_competedIn != value)
+                {
+                    _competedIn = value;
+                    IsDirty = true;
+                    OnPropertyChanged("CompetedIn");
+                }
+            }
+        }
+
         public string Totals
         {
             get
@@ -959,7 +977,15 @@ private string _Notes;
             var entrants = context.Entrants
                 .Join(context.Events, e => e.Game_Code, g => g.Code, (e, g) => new { e = e, g = g })
                 .Where(x => x.e.OlympiadId == olympiadId && x.g.OlympiadId == olympiadId && x.e.Mind_Sport_ID == contestantId)
-                .OrderBy(x => x.e.Game_Code).ToList();  
+                .OrderBy(x => x.e.Game_Code).ToList();
+
+            var years = context.Entrants
+                // Shouldn't be necessary but dipping into historic data is error-prone
+                .Where(e => e.Mind_Sport_ID == contestantId && e.Event != null && e.Event.Olympiad_Info != null)
+                .Select(e => e.Event.Olympiad_Info.YearOf.Value)
+                .Distinct()
+                .OrderBy(y => y);
+            CompetedIn = NumberListContractor.Contract(years);
      
             var allFees = context.Fees.ToList();
             var fees = (IsJuniorForOlympiad)

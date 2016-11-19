@@ -59,6 +59,7 @@
     </Compile>
     <Compile Include="Calculators\EurogameMetaScoreCalculator.cs" />
     <Compile Include="Calculators\CostApportioner.cs" />
+    <Compile Include="Calculators\NumberListContractor.cs" />
     <Compile Include="Calculators\PaymentProcessor.cs" />
     <Compile Include="Calculators\PentamindMetaScoreCalculator.cs" />
     <Compile Include="Calculators\RankCalculator.cs" />
