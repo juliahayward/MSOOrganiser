@@ -10,7 +10,7 @@
         <StackPanel Orientation="Vertical">
             <StackPanel Margin="10" Orientation="Horizontal">
                 <Label>Amount:</Label>
-                <TextBox Width="240" Text="{Binding Fee, Converter={StaticResource ShowCurrencyConverter}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="10,0,0,0"></TextBox>
+                <TextBox Width="240" x:Name="FeeTextBox" Text="{Binding Fee, Converter={StaticResource ShowCurrencyConverter}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="10,0,0,0"></TextBox>
             </StackPanel>
             <StackPanel Orientation="Horizontal">
                 <Button Margin="10" Width="150" Click="ok_Click">OK</Button>

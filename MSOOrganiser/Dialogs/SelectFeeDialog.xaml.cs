@@ -22,6 +22,8 @@ namespace MSOOrganiser.Dialogs
         public SelectFeeDialog()
         {
             InitializeComponent();
+            FeeTextBox.Focus();
+
             DataContext = new SelectFeeDialogVm();
         }
 
