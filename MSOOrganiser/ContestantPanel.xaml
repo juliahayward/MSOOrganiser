@@ -35,7 +35,7 @@
             </StackPanel>
         </Border>
         <TextBlock FontWeight="Bold" FontSize="16" Margin="10,10,10,10" Text="{Binding Name}"/>
-        <TabControl Height="626">
+        <TabControl Height="626" x:Name="TabControl">
             <TabItem Header="Personal Details">
                 <StackPanel Orientation="Vertical">
                     <StackPanel Orientation="Horizontal" Margin="0,20,0,0">
@@ -46,7 +46,7 @@
                           SelectedValuePath="Value"
                           SelectedValue="{Binding Title}">
                         </ComboBox>
-                        <TextBox Text="{Binding FirstName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="100" MaxLength="50"></TextBox>
+                        <TextBox Text="{Binding FirstName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="100" MaxLength="50" x:Name="FirstName"></TextBox>
                         <TextBox Text="{Binding Initials, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="40" MaxLength="10"></TextBox>
                         <TextBox Text="{Binding LastName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="160"  MaxLength="50"></TextBox>
                         <Label>Male:</Label>

@@ -17,6 +17,7 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
+using System.Windows.Input;
 
 namespace MSOOrganiser
 {
@@ -205,10 +206,13 @@ namespace MSOOrganiser
 
         private void addNew_Click(object sender, RoutedEventArgs e)
         {
+            this.TabControl.SelectedIndex = 0;
             ViewModel.Contestants.Clear();
             ViewModel.Contestants.Insert(0, new ContestantPanelVm.ContestantVm { Text = "New Contestant", Value = "0" });
             ViewModel.ContestantId = "0";
             ViewModel.PopulateContestant();
+            // Put the cursor in the right place - doesn't work if tab has changed
+            this.FirstName.Focus();
         }
 
         private void print_Click(object sender, RoutedEventArgs e)
