@@ -60,6 +60,7 @@
           <EntitySet Name="Payment Methods" EntityType="DataModel.Store.Payment Methods" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="Payments" EntityType="DataModel.Store.Payments" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="Resources" EntityType="DataModel.Store.Resources" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="Seedings" EntityType="DataModel.Store.Seedings" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="SelectedCategories" EntityType="DataModel.Store.SelectedCategories" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="SelectedPeople" EntityType="DataModel.Store.SelectedPeople" store:Type="Tables" store:Schema="dbo" store:Name="SelectedPeople">
             <DefiningQuery>SELECT 
@@ -115,6 +116,10 @@
           <AssociationSet Name="FK__Location__Olympi__12C8C788" Association="DataModel.Store.FK__Location__Olympi__12C8C788">
             <End Role="Olympiad Info" EntitySet="Olympiad Info" />
             <End Role="Location" EntitySet="Location" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Seedings__Contes__1387E197" Association="DataModel.Store.FK__Seedings__Contes__1387E197">
+            <End Role="Names" EntitySet="Names" />
+            <End Role="Seedings" EntitySet="Seedings" />
           </AssociationSet>
           <AssociationSet Name="Payments$NamesPayments" Association="DataModel.Store.Payments$NamesPayments">
             <End Role="Names" EntitySet="Names" />
@@ -433,6 +438,16 @@
           <Property Name="INDEX" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
           <Property Name="SSMA_TimeStamp" Type="timestamp" Nullable="false" StoreGeneratedPattern="Computed" />
         </EntityType>
+        <EntityType Name="Seedings">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="ContestantId" Type="int" Nullable="false" />
+          <Property Name="EventCode" Type="nvarchar" Nullable="false" MaxLength="50" />
+          <Property Name="Score" Type="int" />
+          <Property Name="Rank" Type="int" />
+        </EntityType>
         <EntityType Name="SelectedCategories">
           <Key>
             <PropertyRef Name="ID" />
@@ -627,6 +642,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK__Seedings__Contes__1387E197">
+          <End Role="Names" Type="DataModel.Store.Names" Multiplicity="1" />
+          <End Role="Seedings" Type="DataModel.Store.Seedings" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Names">
+              <PropertyRef Name="Mind Sport ID" />
+            </Principal>
+            <Dependent Role="Seedings">
+              <PropertyRef Name="ContestantId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="Payments$NamesPayments">
           <End Role="Names" Type="DataModel.Store.Names" Multiplicity="0..1" />
           <End Role="Payments" Type="DataModel.Store.Payments" Multiplicity="*" />
@@ -720,6 +747,11 @@
           <EntitySet Name="EntryJsons" EntityType="DataModel.EntryJson" />
           <EntitySet Name="Nationalities" EntityType="DataModel.Nationality" />
           <EntitySet Name="GlobalSettings" EntityType="DataModel.GlobalSetting" />
+          <EntitySet Name="Seedings" EntityType="DataModel.Seeding" />
+          <AssociationSet Name="FK__Seedings__Contes__1387E197" Association="DataModel.FK__Seedings__Contes__1387E197">
+            <End Role="Contestant" EntitySet="Contestants" />
+            <End Role="Seeding" EntitySet="Seedings" />
+          </AssociationSet>
         </EntityContainer>
         <EntityType Name="Badges___Misc">
           <Key>
@@ -897,6 +929,7 @@
           <NavigationProperty Name="Entrants" Relationship="DataModel.Entrants_NamesEntrants" FromRole="Name" ToRole="Entrant" />
           <NavigationProperty Name="Payments" Relationship="DataModel.Payments_NamesPayments" FromRole="Name" ToRole="Payment" />
           <NavigationProperty Name="Arbiters" Relationship="DataModel.Arbiters_NamesArbiters" FromRole="Contestant" ToRole="Arbiter" />
+          <NavigationProperty Name="Seedings" Relationship="DataModel.FK__Seedings__Contes__1387E197" FromRole="Contestant" ToRole="Seeding" />
         </EntityType>
         <EntityType Name="National_Flag">
           <Key>
@@ -1248,6 +1281,29 @@
           <Property Type="String" Name="Name" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Type="String" Name="Value" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
         </EntityType>
+        <EntityType Name="Seeding">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Type="Int32" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="Int32" Name="ContestantId" Nullable="false" />
+          <Property Type="String" Name="EventCode" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Type="Int32" Name="Score" />
+          <Property Type="Int32" Name="Rank" />
+          <NavigationProperty Name="Name" Relationship="DataModel.FK__Seedings__Contes__1387E197" FromRole="Seeding" ToRole="Contestant" />
+        </EntityType>
+        <Association Name="FK__Seedings__Contes__1387E197">
+          <End Type="DataModel.Contestant" Role="Contestant" Multiplicity="1" />
+          <End Type="DataModel.Seeding" Role="Seeding" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Contestant">
+              <PropertyRef Name="Mind_Sport_ID" />
+            </Principal>
+            <Dependent Role="Seeding">
+              <PropertyRef Name="ContestantId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -1629,6 +1685,17 @@
               <MappingFragment StoreEntitySet="GlobalSettings">
                 <ScalarProperty Name="Value" ColumnName="Value" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Seedings">
+            <EntityTypeMapping TypeName="DataModel.Seeding">
+              <MappingFragment StoreEntitySet="Seedings">
+                <ScalarProperty Name="Rank" ColumnName="Rank" />
+                <ScalarProperty Name="Score" ColumnName="Score" />
+                <ScalarProperty Name="EventCode" ColumnName="EventCode" />
+                <ScalarProperty Name="ContestantId" ColumnName="ContestantId" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>

@@ -789,6 +789,13 @@ namespace MSOOrganiser
 
             context.SaveChanges();
         }
+
+        private void calculateSeedings_Click(object sender, RoutedEventArgs e)
+        {
+            var calculator = new SeedingScoreCalculator();
+            calculator.Calculate();
+
+        }
     }
 
 

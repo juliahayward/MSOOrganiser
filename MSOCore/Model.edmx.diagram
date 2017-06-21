@@ -15,12 +15,12 @@
         <EntityTypeShape EntityType="DataModel.Information" Width="1.5" PointX="9.25" PointY="10.75" />
         <EntityTypeShape EntityType="DataModel.Medal_Point" Width="1.5" PointX="11.125" PointY="10.625" />
         <EntityTypeShape EntityType="DataModel.Contestant" Width="1.5" PointX="11.125" PointY="0.5" />
-        <EntityTypeShape EntityType="DataModel.National_Flag" Width="1.5" PointX="0.547061881305213" PointY="27.147341308718239" />
+        <EntityTypeShape EntityType="DataModel.National_Flag" Width="1.5" PointX="3.75" PointY="26.25" />
         <EntityTypeShape EntityType="DataModel.Olympiad_Info" Width="1.5" PointX="0.5" PointY="0.5" />
         <EntityTypeShape EntityType="DataModel.Paring" Width="1.5" PointX="2.0529287392520015" PointY="16.183681629683676" />
-        <EntityTypeShape EntityType="DataModel.Payment_Method" Width="1.5" PointX="7.875" PointY="13.25" />
+        <EntityTypeShape EntityType="DataModel.Payment_Method" Width="1.5" PointX="2.875" PointY="14.625" />
         <EntityTypeShape EntityType="DataModel.Payment" Width="1.5" PointX="13.625" PointY="3.25" />
-        <EntityTypeShape EntityType="DataModel.Resource" Width="1.5" PointX="0.660779726067921" PointY="22.736927475192086" />
+        <EntityTypeShape EntityType="DataModel.Resource" Width="1.5" PointX="5.5" PointY="26.25" />
         <EntityTypeShape EntityType="DataModel.SelectedCategory" Width="1.5" PointX="9.25" PointY="6.625" />
         <EntityTypeShape EntityType="DataModel.SelectedPeople" Width="1.5" PointX="0.875" PointY="13.375" />
         <EntityTypeShape EntityType="DataModel.Session" Width="1.5" PointX="2.875" PointY="11.5" />
@@ -50,6 +50,8 @@
         <EntityTypeShape EntityType="DataModel.EntryJson" Width="1.5" PointX="7.625" PointY="10.75" />
         <EntityTypeShape EntityType="DataModel.Nationality" Width="1.5" PointX="8.3252412417555419" PointY="23.411815236980008" />
         <EntityTypeShape EntityType="DataModel.GlobalSetting" Width="1.5" PointX="7.9333249069439828" PointY="19.509531149412286" />
+        <EntityTypeShape EntityType="DataModel.Seeding" Width="1.5" PointX="11.125" PointY="7.875" />
+        <AssociationConnector Association="DataModel.FK__Seedings__Contes__1387E197" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

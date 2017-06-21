@@ -68,6 +68,7 @@
     <Compile Include="Calculators\Penta2010Calculator.cs" />
     <Compile Include="Calculators\Penta2015Calculator.cs" />
     <Compile Include="Calculators\RankChecker.cs" />
+    <Compile Include="Calculators\SeedingScoreCalculator.cs" />
     <Compile Include="Contestant.cs">
       <DependentUpon>Model.tt</DependentUpon>
     </Compile>
@@ -179,6 +180,9 @@
     <Compile Include="Reports\TodaysEventsGenerator.cs" />
     <Compile Include="Reports\YearMedalsGenerator.cs" />
     <Compile Include="Resource.cs">
+      <DependentUpon>Model.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Seeding.cs">
       <DependentUpon>Model.tt</DependentUpon>
     </Compile>
     <Compile Include="SelectedCategory.cs">
