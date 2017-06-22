@@ -43,6 +43,7 @@ namespace MSOCore.Reports
         {
             var context = DataEntitiesProvider.Provide();
 
+            // Warning - this will go wonky when I undo the 2007/7002 hack
             var olympiadId = context.Olympiad_Infoes.First(x => x.YearOf == year).Id;
 
             var retval = new YearMedalsVm { Year = year };

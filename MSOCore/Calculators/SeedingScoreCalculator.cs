@@ -8,9 +8,11 @@ namespace MSOCore.Calculators
 {
     public class SeedingScoreCalculator
     {
-        public void Calculate()
+        public void CalculateSeedings()
         {
             var context = DataEntitiesProvider.Provide();
+            context.Database.ExecuteSqlCommand("TRUNCATE TABLE [Seedings]");
+
             var thisOlympiad = context.Olympiad_Infoes.OrderByDescending(x => x.StartDate).First();
             var thisYear = thisOlympiad.YearOf.Value;
 
@@ -39,10 +41,13 @@ namespace MSOCore.Calculators
                         && entrant.Mind_Sport_ID == x.Mind_Sport_ID && x.Medal != null)
                     .ToList();
 
+                var score = GetSeedingScore(entrant, pastResults, thisYear);
+                if (score == 0) continue;
+
                 var seeding = new Seeding() {
                     ContestantId = entrant.Mind_Sport_ID.Value,
                      EventCode = entrant.Game_Code,
-                     Score = GetSeedingScore(entrant, pastResults, thisYear)
+                     Score = score
                 };
 
                 context.Seedings.Add(seeding);
@@ -70,6 +75,9 @@ they have at least 36 points; not sure how I feel about that. */
             foreach (var pastEntry in pastEntries)
             {
                 var pastYear = pastEntry.Event.Olympiad_Info.YearOf.Value;
+                // Temporary fix for the 2007/7002 hack
+                if (pastYear > 2100)
+                    continue;
                 if (pastEntry.Medal == "Gold")
                     seedingScore += Math.Max(2, 4 * (pastYear + 6 - thisYear));
                 else if (pastEntry.Medal == "Silver")
@@ -98,6 +106,41 @@ they have at least 36 points; not sure how I feel about that. */
                 seedingScore += 1000;
 
             return seedingScore;
+        }
+
+        public void CalculateRanks()
+        {
+            var context = DataEntitiesProvider.Provide();
+            var seedings = context.Seedings.OrderBy(x => x.EventCode)
+                .ThenByDescending(x => x.Score).ToList();
+
+            var lastEventCode = "";
+            var lastScore = int.MaxValue;
+            var rank = 1;
+            var count = 1;
+
+            foreach (var seeding in seedings)
+            {
+                if (seeding.EventCode != lastEventCode)
+                {
+                    lastEventCode = seeding.EventCode;
+                    lastScore = int.MaxValue;
+                    rank = 1;
+                    count = 1;
+                }
+                else
+                {
+                    count++;
+                    if (seeding.Score.Value != lastScore)
+                    {
+                        lastScore = seeding.Score.Value;
+                        rank = count;
+                    }
+                }
+
+                seeding.Rank = rank;
+                context.SaveChanges();
+            }
         }
     }
 }

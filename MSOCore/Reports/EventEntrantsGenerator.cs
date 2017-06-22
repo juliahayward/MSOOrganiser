@@ -20,6 +20,7 @@ namespace MSOCore.Reports
             }
         }
 
+        // Warning - this will go wonky in 2007 when I undo the 7002 hack
         public EventEntrantsVm GetModel(int? year, string gameCode)
         {
             var vm = new EventEntrantsVm();

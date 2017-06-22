@@ -43,7 +43,8 @@
                     <MenuItem Header="People with unspent fees" Click="unspentFee_Click"/>
                     <MenuItem Header="People with unpaid fees" Click="unpaidFee_Click"/>
                 </MenuItem>
-                <MenuItem Header="Data">
+                <MenuItem Header="Data"
+                          Visibility="{Binding IsLoggedIn, Converter={StaticResource BoolToVisibilityConverter}}">
                     <MenuItem Header="Calculate seedings" Click="calculateSeedings_Click" />
                 </MenuItem>
                 <MenuItem Header="Reports"
