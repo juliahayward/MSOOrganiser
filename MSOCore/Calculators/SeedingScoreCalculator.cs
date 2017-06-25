@@ -8,11 +8,24 @@ namespace MSOCore.Calculators
 {
     public class SeedingScoreCalculator
     {
+        class SeedingInfo
+        {
+            public int ContestantId;
+            public string GameCode;
+            public int Score;
+            public int LastGoldYear;
+            public int LastSilverYear;
+            public int LastBronzeYear;
+        }
+
+
+
         public void CalculateSeedings()
         {
             var context = DataEntitiesProvider.Provide();
             context.Database.ExecuteSqlCommand("TRUNCATE TABLE [Seedings]");
 
+            var seedings = new List<SeedingInfo>();
             var thisOlympiad = context.Olympiad_Infoes.OrderByDescending(x => x.StartDate).First();
             var thisYear = thisOlympiad.YearOf.Value;
 
@@ -28,6 +41,7 @@ namespace MSOCore.Calculators
 
             foreach (var entrant in seedableEntrants)
             {
+                // Catch duplicates
                 if (entrant.Mind_Sport_ID.Value == lastContestantId && entrant.Game_Code == lastGameCode)
                     continue;
 
@@ -41,18 +55,15 @@ namespace MSOCore.Calculators
                         && entrant.Mind_Sport_ID == x.Mind_Sport_ID && x.Medal != null)
                     .ToList();
 
-                var score = GetSeedingScore(entrant, pastResults, thisYear);
-                if (score == 0) continue;
+                var seeding = GetSeedingScore(entrant, pastResults, thisYear);
+                if (seeding == null) continue;
+                if (seeding.Score == 0) continue;
 
-                var seeding = new Seeding() {
-                    ContestantId = entrant.Mind_Sport_ID.Value,
-                     EventCode = entrant.Game_Code,
-                     Score = score
-                };
+                seedings.Add(seeding);
 
-                context.Seedings.Add(seeding);
-                context.SaveChanges();
             }
+
+            CalculateRanks(seedings);
         }
 
 
@@ -68,9 +79,12 @@ GM:10, IM:8, CM:6
 He also suggested a caveat that the defending champion is number 1 seed if
 they have at least 36 points; not sure how I feel about that. */
 
-        private int GetSeedingScore(Entrant thisEntry, IEnumerable<Entrant> pastEntries, int thisYear)
+        private SeedingInfo GetSeedingScore(Entrant thisEntry, IEnumerable<Entrant> pastEntries, int thisYear)
         {
             int seedingScore = 0;
+            int mostRecentGoldYear = 0;
+            int mostRecentSilverYear = 0;
+            int mostRecentBronzeYear = 0;
             // Part 1 = the points for recent years
             foreach (var pastEntry in pastEntries)
             {
@@ -79,11 +93,20 @@ they have at least 36 points; not sure how I feel about that. */
                 if (pastYear > 2100)
                     continue;
                 if (pastEntry.Medal == "Gold")
+                {
                     seedingScore += Math.Max(2, 4 * (pastYear + 6 - thisYear));
+                    mostRecentGoldYear = Math.Max(mostRecentGoldYear, pastYear);
+                }
                 else if (pastEntry.Medal == "Silver")
+                {
                     seedingScore += Math.Max(0, 2 * (pastYear + 6 - thisYear));
+                    mostRecentSilverYear = Math.Max(mostRecentSilverYear, pastYear);
+                }
                 else if (pastEntry.Medal == "Bronze")
-                    seedingScore += Math.Max(0, 2 * (pastYear + 6 - thisYear));
+                {
+                    seedingScore += Math.Max(0, 1 * (pastYear + 6 - thisYear));
+                    mostRecentBronzeYear = Math.Max(mostRecentBronzeYear, pastYear);
+                }
             }
 
             // Part 2 - the MSO rankings
@@ -105,40 +128,53 @@ they have at least 36 points; not sure how I feel about that. */
                 pastEntries.Any(x => x.Event.Olympiad_Info.YearOf.Value == thisYear - 1 && x.Medal == "Gold"))
                 seedingScore += 1000;
 
-            return seedingScore;
+            var seedingInfo = new SeedingInfo()
+            {
+                ContestantId = thisEntry.Mind_Sport_ID.Value,
+                GameCode = thisEntry.Game_Code,
+                Score = seedingScore,
+                LastGoldYear = mostRecentGoldYear,
+                LastSilverYear = mostRecentSilverYear,
+                LastBronzeYear = mostRecentBronzeYear
+            };
+
+            return seedingInfo;
         }
 
-        public void CalculateRanks()
+        private void CalculateRanks(IEnumerable<SeedingInfo> seedings)
         {
             var context = DataEntitiesProvider.Provide();
-            var seedings = context.Seedings.OrderBy(x => x.EventCode)
-                .ThenByDescending(x => x.Score).ToList();
+            var sortedSeedings = seedings.OrderBy(x => x.GameCode)
+                .ThenByDescending(x => x.Score)
+                .ThenByDescending(x => x.LastGoldYear)
+                .ThenByDescending(x => x.LastSilverYear)
+                .ThenByDescending(x => x.LastBronzeYear)
+                .ToList();
 
             var lastEventCode = "";
-            var lastScore = int.MaxValue;
             var rank = 1;
-            var count = 1;
 
-            foreach (var seeding in seedings)
+            foreach (var seeding in sortedSeedings)
             {
-                if (seeding.EventCode != lastEventCode)
+                if (seeding.GameCode != lastEventCode)
                 {
-                    lastEventCode = seeding.EventCode;
-                    lastScore = int.MaxValue;
+                    lastEventCode = seeding.GameCode;
                     rank = 1;
-                    count = 1;
                 }
                 else
                 {
-                    count++;
-                    if (seeding.Score.Value != lastScore)
-                    {
-                        lastScore = seeding.Score.Value;
-                        rank = count;
-                    }
+                    rank++;
                 }
 
-                seeding.Rank = rank;
+                var dbSeeding = new Seeding()
+                    {
+                        ContestantId = seeding.ContestantId,
+                        EventCode = seeding.GameCode,
+                        Rank = rank,
+                        Score = seeding.Score
+                    };
+
+                context.Seedings.Add(dbSeeding);
                 context.SaveChanges();
             }
         }

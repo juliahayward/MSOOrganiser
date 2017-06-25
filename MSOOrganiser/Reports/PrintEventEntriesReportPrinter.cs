@@ -41,11 +41,14 @@ namespace MSOOrganiser.Reports
                 {
                     var evt = context.Events.First(x => x.OlympiadId == currentOlympiad.Id && x.Code == EventCode);
 
+                    var seedings = context.Seedings.Where(x => x.EventCode == evt.Code)
+                        .ToDictionary(x => x.ContestantId, x => x.Rank.Value);
+
                     var entrants = context.Entrants.Where(x => x.OlympiadId == currentOlympiad.Id && x.Game_Code == EventCode)
                         .OrderBy(x => x.Name.Lastname)
                         .ThenBy(x => x.Name.Firstname);
 
-                    AddEventToDoc(EventCode, currentOlympiad, evt, entrants, juniorDate, doc, isFirst);
+                    AddEventToDoc(EventCode, currentOlympiad, evt, entrants, seedings, juniorDate, doc, isFirst);
                     isFirst = false;
                 }
 
@@ -62,7 +65,10 @@ namespace MSOOrganiser.Reports
             var juniorDate = DateTime.Now.AddYears(- currentOlympiad.JnrAge.Value - 1);
 
             var evt = context.Events.First(x => x.OlympiadId == currentOlympiad.Id && x.Code == EventCode);
-            
+
+            var seedings = context.Seedings.Where(x => x.EventCode == evt.Code)
+                .ToDictionary(x => x.ContestantId, x => x.Rank.Value);
+
             var entrants = context.Entrants.Where(x => x.OlympiadId == currentOlympiad.Id && x.Game_Code == EventCode)
                 .OrderBy(x => x.Name.Lastname)
                 .ThenBy(x => x.Name.Firstname);
@@ -75,7 +81,7 @@ namespace MSOOrganiser.Reports
                 doc.ColumnWidth = 200; // 96ths of an inch
                 doc.FontFamily = new FontFamily("Verdana");
 
-                AddEventToDoc(EventCode, currentOlympiad, evt, entrants, juniorDate, doc, true);
+                AddEventToDoc(EventCode, currentOlympiad, evt, entrants, seedings, juniorDate, doc, true);
 
                 DocumentPaginator paginator = ((IDocumentPaginatorSource)doc).DocumentPaginator;
                 dlg.PrintDocument(paginator, "Event Entries " + EventCode);
@@ -83,7 +89,8 @@ namespace MSOOrganiser.Reports
         }
 
         private void AddEventToDoc(string EventCode, Olympiad_Info currentOlympiad, 
-            Event evt, IEnumerable<Entrant> entrants, DateTime juniorDate, FlowDocument doc, 
+            Event evt, IEnumerable<Entrant> entrants, 
+            IDictionary<int, int> seedings, DateTime juniorDate, FlowDocument doc, 
             bool isFirst)
         {
             Section topSection = new Section();
@@ -132,10 +139,11 @@ namespace MSOOrganiser.Reports
                 
                 var jnr = (e.Name.DateofBirth.HasValue && (e.Name.DateofBirth.Value > juniorDate))
                     ? "JNR" : "";
+                var seed = (seedings.ContainsKey(e.Mind_Sport_ID.Value)) ? " (" + seedings[e.Mind_Sport_ID.Value] + ")" : "";
 
                 var row = new TableRow();
                 row.Cells.Add(new TableCell(new Paragraph(new Run(e.Name.Firstname)) { Margin = new Thickness(2), FontSize = 10, TextAlignment = TextAlignment.Right }));
-                row.Cells.Add(new TableCell(new Paragraph(new Run(e.Name.Lastname)) { Margin = new Thickness(2), FontSize = 10 }));
+                row.Cells.Add(new TableCell(new Paragraph(new Run(e.Name.Lastname + seed)) { Margin = new Thickness(2), FontSize = 10 }));
                 row.Cells.Add(new TableCell(new Paragraph(new Run(jnr)) { Margin = new Thickness(2), FontSize = 10 }));
                 table.RowGroups[0].Rows.Add(row);
             }

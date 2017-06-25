@@ -792,9 +792,11 @@ namespace MSOOrganiser
 
         private void calculateSeedings_Click(object sender, RoutedEventArgs e)
         {
-            var calculator = new SeedingScoreCalculator();
-            calculator.CalculateSeedings();
-            calculator.CalculateRanks();
+            using (new SpinnyCursor())
+            {
+                var calculator = new SeedingScoreCalculator();
+                calculator.CalculateSeedings();
+            }
         }
     }
 
