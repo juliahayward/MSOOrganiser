@@ -48,10 +48,11 @@ namespace MSOCore.Calculators
                 lastContestantId = entrant.Mind_Sport_ID.Value;
                 lastGameCode = entrant.Game_Code;
 
+                var equivalentEvents = GetEquivalentEvents(entrant.Game_Code);
                 var pastResults = context.Entrants
-                    .Where(x => x.Game_Code == entrant.Game_Code
+                    .Where(x => equivalentEvents.Contains(x.Game_Code)
                         // careful - digging back into old data
-                        && x.Mind_Sport_ID != null && x.Game_Code != null && x.Event != null
+                        && x.Mind_Sport_ID != null && x.Event != null
                         && entrant.Mind_Sport_ID == x.Mind_Sport_ID && x.Medal != null)
                     .ToList();
 
@@ -65,6 +66,30 @@ namespace MSOCore.Calculators
 
             CalculateRanks(seedings);
         }
+
+        /* Because some events which are equivaent for seeding purposes have changed codes
+         * over the years */
+        public IEnumerable<string> GetEquivalentEvents(string code)
+        {
+            switch (code)
+            {
+                case "ABOC":
+                case "ABWC":
+                    return new List<string>() { "ABOC", "ABWC" };
+                case "KCOC":
+                case "KCWC":
+                    return new List<string>() { "KCOC", "KCWC" };
+                case "SUOC":
+                case "SUWC":
+                    return new List<string>() { "SUOC", "SUWC" };
+                case "TWOC":
+                case "TWWC":
+                    return new List<string>() { "TWOC", "TWWC" };
+                default:
+                    return new List<string>() { code };
+            }
+        }
+
 
 
         /* 
