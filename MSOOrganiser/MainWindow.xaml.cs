@@ -437,11 +437,11 @@ namespace MSOOrganiser
 
         private void eventLabelsMenuItem_Click(object sender, RoutedEventArgs e)
         {
-            MessageBox.Show("Please ensure that sticky labels are in the printer");
+            MessageBox.Show("Please ensure that Avery 3x6 labels are in the printer");
 
             var docPrinter = new FlowDocumentPrinter();
             var printer = new EventLabelsPrinter();
-            docPrinter.PrintFlowDocument(() => printer.Print());
+            docPrinter.PrintFlowDocument(() => printer.Print(), includeFooter: false);
 
             MessageBox.Show("Please take the labels out of the printer now");
         }

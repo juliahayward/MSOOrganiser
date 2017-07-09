@@ -15,7 +15,8 @@ namespace MSOOrganiser.Reports
     public class FlowDocumentPrinter
     {
         public void PrintFlowDocument(Func<FlowDocument> documentProvider,
-            PageOrientation pageOrientation = PageOrientation.Portrait)
+            PageOrientation pageOrientation = PageOrientation.Portrait,
+            bool includeFooter = true)
         {
             PrintDialog dlg = new PrintDialog();
             if ((bool)dlg.ShowDialog().GetValueOrDefault())
@@ -26,7 +27,7 @@ namespace MSOOrganiser.Reports
 
                     DocumentPaginator paginator = ((IDocumentPaginatorSource)doc).DocumentPaginator;
                     FooteredDocumentPaginator wrapper = new FooteredDocumentPaginator(paginator,
-                        paginator.PageSize, new Size(0.0, 0.0));
+                        paginator.PageSize, new Size(0.0, 0.0), includeFooter);
                     dlg.PrintTicket.PageOrientation = pageOrientation;
                     dlg.PrintDocument(wrapper, "MSO Report");
                 }
@@ -63,8 +64,9 @@ namespace MSOOrganiser.Reports
         private readonly Typeface _typeface = new Typeface("Verdana");
         private readonly DateTime _printingDate;
         private readonly double _scaleFactor = 1.0;
+        private readonly bool _includeFooter = true;
 
-        public FooteredDocumentPaginator(DocumentPaginator paginator, Size pageSize, Size margin)
+        public FooteredDocumentPaginator(DocumentPaginator paginator, Size pageSize, Size margin, bool includeFooter = true)
         {
             _pageSize = pageSize;
             _margin = margin;
@@ -72,6 +74,7 @@ namespace MSOOrganiser.Reports
             _originalPaginator.PageSize = new Size(_pageSize.Width - 2 * margin.Width,
                                     _pageSize.Height - 2 * margin.Height);
             _printingDate = DateTime.Now;
+            _includeFooter = includeFooter;
         }
 
         Rect Move(Rect rect)
@@ -122,7 +125,8 @@ namespace MSOOrganiser.Reports
                 indentScale * page.ContentBox.Width, indentScale * page.ContentBox.Height);
 
             newpage.Children.Add(smallerPage);
-            newpage.Children.Add(title);
+            if (_includeFooter)
+                newpage.Children.Add(title);
             newpage.Transform = new TranslateTransform(_margin.Width, _margin.Height);
             return new DocumentPage(newpage, _pageSize, Move(page.BleedBox), Move(page.ContentBox));
         }
