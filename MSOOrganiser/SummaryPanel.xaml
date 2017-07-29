@@ -16,7 +16,7 @@
             <ProgressBar Grid.Row="1" Margin="10,0,10,10" Maximum="{Binding ProgressMaximum}" Value="{Binding ProgressValue}"></ProgressBar>
 
             <ScrollViewer Grid.Row="2" CanContentScroll="True" VerticalScrollBarVisibility="Auto">
-            <ItemsControl ItemsSource="{Binding Events}" Margin="0,0,10,0">
+            <ItemsControl ItemsSource="{Binding Events, Mode=OneWay}" Margin="0,0,10,0">
                 <ItemsControl.ItemsPanel>
                     <ItemsPanelTemplate>
                             <StackPanel Orientation="Vertical"/>

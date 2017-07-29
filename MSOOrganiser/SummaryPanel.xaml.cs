@@ -24,18 +24,30 @@ namespace MSOOrganiser
     /// </summary>
     public partial class SummaryPanel : UserControl
     {
+        private Timer _timer = new Timer();
+
         public SummaryPanel()
         {
             InitializeComponent();
 
             DataContext = new SummaryPanelVm();
 
+            _timer.Interval = 1000 * 60 * 5;
+            _timer.Elapsed += _timer_Elapsed;
+
             MainWindow.UserLoggedIn += MainWindow_UserLoggedIn;
+        }
+
+        public void _timer_Elapsed(object sender, EventArgs e)
+        {
+            // Needs to be in the UI thread
+            Dispatcher.Invoke(() => ViewModel.Populate());
         }
 
         void MainWindow_UserLoggedIn(object sender, EventArgs e)
         {
             ViewModel.Populate();
+            _timer.Enabled = true;
         }
 
         public SummaryPanelVm ViewModel
