@@ -363,12 +363,20 @@ namespace MSOOrganiser
 
         private void printTodaysEventsMenuItem_Click(object sender, RoutedEventArgs e)
         {
+            // We mess up the document when we put it in the previewer so need to get it again; 
+            // would be nice to cache a copy
             var dlg = new SelectDateDialog();
             if (dlg.ShowDialog().Value)
             {
-                var docPrinter = new FlowDocumentPrinter();
                 var printer = new TodaysEventsPrinter();    
-                docPrinter.PrintFlowDocument(() => printer.Print(dlg.SelectedDate));
+                var document = printer.Print(dlg.SelectedDate);
+                Action action = (() =>
+                {
+                    var docPrinter = new FlowDocumentPrinter();
+                    docPrinter.PrintFlowDocument(() => printer.Print(dlg.SelectedDate));
+                });
+                var previewer = new FlowDocumentPreviewDialog(document, action);
+                previewer.ShowDialog();
             }
         }
 
