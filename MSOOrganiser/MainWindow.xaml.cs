@@ -64,14 +64,18 @@ namespace MSOOrganiser
             }
         }
 
+        private void ReplaceMainPanelWith(UIElement panel)
+        {
+            if (dockPanel.Children.Count > 3) dockPanel.Children.RemoveAt(3);
+            dockPanel.Children.Add(panel);
+        }
+
         private void window_Loaded(object sender, EventArgs e)
         {
             CheckForUpdates();
             ConnectionStringUpdater.Update();
 
-            if (dockPanel.Children.Count > 2) dockPanel.Children.RemoveAt(2);
-            var panel = new StartupPanel();
-            dockPanel.Children.Add(panel);
+            ReplaceMainPanelWith(new StartupPanel());
         }
 
         private void WriteLoggedInUserToRegistry(string userId)
@@ -133,11 +137,10 @@ namespace MSOOrganiser
         {
             using (new SpinnyCursor())
             {
-                if (dockPanel.Children.Count > 3) dockPanel.Children.RemoveAt(3);
                 var panel = new OlympiadPanel();
                 panel.Populate();
                 panel.EventSelected += panel_EventSelected;
-                dockPanel.Children.Add(panel);
+                ReplaceMainPanelWith(panel);
             }
         }
 
@@ -145,11 +148,10 @@ namespace MSOOrganiser
         {
             using (new SpinnyCursor())
             {
-                if (dockPanel.Children.Count > 3) dockPanel.Children.RemoveAt(3);
                 var panel = new ContestantPanel();
                 panel.Populate();
                 panel.EventSelected += panel_EventSelected;
-                dockPanel.Children.Add(panel);
+                ReplaceMainPanelWith(panel);
             }
         }
 
@@ -157,11 +159,10 @@ namespace MSOOrganiser
         {
             using (new SpinnyCursor())
             {
-                if (dockPanel.Children.Count > 3) dockPanel.Children.RemoveAt(3);
                 var panel = new EventPanel();
                 panel.Populate(e.EventCode, e.OlympiadId);
                 panel.ContestantSelected += panel_ContestantSelected;
-                dockPanel.Children.Add(panel);
+                ReplaceMainPanelWith(panel);
             }
         }
 
@@ -181,40 +182,36 @@ namespace MSOOrganiser
         {
             Cursor = Cursors.Wait;
 
-            if (dockPanel.Children.Count > 3) dockPanel.Children.RemoveAt(3);
             var panel = new NationalityReport();
            // panel.Populate();
-            dockPanel.Children.Add(panel);
+            ReplaceMainPanelWith(panel);
 
             Cursor = Cursors.Arrow;
         }
 
         private void resultsMenuItem_Click(object sender, RoutedEventArgs e)
         {
-            if (dockPanel.Children.Count > 3) dockPanel.Children.RemoveAt(3);
             var panel = new EventPanel();
             panel.Populate();
             panel.ContestantSelected += panel_ContestantSelected;
-            dockPanel.Children.Add(panel);
+            ReplaceMainPanelWith(panel);
         }
 
         void panel_ContestantSelected(object sender, Events.ContestantEventArgs e)
         {
             using (new SpinnyCursor())
             {
-                if (dockPanel.Children.Count > 3) dockPanel.Children.RemoveAt(3);
                 var panel = new ContestantPanel();
                 panel.Populate(e.ContestantId);
                 panel.EventSelected += panel_EventSelected;
-                dockPanel.Children.Add(panel);
+                ReplaceMainPanelWith(panel);
             }
         }
 
         private void displayResultsMenuItem_Click(object sender, RoutedEventArgs e)
         {
-            if (dockPanel.Children.Count > 3) dockPanel.Children.RemoveAt(3);
             var panel = new DisplayResultsPanel();
-            dockPanel.Children.Add(panel);
+            ReplaceMainPanelWith(panel);
         }
 
         private void printEventEntriesMenuItem_Click(object sender, RoutedEventArgs e)
@@ -586,6 +583,7 @@ namespace MSOOrganiser
             // First of all, for each pentamind qualifier make a PEWC entry
             var pentamindStandingsGenerator = new PentamindStandingsGenerator();
             var standings = pentamindStandingsGenerator.GetStandings(null);
+            int rank = 1;
             foreach (var standing in standings.Standings)
             {
                 if (!standing.IsValid) continue;
@@ -600,10 +598,14 @@ namespace MSOOrganiser
                     context.Entrants.Add(entry);
                 }
                 entry.Score = standing.TotalScoreStr;
+                entry.Rank = rank;
+                rank++;
                 context.SaveChanges();
             }
+
             // Next a Eurogames one
             var eurostandings = pentamindStandingsGenerator.GetEuroStandings(null);
+            rank = 1;
             foreach (var standing in eurostandings.Standings)
             {
                 if (!standing.IsValid) continue;
@@ -618,11 +620,15 @@ namespace MSOOrganiser
                     context.Entrants.Add(entry);
                 }
                 entry.Score = standing.TotalScoreStr;
+                entry.Rank = rank;
+                rank++;
                 context.SaveChanges();
             }
+
             // Next a Poker one
             var pokerStandingsGenerator = new PokerStandingsGenerator();
             var pokerstandings = pokerStandingsGenerator.GetStandings();
+            rank = 1;
             foreach (var standing in pokerstandings.Standings)
             {
                 if (!standing.IsValid) continue;
@@ -637,6 +643,8 @@ namespace MSOOrganiser
                     context.Entrants.Add(entry);
                 }
                 entry.Score = standing.TotalScoreStr;
+                entry.Rank = rank;
+                rank++;
                 context.SaveChanges();
             }
         }
@@ -701,16 +709,15 @@ namespace MSOOrganiser
                 }
             }
 
-            if (dockPanel.Children.Count > 2) dockPanel.Children.RemoveAt(2);
             var panel = new StartupPanel();
-            dockPanel.Children.Add(panel);
+            ReplaceMainPanelWith(panel);
 
             ViewModel.IsLoggedIn = false;
         }
 
         private void allocateKoreanPayment_Click(object sender, RoutedEventArgs e)
         {
-            var contestantIds = new List<int>() { 10976, 11234, 10972, 11236, 10979, 11233, 10985, 10975, 11235 };
+/*            var contestantIds = new List<int>() { 10976, 11234, 10972, 11236, 10979, 11233, 10985, 10975, 11235 };
 
             var context = DataEntitiesProvider.Provide();
             var currentOlympiad = context.Olympiad_Infoes.First(x => x.Current);
@@ -739,11 +746,12 @@ namespace MSOOrganiser
             }
 
             context.SaveChanges();
+ * */
         }
 
         private void allocateSpanishPayment_Click(object sender, RoutedEventArgs e)
         {
-            var contestantIds = new List<int>() { 9486,
+     /*       var contestantIds = new List<int>() { 9486,
 11092,
 11187,
 11188,
@@ -788,7 +796,7 @@ namespace MSOOrganiser
             }
 
             context.SaveChanges();
-        }
+       */ }
 
         private void calculateSeedings_Click(object sender, RoutedEventArgs e)
         {
