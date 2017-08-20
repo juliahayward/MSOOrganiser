@@ -234,9 +234,15 @@ namespace MSOOrganiser
 
         private void entrySummaryMenuItem_Click(object sender, RoutedEventArgs e)
         {
-            var documentPrinter = new FlowDocumentPrinter();
             var printer = new PrintEventEntriesSummaryReportPrinter();
-            documentPrinter.PrintFlowDocument(() => printer.Print());
+            var document = printer.GenerateDocument();
+            Action action = (() =>
+            {
+                var docPrinter = new FlowDocumentPrinter();
+                docPrinter.PrintFlowDocument(() => printer.GenerateDocument());
+            });
+            var previewer = new FlowDocumentPreviewDialog(document, action);
+            previewer.ShowDialog();
         }
 
         private void contactsMenuItem_Click(object sender, RoutedEventArgs e)
@@ -252,9 +258,15 @@ namespace MSOOrganiser
 
         private void medalTable_Click(object sender, RoutedEventArgs e)
         {
-            var docPrinter = new FlowDocumentPrinter();
             var printer = new MedalTablePrinter();
-            docPrinter.PrintFlowDocument(() => printer.Print());
+            var document = printer.GenerateDocument();
+            Action action = (() =>
+            {
+                var docPrinter = new FlowDocumentPrinter();
+                docPrinter.PrintFlowDocument(() => printer.GenerateDocument());
+            });
+            var previewer = new FlowDocumentPreviewDialog(document, action);
+            previewer.ShowDialog();
         }
 
         private void donationsMenuItem_Click(object sender, RoutedEventArgs e)
@@ -417,11 +429,11 @@ namespace MSOOrganiser
 
             //  7.  Entry Summary
             var printer7 = new PrintEventEntriesSummaryReportPrinter();
-            yield return printer7.Print();
+            yield return printer7.GenerateDocument();
             
             //  8.  Medal table
             var printer8 = new MedalTablePrinter();
-            yield return printer8.Print();
+            yield return printer8.GenerateDocument();
 
             //  9.  Event Entries (for the right day TODO TODO doesn't work in Access??)
         }

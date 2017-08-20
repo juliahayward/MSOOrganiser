@@ -13,7 +13,7 @@ namespace MSOOrganiser.Reports
 {
     public class PrintEventEntriesSummaryReportPrinter
     {
-        public FlowDocument Print()
+        public FlowDocument GenerateDocument()
         {
             var context = DataEntitiesProvider.Provide();
             var currentOlympiad = context.Olympiad_Infoes.OrderByDescending(x => x.StartDate).First();

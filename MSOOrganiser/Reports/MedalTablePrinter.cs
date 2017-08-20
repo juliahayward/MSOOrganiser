@@ -15,7 +15,7 @@ namespace MSOOrganiser.Reports
 {
     public class MedalTablePrinter : FlowDocumentGeneratorBase
     {
-        public FlowDocument Print()
+        public FlowDocument GenerateDocument()
         {
             var context = DataEntitiesProvider.Provide();
             var currentOlympiad = context.Olympiad_Infoes.OrderByDescending(x => x.StartDate).First();
