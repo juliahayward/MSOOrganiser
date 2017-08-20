@@ -183,7 +183,7 @@ namespace MSOOrganiser
             Cursor = Cursors.Wait;
 
             var panel = new NationalityReport();
-           // panel.Populate();
+            panel.Populate();
             ReplaceMainPanelWith(panel);
 
             Cursor = Cursors.Arrow;
@@ -234,14 +234,19 @@ namespace MSOOrganiser
 
         private void entrySummaryMenuItem_Click(object sender, RoutedEventArgs e)
         {
-            var printer = new PrintEventEntriesSummaryReportPrinter();
-            var document = printer.GenerateDocument();
-            Action action = (() =>
+            Func<FlowDocument> generate = () =>
+            {
+                var printer = new PrintEventEntriesSummaryReportPrinter();
+                return printer.GenerateDocument();
+            };
+            
+            Action<FlowDocument> print = doc =>
             {
                 var docPrinter = new FlowDocumentPrinter();
-                docPrinter.PrintFlowDocument(() => printer.GenerateDocument());
-            });
-            var previewer = new FlowDocumentPreviewDialog(document, action);
+                docPrinter.PrintFlowDocument(doc);
+            };
+
+            var previewer = new FlowDocumentPreviewDialog(generate, print);
             previewer.ShowDialog();
         }
 
@@ -258,14 +263,36 @@ namespace MSOOrganiser
 
         private void medalTable_Click(object sender, RoutedEventArgs e)
         {
-            var printer = new MedalTablePrinter();
-            var document = printer.GenerateDocument();
-            Action action = (() =>
+            Func<FlowDocument> generate = () =>
+            {
+                var printer = new MedalTablePrinter();
+                return printer.GenerateDocument();
+            };
+            
+            Action<FlowDocument> print = doc =>
             {
                 var docPrinter = new FlowDocumentPrinter();
-                docPrinter.PrintFlowDocument(() => printer.GenerateDocument());
-            });
-            var previewer = new FlowDocumentPreviewDialog(document, action);
+                docPrinter.PrintFlowDocument(doc);
+            };
+
+            var previewer = new FlowDocumentPreviewDialog(generate, print);
+            previewer.ShowDialog();
+        }
+
+        private void eventsWithPrizes_Click(object sender, RoutedEventArgs e)
+        {
+            Func<FlowDocument> generate = () =>
+                {
+                    var printer = new EventsWithPrizesPrinter();
+                    return printer.GenerateDocument();
+                };
+            Action<FlowDocument> print = doc =>
+            {
+                var docPrinter = new FlowDocumentPrinter();
+                docPrinter.PrintFlowDocument(doc);
+            };
+
+            var previewer = new FlowDocumentPreviewDialog(generate, print);
             previewer.ShowDialog();
         }
 
@@ -384,14 +411,18 @@ namespace MSOOrganiser
             var dlg = new SelectDateDialog();
             if (dlg.ShowDialog().Value)
             {
-                var printer = new TodaysEventsPrinter();    
-                var document = printer.Print(dlg.SelectedDate);
-                Action action = (() =>
+                Func<FlowDocument> generate = () =>
+                    {
+                        var printer = new TodaysEventsPrinter();
+                        return printer.Print(dlg.SelectedDate);
+                    };
+                Action<FlowDocument> print = doc =>
                 {
                     var docPrinter = new FlowDocumentPrinter();
-                    docPrinter.PrintFlowDocument(() => printer.Print(dlg.SelectedDate));
-                });
-                var previewer = new FlowDocumentPreviewDialog(document, action);
+                    docPrinter.PrintFlowDocument(doc);
+                };
+
+                var previewer = new FlowDocumentPreviewDialog(generate, print);
                 previewer.ShowDialog();
             }
         }

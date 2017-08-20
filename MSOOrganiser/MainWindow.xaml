@@ -71,6 +71,7 @@
                     <MenuItem Header="Badges: Arbiters" Click="arbitersBadgesMenuItem_Click" />
                     <MenuItem Header="Print Named Pairing Card for an Event" IsEnabled="False"/>
                     <MenuItem Header="View Pentamind Qualifiers" IsEnabled="False"/>
+                    <MenuItem Header="Print Events with Prizes" Click="eventsWithPrizes_Click"/>
                     <MenuItem Header="Print Medal Table" Click="medalTable_Click"/>
                     <MenuItem Header="Print Results" Click="printResults_Click" />
                     <MenuItem Header="Finances">

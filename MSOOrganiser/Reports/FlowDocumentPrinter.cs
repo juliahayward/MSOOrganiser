@@ -17,7 +17,7 @@ namespace MSOOrganiser.Reports
     /// </summary>
     public class FlowDocumentPrinter
     {
-        public void PrintFlowDocument(Func<FlowDocument> documentProvider,
+        public void PrintFlowDocument(FlowDocument documentProvider,
             PageOrientation pageOrientation = PageOrientation.Portrait,
             bool includeFooter = true)
         {
@@ -26,7 +26,7 @@ namespace MSOOrganiser.Reports
             {
                 using (new SpinnyCursor())
                 {
-                    var doc = documentProvider();
+                    var doc = documentProvider;
 
                     DocumentPaginator paginator = ((IDocumentPaginatorSource)doc).DocumentPaginator;
                     if (includeFooter)
@@ -38,6 +38,13 @@ namespace MSOOrganiser.Reports
                     dlg.PrintDocument(paginator, "MSO Report");
                 }
             }
+        }
+
+        public void PrintFlowDocument(Func<FlowDocument> documentProvider,
+            PageOrientation pageOrientation = PageOrientation.Portrait,
+            bool includeFooter = true)
+        {
+            PrintFlowDocument(documentProvider(), pageOrientation, includeFooter);
         }
 
         public void PrintFlowDocuments(Func<IEnumerable<FlowDocument>> documentProvider,

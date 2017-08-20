@@ -19,13 +19,17 @@ namespace MSOOrganiser.Dialogs
     /// </summary>
     public partial class FlowDocumentPreviewDialog : Window
     {
-        Action _print;
+        Action<FlowDocument> _print;
+        Func<FlowDocument> _generate;
 
-        public FlowDocumentPreviewDialog(FlowDocument document, Action print)
+        public FlowDocumentPreviewDialog(Func<FlowDocument> generateDocument, Action<FlowDocument> printDocument)
         {
             InitializeComponent();
-            docViewer.Document = document;
-            _print = print;
+            _generate = generateDocument;
+            _print = printDocument;
+            // We do it this was as we can't print the FlowDocument once it's been
+            // assigned to the docViewer - we need a fresh one
+            docViewer.Document = _generate();
         }
 
         // For designer
@@ -36,7 +40,7 @@ namespace MSOOrganiser.Dialogs
 
         private void ok_Click(object sender, RoutedEventArgs e)
         {
-            _print();
+            _print(_generate());
             this.DialogResult = true;
             this.Close();
         }

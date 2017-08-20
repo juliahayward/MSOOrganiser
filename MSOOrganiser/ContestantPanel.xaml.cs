@@ -1137,6 +1137,9 @@ private string _Notes;
 
         public void Save()
         {
+            // Just to make sure we have picked up any changes that have come through online
+            ApportionCosts();
+
             var context = DataEntitiesProvider.Provide();
             var id = int.Parse(ContestantId);
             if (id == 0)

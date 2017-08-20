@@ -12,8 +12,10 @@ namespace MSOCore.Reports
         public class NationalityVm
         {
             public string Nationality { get; set; }
-            public string Males { get; set; }
-            public string Females { get; set; }
+            public int NumberOfMales { get; set; }
+            public string Males { get { return (NumberOfMales > 0 ? NumberOfMales.ToString() : ""); } }
+            public int NumberOfFemales { get; set; }
+            public string Females { get { return (NumberOfFemales > 0 ? NumberOfFemales.ToString() : ""); } }
             public string Total { get; set; }
         }
 
@@ -43,8 +45,8 @@ namespace MSOCore.Reports
                 yield return new NationalityVm()
                 {
                     Nationality = key,
-                    Males = males.ContainsKey(key) ? males[key].ToString() : "",
-                    Females = females.ContainsKey(key) ? females[key].ToString() : "",
+                    NumberOfMales = males.ContainsKey(key) ? males[key] : 0,
+                    NumberOfFemales = females.ContainsKey(key) ? females[key] : 0,
                     Total = totals[key].ToString()
                 };
 

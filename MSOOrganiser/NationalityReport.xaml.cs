@@ -39,6 +39,13 @@ namespace MSOOrganiser
             Items = new ObservableCollection<NationalityReportGenerator.NationalityVm>();
             foreach (var item in generator.GetItemsForLatest())
                 Items.Add(item);
+
+            Items.Add(new NationalityReportGenerator.NationalityVm() {
+                Nationality = "Total",
+                NumberOfFemales = Items.Sum(x => x.NumberOfFemales),
+                NumberOfMales = Items.Sum(x => x.NumberOfMales),
+                Total = (Items.Sum(x => x.NumberOfFemales) + Items.Sum(x => x.NumberOfMales)).ToString()
+            });
         }
 
         private void print_Click(object sender, RoutedEventArgs e)
