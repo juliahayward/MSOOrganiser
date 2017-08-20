@@ -425,6 +425,7 @@
           <Property Name="Banked" Type="int" />
           <Property Name="Year" Type="int" />
           <Property Name="OlympiadId" Type="int" />
+          <Property Name="Received" Type="datetime" />
         </EntityType>
         <EntityType Name="Resources">
           <Key>
@@ -999,6 +1000,7 @@
           <Property Type="Int32" Name="Year" />
           <NavigationProperty Name="Name" Relationship="DataModel.Payments_NamesPayments" FromRole="Payment" ToRole="Name" />
           <Property Type="Int32" Name="OlympiadId" />
+          <Property Type="DateTime" Name="Received" Precision="3" />
         </EntityType>
         <EntityType Name="Resource">
           <Key>
@@ -1544,6 +1546,7 @@
           <EntitySetMapping Name="Payments">
             <EntityTypeMapping TypeName="DataModel.Payment">
               <MappingFragment StoreEntitySet="Payments">
+                <ScalarProperty Name="Received" ColumnName="Received" />
                 <ScalarProperty Name="OlympiadId" ColumnName="OlympiadId" />
                 <ScalarProperty Name="Year" ColumnName="Year" />
                 <ScalarProperty Name="Banked" ColumnName="Banked" />

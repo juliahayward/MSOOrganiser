@@ -4,7 +4,7 @@
         xmlns:local="clr-namespace:MSOOrganiser.Converters"
         Title="Select event Fee" Height="150" Width="400">
     <Window.Resources>
-        <local:ShowCurrencyConverter x:Key="ShowCurrencyConverter" />
+        <local:ShowCurrencyIncludingZeroesConverter x:Key="ShowCurrencyConverter" />
     </Window.Resources>
     <Grid>
         <StackPanel Orientation="Vertical">

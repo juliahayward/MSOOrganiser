@@ -1171,7 +1171,7 @@ private string _Notes;
                     .Select(x => Entrant.NewEntrant(x.EventId, x.EventCode, CurrentOlympiadId, dbCon, x.Fee))
                     .ToList();
                 dbCon.Payments = this.Payments
-                    .Select(x => new Payment() { Payment1 = x.Amount, Payment_Method = x.Method, PaymentNumber = 0, Banked = x.Banked ? 1 : 0, MindSportsID = dbCon.Mind_Sport_ID, OlympiadId = CurrentOlympiadId, Name = dbCon})
+                    .Select(x => new Payment() { Payment1 = x.Amount, Payment_Method = x.Method, PaymentNumber = 0, Banked = x.Banked ? 1 : 0, MindSportsID = dbCon.Mind_Sport_ID, OlympiadId = CurrentOlympiadId, Name = dbCon, Received = DateTime.Now })
                     .ToList();
             }
             else
@@ -1222,7 +1222,7 @@ private string _Notes;
                 // Add new payments that aren't already in this olympiad for this person
                 foreach (var p in this.Payments.Where(x => !dbCon.Payments.Any(pp => pp.PaymentNumber == x.PaymentId)))
                 {
-                    dbCon.Payments.Add(new Payment() { Payment1 = p.Amount, Payment_Method = p.Method, PaymentNumber = 0, Banked = p.Banked ? 1 : 0, MindSportsID = dbCon.Mind_Sport_ID, OlympiadId = CurrentOlympiadId, Name = dbCon });
+                    dbCon.Payments.Add(new Payment() { Payment1 = p.Amount, Payment_Method = p.Method, PaymentNumber = 0, Banked = p.Banked ? 1 : 0, MindSportsID = dbCon.Mind_Sport_ID, OlympiadId = CurrentOlympiadId, Name = dbCon, Received = DateTime.Now });
                 }
                 // At the moment we can't delete payments (deliberate)
             }

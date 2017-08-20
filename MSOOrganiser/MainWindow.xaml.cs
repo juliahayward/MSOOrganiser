@@ -281,10 +281,14 @@ namespace MSOOrganiser
             if (dialog.ShowDialog().Value)
             {
                 var printer = new MedalFormsPrinter();
+                FlowDocument doc;
                 if (dialog.UseEvent)
-                    printer.Print(dialog.EventCode);
+                    doc = printer.Print(dialog.EventCode);
                 else
-                    printer.Print(dialog.StartDate, dialog.EndDate);
+                    doc = printer.Print(dialog.StartDate, dialog.EndDate);
+
+                var flowDocumentPrinter = new FlowDocumentPrinter();
+                flowDocumentPrinter.PrintFlowDocument(() => doc, includeFooter: false);
             }
         }
 
@@ -576,7 +580,8 @@ namespace MSOOrganiser
             var fees = context.Entrants.Where(p => p.OlympiadId == olympiadId)
                 .GroupBy(x => x.Mind_Sport_ID)
                 .ToDictionary(x => x.Key, x => x.Sum(p => p.Fee));
-            var contestants = fees.Where(x => !payments.Keys.Contains(x.Key) || x.Value > payments[x.Key])
+            var contestants = fees.Where(x => x.Value > 0 && // They have some fees - not complimentary
+                    (!payments.Keys.Contains(x.Key) || x.Value > payments[x.Key]))
                 .Select(x => x.Key);
 
             // Warning - can't do comparison inside SQL as Sum() can be NULL
@@ -760,7 +765,8 @@ namespace MSOOrganiser
                     OlympiadId = currentOlympiad.Id,
                     Payment_Method = "Group cheque (Korea)",
                     Year = 2016,
-                    Payment1 = owed
+                    Payment1 = owed,
+ * Received = DateTime.Now
                 };
                 context.Payments.Add(payment);
             }
@@ -810,7 +816,8 @@ namespace MSOOrganiser
                     OlympiadId = currentOlympiad.Id,
                     Payment_Method = "Group cheque (Paco)",
                     Year = 2016,
-                    Payment1 = owed
+                    Payment1 = owed,
+      * Received = DateTime.Now
                 };
                 context.Payments.Add(payment);
             }

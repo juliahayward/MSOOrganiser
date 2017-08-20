@@ -12,6 +12,9 @@ using System.Windows.Media;
 
 namespace MSOOrganiser.Reports
 {
+    /// <summary>
+    /// Takes a FlowDocument and sends it to the printer.
+    /// </summary>
     public class FlowDocumentPrinter
     {
         public void PrintFlowDocument(Func<FlowDocument> documentProvider,
@@ -26,16 +29,20 @@ namespace MSOOrganiser.Reports
                     var doc = documentProvider();
 
                     DocumentPaginator paginator = ((IDocumentPaginatorSource)doc).DocumentPaginator;
-                    FooteredDocumentPaginator wrapper = new FooteredDocumentPaginator(paginator,
-                        paginator.PageSize, new Size(0.0, 0.0), includeFooter);
+                    if (includeFooter)
+                    {
+                        paginator = new FooteredDocumentPaginator(paginator,
+                            paginator.PageSize, new Size(0.0, 0.0), includeFooter);
+                    }
                     dlg.PrintTicket.PageOrientation = pageOrientation;
-                    dlg.PrintDocument(wrapper, "MSO Report");
+                    dlg.PrintDocument(paginator, "MSO Report");
                 }
             }
         }
 
         public void PrintFlowDocuments(Func<IEnumerable<FlowDocument>> documentProvider,
-            PageOrientation pageOrientation = PageOrientation.Portrait)
+            PageOrientation pageOrientation = PageOrientation.Portrait,
+            bool includeFooter = true)
         {
             PrintDialog dlg = new PrintDialog();
             if ((bool)dlg.ShowDialog().GetValueOrDefault())
@@ -45,10 +52,13 @@ namespace MSOOrganiser.Reports
                     foreach (var doc in documentProvider())
                     {
                         DocumentPaginator paginator = ((IDocumentPaginatorSource)doc).DocumentPaginator;
-                        FooteredDocumentPaginator wrapper = new FooteredDocumentPaginator(paginator,
-                            paginator.PageSize, new Size(0.0, 0.0));
+                        if (includeFooter)
+                        {
+                            paginator = new FooteredDocumentPaginator(paginator,
+                                paginator.PageSize, new Size(0.0, 0.0));
+                        }
                         dlg.PrintTicket.PageOrientation = pageOrientation;
-                        dlg.PrintDocument(wrapper, "MSO Report");
+                        dlg.PrintDocument(paginator, "MSO Report");
                     }
                 }
             }

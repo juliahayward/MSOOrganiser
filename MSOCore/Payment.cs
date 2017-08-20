@@ -21,6 +21,7 @@ namespace MSOCore
         public Nullable<int> Banked { get; set; }
         public Nullable<int> Year { get; set; }
         public Nullable<int> OlympiadId { get; set; }
+        public Nullable<System.DateTime> Received { get; set; }
     
         public virtual Contestant Name { get; set; }
     }
