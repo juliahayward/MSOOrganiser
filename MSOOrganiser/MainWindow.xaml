@@ -46,34 +46,40 @@
                 <MenuItem Header="Data"
                           Visibility="{Binding IsLoggedIn, Converter={StaticResource BoolToVisibilityConverter}}">
                     <MenuItem Header="Calculate seedings" Click="calculateSeedings_Click" />
+                    <MenuItem Header="Load online entries" Click="prepayments_Click" />
+                    <MenuItem Header="Freeze metagame standings" Click="freezeMetaGames_Click" />
                 </MenuItem>
                 <MenuItem Header="Reports"
                           Visibility="{Binding IsLoggedIn, Converter={StaticResource BoolToVisibilityConverter}}">
-                    <MenuItem Header="Bulk Receipts" IsEnabled="False"/>
-                    <MenuItem Header="View Max Fee / Penta Cards" IsEnabled="False" Click="maxFeePentaCards_Click"/>
-                    <MenuItem Header="Bulk Max Fee" IsEnabled="False"/>
-                    <MenuItem Header="Contacts" Click="contactsMenuItem_Click"/>
-                    <MenuItem Header="View Game Plan" Click="gamePlanMenuItem_Click"/>
-                    <MenuItem Header="Sign In Sheets" IsEnabled="False"/>
-                    <MenuItem Header="Parking Lists" Click="parkingListsMenuItem_Click" />
-                    <MenuItem Header="People per room (Traffic Report)" Click="trafficReport_Click"/>
-                    <MenuItem Header="View Location Use" Click="locationUse_Click"/>
-                    <MenuItem Header="View Arbiter Schedules" Click="arbiterSchedule_Click"/>
-                    <MenuItem Header="View Nationalities" Click="nationalitiesMenuItem_Click" />
-                    <MenuItem Header="Print Event Entries" Click="printEventEntriesMenuItem_Click" />
-                    <MenuItem Header="Events per Session (Logistics Report)" Click="printEventsPerSessionMenuItem_Click" />
-                    <MenuItem Header="Entry Summary" Click="entrySummaryMenuItem_Click"/>
-                    <MenuItem Header="Print a Day's Report" Click="daysReportMenuItem_Click" />
-                    <MenuItem Header="Print Today's Events" Click="printTodaysEventsMenuItem_Click"/>
-                    <MenuItem Header="Print Today's Event By Game" IsEnabled="False"/>
-                    <MenuItem Header="View Medal Forms" Click="medalFormsMenuItem_Click" />
-                    <MenuItem Header="Event Labels" Click="eventLabelsMenuItem_Click" />
-                    <MenuItem Header="Badges: Arbiters" Click="arbitersBadgesMenuItem_Click" />
-                    <MenuItem Header="Print Named Pairing Card for an Event" IsEnabled="False"/>
-                    <MenuItem Header="View Pentamind Qualifiers" IsEnabled="False"/>
-                    <MenuItem Header="Print Events with Prizes" Click="eventsWithPrizes_Click"/>
-                    <MenuItem Header="Print Medal Table" Click="medalTable_Click"/>
-                    <MenuItem Header="Print Results" Click="printResults_Click" />
+                    <MenuItem Header="Old / not implemented yet" IsEnabled="False">
+                        <MenuItem Header="Bulk Receipts" IsEnabled="False"/>
+                        <MenuItem Header="View Max Fee / Penta Cards" IsEnabled="False" Click="maxFeePentaCards_Click"/>
+                        <MenuItem Header="Bulk Max Fee" IsEnabled="False"/>
+                        <MenuItem Header="Sign In Sheets" IsEnabled="False"/>
+                        <MenuItem Header="Parking Lists" Click="parkingListsMenuItem_Click" />
+                        <MenuItem Header="Print Named Pairing Card for an Event" IsEnabled="False"/>
+                        <MenuItem Header="View Pentamind Qualifiers" IsEnabled="False"/>
+                        <MenuItem Header="Badges: Arbiters" Click="arbitersBadgesMenuItem_Click" />
+                    </MenuItem>
+                    <MenuItem Header="Before the event">
+                        <MenuItem Header="Contacts" Click="contactsMenuItem_Click"/>
+                        <MenuItem Header="View Game Plan" Click="gamePlanMenuItem_Click"/>
+                        <MenuItem Header="View Location Use" Click="locationUse_Click"/>
+                        <MenuItem Header="View Arbiter Schedules" Click="arbiterSchedule_Click"/>
+                        <MenuItem Header="Event Envelope Labels" Click="eventLabelsMenuItem_Click" />
+                    </MenuItem>
+                    <MenuItem Header="During the event">
+                        <MenuItem Header="Contestants per room" Click="trafficReport_Click"/> <!-- was Traffic Report -->
+                        <MenuItem Header="View Nationalities" Click="nationalitiesMenuItem_Click" />
+                        <MenuItem Header="Entries per Event" Click="printEventEntriesMenuItem_Click" />
+                        <MenuItem Header="Entry Summary" Click="entrySummaryMenuItem_Click"/>
+                        <MenuItem Header="Events with Prizes" Click="eventsWithPrizes_Click"/>
+                        <MenuItem Header="Events per Session" Click="printEventsPerSessionMenuItem_Click" /> <!-- was Logistics Report -->
+                        <MenuItem Header="Print a Day's Report" Click="daysReportMenuItem_Click" />
+                        <MenuItem Header="Print Today's Events" Click="printTodaysEventsMenuItem_Click"/>
+                        <MenuItem Header="Print Today's Event By Game" IsEnabled="False"/>
+                        <MenuItem Header="View Medal Forms" Click="medalFormsMenuItem_Click" />
+                    </MenuItem>               
                     <MenuItem Header="Finances">
                         <MenuItem Header="Non-Event Income" Click="nonEventIncomeMenuItem_Click"/>
                         <MenuItem Header="Event Income" Click="eventIncomeMenuItem_Click"/>
@@ -82,8 +88,10 @@
                         <MenuItem Header="People who owe us money" Click="peopleOwingMoneyMenuItem_Click"/>
                         <MenuItem Header="Banking" IsEnabled="False"/>
                     </MenuItem>
-                    <MenuItem Header="Meta-events">
-                    <MenuItem Header="Pentamind Standings" Click="pentamindStandings_Click" />
+                    <MenuItem Header="Results">
+                        <MenuItem Header="Medal Table" Click="medalTable_Click"/>
+                        <MenuItem Header="Print Results" Click="printResults_Click" />
+                        <MenuItem Header="Pentamind Standings" Click="pentamindStandings_Click" />
                         <MenuItem Header="Junior Pentamind Standings" Click="juniorPentamindStandings_Click" />
                         <MenuItem Header="Senior Pentamind Standings" Click="seniorPentamindStandings_Click" />
                         <MenuItem Header="Poker WC Standings" Click="pokerStandings_Click" />
@@ -94,8 +102,6 @@
                 <MenuItem Header="Misc"
                           Visibility="{Binding IsLoggedIn, Converter={StaticResource BoolToVisibilityConverter}}">
                     <MenuItem Header="Print Misc Badges" IsEnabled="False"/>
-                    <MenuItem Header="Load online entries" Click="prepayments_Click" />
-                    <MenuItem Header="Freeze metagame standings" Click="freezeMetaGames_Click" />
                 </MenuItem>
                 <MenuItem Header="Help">
                     <MenuItem Header="Show Help" Click="help_Click" />

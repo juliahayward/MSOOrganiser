@@ -327,32 +327,82 @@ namespace MSOOrganiser
 
         private void pentamindStandings_Click(object sender, RoutedEventArgs e)
         {
-            var printer = new PentamindStandingsPrinter();
-            printer.Print();
+            Func<FlowDocument> generate = () =>
+            {
+                var printer = new PentamindStandingsPrinter();
+                return printer.Print();
+            };
+            Action<FlowDocument> print = doc =>
+                {
+                    var flowDocumentPrinter = new FlowDocumentPrinter();
+                    flowDocumentPrinter.PrintFlowDocument(doc, includeFooter: false);
+                };
+            FlowDocumentPreviewDialog dialog = new FlowDocumentPreviewDialog(generate, print);
+            dialog.ShowDialog();
         }
 
         private void juniorPentamindStandings_Click(object sender, RoutedEventArgs e)
         {
-            var printer = new PentamindStandingsPrinter();
-            printer.PrintJunior();
+            Func<FlowDocument> generate = () =>
+            {
+                var printer = new PentamindStandingsPrinter();
+                return printer.PrintJunior();
+            };
+            Action<FlowDocument> print = doc =>
+            {
+                var flowDocumentPrinter = new FlowDocumentPrinter();
+                flowDocumentPrinter.PrintFlowDocument(doc, includeFooter: false);
+            };
+            FlowDocumentPreviewDialog dialog = new FlowDocumentPreviewDialog(generate, print);
+            dialog.ShowDialog();
         }
 
         private void seniorPentamindStandings_Click(object sender, RoutedEventArgs e)
         {
-            var printer = new PentamindStandingsPrinter();
-            printer.PrintSenior();
+            Func<FlowDocument> generate = () =>
+            {
+                var printer = new PentamindStandingsPrinter();
+                return printer.PrintSenior();
+            };
+            Action<FlowDocument> print = doc =>
+            {
+                var flowDocumentPrinter = new FlowDocumentPrinter();
+                flowDocumentPrinter.PrintFlowDocument(doc, includeFooter: false);
+            };
+            FlowDocumentPreviewDialog dialog = new FlowDocumentPreviewDialog(generate, print);
+            dialog.ShowDialog();
         }
 
         private void pokerStandings_Click(object sender, RoutedEventArgs e)
         {
-            var printer = new PokerStandingsPrinter();
-            printer.Print();
+            Func<FlowDocument> generate = () =>
+            {
+                var printer = new PokerStandingsPrinter();
+                return printer.Print();
+            };
+            Action<FlowDocument> print = doc =>
+            {
+                var flowDocumentPrinter = new FlowDocumentPrinter();
+                flowDocumentPrinter.PrintFlowDocument(doc, includeFooter: false);
+            };
+            FlowDocumentPreviewDialog dialog = new FlowDocumentPreviewDialog(generate, print);
+            dialog.ShowDialog();
         }
 
         private void eurogamesStandings_Click(object sender, RoutedEventArgs e)
         {
-            var printer = new PentamindStandingsPrinter();
-            printer.PrintEuro();
+            Func<FlowDocument> generate = () =>
+            {
+                var printer = new PentamindStandingsPrinter();
+                return printer.PrintEuro();
+            };
+            Action<FlowDocument> print = doc =>
+            {
+                var flowDocumentPrinter = new FlowDocumentPrinter();
+                flowDocumentPrinter.PrintFlowDocument(doc, includeFooter: false);
+            };
+            FlowDocumentPreviewDialog dialog = new FlowDocumentPreviewDialog(generate, print);
+            dialog.ShowDialog();
         }
 
         private void eventIncomeMenuItem_Click(object sender, RoutedEventArgs e)

@@ -137,8 +137,18 @@ namespace MSOOrganiser
 
         public void print_Click(object sender, EventArgs e)
         {
-            var printer = new SingleEventResultsPrinter(ViewModel.CurrentOlympiadId, ViewModel.EventCode);
-            printer.Print();
+            Func<FlowDocument> generate = () =>
+                {
+                    var printer = new SingleEventResultsPrinter(ViewModel.CurrentOlympiadId, ViewModel.EventCode);
+                    return printer.Print();
+                };
+            Action<FlowDocument> print = doc =>
+                {
+                    var printer = new FlowDocumentPrinter();
+                    printer.PrintFlowDocument(doc, includeFooter: false);
+                };
+            var dlg = new FlowDocumentPreviewDialog(generate, print);
+            dlg.ShowDialog();
         }
 
         private void eventCombo_Changed(object sender, SelectionChangedEventArgs e)

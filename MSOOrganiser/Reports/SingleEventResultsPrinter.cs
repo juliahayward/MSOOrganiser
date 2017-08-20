@@ -24,18 +24,16 @@ namespace MSOOrganiser.Reports
             _eventCode = eventCode;
         }
 
-        public void Print()
+        public FlowDocument Print()
         {
             var context = DataEntitiesProvider.Provide();
             var currentOlympiad = context.Olympiad_Infoes.Single(x => x.Id == _olympiadId);
             var evt = context.Events.SingleOrDefault(x => x.OlympiadId == _olympiadId && x.Code == _eventCode);
             var juniorDob = currentOlympiad.AgeDate.Value.AddYears(-currentOlympiad.JnrAge.Value - 1);
 
-            var entrants = evt.Entrants.Where(x => x.Rank.HasValue).OrderBy(x => x.Rank).ThenBy(x => x.Medal.MedalRank());
+            var entrants = evt.Entrants.Where(x => x.Rank.HasValue && !x.Absent)
+                .OrderBy(x => x.Rank).ThenBy(x => x.Medal.MedalRank());
 
-            PrintDialog dlg = new PrintDialog();
-            if ((bool)dlg.ShowDialog().GetValueOrDefault())
-            {
                 FlowDocument doc = new FlowDocument();
 
                 doc.ColumnWidth = 385; // 96ths of an inch - deliberately half width
@@ -97,9 +95,7 @@ namespace MSOOrganiser.Reports
                 row.Cells.Add(new TableCell(new Paragraph(new Run("Players: " + entrants.Count())) { Margin = new Thickness(2), FontSize = 12, FontWeight = FontWeights.Bold }) { ColumnSpan = 6, TextAlignment = TextAlignment.Right });
                 bodyTable.RowGroups[0].Rows.Add(row);
 
-                DocumentPaginator paginator = ((IDocumentPaginatorSource)doc).DocumentPaginator;
-                dlg.PrintDocument(paginator, "Results");
-            }
+                return doc;
         }
     }
 }
