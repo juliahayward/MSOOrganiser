@@ -559,6 +559,25 @@ namespace MSOOrganiser
             MessageBox.Show("Please take the yellow paper out of the printer now");
         }
 
+        private void prizeFormsMenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            Func<FlowDocument> generate = () =>
+            {
+                var printer = new PrizeFormsPrinter();
+                return printer.Print();
+            };
+            Action<FlowDocument> print = doc =>
+            {
+                MessageBox.Show("Please ensure that YELLOW paper is in the printer");
+                var docPrinter = new FlowDocumentPrinter();
+                docPrinter.PrintFlowDocument(doc, includeFooter: false);
+                MessageBox.Show("Please take the yellow paper out of the printer now");
+            };
+
+            var dlg = new FlowDocumentPreviewDialog(generate, print);
+            dlg.ShowDialog();          
+        }
+
 
         private void contestantList_Click(object sender, RoutedEventArgs e)
         {

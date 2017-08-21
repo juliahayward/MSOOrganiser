@@ -29,11 +29,7 @@
                           Visibility="{Binding IsLoggedIn, Converter={StaticResource BoolToVisibilityConverter}}"/>
                 <MenuItem Header="Competitors" Click="competitorsMenuItem_Click"
                           Visibility="{Binding IsLoggedIn, Converter={StaticResource BoolToVisibilityConverter}}"/>
-                <MenuItem Header="Events"
-                          Visibility="{Binding IsLoggedIn, Converter={StaticResource BoolToVisibilityConverter}}">
-                    <MenuItem Header="Copy from Previous Year" Click="copyEventsMenuItem_Click"/>
-                </MenuItem>
-                <MenuItem Header="Results"
+                <MenuItem Header="Events/Results"
                           Visibility="{Binding IsLoggedIn, Converter={StaticResource BoolToVisibilityConverter}}">
                     <MenuItem Header="Display results" Click="displayResultsMenuItem_Click"/>
                     <MenuItem Header="Edit Results" Click="resultsMenuItem_Click" />
@@ -45,6 +41,7 @@
                 </MenuItem>
                 <MenuItem Header="Data"
                           Visibility="{Binding IsLoggedIn, Converter={StaticResource BoolToVisibilityConverter}}">
+                    <MenuItem Header="Copy Events from Previous Year" Click="copyEventsMenuItem_Click"/>
                     <MenuItem Header="Calculate seedings" Click="calculateSeedings_Click" />
                     <MenuItem Header="Load online entries" Click="prepayments_Click" />
                     <MenuItem Header="Freeze metagame standings" Click="freezeMetaGames_Click" />
@@ -67,6 +64,7 @@
                         <MenuItem Header="View Location Use" Click="locationUse_Click"/>
                         <MenuItem Header="View Arbiter Schedules" Click="arbiterSchedule_Click"/>
                         <MenuItem Header="Event Envelope Labels" Click="eventLabelsMenuItem_Click" />
+                        <MenuItem Header="Prize Receipt Forms" Click="prizeFormsMenuItem_Click" />
                     </MenuItem>
                     <MenuItem Header="During the event">
                         <MenuItem Header="Contestants per room" Click="trafficReport_Click"/> <!-- was Traffic Report -->
