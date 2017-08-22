@@ -60,6 +60,7 @@ namespace MSOOrganiser
     {
         public class EventVm
         {
+            public bool IsVisible { get; set; }
             public int Id { get; set; }
             public string Name { get; set; }
             public string Dates { get; set; }
@@ -128,7 +129,8 @@ namespace MSOOrganiser
                         : "Dates unknown",
                     NumCompetitors = evt.Entrants.Count(x => !x.Absent).ToString(),
                     FractionDone = evt.FractionDone(),
-                    Status = evt.Status()
+                    Status = evt.Status(),
+                    IsVisible = ((evt.Status() != "Complete") || (DateTime.Now.Subtract(evt.End.Value).TotalDays < 1))
                 });
             }
 

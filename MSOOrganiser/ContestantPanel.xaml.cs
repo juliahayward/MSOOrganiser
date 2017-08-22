@@ -1074,6 +1074,7 @@ private string _Notes;
                 IsConcessional = false;
                 Address1 = "";
                 Address2 = "";
+                Email = "";
                 City = "";
                 County = "";
                 Postcode = "";
@@ -1102,6 +1103,7 @@ private string _Notes;
                 IsConcessional = dbCon.Concessional.HasValue ? dbCon.Concessional.Value : true;
                 Address1 = dbCon.Address1;
                 Address2 = dbCon.Address2;
+                Email = dbCon.email;
                 City = dbCon.City;
                 County = dbCon.County;
                 Postcode = dbCon.PostCode;
@@ -1160,6 +1162,7 @@ private string _Notes;
                     Concessional = this.IsConcessional,
                     Address1 = this.Address1,
                     Address2 = this.Address2,
+                    email = this.Email,
                     City = this.City,
                     County = this.County,
                     PostCode = this.Postcode,

@@ -170,6 +170,7 @@
     <Compile Include="Reports\ContestantListCsvExporter.cs" />
     <Compile Include="Reports\ArbitersBadgesPrinter.cs" />
     <Compile Include="Reports\ContestantResultsPrinter.cs" />
+    <Compile Include="Reports\PrizeFormsPrinter.cs" />
     <Compile Include="Reports\EventsWithPrizesPrinter.cs" />
     <Compile Include="Reports\PeopleOwingMoneyReportPrinter.cs" />
     <Compile Include="Reports\TotalIncomeByMethodReportPrinter.cs" />
