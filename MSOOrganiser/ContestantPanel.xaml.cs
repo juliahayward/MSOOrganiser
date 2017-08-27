@@ -1040,17 +1040,23 @@ private string _Notes;
         {
             get
             {
-                Func<Contestant, bool> func1;
-                if (string.IsNullOrEmpty(FilterLastName)) 
-                    func1 = (x => true);
+                Func<Contestant, bool> func1, func3;
+                if (string.IsNullOrEmpty(FilterLastName))
+                    func1 = func3 = (x => true);
                 else
+                {
                     func1 = (x => x.Lastname != null && x.Lastname.ToLower().Contains(FilterLastName.ToLower()));
-                Func<Contestant, bool> func2;
-                if (string.IsNullOrEmpty(FilterFirstName)) 
-                    func2 = (x => true);
+                    func3 = (x => x.Firstname != null && x.Firstname.ToLower().Contains(FilterLastName.ToLower()));
+                }
+                Func<Contestant, bool> func2, func4;
+                if (string.IsNullOrEmpty(FilterFirstName))
+                    func2 = func4 = (x => true);
                 else
+                {
                     func2 = (x => x.Firstname != null && x.Firstname.ToLower().Contains(FilterFirstName.ToLower()));
-                return x => (func1(x) && func2(x));
+                    func4 = (x => x.Lastname != null && x.Lastname.ToLower().Contains(FilterFirstName.ToLower()));
+                }
+                return x => (func1(x) && func2(x)) || (func3(x) && func4(x));
             }
         }
 
