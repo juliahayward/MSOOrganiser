@@ -700,6 +700,28 @@ namespace MSOOrganiser
             }
         }
 
+        private void birthday_Click(object sender, RoutedEventArgs e)
+        {
+            var context = DataEntitiesProvider.Provide();
+            var olympiadId = context.Olympiad_Infoes.First(x => x.Current).Id;
+            var today = DateTime.Now.Date;
+
+            var names = context.Entrants.Where(x => x.OlympiadId == olympiadId)
+                .Select(x => x.Name).Distinct().ToList()
+                .Where(c => c.DateofBirth.HasValue && c.DateofBirth.Value.Month == today.Month && c.DateofBirth.Value.Day == today.Day)
+                .Select(c => c.FullName() + " (" + (today.Year - c.DateofBirth.Value.Year) + ")");
+
+            if (names.Any())
+            {
+                MessageBox.Show("The following contestants have birthdays today:"
+                    + Environment.NewLine + string.Join(Environment.NewLine, names));
+            }
+            else
+            {
+                MessageBox.Show("There are no contestants with birthdays today");
+            }
+        }
+
         private void freezeMetaGames_Click(object sender, RoutedEventArgs e)
         {
             var context = DataEntitiesProvider.Provide();
@@ -933,6 +955,8 @@ namespace MSOOrganiser
                 calculator.CalculateSeedings();
             }
         }
+
+       
     }
 
 

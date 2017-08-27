@@ -38,6 +38,7 @@
                           Visibility="{Binding IsLoggedIn, Converter={StaticResource BoolToVisibilityConverter}}">
                     <MenuItem Header="People with unspent fees" Click="unspentFee_Click"/>
                     <MenuItem Header="People with unpaid fees" Click="unpaidFee_Click"/>
+                    <MenuItem Header="People with birthdays today" Click="birthday_Click"/>
                 </MenuItem>
                 <MenuItem Header="Data"
                           Visibility="{Binding IsLoggedIn, Converter={StaticResource BoolToVisibilityConverter}}">
