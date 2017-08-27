@@ -7,7 +7,7 @@
 <style type="text/css">
     .jmhTable {
         border: 1px black solid; 
-        width: 400px; 
+        width: 800px; 
         margin-left: 100px
     }
     .jmhTable td {
@@ -23,11 +23,20 @@
     }
 </style>
 
-<h1 class="entry-title">Medals for @Model.Year @Model.EventName (@Model.EventCode)</h1>
+<h1 class="entry-title">Full results for @Model.Year @Model.EventName (@Model.EventCode)</h1>
 
         <table class="jmhTable">
             <tr>
-                <td colspan="6" style="background: AliceBlue"><span class="jmhPaddedHeader">@Model.EventName</span></td>
+                <td colspan="7" style="background: AliceBlue"><span class="jmhPaddedHeader">@Model.EventName</span></td>
+            </tr>
+            <tr>
+                <td style="background: AliceBlue"><span class="jmhPaddedHeader">Position</span></td>
+                <td style="background: AliceBlue"><span class="jmhPaddedHeader">Medal</span></td>
+                <td style="background: AliceBlue"><span class="jmhPaddedHeader"></span></td>
+                <td style="background: AliceBlue"><span class="jmhPaddedHeader">Score</span></td>
+                <td style="background: AliceBlue"><span class="jmhPaddedHeader">Pentamind</span></td>
+                <td style="background: AliceBlue"><span class="jmhPaddedHeader">Name</span></td>
+                <td style="background: AliceBlue"><span class="jmhPaddedHeader"></span></td>
             </tr>
         @foreach (var entrant in Model.Entrants)
         {
@@ -36,6 +45,7 @@
                 <td style="width:100px;"><div class="jmhPadded">@entrant.Medal</div></td>
                 <td style="width:100px;"><div class="jmhPadded">@entrant.JuniorMedal</div></td>
                 <td style="width: 50px;"><div class="jmhPadded">@entrant.Score</div></td>
+                <td style="width: 50px;"><div class="jmhPadded">@entrant.PentaScore.ToString("0.00")</div></td>
                 <td style="width:240px;"><div class="jmhPadded">
                     <a href="./ContestantMedals?contestantId=@entrant.ContestantId">@entrant.Name</a>
                                          </div></td>

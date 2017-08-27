@@ -23,6 +23,7 @@ namespace MSOCore.Reports
                 public string JuniorMedal { get; set; }
                 public int Rank { get; set; }
                 public string Score { get; set; }
+                public double PentaScore { get; set; }
                 public int ContestantId { get; set; }
                 public string Name { get; set; }
                 public string Nationality { get; set; }
@@ -50,6 +51,7 @@ namespace MSOCore.Reports
                     Medal = e.Medal,
                     JuniorMedal = e.JuniorMedal,
                     Score = e.Score,
+                    PentaScore = (double)e.Penta_Score,
                     Rank = e.Rank.Value,
                     Name = e.Name.FullName(),
                     Nationality = e.Name.Nationality ?? "default",

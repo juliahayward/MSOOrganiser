@@ -45,6 +45,11 @@ namespace MSOCore.Reports
                     var score = Scores.ElementAtOrDefault(place);
                     return (score != null) ? score.ToString() : "";
                 }
+                public string GameStr(int place)
+                {
+                    var score = Scores.ElementAtOrDefault(place);
+                    return (score != null) ? score.ToString().Substring(0, 4) : "";
+                }
             }
 
             public string OlympiadTitle { get; set; }
