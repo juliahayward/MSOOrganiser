@@ -50,6 +50,9 @@ namespace MSOWeb.Controllers
 
         public ActionResult GameMedals(string gameCode)
         {
+            // If someone puts in a 4 letter code, reduce it to a 2
+            gameCode = gameCode.Substring(0, 2);
+
             try
             {
                 var generator = new GameMedalsGenerator();

@@ -1,0 +1,68 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Title = "Mind Sports Olympiad Live Results";
+}
+
+<style type="text/css">
+    .jmhTable {
+        border: 1px black solid; 
+        width: 400px; 
+        margin-left: 100px
+    }
+    .jmhTable td {
+        vertical-align: middle;
+    }
+    .jmhPaddedHeader {
+        margin: 4px;
+        display: block;
+    }
+    .jmhPadded {
+        margin: 4px;
+        display: block;
+    }
+</style>
+
+<h1 class="entry-title">Welcome to Mind Sports Olympiad Online Results</h1>
+
+<p>For now, all links are just examples - call up the relevant page and substitute in other codes/years 
+    into the URL to see other events.</p>
+
+<h2>Meta-Events</h2>
+
+<ul>
+    <li><a href="/Report/PentamindStandings?year=2017">2017 Pentamind Standings</a></li>
+    <li><a href="/Report/EurogamesStandings?year=2017">2017 Eurogames Standings</a></li>
+</ul>
+
+<h2>Game Medals (all years)</h2>
+
+<ul>
+    <li><a href="/Report/GameMedals?gameCode=BA" >Backgammon</a></li>
+</ul>
+
+<h2>Full game results</h2>
+
+<ul>
+    <li><a href="/Report/EventResults?year=2017&eventCode=BARP">BARP, 2017</a></li>
+</ul>
+
+<h2>Year Medals (all games)</h2>
+
+<ul>
+    <li><a href="/Report/YearMedals?year=2017" >All medals, 2017</a></li>
+    <li><a href="/Report/YearMedals?year=2016" >All medals, 2016</a></li>
+</ul>
+
+<h2>Individual Medals</h2>
+
+<ul>
+    <li><a href="/Report/IndividualMedals?page=1" >All time medal table, top 100</a></li>
+</ul>
+
+<h2>Event Statistics</h2>
+
+<ul>
+    <li><a href="/Report/Nationality" >Nationalities in this year's event</a></li>
+</ul>
+
+

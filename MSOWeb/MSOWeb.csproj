@@ -126,6 +126,7 @@
   <ItemGroup>
     <Compile Include="Controllers\ApiV1Controller.cs" />
     <Compile Include="Controllers\EventController.cs" />
+    <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ReportController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -178,6 +179,7 @@
     <Content Include="Views\Report\Error.cshtml" />
     <Content Include="Views\Report\EventResults.cshtml" />
     <Content Include="Views\Report\EurogamesStandings.cshtml" />
+    <Content Include="Views\Home\Index.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
