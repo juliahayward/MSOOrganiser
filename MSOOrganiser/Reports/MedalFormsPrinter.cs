@@ -42,7 +42,7 @@ namespace MSOOrganiser.Reports
                 var section = new Section() { BreakPageBefore = !isFirst };
                 Table headerTable = new Table() { CellSpacing = 0 };
                 headerTable.Columns.Add(new TableColumn() { Width = new GridLength(170) });
-                headerTable.Columns.Add(new TableColumn() { Width = new GridLength(480) });
+                headerTable.Columns.Add(new TableColumn() { Width = new GridLength(470) });
                 headerTable.Columns.Add(new TableColumn() { Width = new GridLength(120) });
                 headerTable.RowGroups.Add(new TableRowGroup());
 
