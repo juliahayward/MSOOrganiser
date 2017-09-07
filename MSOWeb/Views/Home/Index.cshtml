@@ -1,4 +1,5 @@
-﻿@{
+﻿@model IEnumerable<MSOCore.Reports.GameListGenerator.GameVm>
+@{
     Layout = "~/Views/Shared/_Layout.cshtml";
     ViewBag.Title = "Mind Sports Olympiad Live Results";
 }
@@ -37,7 +38,10 @@
 <h2>Game Medals (all years)</h2>
 
 <ul>
-    <li><a href="/Report/GameMedals?gameCode=BA" >Backgammon</a></li>
+    @foreach (var game in Model)
+    {
+    <li><a href="/Report/GameMedals?gameCode=@game.Code" >@game.Name</a></li>
+    }
 </ul>
 
 <h2>Full game results</h2>
