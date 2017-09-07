@@ -162,6 +162,7 @@
     <Compile Include="Reports\ArbiterScheduleReportGenerator.cs" />
     <Compile Include="Reports\EventsWithPrizesReportGenerator.cs" />
     <Compile Include="Reports\EventResultsGenerator.cs" />
+    <Compile Include="Reports\GameListGenerator.cs" />
     <Compile Include="Reports\PeopleOwingMoneyReportGenerator.cs" />
     <Compile Include="Reports\TotalIncomeByMethodReportGenerator.cs" />
     <Compile Include="Reports\EventEntrantsGenerator.cs" />

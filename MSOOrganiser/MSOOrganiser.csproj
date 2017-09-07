@@ -33,6 +33,9 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>Logo.ico</ApplicationIcon>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="AutoUpdaterForWPF, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>packages\AutoUpdaterForWPF.1.0.0.0\lib\net45\AutoUpdaterForWPF.dll</HintPath>
@@ -166,6 +169,7 @@
     <Compile Include="OlympiadPanel.xaml.cs">
       <DependentUpon>OlympiadPanel.xaml</DependentUpon>
     </Compile>
+    <Compile Include="RelayCommand.cs" />
     <Compile Include="Reports\ArbiterSchedulePrinter.cs" />
     <Compile Include="Reports\ContestantListCsvExporter.cs" />
     <Compile Include="Reports\ArbitersBadgesPrinter.cs" />
@@ -337,9 +341,8 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Resources\Logo.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
+    <Resource Include="Resources\Logo.png" />
+    <Resource Include="Resources\Logo.ico" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
@@ -352,6 +355,9 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Domain\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Logo.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
