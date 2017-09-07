@@ -4,7 +4,7 @@
         xmlns:local="clr-namespace:MSOOrganiser"
         xmlns:converters="clr-namespace:MSOOrganiser.Converters"
         Title="Mind Sports Olympiad" Height="800" Width="1220"
-        Icon="/MSOOrganiser;component/Resources/Logo.png"
+        Icon="/MSOOrganiser;component/Resources/Logo.ico"
         Loaded="window_Loaded"
         Closing="window_Closing">
     <Window.Resources>
