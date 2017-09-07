@@ -24,6 +24,8 @@ namespace MSOOrganiser
     /// </summary>
     public partial class MainWindow : Window
     {
+        public static MainWindow Instance;
+
         private bool _updateCheckDone = false;
         private DispatcherTimer _databaseCheckTimer = new DispatcherTimer();
 
@@ -36,6 +38,7 @@ namespace MSOOrganiser
         public MainWindow()
         {
             InitializeComponent();
+            Instance = this;
 
             DataContext = new MainWindowVm(new PaymentProcessor());
 
@@ -157,10 +160,20 @@ namespace MSOOrganiser
 
         void panel_EventSelected(object sender, Events.EventEventArgs e)
         {
+            SwitchToEventPanel(e.EventCode, e.OlympiadId);
+        }
+
+        public void SwitchToEventPanel(string EventCode, int olympiadId = 0)
+        {
+            if (olympiadId == 0)
+            {
+                var context = DataEntitiesProvider.Provide();
+                olympiadId = context.Olympiad_Infoes.OrderByDescending(x => x.StartDate).First().Id;
+            }
             using (new SpinnyCursor())
             {
                 var panel = new EventPanel();
-                panel.Populate(e.EventCode, e.OlympiadId);
+                panel.Populate(EventCode, olympiadId);
                 panel.ContestantSelected += panel_ContestantSelected;
                 ReplaceMainPanelWith(panel);
             }

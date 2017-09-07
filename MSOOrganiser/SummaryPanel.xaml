@@ -31,7 +31,9 @@
                             <StackPanel Orientation="Horizontal" Margin="0,0,0,10" Visibility="{Binding IsVisible, Converter={StaticResource BoolToVisibilityConverter}}">
                             <TextBlock FontWeight="Bold" FontSize="16" Margin="0,10,10,10" Text="{Binding Id}"></TextBlock>
                             <StackPanel Orientation="Vertical">
-                                <TextBlock FontWeight="Bold" FontSize="12" Text="{Binding Name}"></TextBlock>
+                                <TextBlock FontWeight="Bold" FontSize="12">
+                                    <Hyperlink Command="{Binding EventNameCommand}"><Run Text="{Binding Name}"></Run></Hyperlink>
+                                </TextBlock>
                                 <TextBlock Text="{Binding DateAndCompetitors}"></TextBlock>
                                 <TextBlock Text="{Binding Status}"></TextBlock>
                             </StackPanel>

@@ -41,7 +41,11 @@ namespace MSOCore
             var hasNoScoredEntrants = !Entrants.Any(x => x.Rank.HasValue && x.Rank > 0);
             var hasAllScoredEntrants = Entrants.All(x => (x.Rank.HasValue && x.Rank > 0) || x.Absent);
             if (!Entrants.Any())
-                return "In database, empty";
+            {
+                if (!End.HasValue || DateTime.Now < End.Value)
+                    return "In database, empty";
+                else return "Complete"; // noone entered, and the end is passed
+            }
             else if (hasNoScoredEntrants && Event_Sess.All(s => s.ActualEnd < DateTime.Now))
                 return "Awaiting results";
             else if (hasNoScoredEntrants && Event_Sess.Any(s => s.ActualStart < DateTime.Now))

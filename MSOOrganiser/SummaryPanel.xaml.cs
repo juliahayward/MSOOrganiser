@@ -62,6 +62,7 @@ namespace MSOOrganiser
         {
             public bool IsVisible { get; set; }
             public int Id { get; set; }
+            public string Code { get; set; }
             public string Name { get; set; }
             public string Dates { get; set; }
             public string NumCompetitors { get; set; }
@@ -74,6 +75,13 @@ namespace MSOOrganiser
             }
             public double FractionDone { get; set; }
             public string Status { get; set; }
+
+            public RelayCommand<string> EventNameCommand { get; private set; }
+
+            public EventVm()
+            {
+                EventNameCommand = new RelayCommand<string>(_ => MainWindow.Instance.SwitchToEventPanel(Code));
+            }
         }
 
         private double _progressValue = 0.0;
@@ -122,7 +130,8 @@ namespace MSOOrganiser
             {
                 Events.Add(new EventVm() 
                 { 
-                    Name = evt.ShortName(), 
+                    Name = evt.ShortName(),
+                    Code = evt.Code,
                     Id = evt.Number,
                     Dates = (evt.Start.HasValue) ? evt.Start.Value.ToString("ddd dd MMM HH:mm") + " - " + 
                         evt.End.Value.ToString("HH:mm")
@@ -130,7 +139,7 @@ namespace MSOOrganiser
                     NumCompetitors = evt.Entrants.Count(x => !x.Absent).ToString(),
                     FractionDone = evt.FractionDone(),
                     Status = evt.Status(),
-                    IsVisible = ((evt.Status() != "Complete") || (DateTime.Now.Subtract(evt.End.Value).TotalDays < 1))
+                    IsVisible = ((evt.Status() != "Complete") || (DateTime.Now.Subtract(evt.End.Value).TotalHours < 1))
                 });
             }
 
