@@ -58,8 +58,8 @@ namespace MSOCore.Calculators
         private ParsedOrder Parse(EntryJson order)
         {
             // This catches people who only enter day and month for dob - they come through as
-            // the current year
-            var validDateCutoff = DateTime.Now.AddYears(-1);
+            // the current year - and people who want to cause us headaches...
+            var validDateCutoff = DateTime.Now.AddYears(-4);
             
             var text = order.JsonText;
 
@@ -76,7 +76,7 @@ namespace MSOCore.Calculators
             // This is a special case...
             if (parsedOrder.EventCode == "divingchess")
                 parsedOrder.EventCode = "CHDV";
-            parsedOrder.BookingPrice = obj.booking_price.Value;
+            parsedOrder.BookingPrice = (decimal)obj.booking_price.Value;
             parsedOrder.BookingSpaces = int.Parse(obj.booking_spaces.Value);
             parsedOrder.BookingStatus = int.Parse(obj.booking_status.Value.ToString());   // should be integer 1, sometimes string "1"
             foreach (var o2 in obj.attendees)
@@ -144,7 +144,7 @@ namespace MSOCore.Calculators
 
             if (feeExpected != parsedOrder.BookingPrice)
             {
-                order.Notes = "Wrong fee";
+                order.Notes = string.Format("Wrong fee, expected {0} found {1}", feeExpected, parsedOrder.BookingPrice);
                 context.SaveChanges();
                 return;
             }
@@ -169,7 +169,8 @@ namespace MSOCore.Calculators
                     OlympiadId = olympiad.Id,
                     Payment_Method = "MSO Website",
                     Payment1 = thisPersonsFee,
-                    Year = olympiad.StartDate.Value.Year
+                    Year = olympiad.StartDate.Value.Year,
+                    Received = DateTime.Now
                 });
 
                 order.ProcessedDate = DateTime.Now;
@@ -211,13 +212,15 @@ namespace MSOCore.Calculators
 
             if (feeExpected != parsedOrder.BookingPrice)
             {
-                order.Notes = "Wrong fee";
-                context.SaveChanges();
-                return;
+                order.Notes = string.Format("Wrong fee, expected {0} found {1}; ", feeExpected, parsedOrder.BookingPrice);
+                //context.SaveChanges();
+                //return;
             }
 
             // All OK - can change entities now.
-            order.Notes = "Assigned to contestant(s) ";
+            if (order.Notes != null) order.Notes = "";
+
+            order.Notes += "Assigned to contestant(s) ";
             CreateEntrants(context, EntrantsToCreate);
             foreach (var parsedEntrant in parsedOrder.Entrants)
             {
@@ -238,7 +241,8 @@ namespace MSOCore.Calculators
                     OlympiadId = olympiad.Id,
                     Payment_Method = "MSO Website",
                     Payment1 = thisPersonsFee,
-                    Year = olympiad.StartDate.Value.Year
+                    Year = olympiad.StartDate.Value.Year,
+                    Received = DateTime.Now
                 });
 
                 // Put the contestant into the right event
@@ -295,7 +299,7 @@ namespace MSOCore.Calculators
         {
             public string BookingId { get; set; }
             public string EventCode { get; set; }
-            public long BookingPrice { get; set; }
+            public decimal BookingPrice { get; set; }
             public int BookingSpaces { get; set; }
             public int BookingStatus { get; set; }
             public bool IsApproved { get { return BookingStatus == 1;  } }

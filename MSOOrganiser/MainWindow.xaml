@@ -85,6 +85,7 @@
                         <MenuItem Header="Print Donations" Click="donationsMenuItem_Click"/>
                         <MenuItem Header="Total Income by method" Click="totalIncomeByMethodMenuItem_Click"/>
                         <MenuItem Header="People who owe us money" Click="peopleOwingMoneyMenuItem_Click"/>
+                        <!--<MenuItem Header="Apportion Korean Payment" Click="allocateKoreanPayment_Click"/>-->
                         <MenuItem Header="Banking" IsEnabled="False"/>
                     </MenuItem>
                     <MenuItem Header="Results">

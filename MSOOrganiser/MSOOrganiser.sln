@@ -16,6 +16,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		RemoveDuplicateContestantsScript.sql = RemoveDuplicateContestantsScript.sql
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MSOAgent", "..\MSOAgent\MSOAgent.csproj", "{4A03573E-76D1-45E9-8237-7F01AF46B1BA}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -38,6 +40,10 @@ Global
 		{6105F45D-DDAD-4E2C-90D9-2D1B9338EDD6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6105F45D-DDAD-4E2C-90D9-2D1B9338EDD6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6105F45D-DDAD-4E2C-90D9-2D1B9338EDD6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4A03573E-76D1-45E9-8237-7F01AF46B1BA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4A03573E-76D1-45E9-8237-7F01AF46B1BA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4A03573E-76D1-45E9-8237-7F01AF46B1BA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4A03573E-76D1-45E9-8237-7F01AF46B1BA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

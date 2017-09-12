@@ -5,12 +5,12 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("MSOCore")]
+[assembly: AssemblyTitle("MSOAgent")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("MSOCore")]
-[assembly: AssemblyCopyright("Copyright © Julia Hayward 2015-6")]
+[assembly: AssemblyProduct("MSOAgent")]
+[assembly: AssemblyCopyright("Copyright ©  2017")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("afd50ba2-f62e-40cd-86ab-9979beffabfa")]
+[assembly: Guid("6860f1dc-c50f-4cfd-9581-c69738dac3b4")]
 
 // Version information for an assembly consists of the following four values:
 //

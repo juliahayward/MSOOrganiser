@@ -877,7 +877,19 @@ namespace MSOOrganiser
 
         private void allocateKoreanPayment_Click(object sender, RoutedEventArgs e)
         {
-/*            var contestantIds = new List<int>() { 10976, 11234, 10972, 11236, 10979, 11233, 10985, 10975, 11235 };
+            var contestantIds = new List<int>() { 10975
+,10979
+,11386
+,11387
+,11388
+,11389
+,11390
+,11391
+,11392
+,11393
+,11394
+,11395
+,11397 };
 
             var context = DataEntitiesProvider.Provide();
             var currentOlympiad = context.Olympiad_Infoes.First(x => x.Current);
@@ -885,7 +897,7 @@ namespace MSOOrganiser
                 && x.OlympiadId == currentOlympiad.Id).ToList();
 
             var costapportioner = new CostApportioner<Entrant>(x => x.Fee, (x, f) => x.Fee = f, x => true);
-            costapportioner.ApportionCost(entries, 212.80m);
+            costapportioner.ApportionCost(entries, 869.89m);
             context.SaveChanges();
 
             foreach (var contestantId in contestantIds)
@@ -894,49 +906,35 @@ namespace MSOOrganiser
                 var owed = entries.Where(x => x.Name.Mind_Sport_ID == contestantId).Sum(x => x.Fee);
                 var payment = new Payment()
                 {
-                    Banked = 2016,
+                    Banked = 2017,
                     MindSportsID = contestantId,
                     Name = contestant,
                     OlympiadId = currentOlympiad.Id,
                     Payment_Method = "Group cheque (Korea)",
-                    Year = 2016,
+                    Year = 2017,
                     Payment1 = owed,
- * Received = DateTime.Now
+                    Received = DateTime.Now
                 };
                 context.Payments.Add(payment);
             }
 
             context.SaveChanges();
- * */
         }
 
         private void allocateSpanishPayment_Click(object sender, RoutedEventArgs e)
         {
-     /*       var contestantIds = new List<int>() { 9486,
-11092,
-11187,
-11188,
-11189,
-11190,
-11191,
-11192,
-11193,
-11194,
-11195,
-11196,
-11203,
-11204 };
+            var contestantIds = new List<int>() { 
+            11431,11433,11434,11435,11436,11437,11438
+            };
 
             var context = DataEntitiesProvider.Provide();
             var currentOlympiad = context.Olympiad_Infoes.First(x => x.Current);
             var entries = context.Entrants.Where(x => contestantIds.Contains(x.Name.Mind_Sport_ID)
                 && x.OlympiadId == currentOlympiad.Id
-                && x.Fee > 0
-                && x.EntryNumber != 32180   // already paid for separately
-                && x.EntryNumber != 32186).ToList();
+                && x.Fee > 0).ToList();
 
             var costapportioner = new CostApportioner<Entrant>(x => x.Fee, (x, f) => x.Fee = f, x => true);
-            costapportioner.ApportionCost(entries, 799.60m);
+            costapportioner.ApportionCost(entries, 586.80m);
             context.SaveChanges();
 
             foreach (var contestantId in contestantIds)
@@ -945,20 +943,20 @@ namespace MSOOrganiser
                 var owed = entries.Where(x => x.Name.Mind_Sport_ID == contestantId).Sum(x => x.Fee);
                 var payment = new Payment()
                 {
-                    Banked = 2016,
+                    Banked = 2017,
                     MindSportsID = contestantId,
                     Name = contestant,
                     OlympiadId = currentOlympiad.Id,
                     Payment_Method = "Group cheque (Paco)",
-                    Year = 2016,
+                    Year = 2017,
                     Payment1 = owed,
-      * Received = DateTime.Now
+                    Received = DateTime.Now
                 };
                 context.Payments.Add(payment);
             }
 
             context.SaveChanges();
-       */ }
+        }
 
         private void calculateSeedings_Click(object sender, RoutedEventArgs e)
         {
