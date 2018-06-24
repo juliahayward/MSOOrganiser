@@ -1,4 +1,4 @@
-﻿using JuliaHayward.Common.Environment;
+using JuliaHayward.Common.Environment;
 using JuliaHayward.Common.Logging;
 using MSOCore;
 using MSOCore.Calculators;

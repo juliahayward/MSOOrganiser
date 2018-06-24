@@ -1,4 +1,4 @@
-﻿using MSOCore;
+using MSOCore;
 using MSOCore.Models;
 using System;
 using System.Collections.Generic;

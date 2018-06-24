@@ -1,4 +1,4 @@
-﻿using MSOCore;
+using MSOCore;
 using MSOOrganiser.UIUtilities;
 using System;
 using System.Linq;

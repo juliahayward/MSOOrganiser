@@ -1,4 +1,4 @@
-﻿using MSOCore.Reports;
+using MSOCore.Reports;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -67,11 +67,11 @@ namespace MSOWeb.Controllers
             }
         }
 
-        public ActionResult PentamindStandings(int? year)
+        public ActionResult PentamindStandings(int? year, DateTime? date)
         {
             var generator = new PentamindStandingsGenerator();
 
-            var model = generator.GetStandings(year);
+            var model = generator.GetStandings(year, date);
 
             return View(model);
         }

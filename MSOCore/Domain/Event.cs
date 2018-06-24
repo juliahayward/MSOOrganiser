@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -117,6 +117,7 @@ namespace MSOCore
                 Type = this.Type,
                 X_Num = this.X_Num,
                 Year = olympiad.YearOf,
+                ConsistentWithBoardability = true
             };
 
             evt.Arbiters = this.Arbiters.Select(x => x.CopyTo(evt)).ToList();

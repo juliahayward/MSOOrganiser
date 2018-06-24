@@ -1,4 +1,4 @@
-﻿using MSOCore;
+using MSOCore;
 using MSOCore.Reports;
 using System;
 using System.Collections.Generic;
@@ -56,7 +56,7 @@ namespace MSOOrganiser.Reports
 
                 trow = new TableRow();
                 cell = new TableCell() { ColumnSpan = 2};
-                cell.Blocks.Add(new Paragraph(new Run("www.msoworld.com")) { Margin = new Thickness(2), FontSize = 18, FontWeight = FontWeights.Bold, TextAlignment = TextAlignment.Center });
+                cell.Blocks.Add(new Paragraph(new Run("www.**REDACTEDAwsDbName**world.com")) { Margin = new Thickness(2), FontSize = 18, FontWeight = FontWeights.Bold, TextAlignment = TextAlignment.Center });
                 trow.Cells.Add(cell);
                 headerTable.RowGroups[0].Rows.Add(trow);
 

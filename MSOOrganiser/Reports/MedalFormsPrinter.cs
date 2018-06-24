@@ -1,4 +1,4 @@
-﻿using MSOCore.Reports;
+using MSOCore.Reports;
 using MSOOrganiser.DocumentExtensions;
 using System;
 using System.Collections.Generic;
@@ -278,6 +278,6 @@ namespace MSOOrganiser.Reports
             + Environment.NewLine 
             + "Chris M. Dickson" 
             + Environment.NewLine   
-            + "MSO Olympiad News bulletin editor and webmaster, www.msoworld.com";
+            + "MSO Olympiad News bulletin editor and webmaster, www.**REDACTEDAwsDbName**world.com";
     }
 }

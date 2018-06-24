@@ -1,4 +1,4 @@
-﻿using AutoUpdaterForWPF;
+using AutoUpdaterForWPF;
 using MSOCore;
 using MSOCore.Calculators;
 using MSOCore.Models;
@@ -420,9 +420,18 @@ namespace MSOOrganiser
 
         private void eventIncomeMenuItem_Click(object sender, RoutedEventArgs e)
         {
-            var docPrinter = new FlowDocumentPrinter();
-            var printer = new EventIncomeReportPrinter();
-            docPrinter.PrintFlowDocument(() => printer.Print(true));
+            Func<FlowDocument> generate = () =>
+            {
+                    var printer = new EventIncomeReportPrinter();
+                    return printer.Print(true);
+                };
+            Action<FlowDocument> print = doc =>
+            {
+                var flowDocumentPrinter = new FlowDocumentPrinter();
+                flowDocumentPrinter.PrintFlowDocument(doc);
+            };
+            FlowDocumentPreviewDialog dialog = new FlowDocumentPreviewDialog(generate, print);
+            dialog.ShowDialog();
         }
 
         private void nonEventIncomeMenuItem_Click(object sender, RoutedEventArgs e)
@@ -811,7 +820,7 @@ namespace MSOOrganiser
 
         private void releaseNotes_Click(object sender, RoutedEventArgs e)
         {
-            Process.Start("http://apps.juliahayward.com/msoorganiser/1.0.2/ReleaseNotes.html");
+            Process.Start("http://apps.juliahayward.com/**REDACTEDAwsDbName**organiser/1.0.2/ReleaseNotes.html");
         }
 
         private void logIn_Click(object sender, RoutedEventArgs e)

@@ -4,139 +4,17 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-    <Schema Namespace="DataModel.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2008" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
-        <EntityContainer Name="DataModelStoreContainer">
-          <EntitySet Name="Arbiters" EntityType="DataModel.Store.Arbiters" store:Type="Tables" Schema="dbo" />
-          <EntitySet Name="Badges - Misc" EntityType="DataModel.Store.Badges - Misc" store:Type="Tables" store:Schema="dbo" store:Name="Badges - Misc">
-            <DefiningQuery>SELECT 
-      [Badges - Misc].[Name] AS [Name], 
-      [Badges - Misc].[Type] AS [Type], 
-      [Badges - Misc].[Printed] AS [Printed], 
-      [Badges - Misc].[SSMA_TimeStamp] AS [SSMA_TimeStamp]
-      FROM [dbo].[Badges - Misc] AS [Badges - Misc]</DefiningQuery>
-          </EntitySet>
-          <EntitySet Name="Entrants" EntityType="DataModel.Store.Entrants" store:Type="Tables" Schema="dbo" />
-          <EntitySet Name="EntryJsons" EntityType="DataModel.Store.EntryJsons" store:Type="Tables" Schema="dbo" />
-          <EntitySet Name="Event Resources" EntityType="DataModel.Store.Event Resources" store:Type="Tables" Schema="dbo" />
-          <EntitySet Name="Event Sess" EntityType="DataModel.Store.Event Sess" store:Type="Tables" Schema="dbo" />
-          <EntitySet Name="Events" EntityType="DataModel.Store.Events" store:Type="Tables" Schema="dbo" />
-          <EntitySet Name="EventType" EntityType="DataModel.Store.EventType" store:Type="Tables" Schema="dbo" />
-          <EntitySet Name="Fees" EntityType="DataModel.Store.Fees" store:Type="Tables" Schema="dbo" />
-          <EntitySet Name="GameCategories" EntityType="DataModel.Store.GameCategories" store:Type="Tables" Schema="dbo" />
-          <EntitySet Name="Games" EntityType="DataModel.Store.Games" store:Type="Tables" Schema="dbo" />
-          <EntitySet Name="GlobalSettings" EntityType="DataModel.Store.GlobalSettings" store:Type="Tables" Schema="dbo" />
-          <EntitySet Name="Information" EntityType="DataModel.Store.Information" store:Type="Tables" store:Schema="dbo" store:Name="Information">
-            <DefiningQuery>SELECT 
-      [Information].[Mind Sport ID] AS [Mind Sport ID], 
-      [Information].[Info] AS [Info], 
-      [Information].[Year] AS [Year], 
-      [Information].[AllYears] AS [AllYears], 
-      [Information].[SSMA_TimeStamp] AS [SSMA_TimeStamp]
-      FROM [dbo].[Information] AS [Information]</DefiningQuery>
-          </EntitySet>
-          <EntitySet Name="Location" EntityType="DataModel.Store.Location" store:Type="Tables" Schema="dbo" />
-          <EntitySet Name="Medal Points" EntityType="DataModel.Store.Medal Points" store:Type="Tables" store:Schema="dbo" store:Name="Medal Points">
-            <DefiningQuery>SELECT 
-      [Medal Points].[Order] AS [Order], 
-      [Medal Points].[Colour] AS [Colour], 
-      [Medal Points].[Points] AS [Points], 
-      [Medal Points].[Picture] AS [Picture], 
-      [Medal Points].[SSMA_TimeStamp] AS [SSMA_TimeStamp]
-      FROM [dbo].[Medal Points] AS [Medal Points]</DefiningQuery>
-          </EntitySet>
-          <EntitySet Name="Names" EntityType="DataModel.Store.Names" store:Type="Tables" Schema="dbo" />
-          <EntitySet Name="National Flags" EntityType="DataModel.Store.National Flags" store:Type="Tables" store:Schema="dbo" store:Name="National Flags">
-            <DefiningQuery>SELECT 
-      [National Flags].[Nationality] AS [Nationality], 
-      [National Flags].[Flag] AS [Flag], 
-      [National Flags].[Continent] AS [Continent], 
-      [National Flags].[Code] AS [Code], 
-      [National Flags].[SSMA_TimeStamp] AS [SSMA_TimeStamp]
-      FROM [dbo].[National Flags] AS [National Flags]</DefiningQuery>
-          </EntitySet>
-          <EntitySet Name="Nationalities" EntityType="DataModel.Store.Nationalities" store:Type="Tables" Schema="dbo" />
-          <EntitySet Name="Olympiad Info" EntityType="DataModel.Store.Olympiad Info" store:Type="Tables" Schema="dbo" />
-          <EntitySet Name="Parings" EntityType="DataModel.Store.Parings" store:Type="Tables" Schema="dbo" />
-          <EntitySet Name="Payment Methods" EntityType="DataModel.Store.Payment Methods" store:Type="Tables" Schema="dbo" />
-          <EntitySet Name="Payments" EntityType="DataModel.Store.Payments" store:Type="Tables" Schema="dbo" />
-          <EntitySet Name="Resources" EntityType="DataModel.Store.Resources" store:Type="Tables" Schema="dbo" />
-          <EntitySet Name="Seedings" EntityType="DataModel.Store.Seedings" store:Type="Tables" Schema="dbo" />
-          <EntitySet Name="SelectedCategories" EntityType="DataModel.Store.SelectedCategories" store:Type="Tables" Schema="dbo" />
-          <EntitySet Name="SelectedPeople" EntityType="DataModel.Store.SelectedPeople" store:Type="Tables" store:Schema="dbo" store:Name="SelectedPeople">
-            <DefiningQuery>SELECT 
-      [SelectedPeople].[MSOID] AS [MSOID], 
-      [SelectedPeople].[Category] AS [Category], 
-      [SelectedPeople].[Printed] AS [Printed], 
-      [SelectedPeople].[SSMA_TimeStamp] AS [SSMA_TimeStamp]
-      FROM [dbo].[SelectedPeople] AS [SelectedPeople]</DefiningQuery>
-          </EntitySet>
-          <EntitySet Name="Session" EntityType="DataModel.Store.Session" store:Type="Tables" Schema="dbo" />
-          <EntitySet Name="UserLogins" EntityType="DataModel.Store.UserLogins" store:Type="Tables" Schema="dbo" />
-          <EntitySet Name="Users" EntityType="DataModel.Store.Users" store:Type="Tables" Schema="dbo" />
-          <AssociationSet Name="Arbiters$EventsArbiters" Association="DataModel.Store.Arbiters$EventsArbiters">
-            <End Role="Events" EntitySet="Events" />
-            <End Role="Arbiters" EntitySet="Arbiters" />
-          </AssociationSet>
-          <AssociationSet Name="Arbiters$NamesArbiters" Association="DataModel.Store.Arbiters$NamesArbiters">
-            <End Role="Names" EntitySet="Names" />
-            <End Role="Arbiters" EntitySet="Arbiters" />
-          </AssociationSet>
-          <AssociationSet Name="Entrants$NamesEntrants" Association="DataModel.Store.Entrants$NamesEntrants">
-            <End Role="Names" EntitySet="Names" />
-            <End Role="Entrants" EntitySet="Entrants" />
-          </AssociationSet>
-          <AssociationSet Name="Event Sess$EventsEvent Sess" Association="DataModel.Store.Event Sess$EventsEvent Sess">
-            <End Role="Events" EntitySet="Events" />
-            <End Role="Event Sess" EntitySet="Event Sess" />
-          </AssociationSet>
-          <AssociationSet Name="Event Sess$SessionEvent Sess" Association="DataModel.Store.Event Sess$SessionEvent Sess">
-            <End Role="Session" EntitySet="Session" />
-            <End Role="Event Sess" EntitySet="Event Sess" />
-          </AssociationSet>
-          <AssociationSet Name="FK__Entrants__EventI__1975C517" Association="DataModel.Store.FK__Entrants__EventI__1975C517">
-            <End Role="Events" EntitySet="Events" />
-            <End Role="Entrants" EntitySet="Entrants" />
-          </AssociationSet>
-          <AssociationSet Name="FK__Event Ses__Sessi__1A69E950" Association="DataModel.Store.FK__Event Ses__Sessi__1A69E950">
-            <End Role="Session" EntitySet="Session" />
-            <End Role="Event Sess" EntitySet="Event Sess" />
-          </AssociationSet>
-          <AssociationSet Name="FK__Events__GameId__1699586C" Association="DataModel.Store.FK__Events__GameId__1699586C">
-            <End Role="Games" EntitySet="Games" />
-            <End Role="Events" EntitySet="Events" />
-          </AssociationSet>
-          <AssociationSet Name="FK__Events__Olympiad__2022C2A6" Association="DataModel.Store.FK__Events__Olympiad__2022C2A6">
-            <End Role="Olympiad Info" EntitySet="Olympiad Info" />
-            <End Role="Events" EntitySet="Events" />
-          </AssociationSet>
-          <AssociationSet Name="FK__Games__CategoryI__473C8FC7" Association="DataModel.Store.FK__Games__CategoryI__473C8FC7">
-            <End Role="GameCategories" EntitySet="GameCategories" />
-            <End Role="Games" EntitySet="Games" />
-          </AssociationSet>
-          <AssociationSet Name="FK__Location__Olympi__12C8C788" Association="DataModel.Store.FK__Location__Olympi__12C8C788">
-            <End Role="Olympiad Info" EntitySet="Olympiad Info" />
-            <End Role="Location" EntitySet="Location" />
-          </AssociationSet>
-          <AssociationSet Name="FK__Seedings__Contes__1387E197" Association="DataModel.Store.FK__Seedings__Contes__1387E197">
-            <End Role="Names" EntitySet="Names" />
-            <End Role="Seedings" EntitySet="Seedings" />
-          </AssociationSet>
-          <AssociationSet Name="Payments$NamesPayments" Association="DataModel.Store.Payments$NamesPayments">
-            <End Role="Names" EntitySet="Names" />
-            <End Role="Payments" EntitySet="Payments" />
-          </AssociationSet>
-        </EntityContainer>
+    <Schema Namespace="DataModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="Arbiters">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Arbiter ID" Type="int" />
           <Property Name="EIN" Type="int" />
-          <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
         </EntityType>
         <!--Errors Found During Generation:
-      warning 6002: The table/view 'mso.dbo.Badges - Misc' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.
-      -->
+warning 6002: The table/view 'mso_prod.dbo.Badges - Misc' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="Badges - Misc">
           <Key>
             <PropertyRef Name="SSMA_TimeStamp" />
@@ -144,14 +22,14 @@
           <Property Name="Name" Type="nvarchar" MaxLength="50" />
           <Property Name="Type" Type="nvarchar" MaxLength="50" />
           <Property Name="Printed" Type="bit" />
-          <Property Name="SSMA_TimeStamp" Type="timestamp" Nullable="false" StoreGeneratedPattern="Computed" />
+          <Property Name="SSMA_TimeStamp" Type="timestamp" StoreGeneratedPattern="Computed" Nullable="false" />
         </EntityType>
         <EntityType Name="Entrants">
           <Key>
             <PropertyRef Name="EntryNumber" />
           </Key>
           <Property Name="Year" Type="int" />
-          <Property Name="EntryNumber" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="EntryNumber" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Mind Sport ID" Type="int" />
           <Property Name="Game Code" Type="nvarchar" MaxLength="255" />
           <Property Name="Receipt" Type="bit" />
@@ -167,7 +45,7 @@
           <Property Name="MustUse" Type="bit" />
           <Property Name="Date" Type="datetime2" Precision="0" />
           <Property Name="PIN" Type="int" />
-          <Property Name="SSMA_TimeStamp" Type="timestamp" Nullable="false" StoreGeneratedPattern="Computed" />
+          <Property Name="SSMA_TimeStamp" Type="timestamp" StoreGeneratedPattern="Computed" Nullable="false" />
           <Property Name="OlympiadId" Type="int" />
           <Property Name="EventId" Type="int" />
           <Property Name="JuniorMedal" Type="nvarchar" MaxLength="50" />
@@ -176,7 +54,7 @@
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="JsonText" Type="nvarchar(max)" Nullable="false" />
           <Property Name="SubmittedDate" Type="datetime" />
           <Property Name="ProcessedDate" Type="datetime" />
@@ -187,7 +65,7 @@
           <Key>
             <PropertyRef Name="INDEX" />
           </Key>
-          <Property Name="INDEX" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="INDEX" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Event Code" Type="nvarchar" MaxLength="50" />
           <Property Name="Resource" Type="nvarchar" MaxLength="50" />
           <Property Name="QTY" Type="int" />
@@ -197,7 +75,7 @@
           <Key>
             <PropertyRef Name="INDEX" />
           </Key>
-          <Property Name="INDEX" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="INDEX" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="EIN" Type="int" />
           <Property Name="Date" Type="datetime2" Precision="0" />
           <Property Name="Session" Type="nvarchar" MaxLength="50" />
@@ -206,7 +84,7 @@
           <Key>
             <PropertyRef Name="EIN" />
           </Key>
-          <Property Name="EIN" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="EIN" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Year" Type="int" />
           <Property Name="Number" Type="int" Nullable="false" />
           <Property Name="Code" Type="nvarchar" MaxLength="50" />
@@ -233,19 +111,20 @@
           <Property Name="Notes" Type="nvarchar(max)" />
           <Property Name="X-Num" Type="int" />
           <Property Name="Display" Type="bit" />
-          <Property Name="SSMA_TimeStamp" Type="timestamp" Nullable="false" StoreGeneratedPattern="Computed" />
+          <Property Name="SSMA_TimeStamp" Type="timestamp" StoreGeneratedPattern="Computed" Nullable="false" />
           <Property Name="OlympiadId" Type="int" Nullable="false" />
           <Property Name="GameId" Type="int" />
+          <Property Name="ConsistentWithBoardability" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="EventType">
           <Key>
             <PropertyRef Name="Type" />
           </Key>
-          <Property Name="Type" Type="nvarchar" Nullable="false" MaxLength="50" />
+          <Property Name="Type" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="InPentamind" Type="bit" />
           <Property Name="Display" Type="bit" />
           <Property Name="Extention" Type="nvarchar" MaxLength="2" />
-          <Property Name="SSMA_TimeStamp" Type="timestamp" Nullable="false" StoreGeneratedPattern="Computed" />
+          <Property Name="SSMA_TimeStamp" Type="timestamp" StoreGeneratedPattern="Computed" Nullable="false" />
         </EntityType>
         <EntityType Name="Fees">
           <Key>
@@ -254,14 +133,14 @@
           <Property Name="Code" Type="nvarchar" MaxLength="50" />
           <Property Name="Adult" Type="money" />
           <Property Name="Concession" Type="money" />
-          <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
         </EntityType>
         <EntityType Name="GameCategories">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
-          <Property Name="NAME" Type="nvarchar" Nullable="false" MaxLength="256" />
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="NAME" Type="nvarchar" MaxLength="256" Nullable="false" />
         </EntityType>
         <EntityType Name="Games">
           <Key>
@@ -273,21 +152,20 @@
           <Property Name="Equipment" Type="nvarchar(max)" />
           <Property Name="Rules" Type="nvarchar(max)" />
           <Property Name="Logo" Type="varbinary(max)" />
-          <Property Name="SSMA_TimeStamp" Type="timestamp" Nullable="false" StoreGeneratedPattern="Computed" />
-          <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="SSMA_TimeStamp" Type="timestamp" StoreGeneratedPattern="Computed" Nullable="false" />
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="CategoryId" Type="int" />
         </EntityType>
         <EntityType Name="GlobalSettings">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
-          <Property Name="Name" Type="nvarchar" Nullable="false" MaxLength="50" />
-          <Property Name="Value" Type="nvarchar" Nullable="false" MaxLength="50" />
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Value" Type="nvarchar" MaxLength="50" Nullable="false" />
         </EntityType>
         <!--Errors Found During Generation:
-      warning 6002: The table/view 'mso.dbo.Information' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.
-      -->
+warning 6002: The table/view 'mso_prod.dbo.Information' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="Information">
           <Key>
             <PropertyRef Name="SSMA_TimeStamp" />
@@ -296,7 +174,7 @@
           <Property Name="Info" Type="nvarchar(max)" />
           <Property Name="Year" Type="int" />
           <Property Name="AllYears" Type="bit" />
-          <Property Name="SSMA_TimeStamp" Type="timestamp" Nullable="false" StoreGeneratedPattern="Computed" />
+          <Property Name="SSMA_TimeStamp" Type="timestamp" StoreGeneratedPattern="Computed" Nullable="false" />
         </EntityType>
         <EntityType Name="Location">
           <Key>
@@ -305,11 +183,10 @@
           <Property Name="Location" Type="nvarchar" MaxLength="50" />
           <Property Name="YEAR" Type="int" />
           <Property Name="OlympiadId" Type="int" />
-          <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
         </EntityType>
         <!--Errors Found During Generation:
-      warning 6002: The table/view 'mso.dbo.Medal Points' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.
-      -->
+warning 6002: The table/view 'mso_prod.dbo.Medal Points' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="Medal Points">
           <Key>
             <PropertyRef Name="SSMA_TimeStamp" />
@@ -318,13 +195,13 @@
           <Property Name="Colour" Type="nvarchar" MaxLength="50" />
           <Property Name="Points" Type="int" />
           <Property Name="Picture" Type="varbinary(max)" />
-          <Property Name="SSMA_TimeStamp" Type="timestamp" Nullable="false" StoreGeneratedPattern="Computed" />
+          <Property Name="SSMA_TimeStamp" Type="timestamp" StoreGeneratedPattern="Computed" Nullable="false" />
         </EntityType>
         <EntityType Name="Names">
           <Key>
             <PropertyRef Name="Mind Sport ID" />
           </Key>
-          <Property Name="Mind Sport ID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="Mind Sport ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Title" Type="nvarchar" MaxLength="50" />
           <Property Name="Lastname" Type="nvarchar" MaxLength="50" />
           <Property Name="Firstname" Type="nvarchar" MaxLength="50" />
@@ -348,11 +225,10 @@
           <Property Name="FIDECode" Type="nvarchar" MaxLength="8" />
           <Property Name="Notes" Type="nvarchar(max)" />
           <Property Name="date" Type="datetime2" Precision="0" />
-          <Property Name="SSMA_TimeStamp" Type="timestamp" Nullable="false" StoreGeneratedPattern="Computed" />
+          <Property Name="SSMA_TimeStamp" Type="timestamp" StoreGeneratedPattern="Computed" Nullable="false" />
         </EntityType>
         <!--Errors Found During Generation:
-      warning 6002: The table/view 'mso.dbo.National Flags' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.
-      -->
+warning 6002: The table/view 'mso_prod.dbo.National Flags' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="National Flags">
           <Key>
             <PropertyRef Name="SSMA_TimeStamp" />
@@ -361,13 +237,13 @@
           <Property Name="Flag" Type="varbinary(max)" />
           <Property Name="Continent" Type="nvarchar" MaxLength="50" />
           <Property Name="Code" Type="nvarchar" MaxLength="3" />
-          <Property Name="SSMA_TimeStamp" Type="timestamp" Nullable="false" StoreGeneratedPattern="Computed" />
+          <Property Name="SSMA_TimeStamp" Type="timestamp" StoreGeneratedPattern="Computed" Nullable="false" />
         </EntityType>
         <EntityType Name="Nationalities">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
         </EntityType>
         <EntityType Name="Olympiad Info">
@@ -388,14 +264,14 @@
           <Property Name="PentaLong" Type="int" />
           <Property Name="PentaTotal" Type="int" />
           <Property Name="Current" Type="bit" Nullable="false" />
-          <Property Name="SSMA_TimeStamp" Type="timestamp" Nullable="false" StoreGeneratedPattern="Computed" />
-          <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="SSMA_TimeStamp" Type="timestamp" StoreGeneratedPattern="Computed" Nullable="false" />
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
         </EntityType>
         <EntityType Name="Parings">
           <Key>
             <PropertyRef Name="INDEX" />
           </Key>
-          <Property Name="INDEX" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="INDEX" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Event Code" Type="nvarchar" MaxLength="50" />
           <Property Name="Round" Type="int" />
           <Property Name="Board" Type="int" />
@@ -403,7 +279,7 @@
           <Property Name="WScore" Type="real" />
           <Property Name="Black" Type="int" />
           <Property Name="BScore" Type="real" />
-          <Property Name="SSMA_TimeStamp" Type="timestamp" Nullable="false" StoreGeneratedPattern="Computed" />
+          <Property Name="SSMA_TimeStamp" Type="timestamp" StoreGeneratedPattern="Computed" Nullable="false" />
         </EntityType>
         <EntityType Name="Payment Methods">
           <Key>
@@ -411,14 +287,14 @@
           </Key>
           <Property Name="Payment Method" Type="nvarchar" MaxLength="50" />
           <Property Name="Card" Type="bit" />
-          <Property Name="SSMA_TimeStamp" Type="timestamp" Nullable="false" StoreGeneratedPattern="Computed" />
-          <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="SSMA_TimeStamp" Type="timestamp" StoreGeneratedPattern="Computed" Nullable="false" />
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
         </EntityType>
         <EntityType Name="Payments">
           <Key>
             <PropertyRef Name="PaymentNumber" />
           </Key>
-          <Property Name="PaymentNumber" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="PaymentNumber" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="MindSportsID" Type="int" />
           <Property Name="Payment" Type="money" />
           <Property Name="Payment Method" Type="nvarchar" MaxLength="50" />
@@ -436,16 +312,16 @@
           <Property Name="Source" Type="nvarchar(max)" />
           <Property Name="Qty" Type="int" />
           <Property Name="Per" Type="int" />
-          <Property Name="INDEX" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
-          <Property Name="SSMA_TimeStamp" Type="timestamp" Nullable="false" StoreGeneratedPattern="Computed" />
+          <Property Name="INDEX" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="SSMA_TimeStamp" Type="timestamp" StoreGeneratedPattern="Computed" Nullable="false" />
         </EntityType>
         <EntityType Name="Seedings">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="ContestantId" Type="int" Nullable="false" />
-          <Property Name="EventCode" Type="nvarchar" Nullable="false" MaxLength="50" />
+          <Property Name="EventCode" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="Score" Type="int" />
           <Property Name="Rank" Type="int" />
         </EntityType>
@@ -453,14 +329,13 @@
           <Key>
             <PropertyRef Name="ID" />
           </Key>
-          <Property Name="ID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Category" Type="nvarchar" MaxLength="50" />
           <Property Name="Current" Type="bit" />
-          <Property Name="SSMA_TimeStamp" Type="timestamp" Nullable="false" StoreGeneratedPattern="Computed" />
+          <Property Name="SSMA_TimeStamp" Type="timestamp" StoreGeneratedPattern="Computed" Nullable="false" />
         </EntityType>
         <!--Errors Found During Generation:
-      warning 6002: The table/view 'mso.dbo.SelectedPeople' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.
-      -->
+warning 6002: The table/view 'mso_prod.dbo.SelectedPeople' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="SelectedPeople">
           <Key>
             <PropertyRef Name="SSMA_TimeStamp" />
@@ -468,25 +343,25 @@
           <Property Name="MSOID" Type="int" />
           <Property Name="Category" Type="int" />
           <Property Name="Printed" Type="bit" />
-          <Property Name="SSMA_TimeStamp" Type="timestamp" Nullable="false" StoreGeneratedPattern="Computed" />
+          <Property Name="SSMA_TimeStamp" Type="timestamp" StoreGeneratedPattern="Computed" Nullable="false" />
         </EntityType>
         <EntityType Name="Session">
           <Key>
             <PropertyRef Name="Session" />
           </Key>
-          <Property Name="Session" Type="nvarchar" Nullable="false" MaxLength="50" />
+          <Property Name="Session" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="Description" Type="nvarchar" MaxLength="50" />
           <Property Name="Worth" Type="real" />
-          <Property Name="SSMA_TimeStamp" Type="timestamp" Nullable="false" StoreGeneratedPattern="Computed" />
-          <Property Name="StartTime" Type="time" />
-          <Property Name="FinishTime" Type="time" />
+          <Property Name="SSMA_TimeStamp" Type="timestamp" StoreGeneratedPattern="Computed" Nullable="false" />
+          <Property Name="StartTime" Type="time" Precision="7" />
+          <Property Name="FinishTime" Type="time" Precision="7" />
           <Property Name="IsActive" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="UserLogins">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="UserId" Type="int" Nullable="false" />
           <Property Name="LogInDate" Type="datetime" Nullable="false" />
           <Property Name="LogOutDate" Type="datetime" />
@@ -497,17 +372,17 @@
           <Key>
             <PropertyRef Name="PIN" />
           </Key>
-          <Property Name="PIN" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="PIN" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Name" Type="nvarchar" MaxLength="50" />
           <Property Name="Password" Type="nvarchar" MaxLength="50" />
           <Property Name="Salt" Type="nvarchar" MaxLength="32" />
           <Property Name="Hash" Type="nvarchar" MaxLength="128" />
         </EntityType>
         <Association Name="Arbiters$EventsArbiters">
-          <End Role="Events" Type="DataModel.Store.Events" Multiplicity="0..1">
+          <End Role="Events" Type="Self.Events" Multiplicity="0..1">
             <OnDelete Action="Cascade" />
           </End>
-          <End Role="Arbiters" Type="DataModel.Store.Arbiters" Multiplicity="*" />
+          <End Role="Arbiters" Type="Self.Arbiters" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Events">
               <PropertyRef Name="EIN" />
@@ -518,10 +393,10 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="Arbiters$NamesArbiters">
-          <End Role="Names" Type="DataModel.Store.Names" Multiplicity="0..1">
+          <End Role="Names" Type="Self.Names" Multiplicity="0..1">
             <OnDelete Action="Cascade" />
           </End>
-          <End Role="Arbiters" Type="DataModel.Store.Arbiters" Multiplicity="*" />
+          <End Role="Arbiters" Type="Self.Arbiters" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Names">
               <PropertyRef Name="Mind Sport ID" />
@@ -532,8 +407,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="Entrants$NamesEntrants">
-          <End Role="Names" Type="DataModel.Store.Names" Multiplicity="0..1" />
-          <End Role="Entrants" Type="DataModel.Store.Entrants" Multiplicity="*" />
+          <End Role="Names" Type="Self.Names" Multiplicity="0..1" />
+          <End Role="Entrants" Type="Self.Entrants" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Names">
               <PropertyRef Name="Mind Sport ID" />
@@ -544,10 +419,10 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="Event Sess$EventsEvent Sess">
-          <End Role="Events" Type="DataModel.Store.Events" Multiplicity="0..1">
+          <End Role="Events" Type="Self.Events" Multiplicity="0..1">
             <OnDelete Action="Cascade" />
           </End>
-          <End Role="Event Sess" Type="DataModel.Store.Event Sess" Multiplicity="*" />
+          <End Role="Event Sess" Type="Self.Event Sess" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Events">
               <PropertyRef Name="EIN" />
@@ -558,10 +433,10 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="Event Sess$SessionEvent Sess">
-          <End Role="Session" Type="DataModel.Store.Session" Multiplicity="0..1">
+          <End Role="Session" Type="Self.Session" Multiplicity="0..1">
             <OnDelete Action="Cascade" />
           </End>
-          <End Role="Event Sess" Type="DataModel.Store.Event Sess" Multiplicity="*" />
+          <End Role="Event Sess" Type="Self.Event Sess" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Session">
               <PropertyRef Name="Session" />
@@ -572,8 +447,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK__Entrants__EventI__1975C517">
-          <End Role="Events" Type="DataModel.Store.Events" Multiplicity="0..1" />
-          <End Role="Entrants" Type="DataModel.Store.Entrants" Multiplicity="*" />
+          <End Role="Events" Type="Self.Events" Multiplicity="0..1" />
+          <End Role="Entrants" Type="Self.Entrants" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Events">
               <PropertyRef Name="EIN" />
@@ -584,8 +459,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK__Event Ses__Sessi__1A69E950">
-          <End Role="Session" Type="DataModel.Store.Session" Multiplicity="0..1" />
-          <End Role="Event Sess" Type="DataModel.Store.Event Sess" Multiplicity="*" />
+          <End Role="Session" Type="Self.Session" Multiplicity="0..1" />
+          <End Role="Event Sess" Type="Self.Event Sess" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Session">
               <PropertyRef Name="Session" />
@@ -596,8 +471,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK__Events__GameId__1699586C">
-          <End Role="Games" Type="DataModel.Store.Games" Multiplicity="0..1" />
-          <End Role="Events" Type="DataModel.Store.Events" Multiplicity="*" />
+          <End Role="Games" Type="Self.Games" Multiplicity="0..1" />
+          <End Role="Events" Type="Self.Events" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Games">
               <PropertyRef Name="Id" />
@@ -608,8 +483,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK__Events__Olympiad__2022C2A6">
-          <End Role="Olympiad Info" Type="DataModel.Store.Olympiad Info" Multiplicity="1" />
-          <End Role="Events" Type="DataModel.Store.Events" Multiplicity="*" />
+          <End Role="Olympiad Info" Type="Self.Olympiad Info" Multiplicity="1" />
+          <End Role="Events" Type="Self.Events" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Olympiad Info">
               <PropertyRef Name="Id" />
@@ -620,8 +495,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK__Games__CategoryI__473C8FC7">
-          <End Role="GameCategories" Type="DataModel.Store.GameCategories" Multiplicity="0..1" />
-          <End Role="Games" Type="DataModel.Store.Games" Multiplicity="*" />
+          <End Role="GameCategories" Type="Self.GameCategories" Multiplicity="0..1" />
+          <End Role="Games" Type="Self.Games" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="GameCategories">
               <PropertyRef Name="Id" />
@@ -632,8 +507,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK__Location__Olympi__12C8C788">
-          <End Role="Olympiad Info" Type="DataModel.Store.Olympiad Info" Multiplicity="0..1" />
-          <End Role="Location" Type="DataModel.Store.Location" Multiplicity="*" />
+          <End Role="Olympiad Info" Type="Self.Olympiad Info" Multiplicity="0..1" />
+          <End Role="Location" Type="Self.Location" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Olympiad Info">
               <PropertyRef Name="Id" />
@@ -644,8 +519,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK__Seedings__Contes__1387E197">
-          <End Role="Names" Type="DataModel.Store.Names" Multiplicity="1" />
-          <End Role="Seedings" Type="DataModel.Store.Seedings" Multiplicity="*" />
+          <End Role="Names" Type="Self.Names" Multiplicity="1" />
+          <End Role="Seedings" Type="Self.Seedings" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Names">
               <PropertyRef Name="Mind Sport ID" />
@@ -656,8 +531,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="Payments$NamesPayments">
-          <End Role="Names" Type="DataModel.Store.Names" Multiplicity="0..1" />
-          <End Role="Payments" Type="DataModel.Store.Payments" Multiplicity="*" />
+          <End Role="Names" Type="Self.Names" Multiplicity="0..1" />
+          <End Role="Payments" Type="Self.Payments" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Names">
               <PropertyRef Name="Mind Sport ID" />
@@ -667,6 +542,127 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityContainer Name="DataModelStoreContainer">
+          <EntitySet Name="Arbiters" EntityType="Self.Arbiters" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Entrants" EntityType="Self.Entrants" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="EntryJsons" EntityType="Self.EntryJsons" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Event Resources" EntityType="Self.Event Resources" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Event Sess" EntityType="Self.Event Sess" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Events" EntityType="Self.Events" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="EventType" EntityType="Self.EventType" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Fees" EntityType="Self.Fees" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="GameCategories" EntityType="Self.GameCategories" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Games" EntityType="Self.Games" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="GlobalSettings" EntityType="Self.GlobalSettings" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Location" EntityType="Self.Location" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Names" EntityType="Self.Names" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Nationalities" EntityType="Self.Nationalities" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Olympiad Info" EntityType="Self.Olympiad Info" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Parings" EntityType="Self.Parings" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Payment Methods" EntityType="Self.Payment Methods" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Payments" EntityType="Self.Payments" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Resources" EntityType="Self.Resources" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Seedings" EntityType="Self.Seedings" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="SelectedCategories" EntityType="Self.SelectedCategories" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Session" EntityType="Self.Session" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="UserLogins" EntityType="Self.UserLogins" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Users" EntityType="Self.Users" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Badges - Misc" EntityType="Self.Badges - Misc" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+[Badges - Misc].[Name] AS [Name], 
+[Badges - Misc].[Type] AS [Type], 
+[Badges - Misc].[Printed] AS [Printed], 
+[Badges - Misc].[SSMA_TimeStamp] AS [SSMA_TimeStamp]
+FROM [dbo].[Badges - Misc] AS [Badges - Misc]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="Information" EntityType="Self.Information" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+[Information].[Mind Sport ID] AS [Mind Sport ID], 
+[Information].[Info] AS [Info], 
+[Information].[Year] AS [Year], 
+[Information].[AllYears] AS [AllYears], 
+[Information].[SSMA_TimeStamp] AS [SSMA_TimeStamp]
+FROM [dbo].[Information] AS [Information]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="Medal Points" EntityType="Self.Medal Points" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+[Medal Points].[Order] AS [Order], 
+[Medal Points].[Colour] AS [Colour], 
+[Medal Points].[Points] AS [Points], 
+[Medal Points].[Picture] AS [Picture], 
+[Medal Points].[SSMA_TimeStamp] AS [SSMA_TimeStamp]
+FROM [dbo].[Medal Points] AS [Medal Points]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="National Flags" EntityType="Self.National Flags" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+[National Flags].[Nationality] AS [Nationality], 
+[National Flags].[Flag] AS [Flag], 
+[National Flags].[Continent] AS [Continent], 
+[National Flags].[Code] AS [Code], 
+[National Flags].[SSMA_TimeStamp] AS [SSMA_TimeStamp]
+FROM [dbo].[National Flags] AS [National Flags]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="SelectedPeople" EntityType="Self.SelectedPeople" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+[SelectedPeople].[MSOID] AS [MSOID], 
+[SelectedPeople].[Category] AS [Category], 
+[SelectedPeople].[Printed] AS [Printed], 
+[SelectedPeople].[SSMA_TimeStamp] AS [SSMA_TimeStamp]
+FROM [dbo].[SelectedPeople] AS [SelectedPeople]</DefiningQuery>
+          </EntitySet>
+          <AssociationSet Name="Arbiters$EventsArbiters" Association="Self.Arbiters$EventsArbiters">
+            <End Role="Events" EntitySet="Events" />
+            <End Role="Arbiters" EntitySet="Arbiters" />
+          </AssociationSet>
+          <AssociationSet Name="Arbiters$NamesArbiters" Association="Self.Arbiters$NamesArbiters">
+            <End Role="Names" EntitySet="Names" />
+            <End Role="Arbiters" EntitySet="Arbiters" />
+          </AssociationSet>
+          <AssociationSet Name="Entrants$NamesEntrants" Association="Self.Entrants$NamesEntrants">
+            <End Role="Names" EntitySet="Names" />
+            <End Role="Entrants" EntitySet="Entrants" />
+          </AssociationSet>
+          <AssociationSet Name="Event Sess$EventsEvent Sess" Association="Self.Event Sess$EventsEvent Sess">
+            <End Role="Events" EntitySet="Events" />
+            <End Role="Event Sess" EntitySet="Event Sess" />
+          </AssociationSet>
+          <AssociationSet Name="Event Sess$SessionEvent Sess" Association="Self.Event Sess$SessionEvent Sess">
+            <End Role="Session" EntitySet="Session" />
+            <End Role="Event Sess" EntitySet="Event Sess" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Entrants__EventI__1975C517" Association="Self.FK__Entrants__EventI__1975C517">
+            <End Role="Events" EntitySet="Events" />
+            <End Role="Entrants" EntitySet="Entrants" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Event Ses__Sessi__1A69E950" Association="Self.FK__Event Ses__Sessi__1A69E950">
+            <End Role="Session" EntitySet="Session" />
+            <End Role="Event Sess" EntitySet="Event Sess" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Events__GameId__1699586C" Association="Self.FK__Events__GameId__1699586C">
+            <End Role="Games" EntitySet="Games" />
+            <End Role="Events" EntitySet="Events" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Events__Olympiad__2022C2A6" Association="Self.FK__Events__Olympiad__2022C2A6">
+            <End Role="Olympiad Info" EntitySet="Olympiad Info" />
+            <End Role="Events" EntitySet="Events" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Games__CategoryI__473C8FC7" Association="Self.FK__Games__CategoryI__473C8FC7">
+            <End Role="GameCategories" EntitySet="GameCategories" />
+            <End Role="Games" EntitySet="Games" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Location__Olympi__12C8C788" Association="Self.FK__Location__Olympi__12C8C788">
+            <End Role="Olympiad Info" EntitySet="Olympiad Info" />
+            <End Role="Location" EntitySet="Location" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Seedings__Contes__1387E197" Association="Self.FK__Seedings__Contes__1387E197">
+            <End Role="Names" EntitySet="Names" />
+            <End Role="Seedings" EntitySet="Seedings" />
+          </AssociationSet>
+          <AssociationSet Name="Payments$NamesPayments" Association="Self.Payments$NamesPayments">
+            <End Role="Names" EntitySet="Names" />
+            <End Role="Payments" EntitySet="Payments" />
+          </AssociationSet>
+        </EntityContainer>
       </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
@@ -851,6 +847,7 @@
           <Property Type="Int32" Name="GameId" />
           <NavigationProperty Name="Game" Relationship="DataModel.FK__Events__GameId__4A8310C6" FromRole="Event" ToRole="Game" />
           <NavigationProperty Name="Entrants" Relationship="DataModel.FK__Entrants__EventI__4B7734FF" FromRole="Event" ToRole="Entrant" />
+          <Property Name="ConsistentWithBoardability" Type="Boolean" Nullable="false" />
         </EntityType>
         <EntityType Name="EventType">
           <Key>
@@ -1373,6 +1370,7 @@
           <EntitySetMapping Name="Events">
             <EntityTypeMapping TypeName="DataModel.Event">
               <MappingFragment StoreEntitySet="Events">
+                <ScalarProperty Name="ConsistentWithBoardability" ColumnName="ConsistentWithBoardability" />
                 <ScalarProperty Name="GameId" ColumnName="GameId" />
                 <ScalarProperty Name="OlympiadId" ColumnName="OlympiadId" />
                 <ScalarProperty Name="SSMA_TimeStamp" ColumnName="SSMA_TimeStamp" />
@@ -1720,6 +1718,7 @@
         <DesignerProperty Name="EnablePluralization" Value="True" />
         <DesignerProperty Name="IncludeForeignKeysInModel" Value="True" />
         <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+        <DesignerProperty Name="UseLegacyProvider" Value="True" />
       </DesignerInfoPropertySet>
     </Options>
     <!-- Diagram content (shape and connector positions) -->

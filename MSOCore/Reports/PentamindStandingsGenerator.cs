@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -56,8 +56,10 @@ namespace MSOCore.Reports
             public IEnumerable<ContestantStanding> Standings { get; set; }
         }
 
-        public PentamindStandingsReportVm GetStandings(int? year)
+        public PentamindStandingsReportVm GetStandings(int? year, DateTime? date = null)
         {
+            DateTime? endOfDay = (date.HasValue) ? date.Value.AddDays(1) : (DateTime?)null;
+
             var context = DataEntitiesProvider.Provide();
             var currentOlympiad = (year.HasValue)
                 ? context.Olympiad_Infoes.Where(x => x.StartDate.HasValue && x.StartDate.Value.Year == year.Value).First()
@@ -74,6 +76,8 @@ namespace MSOCore.Reports
             var results = context.Entrants
                 .Where(x => x.OlympiadId == currentOlympiad.Id && !x.Absent && x.Rank.HasValue && x.Penta_Score.HasValue)
                 .Join(context.Contestants, e => e.Mind_Sport_ID, c => c.Mind_Sport_ID, (e, c) => new { e, c })
+                .ToList() // TODO This was inserted for Etan's stuff - remove with the subsequent Where
+                .Where(ec => (endOfDay == null || ec.e.Event.End < endOfDay))
                 .GroupBy(x => x.c.Mind_Sport_ID)
                 .ToList();
 

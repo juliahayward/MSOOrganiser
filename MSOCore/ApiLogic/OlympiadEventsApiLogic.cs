@@ -1,8 +1,9 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Serialization;
 
 namespace MSOCore.ApiLogic
 {
@@ -47,6 +48,91 @@ namespace MSOCore.ApiLogic
                     Cost = entryFees[e.Entry_Fee].Adult.Value,
                     ConcessionCost = entryFees[e.Entry_Fee].Concession.Value
                 }).ToList();
+
+            return vm;
+        }
+
+        [XmlType(TypeName = "Event")]  
+        public class EventContestantsVm
+        {
+            [XmlType(TypeName = "Contestant")]  
+            public class ContestantVm
+            {
+                public int ContestantId { get; set; }
+                public string Name { get; set; }
+                public string FirstName { get; set; }
+                public string LastName { get; set; }
+                public bool IsJunior { get; set; }
+                public bool IsSenior { get; set; }
+            }
+
+            public string EventCode { get; set; }
+            public string EventName { get; set; }
+            public List<ContestantVm> Contestants { get; set; }
+        }
+
+        [XmlType(TypeName = "Players")]
+        public class SwissManagerEventContestantsVm : List<SwissManagerEventContestantsVm.ContestantVm>
+        {
+            [XmlType(TypeName = "Player")]
+            public class ContestantVm
+            {
+                [XmlAttribute]
+                public int NatId { get; set; }
+                [XmlAttribute]
+                public string Firstname { get; set; }
+                [XmlAttribute]
+                public string Lastname { get; set; }
+                [XmlAttribute]
+                public int PlayerUniqueId { get; set; }
+            }
+        }
+
+
+        public EventContestantsVm GetEventContestants(string eventCode)
+        {
+            var context = DataEntitiesProvider.Provide();
+            var vm = new EventContestantsVm();
+
+            var currentOlympiad = context.Olympiad_Infoes.OrderByDescending(x => x.StartDate).First();
+            var evt = currentOlympiad.Events.SingleOrDefault(x => x.Code == eventCode);
+
+            if (evt == null) throw new ArgumentOutOfRangeException("Unrecognised event");
+
+            vm.EventCode = eventCode;
+            vm.EventName = evt.Mind_Sport;
+            vm.Contestants = evt.Entrants.Select(e =>
+                new EventContestantsVm.ContestantVm()
+                {
+                    ContestantId = e.Name.Mind_Sport_ID,
+                    Name = e.Name.FullName(),
+                    IsJunior = e.Name.IsJuniorForOlympiad(currentOlympiad),
+                    IsSenior = e.Name.IsSeniorForOlympiad(currentOlympiad)
+                }).ToList();
+
+            return vm;
+        }
+
+
+        public SwissManagerEventContestantsVm GetSwissManagerEventContestants(string eventCode)
+        {
+            var context = DataEntitiesProvider.Provide();
+            var vm = new SwissManagerEventContestantsVm();
+
+            var currentOlympiad = context.Olympiad_Infoes.OrderByDescending(x => x.StartDate).First();
+            var evt = currentOlympiad.Events.SingleOrDefault(x => x.Code == eventCode);
+
+            if (evt == null) throw new ArgumentOutOfRangeException("Unrecognised event");
+
+            int i = 1;
+            vm.AddRange(evt.Entrants.Select(e =>
+                new SwissManagerEventContestantsVm.ContestantVm()
+                {
+                    NatId = e.Name.Mind_Sport_ID,
+                    Firstname = e.Name.Firstname,
+                    Lastname = e.Name.Lastname,
+                    PlayerUniqueId = i++
+                }).ToList());
 
             return vm;
         }

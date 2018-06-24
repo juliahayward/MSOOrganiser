@@ -1,4 +1,4 @@
-﻿using JuliaHayward.Common.Environment;
+using JuliaHayward.Common.Environment;
 using JuliaHayward.Common.Logging;
 using MSOCore;
 using MSOCore.Calculators;
@@ -640,7 +640,9 @@ namespace MSOOrganiser
             {
                 if (evm.Id == 0)
                 {
-                    var game = context.Games.First(x => evm.Code.StartsWith(x.Code));
+                    var game = context.Games.FirstOrDefault(x => evm.Code.StartsWith(x.Code));
+                    if (game == null)
+                        throw new ArgumentOutOfRangeException("No Game for code " + evm.Code);
 
                     var evt = new Event()
                     {
@@ -648,7 +650,8 @@ namespace MSOOrganiser
                         Code = evm.Code,
                         Olympiad_Info = o,
                         Game = game,
-                        MAX_Number = 70
+                        MAX_Number = 70,
+                        ConsistentWithBoardability = true
                         // TODO more stuff here
                     };
                     o.Events.Add(evt);

@@ -1,4 +1,4 @@
-﻿using MSOOrganiser.UIUtilities;
+using MSOOrganiser.UIUtilities;
 using System;
 using System.Collections.Generic;
 using System.Linq;

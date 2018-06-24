@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
@@ -24,7 +24,7 @@ namespace MSOOrganiser.Data
             if (config.ConnectionStrings.ConnectionStrings["Production"] == null)
             {
                 var test = config.ConnectionStrings.ConnectionStrings["DataEntities"];
-                var prod = test.ConnectionString.Replace("mso", "mso_prod");
+                var prod = test.ConnectionString.Replace("**REDACTEDAwsDbName**", "**REDACTEDAwsDbName**_prod");
                 config.ConnectionStrings.ConnectionStrings.Add(new ConnectionStringSettings()
                 {
                     ConnectionString = prod,

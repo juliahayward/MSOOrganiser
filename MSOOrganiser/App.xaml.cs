@@ -1,4 +1,4 @@
-﻿using MSOOrganiser.Dialogs;
+using MSOOrganiser.Dialogs;
 using System;
 using System.Collections.Generic;
 using System.Configuration;

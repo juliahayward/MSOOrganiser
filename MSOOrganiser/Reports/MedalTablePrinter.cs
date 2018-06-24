@@ -1,4 +1,4 @@
-﻿using MSOCore;
+using MSOCore;
 using MSOCore.Reports;
 using System;
 using System.Collections.Generic;

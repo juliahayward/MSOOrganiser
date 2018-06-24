@@ -1,4 +1,4 @@
-﻿using MSOOrganiser.Events;
+using MSOOrganiser.Events;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;

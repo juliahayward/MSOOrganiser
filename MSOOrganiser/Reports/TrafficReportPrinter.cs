@@ -1,4 +1,4 @@
-﻿using MSOCore.Reports;
+using MSOCore.Reports;
 using MSOOrganiser.DocumentExtensions;
 using MSOOrganiser.UIUtilities;
 using System;

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -36,11 +36,15 @@ namespace MSOCore.Reports
             var context = DataEntitiesProvider.Provide();
 
             // Warning - this will go wonky when I undo the 2007/7002 hack
-            var olympiad = context.Olympiad_Infoes.First(x => x.YearOf == year);
+            var olympiad = context.Olympiad_Infoes.FirstOrDefault(x => x.YearOf == year);
+            if (olympiad == null)
+                throw new ArgumentOutOfRangeException("Year " + year + " is not an olympiad year");
 
             var retval = new EventResultsVm { Year = year, EventCode = eventCode, OlympiadName = olympiad.FullTitle() };
 
             var evt = context.Events.FirstOrDefault(x => x.OlympiadId == olympiad.Id && x.Code == eventCode);
+            if (evt == null)
+                throw new ArgumentOutOfRangeException("Event " + eventCode + " did not take place in " + year);
 
             retval.EventName = evt.Mind_Sport;
             retval.Entrants = evt.Entrants

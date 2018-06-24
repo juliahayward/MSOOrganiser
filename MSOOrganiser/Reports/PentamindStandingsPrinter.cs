@@ -1,4 +1,4 @@
-﻿using MSOCore.Reports;
+using MSOCore.Reports;
 using System;
 using System.Collections.Generic;
 using System.Linq;

@@ -1,4 +1,4 @@
-﻿using JuliaHayward.Common.Logging;
+using JuliaHayward.Common.Logging;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
