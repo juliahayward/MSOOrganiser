@@ -31,4 +31,21 @@ namespace MSOCore.Calculators
             return myPentaScore;
         }
     }
+
+    public class Penta2018Calculator : PentaCalculator
+    {
+        /// <summary>
+        /// See mail from Mike.
+        /// </summary>
+        public override double Formula(int n, double p)
+        {
+            // Spread linearly, rank 1 = 100; last place = 0;
+            var myPentaScore = 100 * (n - p) / (n - 1);
+
+            // * All * events - introduce a fudge factor
+            myPentaScore = myPentaScore * (n + 5) / (n + 6);
+
+            return myPentaScore;
+        }
+    }
 }

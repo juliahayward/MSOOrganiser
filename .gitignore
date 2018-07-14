@@ -2,3 +2,8 @@ MSOOrganiser/TestResults/MSOOrganiser.TE.Tests.mdf
 MSOOrganiser/TestResults/MSOOrganiser.TE.Tests_log.ldf
 MSOWeb/Content/
 Docs not in github/
+MSOOrganiser/.vs/config/applicationhost.config
+MSOOrganiser/.vs/MSOOrganiser/v15/Server/sqlite3/storage.ide-wal
+MSOOrganiser/.vs/MSOOrganiser/v15/Server/sqlite3/storage.ide-shm
+MSOOrganiser/.vs/MSOOrganiser/v15/Server/sqlite3/storage.ide
+MSOOrganiser/.vs/MSOOrganiser/v15/Server/sqlite3/db.lock

@@ -117,7 +117,8 @@ namespace MSOCore
                 Type = this.Type,
                 X_Num = this.X_Num,
                 Year = olympiad.YearOf,
-                ConsistentWithBoardability = true
+                ConsistentWithBoardability = true,
+                PentamindFactor = 1.0f
             };
 
             evt.Arbiters = this.Arbiters.Select(x => x.CopyTo(evt)).ToList();

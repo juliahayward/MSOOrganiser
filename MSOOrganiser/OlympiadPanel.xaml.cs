@@ -651,7 +651,8 @@ namespace MSOOrganiser
                         Olympiad_Info = o,
                         Game = game,
                         MAX_Number = 70,
-                        ConsistentWithBoardability = true
+                        ConsistentWithBoardability = true,
+                        PentamindFactor = 1.0f
                         // TODO more stuff here
                     };
                     o.Events.Add(evt);

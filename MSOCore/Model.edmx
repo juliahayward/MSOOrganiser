@@ -115,6 +115,7 @@ warning 6002: The table/view 'mso_prod.dbo.Badges - Misc' does not have a primar
           <Property Name="OlympiadId" Type="int" Nullable="false" />
           <Property Name="GameId" Type="int" />
           <Property Name="ConsistentWithBoardability" Type="bit" Nullable="false" />
+          <Property Name="PentamindFactor" Type="float" Nullable="false" />
         </EntityType>
         <EntityType Name="EventType">
           <Key>
@@ -848,6 +849,7 @@ FROM [dbo].[SelectedPeople] AS [SelectedPeople]</DefiningQuery>
           <NavigationProperty Name="Game" Relationship="DataModel.FK__Events__GameId__4A8310C6" FromRole="Event" ToRole="Game" />
           <NavigationProperty Name="Entrants" Relationship="DataModel.FK__Entrants__EventI__4B7734FF" FromRole="Event" ToRole="Entrant" />
           <Property Name="ConsistentWithBoardability" Type="Boolean" Nullable="false" />
+          <Property Name="PentamindFactor" Type="Single" Nullable="false" />
         </EntityType>
         <EntityType Name="EventType">
           <Key>
@@ -1370,6 +1372,7 @@ FROM [dbo].[SelectedPeople] AS [SelectedPeople]</DefiningQuery>
           <EntitySetMapping Name="Events">
             <EntityTypeMapping TypeName="DataModel.Event">
               <MappingFragment StoreEntitySet="Events">
+                <ScalarProperty Name="PentamindFactor" ColumnName="PentamindFactor" />
                 <ScalarProperty Name="ConsistentWithBoardability" ColumnName="ConsistentWithBoardability" />
                 <ScalarProperty Name="GameId" ColumnName="GameId" />
                 <ScalarProperty Name="OlympiadId" ColumnName="OlympiadId" />

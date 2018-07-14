@@ -52,6 +52,7 @@ namespace MSOCore
         public int OlympiadId { get; set; }
         public Nullable<int> GameId { get; set; }
         public bool ConsistentWithBoardability { get; set; }
+        public float PentamindFactor { get; set; }
     
         public virtual ICollection<Event_Sess> Event_Sess { get; set; }
         public virtual ICollection<Arbiter> Arbiters { get; set; }

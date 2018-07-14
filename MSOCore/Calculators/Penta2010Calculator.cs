@@ -24,7 +24,7 @@ namespace MSOCore.Calculators
     {
         public abstract double Formula(int numberOfTeams, double myPosition);
 
-        public void Calculate(int numberInTeam, IEnumerable<IPentaCalculable> entries, bool isInPentamind = true)
+        public void Calculate(int numberInTeam, IEnumerable<IPentaCalculable> entries, bool isInPentamind = true, float premiumFactor = 1.0f)
         {
             if (entries.Any(x => x.Absent == false && x.Rank == 0))
                 throw new ArgumentException("At least one player was present but has no rank");
@@ -47,7 +47,7 @@ namespace MSOCore.Calculators
 
                 var myPentaScore = Formula(numberOfTeams, myEffectiveRank);               
 
-                entry.PentaScore = (float)myPentaScore;
+                entry.PentaScore = (float)myPentaScore * premiumFactor;
             }
         }
     }

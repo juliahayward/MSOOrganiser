@@ -95,8 +95,8 @@ namespace MSOOrganiser
         private void save_Click(object sender, RoutedEventArgs e)
         {
             // TODO DI the relevant bits into vm and call methods there
-            calculateRanks_Click(sender, e);
-            calculatePenta_Click(sender, e);
+            CalculateRanks();
+            CalculatePentamindPoints();
 
             try
             {
@@ -173,13 +173,13 @@ namespace MSOOrganiser
             }
         }
 
-        // no button any more
-        private void calculatePenta_Click(object sender, RoutedEventArgs e)
+        private void CalculatePentamindPoints()
         {
-            var calculator = new Penta2015Calculator();
+            var calculator = new Penta2018Calculator();
             try
             {
-                calculator.Calculate(ViewModel.NumberInTeam, ViewModel.Entrants, ViewModel.Pentamind);
+                calculator.Calculate(ViewModel.NumberInTeam, ViewModel.Entrants, ViewModel.Pentamind,
+                    ViewModel.PentamindFactor);
             }
             catch (Exception ex)
             {
@@ -188,7 +188,7 @@ namespace MSOOrganiser
         }
 
         // no button any more
-        private void calculateRanks_Click(object sender, RoutedEventArgs args)
+        private void CalculateRanks()
         {
             var checker = new RankCalculator();
             try
@@ -679,6 +679,24 @@ namespace MSOOrganiser
             }
         }
 
+        private float _pentamindFactor;
+        public float PentamindFactor
+        {
+            get
+            {
+                return _pentamindFactor;
+            }
+            set
+            {
+                if (_pentamindFactor != value)
+                {
+                    _pentamindFactor = value;
+                    _IsDirty = true;
+                    OnPropertyChanged(nameof(PentamindFactor));
+                }
+            }
+        }
+
         private bool _includedInMaxFee;
         public bool IncludedInMaxFee
         {
@@ -950,6 +968,7 @@ namespace MSOOrganiser
             OtherPrizes = evt.Other_Prizes;
             JuniorOtherPrizes = evt.JNR_Other_Prizes;
             Pentamind = (evt.Pentamind.HasValue) ? evt.Pentamind.Value : false;
+            PentamindFactor = evt.PentamindFactor;
             IncludedInMaxFee = (evt.incMaxFee.HasValue) ? evt.incMaxFee.Value : false;
             JuniorMedals = (evt.JNR_Medals.HasValue) ? evt.JNR_Medals.Value : false;
             Type = evt.Type;    // NULLs OK
@@ -1062,6 +1081,7 @@ namespace MSOOrganiser
             evt.Other_Prizes = OtherPrizes;
             evt.JNR_Other_Prizes = JuniorOtherPrizes;
             evt.Pentamind = Pentamind;
+            evt.PentamindFactor = PentamindFactor;
             evt.incMaxFee = IncludedInMaxFee;
             evt.JNR_Medals = JuniorMedals;
             evt.Type = Type;

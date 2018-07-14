@@ -1,4 +1,4 @@
-﻿namespace MSOAgent
+namespace MSOAgent
 {
     partial class MSOAgentService
     {
