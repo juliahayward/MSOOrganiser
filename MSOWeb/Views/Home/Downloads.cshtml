@@ -1,0 +1,37 @@
+﻿@model IEnumerable<MSOCore.Reports.EventListGenerator.EventVm>
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Title = "Mind Sports Olympiad - Entrants Download";
+}
+
+<style type="text/css">
+    .jmhTable {
+        border: 1px black solid; 
+        width: 600px; 
+        margin-left: 100px
+    }
+    .jmhTable td {
+        vertical-align: middle;
+    }
+    .jmhPaddedHeader {
+        margin: 4px;
+        display: block;
+    }
+    .jmhPadded {
+        margin: 4px;
+        display: block;
+    }
+</style>
+
+<h1 class="entry-title">Mind Sports Olympiad - Entrants Download</h1>
+
+<h2>Entrants Download</h2>
+
+<ul>
+    @foreach (var game in Model)
+    {
+    <li><span width="400px">@game.Code  : @game.Name </span> 
+        <a href="/apiv1/swissmanagereventcontestants?eventcode=@game.Code" download>for Swiss Manager</a> and 
+        <a href="/apiv1/multiplayereventcontestants?eventcode=@game.Code" download>for Mike's multiplayer spreadsheet</a></li>
+    }
+</ul>

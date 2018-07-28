@@ -59,6 +59,7 @@
   <ItemGroup>
     <Compile Include="Calculators\CostApportionerTests.cs" />
     <Compile Include="Calculators\NumberListContractorTests.cs" />
+    <Compile Include="Calculators\PaymentProcessor2018Tests.cs" />
     <Compile Include="Calculators\PentaPre2010CalculatorTests.cs" />
     <Compile Include="Calculators\EventIndexerTests.cs" />
     <Compile Include="Calculators\Penta2010CalculatorTests.cs" />

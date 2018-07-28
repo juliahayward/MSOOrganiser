@@ -1,4 +1,5 @@
 using AutoUpdaterForWPF;
+using Microsoft.Win32;
 using MSOCore;
 using MSOCore.Calculators;
 using MSOCore.Models;
@@ -658,6 +659,29 @@ namespace MSOOrganiser
             }
             MessageBox.Show("Loaded " + result.SingleEventOrders + " single-event orders and "
                 + Environment.NewLine + result.MaxFeeOrders + " all-you-can-play orders");
+        }
+
+        private void prepayments2018_Click(object sender, RoutedEventArgs e)
+        {
+            var dlg = new OpenFileDialog();
+            dlg.FileName = "Data File";
+            dlg.DefaultExt = ".json";
+            dlg.Filter = "JSON documents |*.json";
+
+            var result = dlg.ShowDialog();
+            if (result == true)
+            {
+                string filename = dlg.FileName;
+                int ppResult;
+                using (new SpinnyCursor())
+                {
+                    var processor = new PaymentProcessor2018();
+                    var orders = processor.ParseJsonFile(filename);
+                    processor.ProcessAll(orders);
+
+                    MessageBox.Show("Loaded " + orders.Count() + " orders ");
+                }
+            }
         }
 
         private void unspentFee_Click(object sender, RoutedEventArgs e)

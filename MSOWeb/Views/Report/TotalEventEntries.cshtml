@@ -1,0 +1,41 @@
+﻿@model MSOCore.Reports.TotalEventEntriesGenerator.TotalEventEntriesVm
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<style type="text/css">
+    .jmhTable {
+        border: 1px black solid; 
+        width: 400px; 
+        margin-left: 100px
+    }
+    .jmhTable td {
+        vertical-align: middle;
+    }
+    .jmhPaddedHeader {
+        margin: 4px;
+        display: block;
+    }
+    .jmhPadded {
+        margin: 4px;
+        display: block;
+    }
+</style>
+
+<h1 class="entry-title">Total number of entries per event</h1>
+
+<table class="jmhTable">
+    <tr style="background: AliceBlue">
+        <td><span class="jmhPaddedHeader">Code</span></td>
+        <td><span class="jmhPaddedHeader">Name</span></td>
+        <td><span class="jmhPaddedHeader">Entries</span></td>
+    </tr>
+    @foreach (var item in Model.Events)
+    {    
+    <tr>
+        <td><span class="jmhPadded">@item.Code</span></td>
+        <td><span class="jmhPadded">@item.Name</span></td>
+        <td><span class="jmhPadded">@item.Entrants</span></td>
+    </tr>
+    }
+</table>

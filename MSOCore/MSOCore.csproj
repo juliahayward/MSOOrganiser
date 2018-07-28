@@ -61,6 +61,7 @@
     <Compile Include="Calculators\CostApportioner.cs" />
     <Compile Include="Calculators\NumberListContractor.cs" />
     <Compile Include="Calculators\PaymentProcessor.cs" />
+    <Compile Include="Calculators\PaymentProcessor2018.cs" />
     <Compile Include="Calculators\PentamindMetaScoreCalculator.cs" />
     <Compile Include="Calculators\RankCalculator.cs" />
     <Compile Include="Calculators\PentaPre2010Calculator.cs" />
@@ -164,6 +165,7 @@
     <Compile Include="Reports\EventResultsGenerator.cs" />
     <Compile Include="Reports\GameListGenerator.cs" />
     <Compile Include="Reports\PeopleOwingMoneyReportGenerator.cs" />
+    <Compile Include="Reports\TotalEventEntriesGenerator.cs" />
     <Compile Include="Reports\TotalIncomeByMethodReportGenerator.cs" />
     <Compile Include="Reports\EventEntrantsGenerator.cs" />
     <Compile Include="Reports\PentamindStandings4CatsGenerator.cs" />

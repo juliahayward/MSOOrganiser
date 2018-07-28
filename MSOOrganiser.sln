@@ -1,22 +1,22 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2012
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MSOOrganiser", "MSOOrganiser.csproj", "{FB6ED363-EE9B-41BC-B7B6-8417E217D532}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MSOOrganiser", "MSOOrganiser\MSOOrganiser.csproj", "{FB6ED363-EE9B-41BC-B7B6-8417E217D532}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MSOCore", "..\MSOCore\MSOCore.csproj", "{647BD73E-585E-4E45-8774-7CBD160AEAD4}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MSOCore", "MSOCore\MSOCore.csproj", "{647BD73E-585E-4E45-8774-7CBD160AEAD4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MSOWeb", "..\MSOWeb\MSOWeb.csproj", "{66E6999E-72B1-47A6-946B-6D1956BFA6D4}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MSOWeb", "MSOWeb\MSOWeb.csproj", "{66E6999E-72B1-47A6-946B-6D1956BFA6D4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MSOCoreTests", "..\MSOCoreTests\MSOCoreTests.csproj", "{6105F45D-DDAD-4E2C-90D9-2D1B9338EDD6}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MSOCoreTests", "MSOCoreTests\MSOCoreTests.csproj", "{6105F45D-DDAD-4E2C-90D9-2D1B9338EDD6}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{0CB68DD8-B029-47E1-A1B3-88E2A82D1C8F}"
 	ProjectSection(SolutionItems) = preProject
-		..\SQL\ConvertAccessToMSSQL.sql = ..\SQL\ConvertAccessToMSSQL.sql
-		..\Misc\Help.html = ..\Misc\Help.html
-		RemoveDuplicateContestantsScript.sql = RemoveDuplicateContestantsScript.sql
+		SQL\ConvertAccessToMSSQL.sql = SQL\ConvertAccessToMSSQL.sql
+		Misc\Help.html = Misc\Help.html
+		RemoveDuplicateContestantsScript.sql = MSOOrganiser\RemoveDuplicateContestantsScript.sql
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MSOAgent", "..\MSOAgent\MSOAgent.csproj", "{4A03573E-76D1-45E9-8237-7F01AF46B1BA}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MSOAgent", "MSOAgent\MSOAgent.csproj", "{4A03573E-76D1-45E9-8237-7F01AF46B1BA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -85,6 +85,16 @@ namespace MSOWeb.Controllers
             return View(model);
         }
 
+        public ActionResult TotalEventEntries(int? year)
+        {
+            var generator = new TotalEventEntriesGenerator();
+
+            if (!year.HasValue) year = DateTime.Now.Year;
+            var model = generator.GetModel(year.Value);
+
+            return View(model);
+        }
+
         public ActionResult EventResults(int? year, string eventCode)
         {
             var generator = new EventResultsGenerator();

@@ -21,5 +21,13 @@ namespace MSOWeb.Controllers
             return View(model);
         }
 
+        public ActionResult Downloads()
+        {
+            var generator = new EventListGenerator();
+
+            var model = generator.GetItems();
+
+            return View(model);
+        }
     }
 }

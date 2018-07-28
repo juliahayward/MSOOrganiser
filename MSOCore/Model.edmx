@@ -246,6 +246,7 @@ warning 6002: The table/view 'mso_prod.dbo.National Flags' does not have a prima
           </Key>
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="ISO2" Type="nvarchar" MaxLength="2" />
         </EntityType>
         <EntityType Name="Olympiad Info">
           <Key>
@@ -1273,6 +1274,7 @@ FROM [dbo].[SelectedPeople] AS [SelectedPeople]</DefiningQuery>
           </Key>
           <Property Type="Int32" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Type="String" Name="Name" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="ISO2" Type="String" MaxLength="2" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="GlobalSetting">
           <Key>
@@ -1679,6 +1681,7 @@ FROM [dbo].[SelectedPeople] AS [SelectedPeople]</DefiningQuery>
           <EntitySetMapping Name="Nationalities">
             <EntityTypeMapping TypeName="DataModel.Nationality">
               <MappingFragment StoreEntitySet="Nationalities">
+                <ScalarProperty Name="ISO2" ColumnName="ISO2" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>

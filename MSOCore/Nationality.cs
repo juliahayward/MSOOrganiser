@@ -16,5 +16,6 @@ namespace MSOCore
     {
         public int Id { get; set; }
         public string Name { get; set; }
+        public string ISO2 { get; set; }
     }
 }
