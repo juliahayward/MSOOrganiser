@@ -42,6 +42,13 @@ namespace MSOOrganiser.Reports
             return Print(results, "Eurogames WC Standings");
         }
 
+        public FlowDocument PrintModernAbstract()
+        {
+            var rg = new PentamindStandingsGenerator();
+            var results = rg.GetModernAbstractStandings(null);
+            return Print(results, "Modern Abstract WC Standings");
+        }
+
 
         private FlowDocument Print(PentamindStandingsGenerator.PentamindStandingsReportVm results, string title)
         {

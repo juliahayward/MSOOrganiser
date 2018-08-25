@@ -10,7 +10,7 @@ namespace MSOCore.Extensions
     {
         public static string GetFlag(this string nationality)
         {
-            if (nationality == "") nationality = "default";
+            if (string.IsNullOrEmpty(nationality)) nationality = "default";
 
             return string.Format("/content/images/flags/{0}.jpg", nationality)
                         .Replace(" ", "_").ToLower();

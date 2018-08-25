@@ -3,6 +3,7 @@ using System;
 using System.IO;
 using System.Collections.Generic;
 using System.Linq;
+using System.Globalization;
 
 namespace MSOCore.Calculators
 {
@@ -63,7 +64,7 @@ namespace MSOCore.Calculators
                         && x.Lastname.ToLower() == attendee.LastName.ToLower());
 
                     if (contestant == null)
-                        contestant = CreateEntrant(context, attendee, countries);
+                        contestant = CreateEntrant(context, order.DateOfBirth, attendee, countries);
 
                     bool newEventFound = false;
                     foreach (var evt in order.Events)
@@ -101,17 +102,19 @@ namespace MSOCore.Calculators
             }
         }
 
-        private Contestant CreateEntrant(DataEntities context, Order2018.Attendee entrant,
+        private Contestant CreateEntrant(DataEntities context, 
+            DateTime? dob,
+            Order2018.Attendee entrant,
             Dictionary<string, string> countries)
         {
-
             var contestant = new Contestant()
             {
                 Firstname = entrant.FirstName,
                 Lastname = entrant.LastName,
                 Nationality = countries[entrant.CountryCode],
                 Title = entrant.Title,
-                Male = (entrant.Title == "Mr")
+                Male = (entrant.Title == "Mr"),
+                DateofBirth = dob
             };
 
             context.Contestants.Add(contestant);
@@ -128,6 +131,13 @@ namespace MSOCore.Calculators
         public long BookingSpaces { get; set; }
         public string BookingStatus { get; set; }
         public long Timestamp { get; set; }
+        public string DoBString { get; set; }
+        public DateTime? DateOfBirth { get {
+                DateTime dob;
+                var success = DateTime.TryParseExact(DoBString, "yyyy-MM-dd", CultureInfo.InvariantCulture, System.Globalization.DateTimeStyles.None, out dob);
+                return (success) ? dob : (DateTime?)null;
+            }
+        }
         public List<Attendee> Attendees { get; private set; }
         public List<Event> Events { get; private set; }
 

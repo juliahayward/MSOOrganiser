@@ -1,0 +1,38 @@
+﻿@model IList<MSOCore.Reports.ScheduleGenerator.DayScheduleVm>
+@{
+    Layout = "~/Views/Shared/_NewLayout.cshtml";
+    ViewBag.Title = "Mind Sports Olympiad : Schedule";
+}
+
+<h1>MSO Schedule 2018</h1>
+
+@for (int rowIndex = 0; rowIndex <= (Model.Count() - 1) / 3; rowIndex++)
+{
+    <div class="row">
+        @foreach (var day in Model.Skip(3 * rowIndex).Take(3))
+        {
+
+        <div class="col-sm-4">
+            <div class="card mt-1">
+                <div class="card-header">
+                    <b>@day.Date</b>
+                </div>
+                <ul class="list-group list-group-flush">
+                    @foreach (var evt in day.Events)
+                    {
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        @evt.Name
+                            @if (evt.HasAMBadge)
+    {<span class="badge badge-primary badge-pill">AM</span>}
+                            @if (evt.HasPMBadge)
+    {<span class="badge badge-warning badge-pill">PM</span>}
+                            @if (evt.HasEveBadge)
+    {<span class="badge badge-success badge-pill">Eve</span>}
+                    </li>
+                    }
+                </ul>
+            </div>
+        </div>
+        }
+    </div>
+}

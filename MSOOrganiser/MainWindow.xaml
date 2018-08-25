@@ -97,6 +97,7 @@
                         <MenuItem Header="Senior Pentamind Standings" Click="seniorPentamindStandings_Click" />
                         <MenuItem Header="Poker WC Standings" Click="pokerStandings_Click" />
                         <MenuItem Header="Eurogames WC Standings" Click="eurogamesStandings_Click" />
+                        <MenuItem Header="Modern Abstract WC Standings" Click="modernAbstractStandings_Click" />
                     </MenuItem>
                     <MenuItem Header="Contestant listing for JW3 (.csv)" Click="contestantList_Click" />
                 </MenuItem>

@@ -67,22 +67,31 @@ namespace MSOWeb.Controllers
             }
         }
 
-        public ActionResult PentamindStandings(int? year, DateTime? date)
+        public ActionResult PentamindStandings(int? year, DateTime? date, string view="")
         {
             var generator = new PentamindStandingsGenerator();
 
             var model = generator.GetStandings(year, date);
 
-            return View(model);
+            return View("PentamindStandings"+view, model);
         }
 
-        public ActionResult EurogamesStandings(int? year)
+        public ActionResult EurogamesStandings(int? year, string view="")
         {
             var generator = new PentamindStandingsGenerator();
 
             var model = generator.GetEuroStandings(year);
 
-            return View(model);
+            return View("EurogamesStandings"+view, model);
+        }
+
+        public ActionResult ModernAbstractStandings(int? year, string view="")
+        {
+            var generator = new PentamindStandingsGenerator();
+
+            var model = generator.GetModernAbstractStandings(year);
+
+            return View("ModernAbstractStandings"+view, model);
         }
 
         public ActionResult TotalEventEntries(int? year)
@@ -91,6 +100,24 @@ namespace MSOWeb.Controllers
 
             if (!year.HasValue) year = DateTime.Now.Year;
             var model = generator.GetModel(year.Value);
+
+            return View(model);
+        }
+
+        public ActionResult EventResultsIndex()
+        {
+            var generator = new EventResultsGenerator();
+
+            var model = generator.GetEventsIndex();
+
+            return View(model);
+        }
+
+        public ActionResult EventEntries(string eventCode)
+        {
+            var generator = new EventResultsGenerator();
+
+            var model = generator.GetEntrantsModel(eventCode);
 
             return View(model);
         }

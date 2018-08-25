@@ -1,0 +1,42 @@
+﻿@model MSOCore.Reports.PentamindStandingsGenerator.PentamindStandingsReportVm
+@{
+    Layout = "~/Views/Shared/_NewLayout.cshtml";
+}
+
+<h1>Pentamind Standings</h1>
+
+@{ var i = 1; }
+
+<table class="table">
+    <thead>
+        <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td>Name</td>
+            <td>Score</td>
+            <td colspan="5">Individual events</td>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.Standings.Take(100))
+        {
+        <tr>
+            <th scope="row">@i</th>
+            <td><span>@item.JuniorFlag</span><span>@item.SeniorFlag</span></td>
+            <td><span>@item.FemaleFlag</span></td>
+            <td><img src="@item.Flag" height="20" style="margin-right: 4px"/><span>@item.Name</span></td>
+            <td><span>@item.TotalScoreStr</span></td>
+            <td style="font-size: small"><span><a href="/Report/EventResults?eventCode=@item.GameStr(0)">@item.ScoreStr(0)</a></span></td>
+            <td style="font-size: small"><span><a href="/Report/EventResults?eventCode=@item.GameStr(1)">@item.ScoreStr(1)</a></span></td>
+            <td style="font-size: small"><span><a href="/Report/EventResults?eventCode=@item.GameStr(2)">@item.ScoreStr(2)</a></span></td>
+            <td style="font-size: small"><span><a href="/Report/EventResults?eventCode=@item.GameStr(3)">@item.ScoreStr(3)</a></span></td>
+            <td style="font-size: small"><span><a href="/Report/EventResults?eventCode=@item.GameStr(4)">@item.ScoreStr(4)</a></span></td>
+        </tr>
+
+    i++;
+}
+    </tbody>
+</table>
+
+<h3>Top 100 listed. Competitors need 5 events to qualify.</h3>

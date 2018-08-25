@@ -1,5 +1,5 @@
 ﻿@{
-    ViewBag.Title = "_Layout";
+    ViewBag.Title = "_NewLayout";
 }
 <!doctype html>
 <html lang="en">
@@ -8,34 +8,31 @@
     <meta charset="utf-8">
     <meta http-equiv="refresh" content="300" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="Julia Hayward">
+    <link rel="icon" href="/Content/favicon.ico">
     <!-- Bootstrap 4 styling -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-    <link rel="stylesheet" type="text/css" media="all" href="http://www.msoworld.com/wp-content/themes/twentyeleven/style.css" />
-    <link rel='stylesheet' id='style-css' href='http://www.msoworld.com/wp-content/plugins/displet-pop/style.css?ver=4.3.3' type='text/css' media='all' />
     <style type="text/css" id="custom-background-css">
-        body.custom-background {
+        body {
             background-color: #f9f9f9;
-        }
-
-        #page {
-            background-color: #f9f9f9;
-            margin: 0;
-        }
-
-        #main {
-            padding: 0;
         }
     </style>
 </head>
-<body class="home blog custom-background single-author two-column right-sidebar">
+<body class="">
+    <nav class="navbar navbar-dark bg-dark">
+        <a class="navbar-brand" href="#">MSO Online Results</a>
+        @if (string.IsNullOrEmpty(HttpContext.Current.User.Identity.Name))
+        {
+        <button class="btn btn-outline-success my-2 my-sm-0" id="adminLogin">Admin login</button>
+        }
+        else
+        {
+        <button class="btn btn-success my-2 my-sm-0" id="adminLogout">@HttpContext.Current.User.Identity.Name (logout)</button>
+        }
+    </nav>
     <div id="page" class="container">
-        <div id="main">
-            <div id="primary">
-                <div id="content">
-                    @RenderBody()
-                </div>
-            </div>
-        </div>
+        @RenderBody()
     </div>
     <!-- Bootstrap 4 scripts -->
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>

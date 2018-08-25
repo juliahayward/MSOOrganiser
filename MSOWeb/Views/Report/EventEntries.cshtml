@@ -1,0 +1,55 @@
+﻿@using MSOCore.Extensions;
+@model MSOCore.Reports.EventResultsGenerator.EventResultsVm
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<style type="text/css">
+    .jmhTable {
+        border: 1px black solid;
+        width: 800px;
+        margin-left: 100px
+    }
+
+        .jmhTable td {
+            vertical-align: middle;
+        }
+
+    .jmhPaddedHeader {
+        margin: 4px;
+        display: block;
+    }
+
+    .jmhPadded {
+        margin: 4px;
+        display: block;
+    }
+</style>
+
+<h1 class="entry-title">Entries for @Model.Year @Model.EventName (@Model.EventCode)</h1>
+
+<ul>
+    <li><a href="/apiv1/swissmanagereventcontestants?eventcode=@Model.EventCode" download>Download for Swiss Manager</a></li>
+    <li><a href="/apiv1/multiplayereventcontestants?eventcode=@Model.EventCode" download>Download for Mike's multiplayer spreadsheet</a></li>
+</ul>
+
+<table class="jmhTable">
+    <tr>
+        <td colspan="7" style="background: AliceBlue"><span class="jmhPaddedHeader">@Model.EventName</span></td>
+    </tr>
+    <tr>
+        <td style="background: AliceBlue"><span class="jmhPaddedHeader">Name</span></td>
+        <td style="background: AliceBlue"><span class="jmhPaddedHeader"></span></td>
+    </tr>
+    @foreach (var entrant in Model.Entrants)
+    {
+        <tr>
+            <td style="width:240px;">
+                <div class="jmhPadded">
+                    @entrant.Name
+                </div>
+            </td>
+        </tr>
+    }
+</table>
+<p></p>

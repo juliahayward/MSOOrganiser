@@ -419,6 +419,22 @@ namespace MSOOrganiser
             dialog.ShowDialog();
         }
 
+        private void modernAbstractStandings_Click(object sender, RoutedEventArgs e)
+        {
+            Func<FlowDocument> generate = () =>
+            {
+                var printer = new PentamindStandingsPrinter();
+                return printer.PrintModernAbstract();
+            };
+            Action<FlowDocument> print = doc =>
+            {
+                var flowDocumentPrinter = new FlowDocumentPrinter();
+                flowDocumentPrinter.PrintFlowDocument(doc, includeFooter: false);
+            };
+            FlowDocumentPreviewDialog dialog = new FlowDocumentPreviewDialog(generate, print);
+            dialog.ShowDialog();
+        }
+
         private void eventIncomeMenuItem_Click(object sender, RoutedEventArgs e)
         {
             Func<FlowDocument> generate = () =>
@@ -451,9 +467,18 @@ namespace MSOOrganiser
 
         private void peopleOwingMoneyMenuItem_Click(object sender, RoutedEventArgs e)
         {
-            var docPrinter = new FlowDocumentPrinter();
-            var printer = new PeopleOwingMoneyReportPrinter();
-            docPrinter.PrintFlowDocument(() => printer.Print(true));
+            Func<FlowDocument> generate = () =>
+            {
+                var printer = new PeopleOwingMoneyReportPrinter();
+                return printer.Print(true);
+            };
+            Action<FlowDocument> print = doc =>
+            {
+                var flowDocumentPrinter = new FlowDocumentPrinter();
+                flowDocumentPrinter.PrintFlowDocument(doc);
+            };
+            FlowDocumentPreviewDialog dialog = new FlowDocumentPreviewDialog(generate, print);
+            dialog.ShowDialog();
         }
 
   
@@ -810,6 +835,28 @@ namespace MSOOrganiser
                 if (entry == null)
                 {
                     entry = Entrant.NewEntrant(evt.EIN, "EGWC", currentOlympiad.Id, contestant, 0m);
+                    context.Entrants.Add(entry);
+                }
+                entry.Score = standing.TotalScoreStr;
+                entry.Rank = rank;
+                rank++;
+                context.SaveChanges();
+            }
+
+            // Next a Modern Abstract one
+            var modernAbstractStandings = pentamindStandingsGenerator.GetModernAbstractStandings(null);
+            rank = 1;
+            foreach (var standing in modernAbstractStandings.Standings)
+            {
+                if (!standing.IsValid) continue;
+
+                var contestant = context.Contestants.FirstOrDefault(x => x.Mind_Sport_ID == standing.ContestantId);
+                var evt = context.Events.FirstOrDefault(x => x.OlympiadId == currentOlympiad.Id && x.Code == "EGWC");
+                var entry = context.Entrants.FirstOrDefault(x => x.OlympiadId == currentOlympiad.Id
+                                        && x.Game_Code == "MAWC" && x.Mind_Sport_ID == standing.ContestantId);
+                if (entry == null)
+                {
+                    entry = Entrant.NewEntrant(evt.EIN, "MAWC", currentOlympiad.Id, contestant, 0m);
                     context.Entrants.Add(entry);
                 }
                 entry.Score = standing.TotalScoreStr;

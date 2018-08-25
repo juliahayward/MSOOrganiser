@@ -13,13 +13,14 @@ namespace MSOCore.Reports
     {
         public class PentamindStandingsReportVm
         {
-            public class EventScore 
+            public class EventScore
             {
                 public double Score { get; set; }
                 public string GameCode { get; set; }
                 public string Code { get; set; }
                 public bool IsLongSession { get; set; }
                 public bool IsEuroGame { get; set; }
+                public bool IsModernAbstract { get; set; }
                 public override string ToString()
                 {
                     return string.Format("{0}{1}: {2:0.00}", Code, (IsLongSession ? "*" : ""), Score);
@@ -30,10 +31,12 @@ namespace MSOCore.Reports
             {
                 public int ContestantId { get; set; }
                 public string Name { get; set; }
+                public string Flag { get; set; }
                 public bool IsMale { get; set; }
                 public bool IsJunior { get; set; }
                 public bool IsSenior { get; set; }
-                public string FemaleFlag { get { return (IsMale) ? "" : "W"; } }
+                // TODO: bodge for Charlotte
+                public string FemaleFlag { get { return (IsMale || Name == "Charlotte Levy") ? "" : "W"; } }
                 public string JuniorFlag { get { return (IsJunior) ? "Jnr" : ""; } }
                 public string SeniorFlag { get { return (IsSenior) ? "Snr" : ""; } }
                 public double TotalScore { get; set; }
@@ -82,7 +85,7 @@ namespace MSOCore.Reports
                 .ToList();
 
             var calc = new PentamindMetaScoreCalculator();
-  
+
             var standings = new List<PentamindStandingsReportVm.ContestantStanding>();
             foreach (var r in results)
             {
@@ -90,6 +93,7 @@ namespace MSOCore.Reports
                 {
                     ContestantId = r.Key,
                     Name = r.First().c.FullName(),
+                    Flag = r.First().c.Nationality.GetFlag(),
                     IsMale = r.First().c.Male,
                     IsJunior = r.First().c.IsJuniorForOlympiad(currentOlympiad),
                     IsSenior = r.First().c.IsSeniorForOlympiad(currentOlympiad)
@@ -276,8 +280,66 @@ namespace MSOCore.Reports
             return vm;
         }
 
+        // TODO - hard-coded events. Can't use categories as Color Chess is CH - fixed now
+
+        private static string[] ModernAbstractEvents = new [] { "STDU", "STOC", "OTOC", "ABOC", "BKOC", "BOWC", "TNOC", "COWC", "QROC", "ENWC", "LOWC", "TWOC", "KAWC", "CLWC" };
+
+        public PentamindStandingsReportVm GetModernAbstractStandings(int? year)
+        {
+            var context = DataEntitiesProvider.Provide();
+            var currentOlympiad = (year.HasValue)
+                ? context.Olympiad_Infoes.Where(x => x.StartDate.HasValue && x.StartDate.Value.Year == year.Value).First()
+                : context.Olympiad_Infoes.OrderByDescending(x => x.StartDate).First();
+
+            var vm = new PentamindStandingsReportVm();
+            vm.OlympiadTitle = currentOlympiad.FullTitle();
+            int pentaTotal = currentOlympiad.PentaTotal.Value;
+            int pentaLong = currentOlympiad.PentaLong.Value;
+            var longSessionEvents = currentOlympiad.Events.Where(x => x.No_Sessions > 1)
+                .Select(x => x.Code)
+                .ToList();
+
+            var results = context.Entrants
+                .Where(x => x.OlympiadId == currentOlympiad.Id && !x.Absent && x.Rank.HasValue && x.Penta_Score.HasValue
+                    && ModernAbstractEvents.Contains(x.Event.Code))
+                .Join(context.Contestants, e => e.Mind_Sport_ID, c => c.Mind_Sport_ID, (e, c) => new { e, c })
+                .GroupBy(x => x.c.Mind_Sport_ID)
+                .ToList();
+
+            var calc = new EurogameMetaScoreCalculator();
+
+            var standings = new List<PentamindStandingsReportVm.ContestantStanding>();
+            foreach (var r in results)
+            {
+                var standing = new PentamindStandingsReportVm.ContestantStanding()
+                {
+                    ContestantId = r.Key,
+                    Name = r.First().c.FullName(),
+                    IsMale = r.First().c.Male,
+                };
+
+                standing.Scores = r.Select(x => new PentamindStandingsReportVm.EventScore()
+                {
+                    Code = x.e.Game_Code,
+                    GameCode = x.e.Game_Code.Substring(0, 2),
+                    Score = (double)x.e.Penta_Score,
+                    IsLongSession = true, // No long game rule in eurogames // longSessionEvents.Contains(x.e.Game_Code),
+                    IsEuroGame = (x.e.Event.Game.GameCategory.Id == 3),
+                    IsModernAbstract = (ModernAbstractEvents.Contains(x.e.Game_Code))
+                }).ToList();
+
+                standing.Scores = calc.SelectBestScores(standing.Scores, pentaLong, pentaTotal, currentOlympiad.StartDate.Value.Year);
+                standing.TotalScore = standing.Scores.Sum(x => x.Score);
+                standing.IsValid = (standing.Scores.Count() == pentaTotal);
+                standings.Add(standing);
+            }
+
+            vm.Standings = standings.OrderByDescending(x => x.TotalScore);
+            return vm;
+        }
+
     }
 
 
-    
+
 }

@@ -31,6 +31,29 @@ namespace MSOCore.Reports
             }
         }
 
+        public class EventsIndexEventVm
+        {
+            public string Name { get; set; }
+            public string Code { get; set; }
+            public bool HasResults { get; set; }
+        }
+
+        public IEnumerable<EventsIndexEventVm> GetEventsIndex()
+        {
+            var context = DataEntitiesProvider.Provide();
+            var olympiad = context.Olympiad_Infoes.FirstOrDefault(x => x.Current);
+
+            return olympiad.Events.Where(x => x.Entrants.Any())
+                .Select(x => new EventsIndexEventVm()
+                {
+                    Code = x.Code,
+                    Name = x.Mind_Sport,
+                    HasResults = x.Entrants.Any(e => e.Penta_Score.HasValue && e.Penta_Score.Value > 0)
+                })
+                .OrderBy(x => x.Name)
+                .ToList();
+        }
+
         public EventResultsVm GetModel(int year, string eventCode)
         {
             var context = DataEntitiesProvider.Provide();
@@ -67,5 +90,32 @@ namespace MSOCore.Reports
             return retval;
         }
 
+        public EventResultsVm GetEntrantsModel(string eventCode)
+        {
+            var context = DataEntitiesProvider.Provide();
+
+            var olympiad = context.Olympiad_Infoes.FirstOrDefault(x => x.Current);
+            if (olympiad == null)
+                throw new ArgumentOutOfRangeException("No current olympiad");
+
+            var retval = new EventResultsVm { Year = olympiad.YearOf.Value, EventCode = eventCode, OlympiadName = olympiad.FullTitle() };
+
+            var evt = context.Events.FirstOrDefault(x => x.OlympiadId == olympiad.Id && x.Code == eventCode);
+            if (evt == null)
+                throw new ArgumentOutOfRangeException("Unknown event code " + eventCode);
+
+            retval.EventName = evt.Mind_Sport;
+            retval.Entrants = evt.Entrants
+                .Select(e => new EventResultsVm.EntrantVm()
+                {
+                    ContestantId = e.Name.Mind_Sport_ID,
+                    Name = e.Name.FullName(),
+                    Nationality = e.Name.Nationality ?? "default",
+                })
+                .ToList()
+                .OrderBy(x => x.Name);
+
+            return retval;
+        }
     }
 }

@@ -4,13 +4,22 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Security;
+using MSOCore.ApiLogic;
 
 namespace MSOWeb.Controllers
 {
+    // https://www.codeproject.com/Articles/288631/Secure-ASP-NET-MVC-applications
+    //[Authorize(Roles="Admin")]
     public class HomeController : Controller
     {
-        //
-        // GET: /Home/
+        private UserLogic _userLogic;
+
+        public HomeController()
+        {
+            _userLogic = new UserLogic();
+        }
+
 
         public ActionResult Index()
         {
@@ -19,6 +28,48 @@ namespace MSOWeb.Controllers
             var model = generator.GetItems();
 
             return View(model);
+        }
+
+        [AllowAnonymous]
+        [HttpGet]
+        public ActionResult Login()
+        {
+            return View();
+        }
+
+        [AllowAnonymous]
+        [HttpPost]
+        public ActionResult Login(string username, string password, string ReturnUrl)
+        {
+            var user = _userLogic.GetUserForLogin(username, password);
+            if (user == null)
+                return new RedirectResult("/Home/Login");
+
+            string Role = "Admin"; // TODO: user.Roles
+
+            var authTicket = new FormsAuthenticationTicket(1, username,
+                DateTime.Now, DateTime.Now.AddMinutes(30), true,
+                Role);
+            string cookieContents = FormsAuthentication.Encrypt(authTicket);
+            var cookie = new HttpCookie(FormsAuthentication.FormsCookieName, cookieContents)
+            {
+                Expires = authTicket.Expiration,
+                Path = FormsAuthentication.FormsCookiePath
+            };
+            Response.Cookies.Add(cookie);
+
+            if (!string.IsNullOrEmpty(ReturnUrl))
+                Response.Redirect(ReturnUrl);
+
+            return new RedirectResult("/");
+        }
+
+        [AllowAnonymous]
+        public ActionResult Logout()
+        {
+            FormsAuthentication.SignOut();
+
+            return new RedirectResult("/");
         }
 
         public ActionResult Downloads()

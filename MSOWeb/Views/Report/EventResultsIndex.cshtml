@@ -1,0 +1,21 @@
+﻿@using MSOCore.Extensions;
+@using MSOCore.Reports;
+@model IEnumerable<EventResultsGenerator.EventsIndexEventVm>
+@{
+    Layout = "~/Views/Shared/_NewLayout.cshtml";
+}
+
+<h1 class="bd-title" id="content">Live Event Results</h1>
+
+<div class="list-group">
+    @foreach (var evt in Model)
+    {
+    <a href="/Report/EventResults?year=2018&eventCode=@evt.Code" class="list-group-item list-group-item-action disabled">
+        @evt.Code : @evt.Name
+        @if (evt.HasResults)
+        {
+            <span class="badge badge-primary badge-pill">Ready!</span>
+        }
+    </a>
+    }
+</div>

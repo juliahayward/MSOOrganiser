@@ -1,80 +1,129 @@
 ﻿@model IEnumerable<MSOCore.Reports.GameListGenerator.GameVm>
 @{
-    Layout = "~/Views/Shared/_Layout.cshtml";
+    Layout = "~/Views/Shared/_NewLayout.cshtml";
     ViewBag.Title = "Mind Sports Olympiad Live Results";
 }
 
-<style type="text/css">
-    .jmhTable {
-        border: 1px black solid; 
-        width: 400px; 
-        margin-left: 100px
-    }
-    .jmhTable td {
-        vertical-align: middle;
-    }
-    .jmhPaddedHeader {
-        margin: 4px;
-        display: block;
-    }
-    .jmhPadded {
-        margin: 4px;
-        display: block;
-    }
-</style>
+<div class="row">
+    <div class="col-sm-3">
+        <div class="card mt-1">
+            <div class="card-body">
+                <h5 class="card-title">Registration</h5>
+                <h6 class="card-subtitle mb-2 text-muted">Sign up for events online</h6>
+                <p>Places are limited and events may be very popular - don't miss out.</p>
+                <a href="https://msoworld.com/events-woo-ev-products/" class="btn btn-primary">Register now!</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-3">
+        <div class="card mt-1">
+            <div class="card-body">
+                <h5 class="card-title">Schedule</h5>
+                <h6 class="card-subtitle mb-2 text-muted">What's coming up, when</h6>
+                <p>Find out all the different games you could choose from.</p>
+                <a href="/Schedule/Today" class="btn btn-primary">Today</a>
+                <a href="/Schedule/Complete" class="btn btn-secondary">Full Schedule</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-3">
+        <div class="card mt-1">
+            <div class="card-body">
+                <h5 class="card-title">Events</h5>
+                <h6 class="card-subtitle mb-2 text-muted">Live scores for single events</h6>
+                <p>Scores will appear as soon as arbiters submit them.</p>
+                <a href="/Report/EventResultsIndex" class="btn btn-primary">See the list</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-3">
+        <div class="card mt-1">
+            <div class="card-body">
+                <h5 class="card-title">Meta-events</h5>
+                <h6 class="card-subtitle mb-2 text-muted">Live scores for Pentamind, etc.</h6>
+                <ul>
+                    <li><a href="/Report/PentamindStandings?year=2018&view=new" class="card-link">Pentamind</a></li>
+                    <li><a href="/Report/EurogamesStandings?year=2018&view=new" class="card-link">Eurogames</a></li>
+                    <li><a href="/Report/ModernAbstractStandings?year=2018&view=new" class="card-link">Modern Abstract Games</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-sm-3">
+        <div class="card mt-1">
+            <div class="card-body">
+                <h5 class="card-title">Live streaming</h5>
+                <p>Watch events as they happen, with expert commentary. A different game will be streamed each session.</p>
+                <a href="https://www.bondora.com/en/pentamind" class="btn btn-primary">Watch now</a>
+            </div>
+        </div>
+    </div>
+    @*<div class="col-sm-3">
+            <div class="card mt-1">
+                <div class="card-body">
+                    <h5 class="card-title">This Olympiad</h5>
+                    <h6 class="card-subtitle mb-2 text-muted">Statistics about this year's event</h6>
+                    <ul>
+                        <li><a href="/Report/Nationality" class="card-link">Entries, by nation</a></li>
+                        <li><a href="/Report/TotalEventEntries" class="card-link">Entries, by event</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>*@
+    <div class="col-sm-3">
+        <div class="card mt-1">
+            <div class="card-body">
+                <h5 class="card-title">All-time medals table</h5>
+                <h6 class="card-subtitle mb-2 text-muted">The total medals haul for each individual</h6>
+                <ul>
+                    <li><a href="/Report/IndividualMedals?page=1" class="card-link">Top 100</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-3">
+        <div class="card mt-1">
+            <div class="card-body">
+                <h5 class="card-title">Past year's medals</h5>
+                <h6 class="card-subtitle mb-2 text-muted">Winners in previous years</h6>
+                <ul>
+                    <li><a href="/Report/YearMedals?year=2017" class="card-link">2017</a></li>
+                    <li><a href="/Report/YearMedals?year=2016" class="card-link">2016</a></li>
+                    <li><a href="/Report/YearMedals?year=2015" class="card-link">2015</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
 
-<h1 class="entry-title">Welcome to Mind Sports Olympiad Online Results</h1>
-
-<p>For now, all links are just examples - call up the relevant page and substitute in other codes/years 
-    into the URL to see other events.</p>
-
-<h2>Entrants Download</h2>
-
-<ul>
-    <li><a href="/Home/Downloads">Downloads</a></li>
-</ul>
 
 
-<h2>Meta-Events</h2>
+@*<h2>Entrants Download</h2>
 
-<ul>
-    <li><a href="/Report/PentamindStandings?year=2017">2017 Pentamind Standings</a></li>
-    <li><a href="/Report/EurogamesStandings?year=2017">2017 Eurogames Standings</a></li>
-</ul>
+    <ul>
+        <li><a href="/Home/Downloads">Downloads</a></li>
+    </ul>*@
+
+
 
 <h2>Game Medals (all years)</h2>
 
 <ul>
     @foreach (var game in Model)
     {
-    <li><a href="/Report/GameMedals?gameCode=@game.Code" >@game.Name</a></li>
+        <li><a href="/Report/GameMedals?gameCode=@game.Code">@game.Name</a></li>
     }
 </ul>
 
-<h2>Full game results</h2>
 
-<ul>
-    <li><a href="/Report/EventResults?year=2017&eventCode=BARP">BARP, 2017</a></li>
-</ul>
 
-<h2>Year Medals (all games)</h2>
+@*<h2>Event Statistics</h2>
 
-<ul>
-    <li><a href="/Report/YearMedals?year=2017" >All medals, 2017</a></li>
-    <li><a href="/Report/YearMedals?year=2016" >All medals, 2016</a></li>
-</ul>
+    <ul>
 
-<h2>Individual Medals</h2>
-
-<ul>
-    <li><a href="/Report/IndividualMedals?page=1" >All time medal table, top 100</a></li>
-</ul>
-
-<h2>Event Statistics</h2>
-
-<ul>
-    <li><a href="/Report/Nationality">Nationalities in this year's Olympiad</a></li>
-    <li><a href="/Report/TotalEventEntries">Entries in each event in this year's Olympiad</a></li>
-</ul>
+        <li><a href="/Report/EventEntries?eventCode=BARP">Entries : BARP</a></li>
+    </ul>*@
 
 

@@ -51,6 +51,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ApiLogic\OlympiadEventsApiLogic.cs" />
+    <Compile Include="ApiLogic\UserLogic.cs" />
     <Compile Include="Arbiter.cs">
       <DependentUpon>Model.tt</DependentUpon>
     </Compile>
@@ -165,6 +166,7 @@
     <Compile Include="Reports\EventResultsGenerator.cs" />
     <Compile Include="Reports\GameListGenerator.cs" />
     <Compile Include="Reports\PeopleOwingMoneyReportGenerator.cs" />
+    <Compile Include="Reports\ScheduleGenerator.cs" />
     <Compile Include="Reports\TotalEventEntriesGenerator.cs" />
     <Compile Include="Reports\TotalIncomeByMethodReportGenerator.cs" />
     <Compile Include="Reports\EventEntrantsGenerator.cs" />
