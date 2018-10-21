@@ -17,7 +17,7 @@ namespace MSOCoreTests.Web
         public void AddEventEntry_Works()
         {
             var json = "{ data: 'bar' }";
-            var url = "http://**REDACTEDAwsDbName**.juliahayward.com/apiv1/AddEventEntry";
+            var url = "http://mso.juliahayward.com/apiv1/AddEventEntry";
 
             using (WebClient client = new WebClient())
             {

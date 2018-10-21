@@ -28,7 +28,8 @@ namespace MSOCore.Calculators
                     Title = order.attendees.customer.title.Value,
                     FirstName = order.attendees.customer.first_name.Value,
                     LastName = order.attendees.customer.last_name.Value,
-                    CountryCode = order.attendees.customer.country_to_represent.Value
+                    CountryCode = order.attendees.customer.country_to_represent.Value,
+                    Email = order.attendees.customer.email.Value
                 });
                 foreach (var o1 in order.events)
                 {
@@ -102,6 +103,25 @@ namespace MSOCore.Calculators
             }
         }
 
+        public void ExtractEmails(IEnumerable<Order2018> orders, string filename)
+        {
+            using (var sw = new StreamWriter(new FileStream(filename, FileMode.OpenOrCreate, FileAccess.Write)))
+            {
+                foreach (var order in orders)
+                {
+                    foreach (var attendee in order.Attendees)
+                    {
+                        if (attendee.Email != null)
+                        {
+                            var line = string.Format("{0},{1},{2}",
+                                attendee.FirstName, attendee.LastName, attendee.Email);
+                            sw.WriteLine(line);
+                        }
+                    }
+                }
+            }
+        }
+
         private Contestant CreateEntrant(DataEntities context, 
             DateTime? dob,
             Order2018.Attendee entrant,
@@ -153,6 +173,7 @@ namespace MSOCore.Calculators
             public string FirstName { get; set; }
             public string LastName { get; set; }
             public string CountryCode { get; set; }
+            public string Email { get; set; }
         }
 
         public class Event

@@ -44,13 +44,14 @@ namespace MSOCore.Reports
             var context = DataEntitiesProvider.Provide();
 
             // Warning - this will go wonky when I undo the 2007/7002 hack
-            var olympiadId = context.Olympiad_Infoes.First(x => x.YearOf == year).Id;
+            var olympiad = context.Olympiad_Infoes.FirstOrDefault(x => x.YearOf == year);
+            if (olympiad == null)
+                throw new ArgumentException($"No olympiad was held in {year}");
+            var olympiadId = olympiad.Id;
 
             var retval = new YearMedalsVm { Year = year };
 
-            var games = context.Games.ToDictionary(x => x.Code, x => x);
-
-            retval.Medals = context.Entrants.Where(x => x.OlympiadId.Value == olympiadId 
+            retval.Medals = context.Entrants.Where(x => x.OlympiadId.Value == olympiadId
                     && (x.Medal != null || x.JuniorMedal != null))
                 .Join(context.Contestants, e => e.Mind_Sport_ID, c => c.Mind_Sport_ID, (e, c) => new { e, c })
                 .Join(context.Events.Where(x => x.OlympiadId == olympiadId),
@@ -58,6 +59,8 @@ namespace MSOCore.Reports
                 .Select(ecv => new YearMedalsVm.MedalVm()
                 {
                     EventCode = ecv.ev.Code,
+                    GameCode = ecv.ev.Game.Code,
+                    GameName = ecv.ev.Game.Mind_Sport,
                     EventName = ecv.ev.Mind_Sport,
                     Medal = ecv.ec.e.Medal,
                     JuniorMedal = ecv.ec.e.JuniorMedal,
@@ -67,17 +70,14 @@ namespace MSOCore.Reports
                     LastName = ecv.ec.c.Lastname,
                     Nationality = ecv.ec.c.Nationality ?? "default"
                 })
-                .ToList()
-                .OrderBy(x => x.EventCode)
+                .ToList();
+
+            retval.Medals = retval.Medals.OrderBy(x => x.GameName)
+                .ThenBy(x => x.EventName)
                 .ThenBy(x => x.Rank)
                 .ThenBy(x => x.Medal.MedalRank())
                 .ThenBy(x => x.JuniorMedal.MedalRank());
 
-            foreach (var medal in retval.Medals)
-            {
-                medal.GameCode = medal.EventCode.Substring(0, 2);
-                medal.GameName = games[medal.GameCode].Mind_Sport;
-            }
 
             return retval;
         }

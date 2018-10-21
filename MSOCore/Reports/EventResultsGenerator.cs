@@ -42,6 +42,8 @@ namespace MSOCore.Reports
         {
             var context = DataEntitiesProvider.Provide();
             var olympiad = context.Olympiad_Infoes.FirstOrDefault(x => x.Current);
+            if (olympiad == null)
+                throw new ArgumentNullException("No current olympiad");
 
             return olympiad.Events.Where(x => x.Entrants.Any())
                 .Select(x => new EventsIndexEventVm()

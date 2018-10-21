@@ -194,12 +194,24 @@ namespace MSOOrganiser
             var dialog = new AddPaymentToContestantDialog();
             if (dialog.ShowDialog().Value)
             {
-                ViewModel.AddPayment(new ContestantPanelVm.PaymentVm()
+                if (dialog.ViewModel.IsRefund)
                 {
-                    Amount = dialog.Payment.Amount,
-                    Method = dialog.Payment.PaymentMethod,
-                    Banked = dialog.Payment.Banked
-                });
+                    ViewModel.AddPayment(new ContestantPanelVm.PaymentVm()
+                    {
+                        Amount = -1 * dialog.Payment.Amount,
+                        Method = "Refund",
+                        Banked = false
+                    });
+                }
+                else
+                {
+                    ViewModel.AddPayment(new ContestantPanelVm.PaymentVm()
+                    {
+                        Amount = dialog.Payment.Amount,
+                        Method = dialog.Payment.PaymentMethod,
+                        Banked = dialog.Payment.Banked
+                    });
+                }
                 ViewModel.IsDirty = true;
             }
         }

@@ -102,7 +102,7 @@ namespace MSOCore.Reports
                 standing.Scores = r.Select(x => new PentamindStandingsReportVm.EventScore()
                 {
                     Code = x.e.Game_Code,
-                    GameCode = x.e.Game_Code.Substring(0, 2),
+                    GameCode = x.e.Event.Game.Code,
                     Score = (double)x.e.Penta_Score,
                     IsLongSession = longSessionEvents.Contains(x.e.Game_Code),
                     IsEuroGame = (x.e.Event.Game.GameCategory.Id == 3)
@@ -157,7 +157,7 @@ namespace MSOCore.Reports
                 standing.Scores = r.Select(x => new PentamindStandingsReportVm.EventScore()
                 {
                     Code = x.e.Game_Code,
-                    GameCode = x.e.Game_Code.Substring(0, 2),
+                    GameCode = x.e.Event.Game.Code,
                     Score = (double)x.e.Penta_Score,
                     IsLongSession = longSessionEvents.Contains(x.e.Game_Code),
                     IsEuroGame = (x.e.Event.Game.GameCategory.Id == 3)
@@ -211,7 +211,7 @@ namespace MSOCore.Reports
                 standing.Scores = r.Select(x => new PentamindStandingsReportVm.EventScore()
                 {
                     Code = x.e.Game_Code,
-                    GameCode = x.e.Game_Code.Substring(0, 2),
+                    GameCode = x.e.Event.Game.Code,
                     Score = (double)x.e.Penta_Score,
                     IsLongSession = longSessionEvents.Contains(x.e.Game_Code),
                     IsEuroGame = (x.e.Event.Game.GameCategory.Id == 3)
@@ -244,7 +244,7 @@ namespace MSOCore.Reports
 
             var results = context.Entrants
                 .Where(x => x.OlympiadId == currentOlympiad.Id && !x.Absent && x.Rank.HasValue && x.Penta_Score.HasValue
-                    && x.Event.Game.GameCategory.Id == 3)
+                    && x.Event.Game.GameCategory.Id == 3 && x.Event.Code != "WODU")
                 .Join(context.Contestants, e => e.Mind_Sport_ID, c => c.Mind_Sport_ID, (e, c) => new { e, c })
                 .GroupBy(x => x.c.Mind_Sport_ID)
                 .ToList();
@@ -264,10 +264,11 @@ namespace MSOCore.Reports
                 standing.Scores = r.Select(x => new PentamindStandingsReportVm.EventScore()
                 {
                     Code = x.e.Game_Code,
-                    GameCode = x.e.Game_Code.Substring(0, 2),
+                    GameCode = x.e.Event.Game.Code,
                     Score = (double)x.e.Penta_Score,
                     IsLongSession = true, // No long game rule in eurogames // longSessionEvents.Contains(x.e.Game_Code),
-                    IsEuroGame = (x.e.Event.Game.GameCategory.Id == 3)
+                    IsEuroGame = (x.e.Event.Game.GameCategory.Id == 3 && x.e.Game_Code != "WODU")
+                    // TODO - a bodge because WODU shoulnd't count
                 }).ToList();
 
                 standing.Scores = calc.SelectBestScores(standing.Scores, pentaLong, pentaTotal, currentOlympiad.StartDate.Value.Year);
@@ -321,7 +322,7 @@ namespace MSOCore.Reports
                 standing.Scores = r.Select(x => new PentamindStandingsReportVm.EventScore()
                 {
                     Code = x.e.Game_Code,
-                    GameCode = x.e.Game_Code.Substring(0, 2),
+                    GameCode = x.e.Event.Game.Code,
                     Score = (double)x.e.Penta_Score,
                     IsLongSession = true, // No long game rule in eurogames // longSessionEvents.Contains(x.e.Game_Code),
                     IsEuroGame = (x.e.Event.Game.GameCategory.Id == 3),

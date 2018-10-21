@@ -116,7 +116,6 @@ namespace MSOCore
                 Prize_Giving = this.Prize_Giving,
                 Type = this.Type,
                 X_Num = this.X_Num,
-                Year = olympiad.YearOf,
                 ConsistentWithBoardability = true,
                 PentamindFactor = 1.0f
             };

@@ -48,7 +48,9 @@ namespace MSOCore.Reports
         {
             var context = DataEntitiesProvider.Provide();
 
-            var contestant = context.Contestants.First(x => x.Mind_Sport_ID == id);
+            var contestant = context.Contestants.FirstOrDefault(x => x.Mind_Sport_ID == id);
+            if (contestant == null)
+                throw new ArgumentOutOfRangeException($"No contestant with id {id}");
 
             var medalEvents1 = context.Entrants.Where(x => x.Mind_Sport_ID == id &&
                         (x.Medal != null || x.JuniorMedal != null) && x.OlympiadId != null)

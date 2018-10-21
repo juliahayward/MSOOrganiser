@@ -709,6 +709,30 @@ namespace MSOOrganiser
             }
         }
 
+        private void extractEmails_Click(object sender, RoutedEventArgs e)
+        {
+            var dlg = new OpenFileDialog();
+            dlg.FileName = "Data File";
+            dlg.DefaultExt = ".json";
+            dlg.Filter = "JSON documents |*.json";
+
+            var result = dlg.ShowDialog();
+            if (result == true)
+            {
+                string filename = dlg.FileName;
+                int ppResult;
+                using (new SpinnyCursor())
+                {
+                    var processor = new PaymentProcessor2018();
+                    var orders = processor.ParseJsonFile(filename);
+                    var dumpFilename = filename.Substring(0, filename.LastIndexOf(@"\") + 1) + "emails.csv";
+                    processor.ExtractEmails(orders, dumpFilename);
+
+                    MessageBox.Show("Extracted emails");
+                }
+            }
+        }
+
         private void unspentFee_Click(object sender, RoutedEventArgs e)
         {
             var context = DataEntitiesProvider.Provide();
@@ -817,6 +841,7 @@ namespace MSOOrganiser
                 }
                 entry.Score = standing.TotalScoreStr;
                 entry.Rank = rank;
+                entry.Medal = MedalForRank(rank);
                 rank++;
                 context.SaveChanges();
             }
@@ -839,6 +864,7 @@ namespace MSOOrganiser
                 }
                 entry.Score = standing.TotalScoreStr;
                 entry.Rank = rank;
+                entry.Medal = MedalForRank(rank);
                 rank++;
                 context.SaveChanges();
             }
@@ -851,16 +877,17 @@ namespace MSOOrganiser
                 if (!standing.IsValid) continue;
 
                 var contestant = context.Contestants.FirstOrDefault(x => x.Mind_Sport_ID == standing.ContestantId);
-                var evt = context.Events.FirstOrDefault(x => x.OlympiadId == currentOlympiad.Id && x.Code == "EGWC");
+                var evt = context.Events.FirstOrDefault(x => x.OlympiadId == currentOlympiad.Id && x.Code == "MBWC");
                 var entry = context.Entrants.FirstOrDefault(x => x.OlympiadId == currentOlympiad.Id
-                                        && x.Game_Code == "MAWC" && x.Mind_Sport_ID == standing.ContestantId);
+                                        && x.Game_Code == "MBWC" && x.Mind_Sport_ID == standing.ContestantId);
                 if (entry == null)
                 {
-                    entry = Entrant.NewEntrant(evt.EIN, "MAWC", currentOlympiad.Id, contestant, 0m);
+                    entry = Entrant.NewEntrant(evt.EIN, "MBWC", currentOlympiad.Id, contestant, 0m);
                     context.Entrants.Add(entry);
                 }
                 entry.Score = standing.TotalScoreStr;
                 entry.Rank = rank;
+                entry.Medal = MedalForRank(rank);
                 rank++;
                 context.SaveChanges();
             }
@@ -884,14 +911,26 @@ namespace MSOOrganiser
                 }
                 entry.Score = standing.TotalScoreStr;
                 entry.Rank = rank;
+                entry.Medal = MedalForRank(rank);
                 rank++;
                 context.SaveChanges();
             }
         }
 
+        private string MedalForRank(int rank)
+        {
+            switch (rank)
+            {
+                case 1: return "Gold";
+                case 2: return "Silver";
+                case 3: return "Bronze";
+                default: return null;
+            }
+        }
+
         private void releaseNotes_Click(object sender, RoutedEventArgs e)
         {
-            Process.Start("http://apps.juliahayward.com/**REDACTEDAwsDbName**organiser/1.0.2/ReleaseNotes.html");
+            Process.Start("http://apps.juliahayward.com/msoorganiser/1.0.2/ReleaseNotes.html");
         }
 
         private void logIn_Click(object sender, RoutedEventArgs e)
