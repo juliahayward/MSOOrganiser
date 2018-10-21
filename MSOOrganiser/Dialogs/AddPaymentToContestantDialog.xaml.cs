@@ -45,6 +45,24 @@ namespace MSOOrganiser.Dialogs
             this.DialogResult = true;
             this.Close();
         }
+
+        private void Payment_Checked(object sender, RoutedEventArgs e)
+        {
+            if (ViewModel == null) return;
+
+            if (PaymentRB.IsChecked.Value)
+            {
+                ViewModel.IsRefund = false;
+                MethodPanel.Visibility = Visibility.Visible;
+                BankedPanel.Visibility = Visibility.Visible;
+            }
+            else
+            {
+                ViewModel.IsRefund = true;
+                MethodPanel.Visibility = Visibility.Hidden;
+                BankedPanel.Visibility = Visibility.Hidden;
+            }
+        }
     }
 
     public class AddPaymentToContestantVm
@@ -53,6 +71,7 @@ namespace MSOOrganiser.Dialogs
             public string Text { get; set; }
         }
 
+        public bool IsRefund { get; set; }
         public decimal Amount { get; set; }
         public string PaymentMethod { get; set; }
         public bool Banked { get; set; }

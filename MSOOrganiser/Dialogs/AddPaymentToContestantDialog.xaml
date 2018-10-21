@@ -7,10 +7,14 @@
     <Grid>
         <StackPanel Orientation="Vertical">
             <StackPanel Margin="10" Orientation="Horizontal">
+                <RadioButton x:Name="PaymentRB" IsChecked="True" Checked="Payment_Checked">Payment</RadioButton>
+                <RadioButton Checked="Payment_Checked">Refund</RadioButton>
+            </StackPanel>
+            <StackPanel Margin="10" Orientation="Horizontal">
                 <Label>Amount:</Label>
                 <xctk:DecimalUpDown Width="40" Value="{Binding Amount, Mode=TwoWay}" Margin="10,0,0,0" Minimum="0"></xctk:DecimalUpDown>
             </StackPanel>
-            <StackPanel Margin="10" Orientation="Horizontal">
+            <StackPanel Margin="10" Orientation="Horizontal" x:Name="MethodPanel">
                 <Label>Payment method:</Label>
                 <ComboBox Width="160" Margin="0,0,0,0"
                           ItemsSource="{Binding PaymentMethods}"
@@ -19,7 +23,7 @@
                           SelectedValue="{Binding PaymentMethod}">
                 </ComboBox>
             </StackPanel>
-            <StackPanel Margin="10" Orientation="Horizontal">
+            <StackPanel Margin="10" Orientation="Horizontal" x:Name="BankedPanel">
                 <Label>Banked:</Label>
                 <CheckBox Width="40" IsChecked="{Binding Banked, Mode=TwoWay}" Margin="10,10,0,0"></CheckBox>
             </StackPanel>
