@@ -32,11 +32,10 @@ namespace MSOCore.Reports
                 public int ContestantId { get; set; }
                 public string Name { get; set; }
                 public string Flag { get; set; }
-                public bool IsMale { get; set; }
+                public bool IsInWomensPenta { get; set; }
                 public bool IsJunior { get; set; }
                 public bool IsSenior { get; set; }
-                // TODO: bodge for Charlotte
-                public string FemaleFlag { get { return (IsMale || Name == "Charlotte Levy") ? "" : "W"; } }
+                public string FemaleFlag { get { return (IsInWomensPenta) ? "W" : ""; } }
                 public string JuniorFlag { get { return (IsJunior) ? "Jnr" : ""; } }
                 public string SeniorFlag { get { return (IsSenior) ? "Snr" : ""; } }
                 public double TotalScore { get; set; }
@@ -84,6 +83,10 @@ namespace MSOCore.Reports
                 .GroupBy(x => x.c.Mind_Sport_ID)
                 .ToList();
 
+            var excludedWomen = context.WomenNotInWomensPentaminds
+                .Where(x => x.OlympiadId == currentOlympiad.Id)
+                .Select(x => x.ContestantId);
+
             var calc = new PentamindMetaScoreCalculator();
 
             var standings = new List<PentamindStandingsReportVm.ContestantStanding>();
@@ -94,7 +97,7 @@ namespace MSOCore.Reports
                     ContestantId = r.Key,
                     Name = r.First().c.FullName(),
                     Flag = r.First().c.Nationality.GetFlag(),
-                    IsMale = r.First().c.Male,
+                    IsInWomensPenta = !r.First().c.Male && !excludedWomen.Contains(r.First().c.Mind_Sport_ID),
                     IsJunior = r.First().c.IsJuniorForOlympiad(currentOlympiad),
                     IsSenior = r.First().c.IsSeniorForOlympiad(currentOlympiad)
                 };
@@ -151,7 +154,7 @@ namespace MSOCore.Reports
                 {
                     ContestantId = r.Key,
                     Name = r.First().c.FullName(),
-                    IsMale = r.First().c.Male
+                    IsInWomensPenta = false // irrelevant for junior
                 };
 
                 standing.Scores = r.Select(x => new PentamindStandingsReportVm.EventScore()
@@ -205,7 +208,7 @@ namespace MSOCore.Reports
                 {
                     ContestantId = r.Key,
                     Name = r.First().c.FullName(),
-                    IsMale = r.First().c.Male
+                    IsInWomensPenta = false // irrelevant for Senior
                 };
 
                 standing.Scores = r.Select(x => new PentamindStandingsReportVm.EventScore()
@@ -258,7 +261,7 @@ namespace MSOCore.Reports
                 {
                     ContestantId = r.Key,
                     Name = r.First().c.FullName(),
-                    IsMale = r.First().c.Male,
+                    IsInWomensPenta = false // irrelevant for Euro
                 };
 
                 standing.Scores = r.Select(x => new PentamindStandingsReportVm.EventScore()
@@ -316,7 +319,7 @@ namespace MSOCore.Reports
                 {
                     ContestantId = r.Key,
                     Name = r.First().c.FullName(),
-                    IsMale = r.First().c.Male,
+                    IsInWomensPenta = false // irrelevant for Modern Abstract
                 };
 
                 standing.Scores = r.Select(x => new PentamindStandingsReportVm.EventScore()

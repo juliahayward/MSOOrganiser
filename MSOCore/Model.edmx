@@ -368,6 +368,14 @@ warning 6002: The table/view 'mso_prod.dbo.SelectedPeople' does not have a prima
           <Property Name="Hash" Type="nvarchar" MaxLength="128" />
           <Property Name="Role" Type="nvarchar" MaxLength="20" />
         </EntityType>
+        <EntityType Name="WomenNotInWomensPentamind">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="OlympiadId" Type="int" Nullable="false" />
+          <Property Name="ContestantId" Type="int" Nullable="false" />
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+        </EntityType>
         <Association Name="Arbiters$EventsArbiters">
           <End Role="Events" Type="Self.Events" Multiplicity="0..1">
             <OnDelete Action="Cascade" />
@@ -520,6 +528,30 @@ warning 6002: The table/view 'mso_prod.dbo.SelectedPeople' does not have a prima
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_WNIWP_ContestantId">
+          <End Role="Names" Type="Self.Names" Multiplicity="1" />
+          <End Role="WomenNotInWomensPentamind" Type="Self.WomenNotInWomensPentamind" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Names">
+              <PropertyRef Name="Mind Sport ID" />
+            </Principal>
+            <Dependent Role="WomenNotInWomensPentamind">
+              <PropertyRef Name="ContestantId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_WNIWP_OlympiadId">
+          <End Role="Olympiad Info" Type="Self.Olympiad Info" Multiplicity="1" />
+          <End Role="WomenNotInWomensPentamind" Type="Self.WomenNotInWomensPentamind" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Olympiad Info">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="WomenNotInWomensPentamind">
+              <PropertyRef Name="OlympiadId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="Payments$NamesPayments">
           <End Role="Names" Type="Self.Names" Multiplicity="0..1" />
           <End Role="Payments" Type="Self.Payments" Multiplicity="*" />
@@ -557,6 +589,7 @@ warning 6002: The table/view 'mso_prod.dbo.SelectedPeople' does not have a prima
           <EntitySet Name="Session" EntityType="Self.Session" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="UserLogins" EntityType="Self.UserLogins" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Users" EntityType="Self.Users" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="WomenNotInWomensPentamind" EntityType="Self.WomenNotInWomensPentamind" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Badges - Misc" EntityType="Self.Badges - Misc" store:Type="Tables" store:Schema="dbo">
             <DefiningQuery>SELECT 
 [Badges - Misc].[Name] AS [Name], 
@@ -638,6 +671,14 @@ FROM [dbo].[SelectedPeople] AS [SelectedPeople]</DefiningQuery>
           <AssociationSet Name="FK__Seedings__Contes__1387E197" Association="Self.FK__Seedings__Contes__1387E197">
             <End Role="Names" EntitySet="Names" />
             <End Role="Seedings" EntitySet="Seedings" />
+          </AssociationSet>
+          <AssociationSet Name="FK_WNIWP_ContestantId" Association="Self.FK_WNIWP_ContestantId">
+            <End Role="Names" EntitySet="Names" />
+            <End Role="WomenNotInWomensPentamind" EntitySet="WomenNotInWomensPentamind" />
+          </AssociationSet>
+          <AssociationSet Name="FK_WNIWP_OlympiadId" Association="Self.FK_WNIWP_OlympiadId">
+            <End Role="Olympiad Info" EntitySet="Olympiad Info" />
+            <End Role="WomenNotInWomensPentamind" EntitySet="WomenNotInWomensPentamind" />
           </AssociationSet>
           <AssociationSet Name="Payments$NamesPayments" Association="Self.Payments$NamesPayments">
             <End Role="Names" EntitySet="Names" />
@@ -728,6 +769,15 @@ FROM [dbo].[SelectedPeople] AS [SelectedPeople]</DefiningQuery>
           <AssociationSet Name="FK__Seedings__Contes__1387E197" Association="DataModel.FK__Seedings__Contes__1387E197">
             <End Role="Contestant" EntitySet="Contestants" />
             <End Role="Seeding" EntitySet="Seedings" />
+          </AssociationSet>
+          <EntitySet Name="WomenNotInWomensPentaminds" EntityType="DataModel.WomenNotInWomensPentamind" />
+          <AssociationSet Name="FK_WNIWP_ContestantId" Association="DataModel.FK_WNIWP_ContestantId">
+            <End Role="Contestant" EntitySet="Contestants" />
+            <End Role="WomenNotInWomensPentamind" EntitySet="WomenNotInWomensPentaminds" />
+          </AssociationSet>
+          <AssociationSet Name="FK_WNIWP_OlympiadId" Association="DataModel.FK_WNIWP_OlympiadId">
+            <End Role="Olympiad_Info" EntitySet="Olympiad_Infoes" />
+            <End Role="WomenNotInWomensPentamind" EntitySet="WomenNotInWomensPentaminds" />
           </AssociationSet>
         </EntityContainer>
         <EntityType Name="Badges___Misc">
@@ -908,6 +958,7 @@ FROM [dbo].[SelectedPeople] AS [SelectedPeople]</DefiningQuery>
           <NavigationProperty Name="Payments" Relationship="DataModel.Payments_NamesPayments" FromRole="Name" ToRole="Payment" />
           <NavigationProperty Name="Arbiters" Relationship="DataModel.Arbiters_NamesArbiters" FromRole="Contestant" ToRole="Arbiter" />
           <NavigationProperty Name="Seedings" Relationship="DataModel.FK__Seedings__Contes__1387E197" FromRole="Contestant" ToRole="Seeding" />
+          <NavigationProperty Name="WomenNotInWomensPentaminds" Relationship="DataModel.FK_WNIWP_ContestantId" FromRole="Contestant" ToRole="WomenNotInWomensPentamind" />
         </EntityType>
         <EntityType Name="Olympiad_Info">
           <Key>
@@ -931,6 +982,7 @@ FROM [dbo].[SelectedPeople] AS [SelectedPeople]</DefiningQuery>
           <Property Type="Int32" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <NavigationProperty Name="Events" Relationship="DataModel.FK__Events__Olympiad__45BE5BA9" FromRole="Olympiad_Info" ToRole="Event" />
           <NavigationProperty Name="Locations" Relationship="DataModel.FK__Location__Olympi__46B27FE2" FromRole="Olympiad_Info" ToRole="Location" />
+          <NavigationProperty Name="WomenNotInWomensPentaminds" Relationship="DataModel.FK_WNIWP_OlympiadId" FromRole="Olympiad_Info" ToRole="WomenNotInWomensPentamind" />
         </EntityType>
         <EntityType Name="Paring">
           <Key>
@@ -1272,6 +1324,40 @@ FROM [dbo].[SelectedPeople] AS [SelectedPeople]</DefiningQuery>
             </Principal>
             <Dependent Role="Seeding">
               <PropertyRef Name="ContestantId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="WomenNotInWomensPentamind">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="OlympiadId" Type="Int32" Nullable="false" />
+          <Property Name="ContestantId" Type="Int32" Nullable="false" />
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <NavigationProperty Name="Name" Relationship="DataModel.FK_WNIWP_ContestantId" FromRole="WomenNotInWomensPentamind" ToRole="Contestant" />
+          <NavigationProperty Name="Olympiad_Info" Relationship="DataModel.FK_WNIWP_OlympiadId" FromRole="WomenNotInWomensPentamind" ToRole="Olympiad_Info" />
+        </EntityType>
+        <Association Name="FK_WNIWP_ContestantId">
+          <End Type="DataModel.Contestant" Role="Contestant" Multiplicity="1" />
+          <End Type="DataModel.WomenNotInWomensPentamind" Role="WomenNotInWomensPentamind" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Contestant">
+              <PropertyRef Name="Mind_Sport_ID" />
+            </Principal>
+            <Dependent Role="WomenNotInWomensPentamind">
+              <PropertyRef Name="ContestantId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_WNIWP_OlympiadId">
+          <End Type="DataModel.Olympiad_Info" Role="Olympiad_Info" Multiplicity="1" />
+          <End Type="DataModel.WomenNotInWomensPentamind" Role="WomenNotInWomensPentamind" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Olympiad_Info">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="WomenNotInWomensPentamind">
+              <PropertyRef Name="OlympiadId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1661,6 +1747,15 @@ FROM [dbo].[SelectedPeople] AS [SelectedPeople]</DefiningQuery>
                 <ScalarProperty Name="EventCode" ColumnName="EventCode" />
                 <ScalarProperty Name="ContestantId" ColumnName="ContestantId" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="WomenNotInWomensPentaminds">
+            <EntityTypeMapping TypeName="DataModel.WomenNotInWomensPentamind">
+              <MappingFragment StoreEntitySet="WomenNotInWomensPentamind">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="ContestantId" ColumnName="ContestantId" />
+                <ScalarProperty Name="OlympiadId" ColumnName="OlympiadId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

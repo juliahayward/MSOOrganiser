@@ -20,6 +20,7 @@ namespace MSOCore
             this.Payments = new HashSet<Payment>();
             this.Arbiters = new HashSet<Arbiter>();
             this.Seedings = new HashSet<Seeding>();
+            this.WomenNotInWomensPentaminds = new HashSet<WomenNotInWomensPentamind>();
         }
     
         public int Mind_Sport_ID { get; set; }
@@ -52,5 +53,6 @@ namespace MSOCore
         public virtual ICollection<Payment> Payments { get; set; }
         public virtual ICollection<Arbiter> Arbiters { get; set; }
         public virtual ICollection<Seeding> Seedings { get; set; }
+        public virtual ICollection<WomenNotInWomensPentamind> WomenNotInWomensPentaminds { get; set; }
     }
 }

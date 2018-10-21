@@ -51,6 +51,9 @@
         <EntityTypeShape EntityType="DataModel.GlobalSetting" Width="1.5" PointX="7.9333249069439828" PointY="19.509531149412286" />
         <EntityTypeShape EntityType="DataModel.Seeding" Width="1.5" PointX="11.125" PointY="7.875" />
         <AssociationConnector Association="DataModel.FK__Seedings__Contes__1387E197" />
+        <EntityTypeShape EntityType="DataModel.WomenNotInWomensPentamind" Width="1.5" PointX="13.625" PointY="0.5" />
+        <AssociationConnector Association="DataModel.FK_WNIWP_ContestantId" />
+        <AssociationConnector Association="DataModel.FK_WNIWP_OlympiadId" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

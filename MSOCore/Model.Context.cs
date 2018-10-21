@@ -53,5 +53,6 @@ namespace MSOCore
         public DbSet<Nationality> Nationalities { get; set; }
         public DbSet<GlobalSetting> GlobalSettings { get; set; }
         public DbSet<Seeding> Seedings { get; set; }
+        public DbSet<WomenNotInWomensPentamind> WomenNotInWomensPentaminds { get; set; }
     }
 }
