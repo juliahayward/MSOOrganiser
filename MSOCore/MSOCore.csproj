@@ -144,9 +144,6 @@
     <Compile Include="Nationality.cs">
       <DependentUpon>Model.tt</DependentUpon>
     </Compile>
-    <Compile Include="National_Flag.cs">
-      <DependentUpon>Model.tt</DependentUpon>
-    </Compile>
     <Compile Include="Olympiad_Info.cs">
       <DependentUpon>Model.tt</DependentUpon>
     </Compile>

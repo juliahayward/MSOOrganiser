@@ -85,7 +85,6 @@ warning 6002: The table/view 'mso_prod.dbo.Badges - Misc' does not have a primar
             <PropertyRef Name="EIN" />
           </Key>
           <Property Name="EIN" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="Year" Type="int" />
           <Property Name="Number" Type="int" Nullable="false" />
           <Property Name="Code" Type="nvarchar" MaxLength="50" />
           <Property Name="Mind Sport" Type="nvarchar" MaxLength="100" />
@@ -228,18 +227,6 @@ warning 6002: The table/view 'mso_prod.dbo.Medal Points' does not have a primary
           <Property Name="date" Type="datetime2" Precision="0" />
           <Property Name="SSMA_TimeStamp" Type="timestamp" StoreGeneratedPattern="Computed" Nullable="false" />
         </EntityType>
-        <!--Errors Found During Generation:
-warning 6002: The table/view 'mso_prod.dbo.National Flags' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
-        <EntityType Name="National Flags">
-          <Key>
-            <PropertyRef Name="SSMA_TimeStamp" />
-          </Key>
-          <Property Name="Nationality" Type="nvarchar" MaxLength="50" />
-          <Property Name="Flag" Type="varbinary(max)" />
-          <Property Name="Continent" Type="nvarchar" MaxLength="50" />
-          <Property Name="Code" Type="nvarchar" MaxLength="3" />
-          <Property Name="SSMA_TimeStamp" Type="timestamp" StoreGeneratedPattern="Computed" Nullable="false" />
-        </EntityType>
         <EntityType Name="Nationalities">
           <Key>
             <PropertyRef Name="Id" />
@@ -379,6 +366,7 @@ warning 6002: The table/view 'mso_prod.dbo.SelectedPeople' does not have a prima
           <Property Name="Password" Type="nvarchar" MaxLength="50" />
           <Property Name="Salt" Type="nvarchar" MaxLength="32" />
           <Property Name="Hash" Type="nvarchar" MaxLength="128" />
+          <Property Name="Role" Type="nvarchar" MaxLength="20" />
         </EntityType>
         <Association Name="Arbiters$EventsArbiters">
           <End Role="Events" Type="Self.Events" Multiplicity="0..1">
@@ -595,15 +583,6 @@ FROM [dbo].[Information] AS [Information]</DefiningQuery>
 [Medal Points].[SSMA_TimeStamp] AS [SSMA_TimeStamp]
 FROM [dbo].[Medal Points] AS [Medal Points]</DefiningQuery>
           </EntitySet>
-          <EntitySet Name="National Flags" EntityType="Self.National Flags" store:Type="Tables" store:Schema="dbo">
-            <DefiningQuery>SELECT 
-[National Flags].[Nationality] AS [Nationality], 
-[National Flags].[Flag] AS [Flag], 
-[National Flags].[Continent] AS [Continent], 
-[National Flags].[Code] AS [Code], 
-[National Flags].[SSMA_TimeStamp] AS [SSMA_TimeStamp]
-FROM [dbo].[National Flags] AS [National Flags]</DefiningQuery>
-          </EntitySet>
           <EntitySet Name="SelectedPeople" EntityType="Self.SelectedPeople" store:Type="Tables" store:Schema="dbo">
             <DefiningQuery>SELECT 
 [SelectedPeople].[MSOID] AS [MSOID], 
@@ -680,7 +659,6 @@ FROM [dbo].[SelectedPeople] AS [SelectedPeople]</DefiningQuery>
           <EntitySet Name="Information" EntityType="DataModel.Information" />
           <EntitySet Name="Medal_Points" EntityType="DataModel.Medal_Point" />
           <EntitySet Name="Contestants" EntityType="DataModel.Contestant" />
-          <EntitySet Name="National_Flags" EntityType="DataModel.National_Flag" />
           <EntitySet Name="Olympiad_Infoes" EntityType="DataModel.Olympiad_Info" />
           <EntitySet Name="Parings" EntityType="DataModel.Paring" />
           <EntitySet Name="Payment_Methods" EntityType="DataModel.Payment_Method" />
@@ -815,7 +793,6 @@ FROM [dbo].[SelectedPeople] AS [SelectedPeople]</DefiningQuery>
             <PropertyRef Name="EIN" />
           </Key>
           <Property Type="Int32" Name="EIN" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Type="Int32" Name="Year" />
           <Property Type="Int32" Name="Number" Nullable="false" />
           <Property Type="String" Name="Code" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Type="String" Name="Mind_Sport" MaxLength="100" FixedLength="false" Unicode="true" />
@@ -932,16 +909,6 @@ FROM [dbo].[SelectedPeople] AS [SelectedPeople]</DefiningQuery>
           <NavigationProperty Name="Arbiters" Relationship="DataModel.Arbiters_NamesArbiters" FromRole="Contestant" ToRole="Arbiter" />
           <NavigationProperty Name="Seedings" Relationship="DataModel.FK__Seedings__Contes__1387E197" FromRole="Contestant" ToRole="Seeding" />
         </EntityType>
-        <EntityType Name="National_Flag">
-          <Key>
-            <PropertyRef Name="SSMA_TimeStamp" />
-          </Key>
-          <Property Type="String" Name="Nationality" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Type="Binary" Name="Flag" MaxLength="Max" FixedLength="false" />
-          <Property Type="String" Name="Continent" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Type="String" Name="Code" MaxLength="3" FixedLength="false" Unicode="true" />
-          <Property Type="Binary" Name="SSMA_TimeStamp" Nullable="false" MaxLength="8" FixedLength="true" annotation:StoreGeneratedPattern="Computed" />
-        </EntityType>
         <EntityType Name="Olympiad_Info">
           <Key>
             <PropertyRef Name="Id" />
@@ -1055,6 +1022,7 @@ FROM [dbo].[SelectedPeople] AS [SelectedPeople]</DefiningQuery>
           <Property Type="String" Name="Salt" MaxLength="32" FixedLength="false" Unicode="true" />
           <Property Type="String" Name="Hash" MaxLength="128" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="UserLogins" Relationship="DataModel.FK_UserLogins_Users" FromRole="User" ToRole="UserLogin" />
+          <Property Name="Role" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
         </EntityType>
         <Association Name="Entrants_NamesEntrants">
           <End Type="DataModel.Contestant" Role="Name" Multiplicity="0..1" />
@@ -1404,7 +1372,6 @@ FROM [dbo].[SelectedPeople] AS [SelectedPeople]</DefiningQuery>
                 <ScalarProperty Name="Mind_Sport" ColumnName="Mind Sport" />
                 <ScalarProperty Name="Code" ColumnName="Code" />
                 <ScalarProperty Name="Number" ColumnName="Number" />
-                <ScalarProperty Name="Year" ColumnName="Year" />
                 <ScalarProperty Name="EIN" ColumnName="EIN" />
               </MappingFragment>
             </EntityTypeMapping>
@@ -1485,17 +1452,6 @@ FROM [dbo].[SelectedPeople] AS [SelectedPeople]</DefiningQuery>
                 <ScalarProperty Name="Lastname" ColumnName="Lastname" />
                 <ScalarProperty Name="Title" ColumnName="Title" />
                 <ScalarProperty Name="Mind_Sport_ID" ColumnName="Mind Sport ID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="National_Flags">
-            <EntityTypeMapping TypeName="DataModel.National_Flag">
-              <MappingFragment StoreEntitySet="National Flags">
-                <ScalarProperty Name="SSMA_TimeStamp" ColumnName="SSMA_TimeStamp" />
-                <ScalarProperty Name="Code" ColumnName="Code" />
-                <ScalarProperty Name="Continent" ColumnName="Continent" />
-                <ScalarProperty Name="Flag" ColumnName="Flag" />
-                <ScalarProperty Name="Nationality" ColumnName="Nationality" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -1609,6 +1565,7 @@ FROM [dbo].[SelectedPeople] AS [SelectedPeople]</DefiningQuery>
           <EntitySetMapping Name="Users">
             <EntityTypeMapping TypeName="DataModel.User">
               <MappingFragment StoreEntitySet="Users">
+                <ScalarProperty Name="Role" ColumnName="Role" />
                 <ScalarProperty Name="Hash" ColumnName="Hash" />
                 <ScalarProperty Name="Salt" ColumnName="Salt" />
                 <ScalarProperty Name="Password" ColumnName="Password" />

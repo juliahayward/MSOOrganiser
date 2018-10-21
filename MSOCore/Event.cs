@@ -22,7 +22,6 @@ namespace MSOCore
         }
     
         public int EIN { get; set; }
-        public Nullable<int> Year { get; set; }
         public int Number { get; set; }
         public string Code { get; set; }
         public string Mind_Sport { get; set; }

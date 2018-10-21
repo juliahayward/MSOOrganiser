@@ -4,7 +4,7 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="5487d6df391b4344ac7aa90ce97351ee" Name="Diagram1" ZoomLevel="80">
+      <Diagram DiagramId="5487d6df391b4344ac7aa90ce97351ee" Name="Diagram1" ZoomLevel="74">
         <EntityTypeShape EntityType="DataModel.Badges___Misc" Width="1.5" PointX="11.125" PointY="15.625" />
         <EntityTypeShape EntityType="DataModel.Entrant" Width="1.5" PointX="6.875" PointY="2.625" />
         <EntityTypeShape EntityType="DataModel.Event_Resource" Width="1.5" PointX="10.875" PointY="13.375" />
@@ -15,7 +15,6 @@
         <EntityTypeShape EntityType="DataModel.Information" Width="1.5" PointX="9.25" PointY="10.75" />
         <EntityTypeShape EntityType="DataModel.Medal_Point" Width="1.5" PointX="11.125" PointY="10.625" />
         <EntityTypeShape EntityType="DataModel.Contestant" Width="1.5" PointX="11.125" PointY="0.5" />
-        <EntityTypeShape EntityType="DataModel.National_Flag" Width="1.5" PointX="3.75" PointY="26.25" />
         <EntityTypeShape EntityType="DataModel.Olympiad_Info" Width="1.5" PointX="0.5" PointY="0.5" />
         <EntityTypeShape EntityType="DataModel.Paring" Width="1.5" PointX="2.0529287392520015" PointY="16.183681629683676" />
         <EntityTypeShape EntityType="DataModel.Payment_Method" Width="1.5" PointX="2.875" PointY="14.625" />
@@ -40,8 +39,8 @@
         <AssociationConnector Association="DataModel.FK__Location__Olympi__46B27FE2" />
         <AssociationConnector Association="DataModel.FK__Events__GameId__4A8310C6" ManuallyRouted="true" >
           <ConnectorPoint PointX="5.875" PointY="8.75" />
-          <ConnectorPoint PointX="5.875" PointY="4.9009888281249943" />
-          <ConnectorPoint PointX="4.375" PointY="4.9009888281249943" />
+          <ConnectorPoint PointX="5.875" PointY="4.0417874660573831" />
+          <ConnectorPoint PointX="4.375" PointY="4.0417874660573831" />
         </AssociationConnector>
         <AssociationConnector Association="DataModel.FK__Entrants__EventI__4B7734FF" ManuallyRouted="false" >
         </AssociationConnector>
