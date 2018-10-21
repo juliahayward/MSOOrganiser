@@ -30,6 +30,11 @@ namespace MSOWeb.Controllers
             return View(model);
         }
 
+        public ActionResult ReleaseNotes()
+        {
+            return View();
+        }
+
         [AllowAnonymous]
         [HttpGet]
         public ActionResult Login()
@@ -45,7 +50,7 @@ namespace MSOWeb.Controllers
             if (user == null)
                 return new RedirectResult("/Home/Login");
 
-            string Role = "Admin"; // TODO: user.Roles
+            string Role = user.Role;
 
             var authTicket = new FormsAuthenticationTicket(1, username,
                 DateTime.Now, DateTime.Now.AddMinutes(30), true,

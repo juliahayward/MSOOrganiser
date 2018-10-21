@@ -1,7 +1,10 @@
 ﻿@model IEnumerable<MSOCore.Reports.GameListGenerator.GameVm>
 @{
-    Layout = "~/Views/Shared/_NewLayout.cshtml";
+    Layout = "~/Views/Shared/_NewLayoutWithFooter.cshtml";
     ViewBag.Title = "Mind Sports Olympiad Live Results";
+    System.Reflection.Assembly assembly = System.Reflection.Assembly.GetExecutingAssembly();
+    System.IO.FileInfo fileInfo = new System.IO.FileInfo(assembly.Location);
+    ViewBag.Date = fileInfo.LastWriteTime.ToString("dd MMM yyyy");
 }
 
 <div class="row">
@@ -127,3 +130,10 @@
     </ul>*@
 
 
+@section footer {
+    <footer class="footer">
+    <div class="container">
+        <span class="text-muted">MSO Live Results, last updated @ViewBag.Date - see <a href="/Home/ReleaseNotes">release notes</a></span>
+    </div>
+</footer>
+}
