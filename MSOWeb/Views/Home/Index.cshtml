@@ -92,6 +92,7 @@
                 <h5 class="card-title">Past year's medals</h5>
                 <h6 class="card-subtitle mb-2 text-muted">Winners in previous years</h6>
                 <ul>
+                    <li><a href="/Report/YearMedals?year=2018" class="card-link">2018</a></li>
                     <li><a href="/Report/YearMedals?year=2017" class="card-link">2017</a></li>
                     <li><a href="/Report/YearMedals?year=2016" class="card-link">2016</a></li>
                     <li><a href="/Report/YearMedals?year=2015" class="card-link">2015</a></li>
@@ -100,7 +101,21 @@
         </div>
     </div>
 </div>
-
+@if (!string.IsNullOrEmpty(HttpContext.Current.User.Identity.Name))
+{
+<div class="row">
+    <div class="col-sm-3">
+        <div class="card mt-1">
+            <div class="card-body">
+                <h5 class="card-title">Reports (Admin only)</h5>
+                <ul>
+                    <li><a href="/Home/EventEntries" class="card-link">Entries per Event</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+}
 
 
 @*<h2>Entrants Download</h2>

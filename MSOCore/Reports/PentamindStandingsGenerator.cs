@@ -237,6 +237,10 @@ namespace MSOCore.Reports
                 ? context.Olympiad_Infoes.Where(x => x.StartDate.HasValue && x.StartDate.Value.Year == year.Value).First()
                 : context.Olympiad_Infoes.OrderByDescending(x => x.StartDate).First();
 
+            var def = context.MetaGameDefinitions.First(x =>
+                x.Type == "Eurogames" && x.OlympiadId == currentOlympiad.Id);
+            var codes = def.SubEvents.Split(',');
+
             var vm = new PentamindStandingsReportVm();
             vm.OlympiadTitle = currentOlympiad.FullTitle();
             int pentaTotal = currentOlympiad.PentaTotal.Value;
@@ -247,7 +251,7 @@ namespace MSOCore.Reports
 
             var results = context.Entrants
                 .Where(x => x.OlympiadId == currentOlympiad.Id && !x.Absent && x.Rank.HasValue && x.Penta_Score.HasValue
-                    && x.Event.Game.GameCategory.Id == 3 && x.Event.Code != "WODU")
+                    && codes.Contains(x.Event.Code))
                 .Join(context.Contestants, e => e.Mind_Sport_ID, c => c.Mind_Sport_ID, (e, c) => new { e, c })
                 .GroupBy(x => x.c.Mind_Sport_ID)
                 .ToList();
@@ -270,8 +274,7 @@ namespace MSOCore.Reports
                     GameCode = x.e.Event.Game.Code,
                     Score = (double)x.e.Penta_Score,
                     IsLongSession = true, // No long game rule in eurogames // longSessionEvents.Contains(x.e.Game_Code),
-                    IsEuroGame = (x.e.Event.Game.GameCategory.Id == 3 && x.e.Game_Code != "WODU")
-                    // TODO - a bodge because WODU shoulnd't count
+                    IsEuroGame = (codes.Contains(x.e.Game_Code))
                 }).ToList();
 
                 standing.Scores = calc.SelectBestScores(standing.Scores, pentaLong, pentaTotal, currentOlympiad.StartDate.Value.Year);
@@ -284,16 +287,16 @@ namespace MSOCore.Reports
             return vm;
         }
 
-        // TODO - hard-coded events. Can't use categories as Color Chess is CH - fixed now
-
-        private static string[] ModernAbstractEvents = new [] { "STDU", "STOC", "OTOC", "ABOC", "BKOC", "BOWC", "TNOC", "COWC", "QROC", "ENWC", "LOWC", "TWOC", "KAWC", "CLWC" };
-
         public PentamindStandingsReportVm GetModernAbstractStandings(int? year)
         {
             var context = DataEntitiesProvider.Provide();
             var currentOlympiad = (year.HasValue)
                 ? context.Olympiad_Infoes.Where(x => x.StartDate.HasValue && x.StartDate.Value.Year == year.Value).First()
                 : context.Olympiad_Infoes.OrderByDescending(x => x.StartDate).First();
+
+            var def = context.MetaGameDefinitions.First(x =>
+                x.Type == "ModernAbstract" && x.OlympiadId == currentOlympiad.Id);
+            var codes = def.SubEvents.Split(',');
 
             var vm = new PentamindStandingsReportVm();
             vm.OlympiadTitle = currentOlympiad.FullTitle();
@@ -305,7 +308,7 @@ namespace MSOCore.Reports
 
             var results = context.Entrants
                 .Where(x => x.OlympiadId == currentOlympiad.Id && !x.Absent && x.Rank.HasValue && x.Penta_Score.HasValue
-                    && ModernAbstractEvents.Contains(x.Event.Code))
+                    && codes.Contains(x.Event.Code))
                 .Join(context.Contestants, e => e.Mind_Sport_ID, c => c.Mind_Sport_ID, (e, c) => new { e, c })
                 .GroupBy(x => x.c.Mind_Sport_ID)
                 .ToList();
@@ -329,7 +332,7 @@ namespace MSOCore.Reports
                     Score = (double)x.e.Penta_Score,
                     IsLongSession = true, // No long game rule in eurogames // longSessionEvents.Contains(x.e.Game_Code),
                     IsEuroGame = (x.e.Event.Game.GameCategory.Id == 3),
-                    IsModernAbstract = (ModernAbstractEvents.Contains(x.e.Game_Code))
+                    IsModernAbstract = (codes.Contains(x.e.Game_Code))
                 }).ToList();
 
                 standing.Scores = calc.SelectBestScores(standing.Scores, pentaLong, pentaTotal, currentOlympiad.StartDate.Value.Year);

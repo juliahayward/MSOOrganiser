@@ -197,6 +197,22 @@ warning 6002: The table/view 'mso_prod.dbo.Medal Points' does not have a primary
           <Property Name="Picture" Type="varbinary(max)" />
           <Property Name="SSMA_TimeStamp" Type="timestamp" StoreGeneratedPattern="Computed" Nullable="false" />
         </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'mso_prod.dbo.MetaGameDefinition' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="MetaGameDefinition">
+          <Key>
+            <PropertyRef Name="Id" />
+            <PropertyRef Name="Olympiadid" />
+            <PropertyRef Name="EventId" />
+            <PropertyRef Name="Type" />
+            <PropertyRef Name="SubEvents" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Olympiadid" Type="int" Nullable="false" />
+          <Property Name="EventId" Type="int" Nullable="false" />
+          <Property Name="Type" Type="nvarchar" MaxLength="256" Nullable="false" />
+          <Property Name="SubEvents" Type="nvarchar" MaxLength="4000" Nullable="false" />
+        </EntityType>
         <EntityType Name="Names">
           <Key>
             <PropertyRef Name="Mind Sport ID" />
@@ -528,6 +544,30 @@ warning 6002: The table/view 'mso_prod.dbo.SelectedPeople' does not have a prima
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_MetaGameDefinition_Event">
+          <End Role="Events" Type="Self.Events" Multiplicity="1" />
+          <End Role="MetaGameDefinition" Type="Self.MetaGameDefinition" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Events">
+              <PropertyRef Name="EIN" />
+            </Principal>
+            <Dependent Role="MetaGameDefinition">
+              <PropertyRef Name="EventId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_MetaGameDefinition_Olympiad">
+          <End Role="Olympiad Info" Type="Self.Olympiad Info" Multiplicity="1" />
+          <End Role="MetaGameDefinition" Type="Self.MetaGameDefinition" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Olympiad Info">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="MetaGameDefinition">
+              <PropertyRef Name="Olympiadid" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_WNIWP_ContestantId">
           <End Role="Names" Type="Self.Names" Multiplicity="1" />
           <End Role="WomenNotInWomensPentamind" Type="Self.WomenNotInWomensPentamind" Multiplicity="*" />
@@ -616,6 +656,15 @@ FROM [dbo].[Information] AS [Information]</DefiningQuery>
 [Medal Points].[SSMA_TimeStamp] AS [SSMA_TimeStamp]
 FROM [dbo].[Medal Points] AS [Medal Points]</DefiningQuery>
           </EntitySet>
+          <EntitySet Name="MetaGameDefinition" EntityType="Self.MetaGameDefinition" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+[MetaGameDefinition].[Id] AS [Id], 
+[MetaGameDefinition].[Olympiadid] AS [Olympiadid], 
+[MetaGameDefinition].[EventId] AS [EventId], 
+[MetaGameDefinition].[Type] AS [Type], 
+[MetaGameDefinition].[SubEvents] AS [SubEvents]
+FROM [dbo].[MetaGameDefinition] AS [MetaGameDefinition]</DefiningQuery>
+          </EntitySet>
           <EntitySet Name="SelectedPeople" EntityType="Self.SelectedPeople" store:Type="Tables" store:Schema="dbo">
             <DefiningQuery>SELECT 
 [SelectedPeople].[MSOID] AS [MSOID], 
@@ -671,6 +720,14 @@ FROM [dbo].[SelectedPeople] AS [SelectedPeople]</DefiningQuery>
           <AssociationSet Name="FK__Seedings__Contes__1387E197" Association="Self.FK__Seedings__Contes__1387E197">
             <End Role="Names" EntitySet="Names" />
             <End Role="Seedings" EntitySet="Seedings" />
+          </AssociationSet>
+          <AssociationSet Name="FK_MetaGameDefinition_Event" Association="Self.FK_MetaGameDefinition_Event">
+            <End Role="Events" EntitySet="Events" />
+            <End Role="MetaGameDefinition" EntitySet="MetaGameDefinition" />
+          </AssociationSet>
+          <AssociationSet Name="FK_MetaGameDefinition_Olympiad" Association="Self.FK_MetaGameDefinition_Olympiad">
+            <End Role="Olympiad Info" EntitySet="Olympiad Info" />
+            <End Role="MetaGameDefinition" EntitySet="MetaGameDefinition" />
           </AssociationSet>
           <AssociationSet Name="FK_WNIWP_ContestantId" Association="Self.FK_WNIWP_ContestantId">
             <End Role="Names" EntitySet="Names" />
@@ -779,6 +836,15 @@ FROM [dbo].[SelectedPeople] AS [SelectedPeople]</DefiningQuery>
             <End Role="Olympiad_Info" EntitySet="Olympiad_Infoes" />
             <End Role="WomenNotInWomensPentamind" EntitySet="WomenNotInWomensPentaminds" />
           </AssociationSet>
+          <EntitySet Name="MetaGameDefinitions" EntityType="DataModel.MetaGameDefinition" />
+          <AssociationSet Name="FK_MetaGameDefinition_Event" Association="DataModel.FK_MetaGameDefinition_Event">
+            <End Role="Event" EntitySet="Events" />
+            <End Role="MetaGameDefinition" EntitySet="MetaGameDefinitions" />
+          </AssociationSet>
+          <AssociationSet Name="FK_MetaGameDefinition_Olympiad" Association="DataModel.FK_MetaGameDefinition_Olympiad">
+            <End Role="Olympiad_Info" EntitySet="Olympiad_Infoes" />
+            <End Role="MetaGameDefinition" EntitySet="MetaGameDefinitions" />
+          </AssociationSet>
         </EntityContainer>
         <EntityType Name="Badges___Misc">
           <Key>
@@ -878,6 +944,7 @@ FROM [dbo].[SelectedPeople] AS [SelectedPeople]</DefiningQuery>
           <NavigationProperty Name="Entrants" Relationship="DataModel.FK__Entrants__EventI__4B7734FF" FromRole="Event" ToRole="Entrant" />
           <Property Name="ConsistentWithBoardability" Type="Boolean" Nullable="false" />
           <Property Name="PentamindFactor" Type="Single" Nullable="false" />
+          <NavigationProperty Name="MetaGameDefinitions" Relationship="DataModel.FK_MetaGameDefinition_Event" FromRole="Event" ToRole="MetaGameDefinition" />
         </EntityType>
         <EntityType Name="EventType">
           <Key>
@@ -983,6 +1050,7 @@ FROM [dbo].[SelectedPeople] AS [SelectedPeople]</DefiningQuery>
           <NavigationProperty Name="Events" Relationship="DataModel.FK__Events__Olympiad__45BE5BA9" FromRole="Olympiad_Info" ToRole="Event" />
           <NavigationProperty Name="Locations" Relationship="DataModel.FK__Location__Olympi__46B27FE2" FromRole="Olympiad_Info" ToRole="Location" />
           <NavigationProperty Name="WomenNotInWomensPentaminds" Relationship="DataModel.FK_WNIWP_OlympiadId" FromRole="Olympiad_Info" ToRole="WomenNotInWomensPentamind" />
+          <NavigationProperty Name="MetaGameDefinitions" Relationship="DataModel.FK_MetaGameDefinition_Olympiad" FromRole="Olympiad_Info" ToRole="MetaGameDefinition" />
         </EntityType>
         <EntityType Name="Paring">
           <Key>
@@ -1357,6 +1425,46 @@ FROM [dbo].[SelectedPeople] AS [SelectedPeople]</DefiningQuery>
               <PropertyRef Name="Id" />
             </Principal>
             <Dependent Role="WomenNotInWomensPentamind">
+              <PropertyRef Name="OlympiadId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="MetaGameDefinition">
+          <Key>
+            <PropertyRef Name="Id" />
+            <PropertyRef Name="OlympiadId" />
+            <PropertyRef Name="EventId" />
+            <PropertyRef Name="Type" />
+            <PropertyRef Name="SubEvents" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="OlympiadId" Type="Int32" Nullable="false" />
+          <Property Name="EventId" Type="Int32" Nullable="false" />
+          <Property Name="Type" Type="String" Nullable="false" MaxLength="256" FixedLength="false" Unicode="true" />
+          <Property Name="SubEvents" Type="String" Nullable="false" MaxLength="4000" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Event" Relationship="DataModel.FK_MetaGameDefinition_Event" FromRole="MetaGameDefinition" ToRole="Event" />
+          <NavigationProperty Name="Olympiad_Info" Relationship="DataModel.FK_MetaGameDefinition_Olympiad" FromRole="MetaGameDefinition" ToRole="Olympiad_Info" />
+        </EntityType>
+        <Association Name="FK_MetaGameDefinition_Event">
+          <End Type="DataModel.Event" Role="Event" Multiplicity="1" />
+          <End Type="DataModel.MetaGameDefinition" Role="MetaGameDefinition" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Event">
+              <PropertyRef Name="EIN" />
+            </Principal>
+            <Dependent Role="MetaGameDefinition">
+              <PropertyRef Name="EventId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_MetaGameDefinition_Olympiad">
+          <End Type="DataModel.Olympiad_Info" Role="Olympiad_Info" Multiplicity="1" />
+          <End Type="DataModel.MetaGameDefinition" Role="MetaGameDefinition" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Olympiad_Info">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="MetaGameDefinition">
               <PropertyRef Name="OlympiadId" />
             </Dependent>
           </ReferentialConstraint>
@@ -1756,6 +1864,17 @@ FROM [dbo].[SelectedPeople] AS [SelectedPeople]</DefiningQuery>
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="ContestantId" ColumnName="ContestantId" />
                 <ScalarProperty Name="OlympiadId" ColumnName="OlympiadId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="MetaGameDefinitions">
+            <EntityTypeMapping TypeName="DataModel.MetaGameDefinition">
+              <MappingFragment StoreEntitySet="MetaGameDefinition">
+                <ScalarProperty Name="SubEvents" ColumnName="SubEvents" />
+                <ScalarProperty Name="Type" ColumnName="Type" />
+                <ScalarProperty Name="EventId" ColumnName="EventId" />
+                <ScalarProperty Name="OlympiadId" ColumnName="Olympiadid" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

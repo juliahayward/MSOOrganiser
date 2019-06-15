@@ -19,6 +19,7 @@ namespace MSOCore
             this.Events = new HashSet<Event>();
             this.Locations = new HashSet<Location>();
             this.WomenNotInWomensPentaminds = new HashSet<WomenNotInWomensPentamind>();
+            this.MetaGameDefinitions = new HashSet<MetaGameDefinition>();
         }
     
         public Nullable<int> YearOf { get; set; }
@@ -41,5 +42,6 @@ namespace MSOCore
         public virtual ICollection<Event> Events { get; set; }
         public virtual ICollection<Location> Locations { get; set; }
         public virtual ICollection<WomenNotInWomensPentamind> WomenNotInWomensPentaminds { get; set; }
+        public virtual ICollection<MetaGameDefinition> MetaGameDefinitions { get; set; }
     }
 }

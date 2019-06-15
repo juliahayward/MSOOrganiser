@@ -19,6 +19,7 @@ namespace MSOCore
             this.Event_Sess = new HashSet<Event_Sess>();
             this.Arbiters = new HashSet<Arbiter>();
             this.Entrants = new HashSet<Entrant>();
+            this.MetaGameDefinitions = new HashSet<MetaGameDefinition>();
         }
     
         public int EIN { get; set; }
@@ -58,5 +59,6 @@ namespace MSOCore
         public virtual Olympiad_Info Olympiad_Info { get; set; }
         public virtual Game Game { get; set; }
         public virtual ICollection<Entrant> Entrants { get; set; }
+        public virtual ICollection<MetaGameDefinition> MetaGameDefinitions { get; set; }
     }
 }

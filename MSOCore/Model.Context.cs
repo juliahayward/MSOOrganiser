@@ -54,5 +54,6 @@ namespace MSOCore
         public DbSet<GlobalSetting> GlobalSettings { get; set; }
         public DbSet<Seeding> Seedings { get; set; }
         public DbSet<WomenNotInWomensPentamind> WomenNotInWomensPentaminds { get; set; }
+        public DbSet<MetaGameDefinition> MetaGameDefinitions { get; set; }
     }
 }

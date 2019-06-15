@@ -28,7 +28,7 @@ namespace MSOCore.Calculators
                     Title = order.attendees.customer.title.Value,
                     FirstName = order.attendees.customer.first_name.Value,
                     LastName = order.attendees.customer.last_name.Value,
-                    CountryCode = order.attendees.customer.country_to_represent.Value,
+                    CountryCode = SubstituteCountryCode(order.attendees.customer.country_to_represent.Value),
                     Email = order.attendees.customer.email.Value
                 });
                 foreach (var o1 in order.events)
@@ -36,13 +36,28 @@ namespace MSOCore.Calculators
                     var evt = o1.Value;
                     order2018.Events.Add(new Order2018.Event()
                     {
-                        Code = evt.event_id.Value
+                        Code = Substitute(evt.event_id.Value)
                     });
                 }
                 orders.Add(order2018);
             }
 
             return orders;
+        }
+
+        private string SubstituteCountryCode(string countryCode)
+        {
+            if (countryCode == "cy-GB") return "cy";
+
+            return countryCode;
+        }
+
+        private string Substitute(string eventCode)
+        {
+            // cope with mismatches in 2019
+            if (eventCode == "CHCO") return "CLWC";
+
+            return eventCode;
         }
 
         public void ProcessAll(IEnumerable<Order2018> orders)
@@ -75,6 +90,9 @@ namespace MSOCore.Calculators
                             continue;
                         if (contestant.Entrants.Any(x => x.Game_Code == evt.Code && x.OlympiadId == olympiad.Id))
                             continue;
+
+                        if (!events.ContainsKey(evt.Code))
+                            throw new ArgumentOutOfRangeException($"Event code {evt.Code} not recognised");
 
                         // Put the contestant into the right event
                         var entrant = Entrant.NewEntrant(events[evt.Code].EIN, evt.Code, olympiad.Id, contestant,
@@ -127,6 +145,9 @@ namespace MSOCore.Calculators
             Order2018.Attendee entrant,
             Dictionary<string, string> countries)
         {
+            if (!countries.ContainsKey(entrant.CountryCode))
+                throw new ArgumentOutOfRangeException($"Unknown country code {entrant.CountryCode}");
+
             var contestant = new Contestant()
             {
                 Firstname = entrant.FirstName,

@@ -1,0 +1,59 @@
+﻿@model MSOWeb.Controllers.HomeController.EventEntriesModel
+@{
+    Layout = "~/Views/Shared/_NewLayout.cshtml";
+}
+
+<h1 class="entry-title">Event Entries</h1>
+
+@{ 
+    var totalInThisGame = 0;
+    var inThisGame = 0;
+}
+
+<table class="table">
+    <thead>
+        <tr>
+            <td></td>
+            <td>Event</td>
+            <td>Entries</td>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.Games.OrderBy(x => x.Key))
+        {
+            var thisGameEvents = Model.Events.Where(e => e.Key.StartsWith(item.Key));
+            if (!thisGameEvents.Any())
+            {
+                continue;
+            }
+            <tr>
+                <td scope="row">@item.Key</td>
+                <td><span>@item.Value</span></td>
+                <td><span>-</span></td>
+            </tr>
+            foreach (var evt in thisGameEvents)
+            {
+                if (Model.Entrants.ContainsKey(evt.Key))
+                {
+                    inThisGame = Model.Entrants[evt.Key];
+                    totalInThisGame += inThisGame;
+                }
+                else
+                {
+                    inThisGame = 0;
+                }
+                <tr>
+                    <td scope="row"></td>
+                    <td><span>@evt.Key : @evt.Value</span></td>
+                    <td><span>@inThisGame</span></td>
+                </tr>
+            }
+            <tr>
+                <td scope="row"></td>
+                <td><span><b>Total</b></span></td>
+                <td><span><b>@totalInThisGame</b></span></td>
+            </tr>
+            totalInThisGame = 0;
+        }
+    </tbody>
+</table>

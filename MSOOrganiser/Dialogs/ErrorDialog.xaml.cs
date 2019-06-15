@@ -23,8 +23,13 @@ namespace MSOOrganiser.Dialogs
     {
         public ErrorDialog(Exception ex) : this()
         {
-            this.textBox.Text = ex.Message + Environment.NewLine + ex.StackTrace;
-
+            this.textBox.Text = "";
+            var thisEx = ex;
+            while (thisEx != null)
+            {
+                this.textBox.Text = thisEx.Message + Environment.NewLine + thisEx.StackTrace + Environment.NewLine;
+                thisEx = thisEx.InnerException;
+            }
             var trelloKey = ConfigurationManager.AppSettings["TrelloKey"];
             var trelloAuthKey = ConfigurationManager.AppSettings["TrelloAuthKey"];
 

@@ -38,9 +38,10 @@
         <EntityTypeShape EntityType="DataModel.Location" Width="1.5" PointX="0.5" PointY="8.75" />
         <AssociationConnector Association="DataModel.FK__Location__Olympi__46B27FE2" />
         <AssociationConnector Association="DataModel.FK__Events__GameId__4A8310C6" ManuallyRouted="true" >
-          <ConnectorPoint PointX="5.875" PointY="8.75" />
-          <ConnectorPoint PointX="5.875" PointY="4.0417874660573831" />
-          <ConnectorPoint PointX="4.375" PointY="4.0417874660573831" />
+          <ConnectorPoint PointX="5.1261528461538459" PointY="8.75" />
+          <ConnectorPoint PointX="4.75" PointY="8.3738471538461532" />
+          <ConnectorPoint PointX="4.75" PointY="9.0089322916666656" />
+          <ConnectorPoint PointX="4.375" PointY="8.6339322916666656" />
         </AssociationConnector>
         <AssociationConnector Association="DataModel.FK__Entrants__EventI__4B7734FF" ManuallyRouted="false" >
         </AssociationConnector>
@@ -54,6 +55,9 @@
         <EntityTypeShape EntityType="DataModel.WomenNotInWomensPentamind" Width="1.5" PointX="13.625" PointY="0.5" />
         <AssociationConnector Association="DataModel.FK_WNIWP_ContestantId" />
         <AssociationConnector Association="DataModel.FK_WNIWP_OlympiadId" />
+        <EntityTypeShape EntityType="DataModel.MetaGameDefinition" Width="1.5" PointX="5.125" PointY="0.75" />
+        <AssociationConnector Association="DataModel.FK_MetaGameDefinition_Event" />
+        <AssociationConnector Association="DataModel.FK_MetaGameDefinition_Olympiad" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
