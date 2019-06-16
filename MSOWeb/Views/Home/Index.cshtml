@@ -1,4 +1,5 @@
 ﻿@model IEnumerable<MSOCore.Reports.GameListGenerator.GameVm>
+@using System
 @{
     Layout = "~/Views/Shared/_NewLayoutWithFooter.cshtml";
     ViewBag.Title = "Mind Sports Olympiad Live Results";
@@ -109,7 +110,7 @@
             <div class="card-body">
                 <h5 class="card-title">Reports (Admin only)</h5>
                 <ul>
-                    <li><a href="/Home/EventEntries" class="card-link">Entries per Event</a></li>
+                    <li><a href="/Report/TotalEventEntries" class="card-link">Entries per Event</a></li>
                 </ul>
             </div>
         </div>

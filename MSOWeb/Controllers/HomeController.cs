@@ -86,32 +86,5 @@ namespace MSOWeb.Controllers
 
             return View(model);
         }
-
-        public class EventEntriesModel
-        {
-            public Dictionary<string, string> Events;
-            public Dictionary<string, int> Entrants;
-            public Dictionary<string, string> Games;
-        }
-
-        public ActionResult EventEntries()
-        {
-            // Copied from PrintEventEntriesSummeryReportPrinter, this should really be in Core
-
-            var context = DataEntitiesProvider.Provide();
-            var currentOlympiad = context.Olympiad_Infoes.Where(x => x.Current).First();
-
-            var events = context.Events.Where(x => x.OlympiadId == currentOlympiad.Id)
-                .ToDictionary(e => e.Code, e => e.Mind_Sport);
-
-            var entrants = context.Entrants.Where(x => x.OlympiadId == currentOlympiad.Id)
-                .GroupBy(x => x.Game_Code)
-                .ToDictionary(gp => gp.Key, gp => gp.Count());
-
-            var games = context.Games.Where(x => !x.Code.StartsWith("ZZ"))
-                .ToDictionary(g => g.Code, g => g.Mind_Sport);
-
-            return View(new EventEntriesModel { Events = events, Entrants = entrants, Games = games });
-        }
     }
 }
