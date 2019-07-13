@@ -31,7 +31,8 @@
     @foreach (var game in Model)
     {
     <li><span width="400px">@game.Code  : @game.Name </span> 
-        <a href="/apiv1/swissmanagereventcontestants?eventcode=@game.Code" download>for Swiss Manager</a> and 
+        <a href="/apiv1/swissmanagereventcontestants?eventcode=@game.Code" download>for Swiss Manager</a>
+        <a href="/apiv1/swissperfecteventcontestants?eventcode=@game.Code" download>for Swiss Perfect</a> and 
         <a href="/apiv1/multiplayereventcontestants?eventcode=@game.Code" download>for Mike's multiplayer spreadsheet</a></li>
     }
 </ul>

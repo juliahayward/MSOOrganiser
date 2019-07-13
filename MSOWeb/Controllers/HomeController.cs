@@ -36,6 +36,12 @@ namespace MSOWeb.Controllers
             return View();
         }
 
+        public ActionResult OrganiserReleaseNotes()
+        {
+            ViewBag.Layout = "~/Views/Shared/_NewLayoutNoHeader.cshtml";
+            return View("ReleaseNotes");
+        }
+
         [AllowAnonymous]
         [HttpGet]
         public ActionResult Login()

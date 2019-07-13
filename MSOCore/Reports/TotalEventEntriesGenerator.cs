@@ -11,6 +11,7 @@ namespace MSOCore.Reports
         public class TotalEventEntriesVm
         {
             public IEnumerable<EventVm> Events { get; set; }
+            public string LastLoadedCaption { get; set; }
 
             public class EventVm
             {
@@ -25,6 +26,9 @@ namespace MSOCore.Reports
         {
             var vm = new TotalEventEntriesVm();
             var context = DataEntitiesProvider.Provide();
+
+            var param = context.Parameters.First(x => x.Id == 1);
+            vm.LastLoadedCaption = "Last load from WooCommerce: " + param.Value;
 
             var olympiad = (year.HasValue)
                 ? context.Olympiad_Infoes.First(x => x.YearOf == year.Value)

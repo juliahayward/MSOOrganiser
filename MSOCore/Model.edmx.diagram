@@ -41,7 +41,7 @@
           <ConnectorPoint PointX="5.1261528461538459" PointY="8.75" />
           <ConnectorPoint PointX="4.75" PointY="8.3738471538461532" />
           <ConnectorPoint PointX="4.75" PointY="9.0089322916666656" />
-          <ConnectorPoint PointX="4.375" PointY="8.6339322916666656" />
+          <ConnectorPoint PointX="4.375" PointY="4.567506203308767" />
         </AssociationConnector>
         <AssociationConnector Association="DataModel.FK__Entrants__EventI__4B7734FF" ManuallyRouted="false" >
         </AssociationConnector>
@@ -58,6 +58,7 @@
         <EntityTypeShape EntityType="DataModel.MetaGameDefinition" Width="1.5" PointX="5.125" PointY="0.75" />
         <AssociationConnector Association="DataModel.FK_MetaGameDefinition_Event" />
         <AssociationConnector Association="DataModel.FK_MetaGameDefinition_Olympiad" />
+        <EntityTypeShape EntityType="DataModel.Parameter" Width="1.5" PointX="13.375" PointY="6.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

@@ -930,7 +930,7 @@ namespace MSOOrganiser
 
         private void releaseNotes_Click(object sender, RoutedEventArgs e)
         {
-            Process.Start("http://apps.juliahayward.com/msoorganiser/1.0.2/ReleaseNotes.html");
+            Process.Start("http://mso.juliahayward.com/home/releasenotes");
         }
 
         private void logIn_Click(object sender, RoutedEventArgs e)

@@ -408,6 +408,7 @@
     <Content Include="Views\Report\ModernAbstractStandingsnew.cshtml" />
     <Content Include="Views\Home\ReleaseNotes.cshtml" />
     <Content Include="Views\Shared\_NewLayoutWithFooter.cshtml" />
+    <Content Include="Views\Shared\_NewLayoutNoHeader.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

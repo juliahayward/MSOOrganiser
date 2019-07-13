@@ -119,6 +119,10 @@ namespace MSOCore.Calculators
                 }
                 // TODO figure out payments - and juniors, not in data - and early birds
             }
+
+            var param = context.Parameters.First(x => x.Id == 1);
+            param.Value = DateTime.Now.ToString("dd MMM yyyy, hh:mm");
+            context.SaveChanges();
         }
 
         public void ExtractEmails(IEnumerable<Order2018> orders, string filename)

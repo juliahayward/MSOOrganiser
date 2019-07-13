@@ -272,6 +272,14 @@ warning 6002: The table/view 'mso_prod.dbo.MetaGameDefinition' does not have a p
           <Property Name="SSMA_TimeStamp" Type="timestamp" StoreGeneratedPattern="Computed" Nullable="false" />
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
         </EntityType>
+        <EntityType Name="Parameters">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Value" Type="nvarchar" MaxLength="50" Nullable="false" />
+        </EntityType>
         <EntityType Name="Parings">
           <Key>
             <PropertyRef Name="INDEX" />
@@ -620,6 +628,7 @@ warning 6002: The table/view 'mso_prod.dbo.SelectedPeople' does not have a prima
           <EntitySet Name="Names" EntityType="Self.Names" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Nationalities" EntityType="Self.Nationalities" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Olympiad Info" EntityType="Self.Olympiad Info" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Parameters" EntityType="Self.Parameters" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Parings" EntityType="Self.Parings" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Payment Methods" EntityType="Self.Payment Methods" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Payments" EntityType="Self.Payments" Schema="dbo" store:Type="Tables" />
@@ -845,6 +854,7 @@ FROM [dbo].[SelectedPeople] AS [SelectedPeople]</DefiningQuery>
             <End Role="Olympiad_Info" EntitySet="Olympiad_Infoes" />
             <End Role="MetaGameDefinition" EntitySet="MetaGameDefinitions" />
           </AssociationSet>
+          <EntitySet Name="Parameters" EntityType="DataModel.Parameter" />
         </EntityContainer>
         <EntityType Name="Badges___Misc">
           <Key>
@@ -1469,6 +1479,14 @@ FROM [dbo].[SelectedPeople] AS [SelectedPeople]</DefiningQuery>
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="Parameter">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Value" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -1874,6 +1892,15 @@ FROM [dbo].[SelectedPeople] AS [SelectedPeople]</DefiningQuery>
                 <ScalarProperty Name="Type" ColumnName="Type" />
                 <ScalarProperty Name="EventId" ColumnName="EventId" />
                 <ScalarProperty Name="OlympiadId" ColumnName="Olympiadid" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Parameters">
+            <EntityTypeMapping TypeName="DataModel.Parameter">
+              <MappingFragment StoreEntitySet="Parameters">
+                <ScalarProperty Name="Value" ColumnName="Value" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>

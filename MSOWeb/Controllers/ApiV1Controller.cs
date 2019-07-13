@@ -37,6 +37,7 @@ namespace MSOWeb.Controllers
             var l = new OlympiadEventsApiLogic();
             try
             {
+                Response.AddHeader("Content-Disposition", $"attachment;filename={eventCode}.xml");
                 return new XmlResult(l.GetSwissManagerEventContestants(eventCode), true);
             }
             catch (ArgumentOutOfRangeException)
@@ -45,28 +46,30 @@ namespace MSOWeb.Controllers
             }
         }
 
-        //public ActionResult SwissEventContestants(string eventCode)
-        //{
-        //    // See http://swiss-manager.at/unload/SwissManagerHelp_ENG.pdf
-        //    var l = new OlympiadEventsApiLogic();
-        //    try
-        //    {
-        //        var data = l.GetEventContestants(eventCode);
-        //        var builder = new StringBuilder();
-        //        int index = 0;
-        //        foreach (var c in data.Contestants)
-        //        {
-        //            index++;
-        //            builder.Append(string.Format("{0};{1};;{2};;;;;;;;;;;;;;\r\n",
-        //                index, c.Name, c.ContestantId));
-        //        }
-        //        return Content(builder.ToString(), MediaTypeNames.Text.Plain);
-        //    }
-        //    catch (ArgumentOutOfRangeException)
-        //    {
-        //        return HttpNotFound();
-        //    }
-        //}
+        public ActionResult SwissPerfectEventContestants(string eventCode)
+        {
+            // See http://swiss-manager.at/unload/SwissManagerHelp_ENG.pdf
+            var l = new OlympiadEventsApiLogic();
+            try
+            {
+                var data = l.GetEventContestants(eventCode);
+                var builder = new StringBuilder();
+                int index = 0;
+                foreach (var c in data.Contestants)
+                {
+                    index++;
+                    builder.Append(string.Format("{0}|{1}|{2}||||||||||\r\n",
+                        index, c.Name, c.ContestantId));
+                }
+
+                Response.AddHeader("Content-Disposition", $"attachment;filename={eventCode}.txt");
+                return Content(builder.ToString(), MediaTypeNames.Text.Plain);
+            }
+            catch (ArgumentOutOfRangeException)
+            {
+                return HttpNotFound();
+            }
+        }
 
         [HttpPost]
         public ActionResult AddEventEntry(string data)

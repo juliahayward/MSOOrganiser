@@ -150,6 +150,9 @@
     <Compile Include="Olympiad_Info.cs">
       <DependentUpon>Model.tt</DependentUpon>
     </Compile>
+    <Compile Include="Parameter.cs">
+      <DependentUpon>Model.tt</DependentUpon>
+    </Compile>
     <Compile Include="Paring.cs">
       <DependentUpon>Model.tt</DependentUpon>
     </Compile>
