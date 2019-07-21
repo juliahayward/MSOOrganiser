@@ -48,18 +48,17 @@ namespace MSOWeb.Controllers
 
         public ActionResult SwissPerfectEventContestants(string eventCode)
         {
-            // See http://swiss-manager.at/unload/SwissManagerHelp_ENG.pdf
+            // See help in SP98
             var l = new OlympiadEventsApiLogic();
             try
             {
                 var data = l.GetEventContestants(eventCode);
                 var builder = new StringBuilder();
                 int index = 0;
-                foreach (var c in data.Contestants)
+                foreach (var c in data.Contestants.OrderBy(c => c.Seeding))
                 {
                     index++;
-                    builder.Append(string.Format("{0}|{1}|{2}||||||||||\r\n",
-                        index, c.Name, c.ContestantId));
+                    builder.Append($"{index}|{c.Name}|{c.ContestantId}|{c.Seeding}|||||||||\r\n");
                 }
 
                 Response.AddHeader("Content-Disposition", $"attachment;filename={eventCode}.txt");

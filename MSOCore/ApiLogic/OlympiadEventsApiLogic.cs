@@ -64,6 +64,7 @@ namespace MSOCore.ApiLogic
                 public string LastName { get; set; }
                 public bool IsJunior { get; set; }
                 public bool IsSenior { get; set; }
+                public int Seeding { get; set; }
             }
 
             public string EventCode { get; set; }
@@ -96,6 +97,7 @@ namespace MSOCore.ApiLogic
 
             var currentOlympiad = context.Olympiad_Infoes.OrderByDescending(x => x.StartDate).First();
             var evt = currentOlympiad.Events.SingleOrDefault(x => x.Code == eventCode);
+            var seedings = context.Seedings.Where(s => s.EventCode == eventCode).ToDictionary(s => s.ContestantId, s => s.Rank);
 
             if (evt == null) throw new ArgumentOutOfRangeException("Unrecognised event");
 
@@ -110,7 +112,17 @@ namespace MSOCore.ApiLogic
                     IsSenior = e.Name.IsSeniorForOlympiad(currentOlympiad)
                 }).ToList();
 
+            foreach (var c in vm.Contestants)
+                c.Seeding = GetSeeding(seedings, c.ContestantId);
+
             return vm;
+        }
+
+        private int GetSeeding(Dictionary<int, int?> seedings, int contestantId)
+        {
+            return (seedings.ContainsKey(contestantId) && seedings[contestantId].HasValue)
+                ? seedings[contestantId].Value
+                : 1000;
         }
 
 
