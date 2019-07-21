@@ -49,6 +49,8 @@ namespace MSOCore.Reports
             var currentOlympiad = context.Olympiad_Infoes.OrderByDescending(x => x.StartDate).First();
             // We had five events before the move to JW3, four after that.
             int numAllowed = (currentOlympiad.YearOf < 2013) ? 5 : 4;
+            // in 2019 the rules were changed to include POHU
+
 
             var vm = new PokerStandingsReportVm();
             vm.OlympiadTitle = currentOlympiad.FullTitle();
@@ -81,7 +83,7 @@ namespace MSOCore.Reports
                     Score = (double)x.e.Penta_Score
                 }).ToList();
 
-                standing.Scores = SelectBestScores(standing.Scores, numAllowed);
+                standing.Scores = SelectBestScores(currentOlympiad.YearOf.Value, standing.Scores, numAllowed);
                 standing.TotalScore = standing.Scores.Sum(x => x.Score);
                 standing.IsValid = (standing.Scores.Count() == numAllowed);
                 standings.Add(standing);
@@ -92,9 +94,11 @@ namespace MSOCore.Reports
         }
 
         public List<PokerStandingsReportVm.EventScore>
-            SelectBestScores(List<PokerStandingsReportVm.EventScore> allScores, int numAllowed)
+            SelectBestScores(int year, List<PokerStandingsReportVm.EventScore> allScores, int numAllowed)
         {
-            var excluded = new List<string>() { "POWC", "POHU", "POTU" };
+            // TODO - unpick this logic in the same way as we unpicked the MBWC/EGWC
+            var excluded = new List<string>() { "POWC", "POTU" };
+            if (year < 2019) excluded.Add("POHU");
 
             var pokerScores = allScores.Where(x => x.GameCode.StartsWith("PO") && !excluded.Contains(x.GameCode));
 
