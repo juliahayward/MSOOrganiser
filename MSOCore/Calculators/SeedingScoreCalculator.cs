@@ -49,7 +49,8 @@ namespace MSOCore.Calculators
                 lastGameCode = entrant.Game_Code;
 
                 var equivalentEvents = GetEquivalentEvents(entrant.Game_Code);
-                var pastResults = context.Entrants
+                // TODO can't this be a lookup in the above query?
+                var pastResults = seedableEntrants
                     .Where(x => equivalentEvents.Contains(x.Game_Code)
                         // careful - digging back into old data
                         && x.Mind_Sport_ID != null && x.Event != null
@@ -67,8 +68,59 @@ namespace MSOCore.Calculators
             CalculateRanks(seedings);
         }
 
-        /* Because some events which are equivaent for seeding purposes have changed codes
-         * over the years */
+        /*
+         * I have now reworked the rating system in line with the ranges Etan was looking for.  
+         * The process for working out a players rating is as follows:
+         *
+         * First ask is that player seeded under the current seeding system.  If so, we will rate them based upon 
+         * their seeding points, if not they are rated according to their recent Pentamind scores.
+         * 
+         * Ratings based upon seeding points:
+         * 
+         * The players rating is calculated as [2100 + (6.25 x Seeding Points)].  For example a player with 25 
+         * seeding points would be rated 2,256. Ratings are capped at 2,600 (ie anyone with more than 80 seeding 
+         * points is given this rating.  This only applies to the players who are given the 1,000 point bonus on 
+         * the seeding system. The result is ratings ranging from 2,100 to 2,600
+ 
+
+Ratings for unseeded players based upon Pentamind points:
+
+The rating utilises the best two Pentamind scores recorded for the event over the last 5 years.  I’ll denote these PMscore1 & PMscore2, other Pentamind scores are ignored.
+The players rating is calculated as [1,600 + (2.5 x (PMscore1 + PMscore2))].  For example a player with best Pentamind scores of 75 and 60 would be rated 1,938.
+The maximum rating a player can achieve from this method is 2,100.  (There is a possibility albeit unlikely for a player to have PM scores over 100 from Premier events without obtaining a seeding).
+If the player has only played in the event once in the last 5 years, just use that one PM score.  PMscore2 will be zero.
+ 
+
+Ratings for players who are unseeded and have not played the event in the last 5 years:
+
+Assign such players a random rating between 1,500 and 1,600.
+ 
+
+I have attached my sheet again which should show all of the ratings to compare against, however the players who have no seeding and haven’t played in the last 5 years are simply rated 1,600 on my sheet (I haven’t bothered applying a random factor at this time).
+*/
+        public void CalculateRatings()
+        {
+            var context = DataEntitiesProvider.Provide();
+            context.Database.ExecuteSqlCommand("TRUNCATE TABLE [Ratings]");
+
+            var seedings = context.Seedings.ToList();
+            foreach (var seeding in seedings)
+            {
+                var rating = new Rating()
+                {
+                    ContestantId = seeding.ContestantId,
+                    EventCode = seeding.EventCode,
+                    QuasiEloRating = (int)Math.Min(2600, 2100 + (6.25 * seeding.Score.Value))
+                };
+
+                context.Ratings.Add(rating);
+                context.SaveChanges();
+            }
+        }
+
+
+            /* Because some events which are equivaent for seeding purposes have changed codes
+             * over the years */
         public IEnumerable<string> GetEquivalentEvents(string code)
         {
             switch (code)

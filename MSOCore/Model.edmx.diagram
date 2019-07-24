@@ -59,6 +59,8 @@
         <AssociationConnector Association="DataModel.FK_MetaGameDefinition_Event" />
         <AssociationConnector Association="DataModel.FK_MetaGameDefinition_Olympiad" />
         <EntityTypeShape EntityType="DataModel.Parameter" Width="1.5" PointX="13.375" PointY="6.75" />
+        <EntityTypeShape EntityType="DataModel.Rating" Width="1.5" PointX="13.375" PointY="10" />
+        <AssociationConnector Association="DataModel.FK__Ratings__Contest__190BB0C3" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

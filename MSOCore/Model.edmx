@@ -316,6 +316,15 @@ warning 6002: The table/view 'mso_prod.dbo.MetaGameDefinition' does not have a p
           <Property Name="OlympiadId" Type="int" />
           <Property Name="Received" Type="datetime" />
         </EntityType>
+        <EntityType Name="Ratings">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ContestantId" Type="int" Nullable="false" />
+          <Property Name="EventCode" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="QuasiEloRating" Type="int" Nullable="false" />
+        </EntityType>
         <EntityType Name="Resources">
           <Key>
             <PropertyRef Name="INDEX" />
@@ -540,6 +549,18 @@ warning 6002: The table/view 'mso_prod.dbo.SelectedPeople' does not have a prima
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK__Ratings__Contest__190BB0C3">
+          <End Role="Names" Type="Self.Names" Multiplicity="1" />
+          <End Role="Ratings" Type="Self.Ratings" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Names">
+              <PropertyRef Name="Mind Sport ID" />
+            </Principal>
+            <Dependent Role="Ratings">
+              <PropertyRef Name="ContestantId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK__Seedings__Contes__1387E197">
           <End Role="Names" Type="Self.Names" Multiplicity="1" />
           <End Role="Seedings" Type="Self.Seedings" Multiplicity="*" />
@@ -632,6 +653,7 @@ warning 6002: The table/view 'mso_prod.dbo.SelectedPeople' does not have a prima
           <EntitySet Name="Parings" EntityType="Self.Parings" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Payment Methods" EntityType="Self.Payment Methods" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Payments" EntityType="Self.Payments" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Ratings" EntityType="Self.Ratings" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Resources" EntityType="Self.Resources" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Seedings" EntityType="Self.Seedings" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="SelectedCategories" EntityType="Self.SelectedCategories" Schema="dbo" store:Type="Tables" />
@@ -725,6 +747,10 @@ FROM [dbo].[SelectedPeople] AS [SelectedPeople]</DefiningQuery>
           <AssociationSet Name="FK__Location__Olympi__12C8C788" Association="Self.FK__Location__Olympi__12C8C788">
             <End Role="Olympiad Info" EntitySet="Olympiad Info" />
             <End Role="Location" EntitySet="Location" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Ratings__Contest__190BB0C3" Association="Self.FK__Ratings__Contest__190BB0C3">
+            <End Role="Names" EntitySet="Names" />
+            <End Role="Ratings" EntitySet="Ratings" />
           </AssociationSet>
           <AssociationSet Name="FK__Seedings__Contes__1387E197" Association="Self.FK__Seedings__Contes__1387E197">
             <End Role="Names" EntitySet="Names" />
@@ -855,6 +881,11 @@ FROM [dbo].[SelectedPeople] AS [SelectedPeople]</DefiningQuery>
             <End Role="MetaGameDefinition" EntitySet="MetaGameDefinitions" />
           </AssociationSet>
           <EntitySet Name="Parameters" EntityType="DataModel.Parameter" />
+          <EntitySet Name="Ratings" EntityType="DataModel.Rating" />
+          <AssociationSet Name="FK__Ratings__Contest__190BB0C3" Association="DataModel.FK__Ratings__Contest__190BB0C3">
+            <End Role="Contestant" EntitySet="Contestants" />
+            <End Role="Rating" EntitySet="Ratings" />
+          </AssociationSet>
         </EntityContainer>
         <EntityType Name="Badges___Misc">
           <Key>
@@ -1036,6 +1067,7 @@ FROM [dbo].[SelectedPeople] AS [SelectedPeople]</DefiningQuery>
           <NavigationProperty Name="Arbiters" Relationship="DataModel.Arbiters_NamesArbiters" FromRole="Contestant" ToRole="Arbiter" />
           <NavigationProperty Name="Seedings" Relationship="DataModel.FK__Seedings__Contes__1387E197" FromRole="Contestant" ToRole="Seeding" />
           <NavigationProperty Name="WomenNotInWomensPentaminds" Relationship="DataModel.FK_WNIWP_ContestantId" FromRole="Contestant" ToRole="WomenNotInWomensPentamind" />
+          <NavigationProperty Name="Ratings" Relationship="DataModel.FK__Ratings__Contest__190BB0C3" FromRole="Contestant" ToRole="Rating" />
         </EntityType>
         <EntityType Name="Olympiad_Info">
           <Key>
@@ -1487,6 +1519,28 @@ FROM [dbo].[SelectedPeople] AS [SelectedPeople]</DefiningQuery>
           <Property Name="Name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="Value" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
         </EntityType>
+        <EntityType Name="Rating">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ContestantId" Type="Int32" Nullable="false" />
+          <Property Name="EventCode" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="QuasiEloRating" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Name" Relationship="DataModel.FK__Ratings__Contest__190BB0C3" FromRole="Rating" ToRole="Contestant" />
+        </EntityType>
+        <Association Name="FK__Ratings__Contest__190BB0C3">
+          <End Type="DataModel.Contestant" Role="Contestant" Multiplicity="1" />
+          <End Type="DataModel.Rating" Role="Rating" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Contestant">
+              <PropertyRef Name="Mind_Sport_ID" />
+            </Principal>
+            <Dependent Role="Rating">
+              <PropertyRef Name="ContestantId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -1901,6 +1955,16 @@ FROM [dbo].[SelectedPeople] AS [SelectedPeople]</DefiningQuery>
               <MappingFragment StoreEntitySet="Parameters">
                 <ScalarProperty Name="Value" ColumnName="Value" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Ratings">
+            <EntityTypeMapping TypeName="DataModel.Rating">
+              <MappingFragment StoreEntitySet="Ratings">
+                <ScalarProperty Name="QuasiEloRating" ColumnName="QuasiEloRating" />
+                <ScalarProperty Name="EventCode" ColumnName="EventCode" />
+                <ScalarProperty Name="ContestantId" ColumnName="ContestantId" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>

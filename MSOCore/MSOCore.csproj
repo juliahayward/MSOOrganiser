@@ -163,6 +163,9 @@
       <DependentUpon>Model.tt</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Rating.cs">
+      <DependentUpon>Model.tt</DependentUpon>
+    </Compile>
     <Compile Include="Reports\ContestantMedalsGenerator.cs" />
     <Compile Include="Reports\ArbiterScheduleReportGenerator.cs" />
     <Compile Include="Reports\EventsWithPrizesReportGenerator.cs" />

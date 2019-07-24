@@ -1083,6 +1083,7 @@ namespace MSOOrganiser
             {
                 var calculator = new SeedingScoreCalculator();
                 calculator.CalculateSeedings();
+                calculator.CalculateRatings();
             }
         }
 
