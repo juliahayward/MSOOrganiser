@@ -10,3 +10,14 @@ MSOOrganiser/.vs/MSOOrganiser/v15/Server/sqlite3/db.lock
 .vs/
 packages/
 Data/
+MSOWeb/obj/
+MSOOrganiser/obj/
+MSOOrganiser/bin/
+MSOCoreTests/obj/
+MSOCoreTests/bin/
+MSOCore/obj/
+MSOAgent/obj/
+MSOAgent/bin/
+MSOCore/bin/
+MSOWeb/bin/
+*.user
