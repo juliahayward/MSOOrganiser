@@ -1083,11 +1083,17 @@ namespace MSOOrganiser
             {
                 var calculator = new SeedingScoreCalculator();
                 calculator.CalculateSeedings();
-                calculator.CalculateRatings();
             }
         }
 
-       
+        private void calculateElos_Click(object sender, RoutedEventArgs e)
+        {
+            using (new SpinnyCursor())
+            {
+                var calculator = new SeedingScoreCalculator();
+                calculator.CalculateRatings();
+            }
+        }
     }
 
 

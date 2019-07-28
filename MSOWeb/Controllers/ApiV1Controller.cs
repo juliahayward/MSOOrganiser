@@ -55,7 +55,7 @@ namespace MSOWeb.Controllers
                 var data = l.GetEventContestants(eventCode);
                 var builder = new StringBuilder();
                 int index = 0;
-                foreach (var c in data.Contestants.OrderBy(c => c.Seeding))
+                foreach (var c in data.Contestants.OrderByDescending(c => c.Seeding))
                 {
                     index++;
                     builder.Append($"{index}|{c.Name}|{c.ContestantId}|{c.Seeding}|||||||||\r\n");

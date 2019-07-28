@@ -10,3 +10,5 @@ MSOOrganiser/.vs/MSOOrganiser/v15/Server/sqlite3/db.lock
 .vs/
 packages/
 Data/
+*.user
+*.suo

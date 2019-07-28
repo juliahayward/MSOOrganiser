@@ -9,6 +9,8 @@ namespace MSOCore.ApiLogic
 {
     public class OlympiadEventsApiLogic
     {
+        private readonly Random _random = new Random();
+
         public class OlympiadEventsVm
         {
             public class EventVm 
@@ -97,7 +99,7 @@ namespace MSOCore.ApiLogic
 
             var currentOlympiad = context.Olympiad_Infoes.OrderByDescending(x => x.StartDate).First();
             var evt = currentOlympiad.Events.SingleOrDefault(x => x.Code == eventCode);
-            var seedings = context.Seedings.Where(s => s.EventCode == eventCode).ToDictionary(s => s.ContestantId, s => s.Rank);
+            var elos = context.Ratings.Where(s => s.EventCode == eventCode).ToDictionary(s => s.ContestantId, s => s.QuasiEloRating);
 
             if (evt == null) throw new ArgumentOutOfRangeException("Unrecognised event");
 
@@ -113,16 +115,16 @@ namespace MSOCore.ApiLogic
                 }).ToList();
 
             foreach (var c in vm.Contestants)
-                c.Seeding = GetSeeding(seedings, c.ContestantId);
+                c.Seeding = GetElo(elos, c.ContestantId);
 
             return vm;
         }
 
-        private int GetSeeding(Dictionary<int, int?> seedings, int contestantId)
+        private int GetElo(Dictionary<int, int> seedings, int contestantId)
         {
-            return (seedings.ContainsKey(contestantId) && seedings[contestantId].HasValue)
-                ? seedings[contestantId].Value
-                : 1000;
+            return (seedings.ContainsKey(contestantId))
+                ? seedings[contestantId]
+                : 1500 + _random.Next(50);
         }
 
 

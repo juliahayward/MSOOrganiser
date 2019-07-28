@@ -81,14 +81,15 @@ namespace MSOCore.Calculators
          * seeding points would be rated 2,256. Ratings are capped at 2,600 (ie anyone with more than 80 seeding 
          * points is given this rating.  This only applies to the players who are given the 1,000 point bonus on 
          * the seeding system. The result is ratings ranging from 2,100 to 2,600
- 
-
-Ratings for unseeded players based upon Pentamind points:
-
-The rating utilises the best two Pentamind scores recorded for the event over the last 5 years.  I’ll denote these PMscore1 & PMscore2, other Pentamind scores are ignored.
-The players rating is calculated as [1,600 + (2.5 x (PMscore1 + PMscore2))].  For example a player with best Pentamind scores of 75 and 60 would be rated 1,938.
-The maximum rating a player can achieve from this method is 2,100.  (There is a possibility albeit unlikely for a player to have PM scores over 100 from Premier events without obtaining a seeding).
-If the player has only played in the event once in the last 5 years, just use that one PM score.  PMscore2 will be zero.
+         * 
+         * Ratings for unseeded players based upon Pentamind points:
+         * 
+         * The rating utilises the best two Pentamind scores recorded for the event over the last 5 years.  I’ll denote 
+         * these PMscore1 & PMscore2, other Pentamind scores are ignored. The players rating is calculated as 
+         * [1,600 + (2.5 x (PMscore1 + PMscore2))].  For example a player with best Pentamind scores of 75 and 60 would 
+         * be rated 1,938. The maximum rating a player can achieve from this method is 2,100.  (There is a possibility 
+         * albeit unlikely for a player to have PM scores over 100 from Premier events without obtaining a seeding).
+         *  If the player has only played in the event once in the last 5 years, just use that one PM score. PMscore2 will be zero.
  
 
 Ratings for players who are unseeded and have not played the event in the last 5 years:
@@ -116,6 +117,54 @@ I have attached my sheet again which should show all of the ratings to compare a
                 context.Ratings.Add(rating);
                 context.SaveChanges();
             }
+
+            // Last 5 years
+            var olympiadIds = context.Olympiad_Infoes.Where(x => x.YearOf > 2013 && x.YearOf < 7000)
+                .Select(o => o.Id).ToList();
+            var scoringEntries = context.Entrants
+                .Where(x => olympiadIds.Contains(x.OlympiadId.Value) && x.Penta_Score != null && x.Penta_Score > 0).ToList();
+
+            var dict = new Dictionary<ContestandEvent, List<double>>();
+
+            foreach (var entry in scoringEntries)
+            {
+                foreach (var code in GetEquivalentEvents(entry.Game_Code))
+                {
+                    var key = new ContestandEvent() { ContestantId = entry.Mind_Sport_ID.Value, EventCode = code };
+                    if (!dict.ContainsKey(key))
+                        dict.Add(key, new List<double>());
+
+                    dict[key].Add(entry.Penta_Score.Value);
+                }
+            }
+            // Now remove the ones that have already been seeded
+            foreach (var seed in seedings)
+            {
+                var key = new ContestandEvent() { ContestantId = seed.ContestantId, EventCode = seed.EventCode };
+                if (dict.ContainsKey(key))
+                    dict.Remove(key);
+            }
+
+            foreach (var key in dict.Keys)
+            {
+                var top2 = dict[key].OrderByDescending(x => x).Take(2);
+
+                var rating = new Rating()
+                {
+                    ContestantId = key.ContestantId,
+                    EventCode = key.EventCode,
+                    QuasiEloRating = (int)Math.Round(1600 + 2.5 * top2.Sum())
+                };
+
+                context.Ratings.Add(rating);
+                context.SaveChanges();
+            }
+        }
+
+        internal struct ContestandEvent
+        {
+            internal int ContestantId;
+            internal string EventCode;
         }
 
 
