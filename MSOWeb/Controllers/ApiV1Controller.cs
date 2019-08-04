@@ -55,10 +55,10 @@ namespace MSOWeb.Controllers
                 var data = l.GetEventContestants(eventCode);
                 var builder = new StringBuilder();
                 int index = 0;
-                foreach (var c in data.Contestants.OrderByDescending(c => c.Seeding))
+                foreach (var c in data.Contestants.OrderByDescending(c => c.SeedingPoints))
                 {
                     index++;
-                    builder.Append($"{index}|{c.Name}|{c.ContestantId}|{c.Seeding}|||||||||\r\n");
+                    builder.Append($"{index}|{c.Name}|{c.ContestantId}|{c.SeedingPoints}|||||||||\r\n");
                 }
 
                 Response.AddHeader("Content-Disposition", $"attachment;filename={eventCode}.txt");

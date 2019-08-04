@@ -952,6 +952,7 @@ namespace MSOOrganiser
             var lastLoggedIn = GetLastLoggedInUser();
 
             var loginBox = new LoginWindow(lastLoggedIn);
+            loginBox.Owner = this;
             loginBox.ShowDialog();
             if (loginBox.UserId == 0)
             {

@@ -66,7 +66,8 @@ namespace MSOCore.ApiLogic
                 public string LastName { get; set; }
                 public bool IsJunior { get; set; }
                 public bool IsSenior { get; set; }
-                public int Seeding { get; set; }
+                public int SeedingPoints { get; set; }
+                public int RatingPoints { get; set; }
             }
 
             public string EventCode { get; set; }
@@ -100,6 +101,7 @@ namespace MSOCore.ApiLogic
             var currentOlympiad = context.Olympiad_Infoes.OrderByDescending(x => x.StartDate).First();
             var evt = currentOlympiad.Events.SingleOrDefault(x => x.Code == eventCode);
             var elos = context.Ratings.Where(s => s.EventCode == eventCode).ToDictionary(s => s.ContestantId, s => s.QuasiEloRating);
+            var seedings = context.Seedings.Where(s => s.EventCode == eventCode).ToDictionary(s => s.ContestantId, s => s.Score);
 
             if (evt == null) throw new ArgumentOutOfRangeException("Unrecognised event");
 
@@ -115,15 +117,27 @@ namespace MSOCore.ApiLogic
                 }).ToList();
 
             foreach (var c in vm.Contestants)
-                c.Seeding = GetElo(elos, c.ContestantId);
+            {
+                c.SeedingPoints = GetSeeding(seedings, c.ContestantId);
+                c.RatingPoints = GetElo(elos, c.ContestantId);
+            }
 
+            vm.Contestants.Sort(new Comparison<EventContestantsVm.ContestantVm>((first, second) 
+                    => second.RatingPoints.CompareTo(first.RatingPoints)));
             return vm;
         }
 
-        private int GetElo(Dictionary<int, int> seedings, int contestantId)
+        private int GetSeeding(Dictionary<int, int?> seedings, int contestantId)
         {
-            return (seedings.ContainsKey(contestantId))
-                ? seedings[contestantId]
+            return (seedings.ContainsKey(contestantId) && seedings[contestantId].HasValue)
+                ? seedings[contestantId].Value
+                : 0;
+        }
+
+        private int GetElo(Dictionary<int, int> elos, int contestantId)
+        {
+            return (elos.ContainsKey(contestantId))
+                ? elos[contestantId]
                 : 1500 + _random.Next(50);
         }
 

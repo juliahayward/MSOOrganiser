@@ -46,7 +46,7 @@ namespace MSOOrganiser
 
         void MainWindow_UserLoggedIn(object sender, EventArgs e)
         {
-            ViewModel.Populate();
+            // ViewModel.Populate();
             _timer.Enabled = true;
         }
 
@@ -125,7 +125,9 @@ namespace MSOOrganiser
 
             var context = DataEntitiesProvider.Provide();
             var currentOlympiad = context.Olympiad_Infoes.First(x => x.Current);
-            var events = context.Events.Where(x => x.OlympiadId == currentOlympiad.Id && x.Number > 0);
+            var events = context.Events.Include("Entrants").Include("Event_Sess")
+                .Where(x => x.OlympiadId == currentOlympiad.Id && x.Number > 0);
+
             foreach (var evt in events.OrderBy(x => x.Number).ToList())
             {
                 Events.Add(new EventVm() 

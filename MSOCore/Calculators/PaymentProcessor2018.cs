@@ -23,13 +23,14 @@ namespace MSOCore.Calculators
                 order2018.BookingSpaces = order.booking_spaces.Value;
                 order2018.BookingStatus = order.booking_status.Value;
                 order2018.Timestamp = order.timestamp.Value;
+                order2018.DoBString = order.date_of_birth.Value;
                 order2018.Attendees.Add(new Order2018.Attendee()
                 {
                     Title = order.attendees.customer.title.Value,
                     FirstName = order.attendees.customer.first_name.Value,
                     LastName = order.attendees.customer.last_name.Value,
                     CountryCode = SubstituteCountryCode(order.attendees.customer.country_to_represent.Value),
-                    Email = order.attendees.customer.email.Value
+                    Email = order.attendees.customer.email.Value, 
                 });
                 foreach (var o1 in order.events)
                 {
@@ -81,6 +82,8 @@ namespace MSOCore.Calculators
 
                     if (contestant == null)
                         contestant = CreateEntrant(context, order.DateOfBirth, attendee, countries);
+                    else
+                        UpdateEntrant(context, contestant, order.DateOfBirth, attendee.Email);
 
                     bool newEventFound = false;
                     foreach (var evt in order.Events)
@@ -159,13 +162,24 @@ namespace MSOCore.Calculators
                 Nationality = countries[entrant.CountryCode],
                 Title = entrant.Title,
                 Male = (entrant.Title == "Mr"),
-                DateofBirth = dob
+                DateofBirth = dob,
+                email = entrant.Email
             };
 
             context.Contestants.Add(contestant);
 
             context.SaveChanges();
             return contestant;
+        }
+
+        private void UpdateEntrant(DataEntities context, Contestant contestant, DateTime? dateOfBirth, string email)
+        {
+            if (dateOfBirth != null)
+                contestant.DateofBirth = dateOfBirth;
+            if (!string.IsNullOrEmpty(email))
+                contestant.email = email;
+
+            context.SaveChanges();
         }
     }
 
