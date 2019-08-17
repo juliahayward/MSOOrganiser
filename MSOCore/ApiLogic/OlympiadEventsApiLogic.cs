@@ -112,6 +112,8 @@ namespace MSOCore.ApiLogic
                 {
                     ContestantId = e.Name.Mind_Sport_ID,
                     Name = e.Name.FullName(),
+                    FirstName = e.Name.Firstname,
+                    LastName = e.Name.Lastname,
                     IsJunior = e.Name.IsJuniorForOlympiad(currentOlympiad),
                     IsSenior = e.Name.IsSeniorForOlympiad(currentOlympiad)
                 }).ToList();

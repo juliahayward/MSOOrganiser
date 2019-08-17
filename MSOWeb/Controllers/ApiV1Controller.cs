@@ -58,7 +58,7 @@ namespace MSOWeb.Controllers
                 foreach (var c in data.Contestants.OrderByDescending(c => c.SeedingPoints))
                 {
                     index++;
-                    builder.Append($"{index}|{c.Name}|{c.ContestantId}|{c.SeedingPoints}|||||||||\r\n");
+                    builder.Append($"{index}|{c.FirstName}|{c.LastName}|{c.ContestantId}|{c.RatingPoints}|{c.SeedingPoints}||||||||\r\n");
                 }
 
                 Response.AddHeader("Content-Disposition", $"attachment;filename={eventCode}.txt");

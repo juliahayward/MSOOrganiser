@@ -9,9 +9,10 @@
 <table class="table">
     <thead>
         <tr>
-            <td>Code</td>
-            <td>Name</td>
-            <td>Entries</td>
+            <td><b>Code</b></td>
+            <td><b>Name</b></td>
+            <td><b>Entries</b></td>
+            <td><b>Download players</b></td>
         </tr>
     </thead>
     <tbody>
@@ -21,7 +22,17 @@
                 <td><span>@item.Code</span></td>
                 <td><span>@item.Name</span></td>
                 <td><span>@item.Entrants</span></td>
+                <td>
+                    <a class="btn btn-primary" href="/apiv1/multiplayereventcontestants?eventcode=@item.Code" role="button">Mike's draws</a>
+                    <a class="btn btn-primary" href="/apiv1/swissperfecteventcontestants?eventcode=@item.Code" role="button">SwissPerfect</a>
+                </td>
             </tr>
         }
+            <tr>
+                <td><span><b>Total</b></span></td>
+                <td><span><b> </b></span></td>
+                <td><span><b>@Model.Events.Sum(e => e.Entrants)</b></span></td>
+                <td></td>
+            </tr>
     </tbody>
 </table>
