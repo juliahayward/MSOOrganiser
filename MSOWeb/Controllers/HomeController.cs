@@ -55,7 +55,10 @@ namespace MSOWeb.Controllers
         {
             var user = _userLogic.GetUserForLogin(username, password);
             if (user == null)
+            {
+                TempData.Add("error", "User not recognised");
                 return new RedirectResult("/Home/Login");
+            }
 
             string Role = user.Role;
 

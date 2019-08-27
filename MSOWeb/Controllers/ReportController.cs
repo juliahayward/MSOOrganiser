@@ -94,6 +94,15 @@ namespace MSOWeb.Controllers
             return View("ModernAbstractStandings"+view, model);
         }
 
+        public ActionResult PokerStandings(int? year, string view="")
+        {
+            var generator = new PentamindStandingsGenerator();
+
+            var model = generator.GetPokerStandings(year);
+
+            return View("PokerStandings"+view, model);
+        }
+
         public ActionResult TotalEventEntries(int? year)
         {
             var generator = new TotalEventEntriesGenerator();

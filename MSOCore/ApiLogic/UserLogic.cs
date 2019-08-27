@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
+using System.Net.Mail;
 using System.Reflection;
 using System.Security.Cryptography;
 
@@ -31,13 +33,55 @@ namespace MSOCore.ApiLogic
 
         private bool VerifyPassword(DataEntities context, User user, string enteredPassword)
         {
+            var computedHash = GetHash(user.Salt + enteredPassword);
+            return (computedHash == user.Hash);
+        }
+
+        private string GetHash(string input)
+        {
             var hashAlgorithm = new SHA256Managed();
 
-            var inputBytes1 = System.Text.Encoding.UTF8.GetBytes(user.Salt + enteredPassword);
+            var inputBytes1 = System.Text.Encoding.UTF8.GetBytes(input);
             var outputBytes1 = hashAlgorithm.ComputeHash(inputBytes1);
-            var computedHash = Convert.ToBase64String(outputBytes1);
+            return Convert.ToBase64String(outputBytes1);
+        }
 
-            return (computedHash == user.Hash);
+        public void SendUserPasswordResetLink(string userName, string url)
+        {
+            var context = DataEntitiesProvider.Provide();
+            var user = context.Users.FirstOrDefault(x => x.Name == userName);
+            if (user == null)
+                return;
+            string token = PasswordResetToken(user);
+
+            var client = new SmtpClient();
+            client.Host = "smtp.outlook.com";
+            client.UseDefaultCredentials = false;
+            client.EnableSsl = true;
+            client.Credentials = new NetworkCredential("julia.hayward@btconnect.com", "Choco49late");
+
+            string body = $"password reset received for {userName}, go  to {url}?userId={user.PIN}&token={token}";
+
+            // Might be better to do a trello board?
+            using (MailMessage message = new MailMessage(
+                        new MailAddress("julia.hayward@btconnect.com", "Mind Sports Olympiad"),
+                        new MailAddress(user.Email)))
+            {
+                message.Body = body;
+                message.Subject = "MSO: Password reset";
+
+                client.Send(message);
+            }
+        }
+
+        private string PasswordResetToken(User user)
+        {
+            return GetHash(user.PIN + ":" + DateTime.UtcNow.ToString("yyyy-MM-dd"));
+        }
+
+        public void UpdateUserPassword(int userId, string token, string password)
+        {
+            // TODO - verify token, then set password hash
         }
     }
 }

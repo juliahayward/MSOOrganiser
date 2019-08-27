@@ -5,17 +5,20 @@
 
 <style type="text/css">
     .jmhTable {
-        border: 1px black solid; 
-        width: 400px; 
+        border: 1px black solid;
+        width: 400px;
         margin-left: 100px
     }
-    .jmhTable td {
-        vertical-align: middle;
-    }
+
+        .jmhTable td {
+            vertical-align: middle;
+        }
+
     .jmhPaddedHeader {
         margin: 4px;
         display: block;
     }
+
     .jmhPadded {
         margin: 4px;
         display: block;
@@ -24,27 +27,67 @@
 
 <h1 class="entry-title">Results for @Model.GameName</h1>
 
+<h2 class="entry-title">Titles:</h2>
+
+@if (Model.Titles.Grandmasters.Any())
+{
+    <h3><b>Grandmaster</b></h3>
+    <ul>
+        @foreach (var code in Model.Titles.Grandmasters.Distinct().OrderBy(x => x))
+        {
+            <li>@code</li>
+        }
+    </ul>
+}
+@if (Model.Titles.Masters.Any())
+{
+    <h3><b>International Master</b></h3>
+    <ul>
+        @foreach (var code in Model.Titles.Masters.Distinct().OrderBy(x => x))
+        {
+            <li>@code</li>
+        }
+    </ul>
+}
+@if (Model.Titles.CandidateMasters.Any())
+{
+    <h3><b>Candidate Master</b></h3>
+    <ul>
+        @foreach (var code in Model.Titles.CandidateMasters.Distinct().OrderBy(x => x))
+        {
+            <li>@code</li>
+        }
+    </ul>
+}
+@if (!Model.Titles.Grandmasters.Any() && !Model.Titles.Masters.Any() && !Model.Titles.CandidateMasters.Any())
+{
+    <p>No titles have yet been awarded</p>
+}
+
 @foreach (var year in Model.Medals.Select(x => x.Year).Distinct())
 {
-<h2 class="entry-title">@year</h2>
+    <h2 class="entry-title">@year</h2>
     foreach (var eventName in Model.Medals.Where(x => x.Year == year).Select(x => x.EventName).Distinct())
     {
         <table class="jmhTable">
             <tr>
                 <td colspan="3" style="background: AliceBlue">
-                    <span class="jmhPaddedHeader">@eventName</span></td>
+                    <span class="jmhPaddedHeader">@eventName</span>
+                </td>
             </tr>
-        @foreach (var medal in Model.Medals.Where(x => x.EventName == eventName && x.Year == year))
-        {
-            <tr>
-                <td style="width:100px;"><div class="jmhPadded">@medal.Medal</div></td>
-                <td style="width:240px;"><div class="jmhPadded">
-                    <a href="./ContestantMedals?contestantId=@medal.ContestantId">@medal.Name</a>
-                                         </div></td>
-                <td><img class="jmhPadded" src="@medal.Flag"  alt="@medal.Nationality" title="@medal.Nationality"/></td></tr>
-        }
-            </table>
-            <p></p>
+            @foreach (var medal in Model.Medals.Where(x => x.EventName == eventName && x.Year == year))
+            {
+                <tr>
+                    <td style="width:100px;"><div class="jmhPadded">@medal.Medal</div></td>
+                    <td style="width:240px;">
+                        <div class="jmhPadded">
+                            <a href="./ContestantMedals?contestantId=@medal.ContestantId">@medal.Name</a>
+                        </div>
+                    </td>
+                    <td><img class="jmhPadded" src="@medal.Flag" alt="@medal.Nationality" title="@medal.Nationality" /></td>
+                </tr>
+            }
+        </table>
+        <p></p>
     }
 }
-    

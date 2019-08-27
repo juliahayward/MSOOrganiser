@@ -400,6 +400,7 @@ warning 6002: The table/view 'mso_prod.dbo.SelectedPeople' does not have a prima
           <Property Name="Salt" Type="nvarchar" MaxLength="32" />
           <Property Name="Hash" Type="nvarchar" MaxLength="128" />
           <Property Name="Role" Type="nvarchar" MaxLength="20" />
+          <Property Name="Email" Type="nvarchar" MaxLength="100" />
         </EntityType>
         <EntityType Name="WomenNotInWomensPentamind">
           <Key>
@@ -1185,6 +1186,7 @@ FROM [dbo].[SelectedPeople] AS [SelectedPeople]</DefiningQuery>
           <Property Type="String" Name="Hash" MaxLength="128" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="UserLogins" Relationship="DataModel.FK_UserLogins_Users" FromRole="User" ToRole="UserLogin" />
           <Property Name="Role" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="Email" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
         </EntityType>
         <Association Name="Entrants_NamesEntrants">
           <End Type="DataModel.Contestant" Role="Name" Multiplicity="0..1" />
@@ -1831,6 +1833,7 @@ FROM [dbo].[SelectedPeople] AS [SelectedPeople]</DefiningQuery>
           <EntitySetMapping Name="Users">
             <EntityTypeMapping TypeName="DataModel.User">
               <MappingFragment StoreEntitySet="Users">
+                <ScalarProperty Name="Email" ColumnName="Email" />
                 <ScalarProperty Name="Role" ColumnName="Role" />
                 <ScalarProperty Name="Hash" ColumnName="Hash" />
                 <ScalarProperty Name="Salt" ColumnName="Salt" />

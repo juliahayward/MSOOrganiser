@@ -18,6 +18,7 @@ namespace MSOCore.Reports
                 public string Name { get; set; }
                 public string Code { get; set; }
                 public int Entrants { get; set; }
+                public bool IsMetaEvent { get; set; }
             }
         }
 
@@ -45,6 +46,7 @@ namespace MSOCore.Reports
                 {
                     Code = x.Code,
                     Name = x.Mind_Sport,
+                    IsMetaEvent = !x.Pentamind.Value,
                     Entrants = (entrants.ContainsKey(x.EIN)) ? entrants[x.EIN] : 0
                 })
                 .OrderBy(x => x.Code);

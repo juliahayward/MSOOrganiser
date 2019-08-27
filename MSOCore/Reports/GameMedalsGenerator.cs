@@ -13,6 +13,7 @@ namespace MSOCore.Reports
         {
             public string GameName { get; set; }
             public IEnumerable<MedalVm> Medals { get; set; }
+            public TitleVm Titles { get; set; }
 
             public class MedalVm
             {
@@ -27,6 +28,25 @@ namespace MSOCore.Reports
                 public string Name { get { return FirstName + " " + LastName; } }
                 public string Nationality { get; set; }
                 public string Flag { get { return Nationality.GetFlag(); } }
+            }
+
+            public class TitleVm  
+            {
+                public IList<string> Grandmasters { get; }
+                public IList<string> Masters { get; }
+                public IList<string> CandidateMasters { get; }
+
+                public TitleVm()
+                {
+                    Grandmasters = new List<string>();
+                    Masters = new List<string>();
+                    CandidateMasters = new List<string>();
+                }
+            }
+
+            public GameMedalsVm()
+            {
+                Titles = new TitleVm();
             }
         }
 
@@ -52,7 +72,6 @@ namespace MSOCore.Reports
                     EventCode = ecv.ev.Code,
                     EventName = ecv.ev.Mind_Sport,
                     Medal = ecv.ec.e.Medal ?? ecv.ec.e.JuniorMedal,
-                  //  Rank = ecv.ec.e.Rank.Value,
                     ContestantId = ecv.ec.c.Mind_Sport_ID,
                     FirstName = ecv.ec.c.Firstname,
                     LastName = ecv.ec.c.Lastname,
@@ -61,6 +80,23 @@ namespace MSOCore.Reports
                 .ToList()
                 .Where(x => x.Year < 7002)
                 .OrderByDescending(x => x.Year).ThenBy(x => x.EventCode).ThenBy(x => x.Rank).ThenBy(x => x.Medal.MedalRank());
+
+            var titleLookup = retval.Medals.GroupBy(x => new { x.EventCode, x.ContestantId, x.Name });
+            foreach (var possibleTitle in titleLookup)
+            {
+                var golds = possibleTitle.Count(x => x.Medal == "Gold");
+                var silvers = possibleTitle.Count(x => x.Medal == "Silver");
+                var bronzes = possibleTitle.Count(x => x.Medal == "Bronze");
+                if (golds >= 2 || (golds == 1 && silvers >= 2))
+                    retval.Titles.Grandmasters.Add(possibleTitle.Key.Name);
+                else if ((golds == 1 && silvers + bronzes > 0)
+                    || silvers >= 2
+                    || (silvers == 1 && bronzes >= 2))
+                    retval.Titles.Masters.Add(possibleTitle.Key.Name);
+                else if ((silvers == 1 && bronzes > 0)
+                    || bronzes >= 2)
+                    retval.Titles.CandidateMasters.Add(possibleTitle.Key.Name);
+            }
 
             return retval;
         }

@@ -23,8 +23,11 @@
                 <td><span>@item.Name</span></td>
                 <td><span>@item.Entrants</span></td>
                 <td>
+                    @if (!item.IsMetaEvent)
+                    {
                     <a class="btn btn-primary" href="/apiv1/multiplayereventcontestants?eventcode=@item.Code" role="button">Mike's draws</a>
                     <a class="btn btn-primary" href="/apiv1/swissperfecteventcontestants?eventcode=@item.Code" role="button">SwissPerfect</a>
+                    }
                 </td>
             </tr>
         }

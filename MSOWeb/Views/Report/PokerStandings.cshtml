@@ -1,0 +1,49 @@
+﻿@model MSOCore.Reports.PentamindStandingsGenerator.PentamindStandingsReportVm
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<style type="text/css">
+    .jmhTable {
+        border: 1px black solid; 
+        width: 500px; 
+    }
+    .jmhTable td {
+        vertical-align: middle;
+    }
+    .jmhPaddedHeader {
+        margin: 4px;
+        display: block;
+    }
+    .jmhPadded {
+        margin: 4px;
+        display: block;
+    }
+</style>
+
+<h1 class="entry-title">Amateur Poker Standings: @Model.OlympiadTitle</h1>
+
+@{ var i = 1; }
+
+<table class="jmhTable">
+    <tr  style="background: AliceBlue">
+        <td><span class="jmhPaddedHeader">Name</span></td>
+        <td><span class="jmhPaddedHeader">Score</span></td>
+        <td colspan="5"><span class="jmhPaddedHeader">Individual events</span></td>
+    </tr>
+    @foreach (var item in Model.Standings.Take(40))
+    {    
+    <tr>
+        <td><span class="jmhPadded">@item.Name</span></td>
+        <td style="width: 100px;"><span class="jmhPadded">@item.TotalScoreStr</span></td>
+        <td style="font-size: small"><span class="jmhPadded">@item.ScoreStr(0)</span></td>
+        <td style="font-size: small"><span class="jmhPadded">@item.ScoreStr(1)</span></td>
+        <td style="font-size: small"><span class="jmhPadded">@item.ScoreStr(2)</span></td>
+        <td style="font-size: small"><span class="jmhPadded">@item.ScoreStr(3)</span></td>
+    </tr>
+        
+        i++;
+    }
+</table>
+
+<h3>Top 40 listed. Competitors need 4 events to qualify.</h3>

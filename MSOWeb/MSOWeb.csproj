@@ -136,6 +136,7 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ReportController.cs" />
     <Compile Include="Controllers\ScheduleController.cs" />
+    <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -409,6 +410,11 @@
     <Content Include="Views\Home\ReleaseNotes.cshtml" />
     <Content Include="Views\Shared\_NewLayoutWithFooter.cshtml" />
     <Content Include="Views\Shared\_NewLayoutNoHeader.cshtml" />
+    <Content Include="Views\Report\PokerStandingsnew.cshtml" />
+    <Content Include="Views\Report\PokerStandings.cshtml" />
+    <Content Include="Views\User\NewPassword.cshtml" />
+    <Content Include="Views\User\NewPasswordSent.cshtml" />
+    <Content Include="Views\User\PasswordReset.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

@@ -10,7 +10,7 @@
 <div class="list-group">
     @foreach (var evt in Model)
     {
-    <a href="/Report/EventResults?year=2018&eventCode=@evt.Code" class="list-group-item list-group-item-action disabled">
+    <a href="/Report/EventResults?eventCode=@evt.Code" class="list-group-item list-group-item-action disabled">
         @evt.Code : @evt.Name
         @if (evt.HasResults)
         {

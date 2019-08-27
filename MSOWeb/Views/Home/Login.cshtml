@@ -24,6 +24,26 @@
 
 <body class="text-center">
     <form method="post" action="#" class="form-signin">
+        @{
+            object message = "";
+            if (TempData.TryGetValue("error", out message))
+            {
+                TempData.Remove("error");
+                <div class="mb-2 alert alert-danger alert-dismissible fade show">
+                    <strong>Error!</strong> @message
+                    <button type="button" class="close" data-dismiss="alert">&times;</button>
+                </div>
+            }
+            if (TempData.TryGetValue("success", out message))
+            {
+                TempData.Remove("success");
+                <div class="mb-2 alert alert-success alert-dismissible fade show">
+                    <strong>Success!</strong> @message
+                    <button type="button" class="close" data-dismiss="alert">&times;</button>
+                </div>
+            }
+        }
+
         <img class="mb-4" src="~/Content/Logo.png" alt="" height="144">
         <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
         <label for="inputEmail" class="sr-only">Name</label>
@@ -36,6 +56,7 @@
             </label>
         </div>
         <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
+        <a href="/User/NewPassword" class="mt-5 mb-3">Forgot your password?</a>
         <p class="mt-5 mb-3 text-muted">&copy; Julia Hayward 2014-2019</p>
     </form>
 </body>

@@ -25,6 +25,7 @@ namespace MSOCore
         public string Salt { get; set; }
         public string Hash { get; set; }
         public string Role { get; set; }
+        public string Email { get; set; }
     
         public virtual ICollection<UserLogin> UserLogins { get; set; }
     }
