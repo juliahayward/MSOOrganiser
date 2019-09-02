@@ -82,6 +82,17 @@ namespace MSOCore.ApiLogic
         public void UpdateUserPassword(int userId, string token, string password)
         {
             // TODO - verify token, then set password hash
+            var context = DataEntitiesProvider.Provide();
+            var user = context.Users.FirstOrDefault(x => x.PIN == userId);
+            if (user == null)
+                throw new ArgumentOutOfRangeException("Email link was invalid.");
+
+            string expectedToken = PasswordResetToken(user);
+            if (token != expectedToken)
+                throw new ArgumentOutOfRangeException("Email link invalid or expired.");
+
+            user.Hash = GetHash(user.Salt + password);
+            context.SaveChanges();
         }
     }
 }

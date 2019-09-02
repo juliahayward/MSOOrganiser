@@ -39,7 +39,10 @@ namespace MSOWeb.Controllers
         [HttpGet]
         public ActionResult PasswordReset(int userId, string token)
         {
-            return View(new PasswordResetVM { UserId = userId, Token = token});
+            return View(new PasswordResetVM {
+                UserId = userId,
+                Token = token.Replace(" ", "+") // because + gets filtered out in the GET URL
+            });
         }
 
         public class PasswordResetVM {
@@ -50,9 +53,15 @@ namespace MSOWeb.Controllers
         [HttpPost]
         public ActionResult PasswordReset(int userId, string token, string password)
         {
-            _userLogic.UpdateUserPassword(userId, token, password);
-
-            TempData.Add("success", "Your password has been updated.");
+            try
+            { 
+                _userLogic.UpdateUserPassword(userId, token, password);
+                TempData.Add("success", "Your password has been updated.");
+            }
+            catch (Exception ex)
+            {
+                TempData.Add("error", ex.Message);
+            }
 
             return RedirectToAction("Login", "Home");
         }
