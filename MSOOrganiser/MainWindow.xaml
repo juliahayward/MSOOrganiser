@@ -20,7 +20,6 @@
                           Visibility="{Binding IsLoggedIn, Converter={StaticResource BoolToVisibilityConverter}}" />
                 <MenuItem Header="_File"
                           Visibility="{Binding IsLoggedIn, Converter={StaticResource BoolToVisibilityConverter}}">
-                    <MenuItem Header="Change Password" Click="changePasswordMenuItem_Click"/>
                     <MenuItem Header="_Exit" Click="exitMenuItem_Click"/>
                 </MenuItem>
                 <MenuItem Header="Olympiads" Click="olympiadsMenuItem_Click"

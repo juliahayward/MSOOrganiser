@@ -126,12 +126,6 @@ namespace MSOOrganiser
         }
 
 
-        private void changePasswordMenuItem_Click(object sender, RoutedEventArgs e)
-        {
-            var passwordDialog = new PasswordChangeWindow() { UserId = LoggedInUserId };
-            passwordDialog.ShowDialog();
-        }
-
         private void exitMenuItem_Click(object sender, RoutedEventArgs e)
         {
             this.Close();

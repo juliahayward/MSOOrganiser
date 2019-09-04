@@ -155,9 +155,6 @@
       <DependentUpon>EventEntriesReportPicker.xaml</DependentUpon>
     </Compile>
     <Compile Include="GlobalSettings.cs" />
-    <Compile Include="PasswordChangeWindow.xaml.cs">
-      <DependentUpon>PasswordChangeWindow.xaml</DependentUpon>
-    </Compile>
     <Compile Include="DisplayResultsPanel.xaml.cs">
       <DependentUpon>DisplayResultsPanel.xaml</DependentUpon>
     </Compile>
@@ -254,10 +251,6 @@
     <Page Include="EventEntriesReportPicker.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="PasswordChangeWindow.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
     </Page>
     <Page Include="DisplayResultsPanel.xaml">
       <SubType>Designer</SubType>

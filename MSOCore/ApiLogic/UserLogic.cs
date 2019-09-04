@@ -60,7 +60,10 @@ namespace MSOCore.ApiLogic
             client.EnableSsl = true;
             client.Credentials = new NetworkCredential("julia.hayward@btconnect.com", "Choco49late");
 
-            string body = $"password reset received for {userName}, go  to {url}?userId={user.PIN}&token={token}";
+            string body = $@"A request to reset the MSO password for user '{userName}' has been received.
+ If this is expected, then go to {url}?userId={user.PIN}&token={token} where you can enter a new password.
+
+If you did not expect this email, or this user is not you, then please ignore and delete it.";
 
             // Might be better to do a trello board?
             using (MailMessage message = new MailMessage(
@@ -76,12 +79,11 @@ namespace MSOCore.ApiLogic
 
         private string PasswordResetToken(User user)
         {
-            return GetHash(user.PIN + ":" + DateTime.UtcNow.ToString("yyyy-MM-dd"));
+            return GetHash(user.PIN + ":" + user.Salt + ":" + DateTime.UtcNow.ToString("yyyy-MM-dd"));
         }
 
         public void UpdateUserPassword(int userId, string token, string password)
         {
-            // TODO - verify token, then set password hash
             var context = DataEntitiesProvider.Provide();
             var user = context.Users.FirstOrDefault(x => x.PIN == userId);
             if (user == null)
