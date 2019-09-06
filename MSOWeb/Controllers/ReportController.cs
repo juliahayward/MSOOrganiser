@@ -48,6 +48,15 @@ namespace MSOWeb.Controllers
             return View(model);
         }
 
+        public ActionResult CountryMedals()
+        {
+            var rg = new MedalTableReportGenerator();
+
+            var results = rg.GetItemsForLatest();
+
+            return View(results);
+        }
+
         public ActionResult GameMedals(string gameCode)
         {
             // If someone puts in a 4 letter code, reduce it to a 2

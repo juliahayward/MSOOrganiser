@@ -29,7 +29,7 @@
     <h2 class="entry-title">@gameName</h2>
     foreach (var eventName in Model.Medals.Where(x => x.GameName == gameName).Select(x => x.EventName).Distinct())
     {
-        var eventCode = Model.Medals.Where(x => x.GameName == gameName).First().EventCode;
+        var eventCode = Model.Medals.Where(x => x.EventName == eventName).First().EventCode;
         <table class="jmhTable">
             <tr>
                 <td colspan="3" style="background: AliceBlue"><span class="jmhPaddedHeader"><a href="/Report/EventResults?year=@Model.Year&eventCode=@eventCode">@eventName</a></span></td>
