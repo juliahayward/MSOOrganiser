@@ -56,7 +56,6 @@
                         <MenuItem Header="View Max Fee / Penta Cards" IsEnabled="False" Click="maxFeePentaCards_Click"/>
                         <MenuItem Header="Bulk Max Fee" IsEnabled="False"/>
                         <MenuItem Header="Sign In Sheets" IsEnabled="False"/>
-                        <MenuItem Header="Parking Lists" Click="parkingListsMenuItem_Click" />
                         <MenuItem Header="Print Named Pairing Card for an Event" IsEnabled="False"/>
                         <MenuItem Header="View Pentamind Qualifiers" IsEnabled="False"/>
                         <MenuItem Header="Badges: Arbiters" Click="arbitersBadgesMenuItem_Click" />
@@ -102,15 +101,8 @@
                     </MenuItem>
                     <MenuItem Header="Contestant listing for JW3 (.csv)" Click="contestantList_Click" />
                 </MenuItem>
-                <MenuItem Header="Misc"
-                          Visibility="{Binding IsLoggedIn, Converter={StaticResource BoolToVisibilityConverter}}">
-                    <MenuItem Header="Print Misc Badges" IsEnabled="False"/>
-                </MenuItem>
                 <MenuItem Header="Help">
                     <MenuItem Header="Show Help" Click="help_Click" />
-                    <Separator/>
-                    <MenuItem Header="About MSOOrganiser" Click="about_Click" />
-                    <MenuItem Header="Release notes" Click="releaseNotes_Click" />
                 </MenuItem>
             </Menu>
             <Grid Width="300" DockPanel.Dock="Right" Background="LightGray">

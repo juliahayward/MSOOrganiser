@@ -124,9 +124,6 @@
       <DependentUpon>AddEventsToContestantWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Data\ConnectionStringUpdater.cs" />
-    <Compile Include="Dialogs\AboutDialog.xaml.cs">
-      <DependentUpon>AboutDialog.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Dialogs\AddLocationDialog.xaml.cs">
       <DependentUpon>AddLocationDialog.xaml</DependentUpon>
     </Compile>
@@ -215,10 +212,6 @@
     <Page Include="AddEventsToContestantWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Dialogs\AboutDialog.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Dialogs\AddLocationDialog.xaml">
       <SubType>Designer</SubType>

@@ -235,11 +235,6 @@ namespace MSOOrganiser
             }
         }
 
-        private void parkingListsMenuItem_Click(object sender, RoutedEventArgs e)
-        {
-            MessageBox.Show("This does not appear to work in the Access version - please contact Julia");
-        }
-
         private void entrySummaryMenuItem_Click(object sender, RoutedEventArgs e)
         {
             Func<FlowDocument> generate = () =>
@@ -325,12 +320,6 @@ namespace MSOOrganiser
                 var flowDocumentPrinter = new FlowDocumentPrinter();
                 flowDocumentPrinter.PrintFlowDocument(() => doc, includeFooter: false);
             }
-        }
-
-        private void about_Click(object sender, RoutedEventArgs e)
-        {
-            var dialog = new AboutDialog();
-            dialog.ShowDialog();
         }
 
         private void pentamindStandings_Click(object sender, RoutedEventArgs e)
@@ -922,10 +911,6 @@ namespace MSOOrganiser
             }
         }
 
-        private void releaseNotes_Click(object sender, RoutedEventArgs e)
-        {
-            Process.Start("http://mso.juliahayward.com/home/releasenotes");
-        }
 
         private void logIn_Click(object sender, RoutedEventArgs e)
         {
