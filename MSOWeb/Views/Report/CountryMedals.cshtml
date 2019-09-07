@@ -1,0 +1,55 @@
+﻿@model IEnumerable<MSOCore.Reports.MedalTableReportGenerator.MedalTableVm>
+@{
+    Layout = "~/Views/Shared/_NewLayout.cshtml";
+}
+
+<h1>Medal Table by country: current year</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <td><span>Country</span></td>
+            <td><span>Medals</span></td>
+            <td><span></span></td>
+            <td><span>Junior Medals</span></td>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+    {
+        <tr>
+            <td><img src="@item.Flag" height="30" style="margin-right: 4px" /><span><b>@item.Nationality</b></span></td>
+            <td>
+                @if (item.Golds > 0)
+                {
+                    <span class="btn" style="width:48px; color:#000; background-color:#d4af37; border-color:#000">@item.Golds</span>
+                }
+                @if (item.Silvers > 0)
+                {
+                    <span class="btn" style="width:48px; color:#000; background-color:#c4c7c3; border-color:#000">@item.Silvers</span>
+                }
+                @if (item.Bronzes > 0)
+                {
+                    <span class="btn" style="width:48px; color:#fff; background-color:#cd7f32; border-color:#000">@item.Bronzes</span>
+                }
+                </td>
+            <td><span style="width: 10%;"></span></td>
+            <td>
+                @if (item.JnrGolds > 0)
+                {
+                    <span class="btn" style="width:48px; color:#000; background-color:#d4af37; border-color:#000">@item.JnrGolds</span>
+                }
+                @if (item.JnrSilvers > 0)
+                {
+                    <span class="btn" style="width:48px; color:#000; background-color:#c4c7c3; border-color:#000">@item.JnrSilvers</span>
+                }
+                @if (item.JnrBronzes > 0)
+                {
+                    <span class="btn" style="width:48px; color:#fff; background-color:#cd7f32; border-color:#000">@item.JnrBronzes</span>
+                }
+                </td>
+        </tr>
+}
+    </tbody>
+</table>
+

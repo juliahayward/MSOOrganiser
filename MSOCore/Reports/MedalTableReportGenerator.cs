@@ -1,4 +1,5 @@
 using MSOCore;
+using MSOCore.Extensions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -32,12 +33,17 @@ namespace MSOCore.Reports
                         || JnrGolds > 0 || JnrSilvers > 0 || JnrBronzes > 0;
                 }
             }
+
+            public string Flag
+            {
+                get { return Nationality.GetFlag(); }
+            }
         }
 
         public IEnumerable<MedalTableVm> GetItemsForLatest()
         {
             var context = DataEntitiesProvider.Provide();
-            var olympiad = context.Olympiad_Infoes.OrderByDescending(x => x.StartDate).First();
+            var olympiad = context.Olympiad_Infoes.Single(x => x.Current);
 
             return GetItems(olympiad.Id);
         }

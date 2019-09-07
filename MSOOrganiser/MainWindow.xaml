@@ -51,6 +51,15 @@
                 </MenuItem>
                 <MenuItem Header="Reports"
                           Visibility="{Binding IsLoggedIn, Converter={StaticResource BoolToVisibilityConverter}}">
+                    <MenuItem Header="Old / not implemented yet" IsEnabled="False">
+                        <MenuItem Header="Bulk Receipts" IsEnabled="False"/>
+                        <MenuItem Header="View Max Fee / Penta Cards" IsEnabled="False" Click="maxFeePentaCards_Click"/>
+                        <MenuItem Header="Bulk Max Fee" IsEnabled="False"/>
+                        <MenuItem Header="Sign In Sheets" IsEnabled="False"/>
+                        <MenuItem Header="Print Named Pairing Card for an Event" IsEnabled="False"/>
+                        <MenuItem Header="View Pentamind Qualifiers" IsEnabled="False"/>
+                        <MenuItem Header="Badges: Arbiters" Click="arbitersBadgesMenuItem_Click" />
+                    </MenuItem>
                     <MenuItem Header="Before the event">
                         <MenuItem Header="Contacts" Click="contactsMenuItem_Click"/>
                         <MenuItem Header="View Game Plan" Click="gamePlanMenuItem_Click"/>
@@ -68,6 +77,7 @@
                         <MenuItem Header="Events per Session" Click="printEventsPerSessionMenuItem_Click" /> <!-- was Logistics Report -->
                         <MenuItem Header="Print a Day's Report" Click="daysReportMenuItem_Click" />
                         <MenuItem Header="Print Today's Events" Click="printTodaysEventsMenuItem_Click"/>
+                        <MenuItem Header="Print Today's Event By Game" IsEnabled="False"/>
                         <MenuItem Header="View Medal Forms" Click="medalFormsMenuItem_Click" />
                     </MenuItem>               
                     <MenuItem Header="Finances">
@@ -76,6 +86,8 @@
                         <MenuItem Header="Print Donations" Click="donationsMenuItem_Click"/>
                         <MenuItem Header="Total Income by method" Click="totalIncomeByMethodMenuItem_Click"/>
                         <MenuItem Header="People who owe us money" Click="peopleOwingMoneyMenuItem_Click"/>
+                        <!--<MenuItem Header="Apportion Korean Payment" Click="allocateKoreanPayment_Click"/>-->
+                        <MenuItem Header="Banking" IsEnabled="False"/>
                     </MenuItem>
                     <MenuItem Header="Results">
                         <MenuItem Header="Medal Table" Click="medalTable_Click"/>
@@ -91,9 +103,6 @@
                 </MenuItem>
                 <MenuItem Header="Help">
                     <MenuItem Header="Show Help" Click="help_Click" />
-                    <Separator/>
-                    <MenuItem Header="About MSOOrganiser" Click="about_Click" />
-                    <MenuItem Header="Release notes" Click="releaseNotes_Click" />
                 </MenuItem>
             </Menu>
             <Grid Width="300" DockPanel.Dock="Right" Background="LightGray">
