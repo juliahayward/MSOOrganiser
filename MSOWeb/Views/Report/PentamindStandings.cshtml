@@ -1,54 +1,42 @@
 ﻿@model MSOCore.Reports.PentamindStandingsGenerator.PentamindStandingsReportVm
 @{
-    Layout = "~/Views/Shared/_Layout.cshtml";
+    Layout = "~/Views/Shared/_NewLayoutNoHeader.cshtml";
 }
-
-<style type="text/css">
-    .jmhTable {
-        border: 1px black solid; 
-        width: 500px; 
-    }
-    .jmhTable td {
-        vertical-align: middle;
-    }
-    .jmhPaddedHeader {
-        margin: 4px;
-        display: block;
-    }
-    .jmhPadded {
-        margin: 4px;
-        display: block;
-    }
-</style>
-
-<h1 class="entry-title">Pentamind Standings: @Model.OlympiadTitle</h1>
 
 @{ var i = 1; }
 
-<table class="jmhTable">
-    <tr  style="background: AliceBlue">
-        <td></td>
-        <td></td>
-        <td><span class="jmhPaddedHeader">Name</span></td>
-        <td><span class="jmhPaddedHeader">Score</span></td>
-        <td colspan="5"><span class="jmhPaddedHeader">Individual events</span></td>
-    </tr>
-    @foreach (var item in Model.Standings.Take(100))
-    {    
-    <tr>
-        <td><span class="jmhPadded">@item.JuniorFlag</span><span class="jmhPadded">@item.SeniorFlag</span></td>
-        <td><span class="jmhPadded">@item.FemaleFlag</span></td>
-        <td><span class="jmhPadded">@item.Name</span></td>
-        <td style="width: 100px;"><span class="jmhPadded">@item.TotalScoreStr</span></td>
-        <td style="font-size: small"><span class="jmhPadded"><a href="/Report/EventResults?eventCode=@item.GameStr(0)">@item.ScoreStr(0)</a></span></td>
-        <td style="font-size: small"><span class="jmhPadded"><a href="/Report/EventResults?eventCode=@item.GameStr(1)">@item.ScoreStr(1)</a></span></td>
-        <td style="font-size: small"><span class="jmhPadded"><a href="/Report/EventResults?eventCode=@item.GameStr(2)">@item.ScoreStr(2)</a></span></td>
-        <td style="font-size: small"><span class="jmhPadded"><a href="/Report/EventResults?eventCode=@item.GameStr(3)">@item.ScoreStr(3)</a></span></td>
-        <td style="font-size: small"><span class="jmhPadded"><a href="/Report/EventResults?eventCode=@item.GameStr(4)">@item.ScoreStr(4)</a></span></td>
-    </tr>
-        
-        i++;
-    }
+<table class="table">
+    <thead>
+        <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td>Name</td>
+            <td>Score</td>
+            <td colspan="5">Individual events</td>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.Standings.Take(100))
+        {
+            <tr>
+                <th scope="row">@i</th>
+                <td><span>@item.JuniorFlag</span><span>@item.SeniorFlag</span></td>
+                <td><span>@item.FemaleFlag</span></td>
+                <td><img src="@item.Flag" height="20" style="margin-right: 4px" /></td>
+                <td><span>@item.Name</span></td>
+                <td><span>@item.TotalScoreStr</span></td>
+                <td style="font-size: small"><span><a href="/Report/EventResults?eventCode=@item.GameStr(0)">@item.ScoreStr(0)</a></span></td>
+                <td style="font-size: small"><span><a href="/Report/EventResults?eventCode=@item.GameStr(1)">@item.ScoreStr(1)</a></span></td>
+                <td style="font-size: small"><span><a href="/Report/EventResults?eventCode=@item.GameStr(2)">@item.ScoreStr(2)</a></span></td>
+                <td style="font-size: small"><span><a href="/Report/EventResults?eventCode=@item.GameStr(3)">@item.ScoreStr(3)</a></span></td>
+                <td style="font-size: small"><span><a href="/Report/EventResults?eventCode=@item.GameStr(4)">@item.ScoreStr(4)</a></span></td>
+            </tr>
+
+            i++;
+        }
+    </tbody>
 </table>
 
 <h3>Top 100 listed. Competitors need 5 events to qualify.</h3>

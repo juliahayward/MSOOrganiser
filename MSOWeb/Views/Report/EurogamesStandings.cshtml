@@ -1,50 +1,36 @@
 ﻿@model MSOCore.Reports.PentamindStandingsGenerator.PentamindStandingsReportVm
 @{
-    Layout = "~/Views/Shared/_Layout.cshtml";
+    Layout = "~/Views/Shared/_NewLayoutNoHeader.cshtml";
 }
-
-<style type="text/css">
-    .jmhTable {
-        border: 1px black solid; 
-        width: 500px; 
-    }
-    .jmhTable td {
-        vertical-align: middle;
-    }
-    .jmhPaddedHeader {
-        margin: 4px;
-        display: block;
-    }
-    .jmhPadded {
-        margin: 4px;
-        display: block;
-    }
-</style>
-
-<h1 class="entry-title">Eurogames Standings: @Model.OlympiadTitle</h1>
 
 @{ var i = 1; }
 
-<table class="jmhTable">
-    <tr  style="background: AliceBlue">
-        <td><span class="jmhPaddedHeader">Name</span></td>
-        <td><span class="jmhPaddedHeader">Score</span></td>
-        <td colspan="5"><span class="jmhPaddedHeader">Individual events</span></td>
-    </tr>
-    @foreach (var item in Model.Standings.Take(40))
-    {    
-    <tr>
-        <td><span class="jmhPadded">@item.Name</span></td>
-        <td style="width: 100px;"><span class="jmhPadded">@item.TotalScoreStr</span></td>
-        <td style="font-size: small"><span class="jmhPadded">@item.ScoreStr(0)</span></td>
-        <td style="font-size: small"><span class="jmhPadded">@item.ScoreStr(1)</span></td>
-        <td style="font-size: small"><span class="jmhPadded">@item.ScoreStr(2)</span></td>
-        <td style="font-size: small"><span class="jmhPadded">@item.ScoreStr(3)</span></td>
-        <td style="font-size: small"><span class="jmhPadded">@item.ScoreStr(4)</span></td>
-    </tr>
-        
-        i++;
-    }
+<table class="table">
+    <thead>
+        <tr>
+            <td></td>
+            <td>Name</td>
+            <td>Score</td>
+            <td colspan="5">Individual events</td>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.Standings.Take(40))
+        {
+            <tr>
+                <th scope="row">@i</th>
+                <td><span>@item.Name</span></td>
+                <td><span>@item.TotalScoreStr</span></td>
+                <td style="font-size: small"><span>@item.ScoreStr(0)</span></td>
+                <td style="font-size: small"><span>@item.ScoreStr(1)</span></td>
+                <td style="font-size: small"><span>@item.ScoreStr(2)</span></td>
+                <td style="font-size: small"><span>@item.ScoreStr(3)</span></td>
+                <td style="font-size: small"><span>@item.ScoreStr(4)</span></td>
+            </tr>
+
+            i++;
+        }
+    </tbody>
 </table>
 
 <h3>Top 40 listed. Competitors need 5 events to qualify.</h3>
