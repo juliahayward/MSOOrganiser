@@ -30,7 +30,6 @@
                           Visibility="{Binding IsLoggedIn, Converter={StaticResource BoolToVisibilityConverter}}"/>
                 <MenuItem Header="Events/Results"
                           Visibility="{Binding IsLoggedIn, Converter={StaticResource BoolToVisibilityConverter}}">
-                    <MenuItem Header="Display results" Click="displayResultsMenuItem_Click"/>
                     <MenuItem Header="Edit Results" Click="resultsMenuItem_Click" />
                 </MenuItem>
                 <MenuItem Header="Quick Checks"
@@ -91,7 +90,6 @@
                     </MenuItem>
                     <MenuItem Header="Results">
                         <MenuItem Header="Medal Table" Click="medalTable_Click"/>
-                        <MenuItem Header="Print Results" Click="printResults_Click" />
                         <MenuItem Header="Pentamind Standings" Click="pentamindStandings_Click" />
                         <MenuItem Header="Junior Pentamind Standings" Click="juniorPentamindStandings_Click" />
                         <MenuItem Header="Senior Pentamind Standings" Click="seniorPentamindStandings_Click" />

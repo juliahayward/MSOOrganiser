@@ -216,12 +216,6 @@ namespace MSOOrganiser
             }
         }
 
-        private void displayResultsMenuItem_Click(object sender, RoutedEventArgs e)
-        {
-            var panel = new DisplayResultsPanel();
-            ReplaceMainPanelWith(panel);
-        }
-
         private void printEventEntriesMenuItem_Click(object sender, RoutedEventArgs e)
         {
             var dialog = new EventEntriesReportPicker();
@@ -650,11 +644,6 @@ namespace MSOOrganiser
 
             context.SaveChanges();
             this.Status.Text = "";
-        }
-
-        private void printResults_Click(object sender, RoutedEventArgs e)
-        {
-            MessageBox.Show("Event results can be printed from the individual event panel");
         }
 
         private void prepayments_Click(object sender, RoutedEventArgs e)

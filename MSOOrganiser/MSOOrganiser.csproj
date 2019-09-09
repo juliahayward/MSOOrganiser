@@ -152,9 +152,6 @@
       <DependentUpon>EventEntriesReportPicker.xaml</DependentUpon>
     </Compile>
     <Compile Include="GlobalSettings.cs" />
-    <Compile Include="DisplayResultsPanel.xaml.cs">
-      <DependentUpon>DisplayResultsPanel.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Events\ContestantEventArgs.cs" />
     <Compile Include="Events\EventEventArgs.cs" />
     <Compile Include="NationalityReport.xaml.cs">
@@ -242,10 +239,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="EventEntriesReportPicker.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="DisplayResultsPanel.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
