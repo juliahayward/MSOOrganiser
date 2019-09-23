@@ -134,6 +134,7 @@
     <Compile Include="Controllers\ErrorController.cs" />
     <Compile Include="Controllers\EventController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\OlympiadController.cs" />
     <Compile Include="Controllers\ReportController.cs" />
     <Compile Include="Controllers\ScheduleController.cs" />
     <Compile Include="Controllers\UserController.cs" />
@@ -416,6 +417,7 @@
     <Content Include="Views\User\NewPasswordSent.cshtml" />
     <Content Include="Views\User\PasswordReset.cshtml" />
     <Content Include="Views\Report\CountryMedals.cshtml" />
+    <Content Include="Views\Olympiad\Olympiad.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
