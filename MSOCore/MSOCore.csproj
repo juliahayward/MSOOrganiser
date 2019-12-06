@@ -51,6 +51,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ApiLogic\OlympiadEventsApiLogic.cs" />
+    <Compile Include="ApiLogic\OlympiadsLogic.cs" />
     <Compile Include="ApiLogic\UserLogic.cs" />
     <Compile Include="Arbiter.cs">
       <DependentUpon>Model.tt</DependentUpon>

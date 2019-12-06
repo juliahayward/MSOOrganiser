@@ -1,0 +1,29 @@
+﻿@model IEnumerable<MSOCore.ApiLogic.OlympiadsLogic.OlympiadListVm>
+@{
+    Layout = "~/Views/Shared/_NewLayout.cshtml";
+}
+
+<h2></h2>
+
+<div class="accordion" id="accordionExample">
+    <div class="card">
+        <div class="card-header" id="headingOne">
+            <h2>Olympiads</h2>
+            <h2 class="mb-0">
+                <button class="btn btn-primary" type="button">
+                    Create new
+                </button>
+            </h2>
+        </div>
+    </div>
+    @foreach (var o in Model)
+    {
+    <div class="card">
+        <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordionExample">
+            <div class="card-body">
+                @o.StartDate.Year: <a href="/Olympiad/Olympiad/@o.Id">@o.Name</a>, @o.Venue
+            </div>
+        </div>
+    </div>
+    }
+</div>

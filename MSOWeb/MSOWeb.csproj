@@ -418,6 +418,7 @@
     <Content Include="Views\User\PasswordReset.cshtml" />
     <Content Include="Views\Report\CountryMedals.cshtml" />
     <Content Include="Views\Olympiad\Olympiad.cshtml" />
+    <Content Include="Views\Olympiad\Index.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

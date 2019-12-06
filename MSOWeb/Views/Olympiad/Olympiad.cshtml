@@ -1,4 +1,5 @@
-﻿@{
+﻿@model MSOCore.ApiLogic.OlympiadsLogic.OlympiadVm
+@{
     Layout = "~/Views/Shared/_NewLayout.cshtml";
 }
 
@@ -7,11 +8,8 @@
 <div class="accordion" id="accordionExample">
     <div class="card">
         <div class="card-header" id="headingOne">
-            <h2>23rd Olympiad: 2019</h2>
+            <h2>@Model.StartDate.Year: @Model.Name</h2>
             <h2 class="mb-0">
-                <button class="btn btn-primary" type="button">
-                    Create new
-                </button>
                 <button class="btn btn-primary" disabled type="button">
                     Save
                 </button>
@@ -45,7 +43,12 @@
         </div>
         <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionExample">
             <div class="card-body">
-                Form stuff goes here
+                <ul>
+                    @foreach (var e in Model.Events)
+                    {
+                        <li>@e.Code : @e.Name</li>
+                    }
+                </ul>
             </div>
         </div>
     </div>

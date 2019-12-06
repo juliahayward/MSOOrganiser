@@ -33,7 +33,9 @@ namespace MSOCore
         public string ShortName()
         {
             return this.Mind_Sport.Replace("Olympiad Championship", "")
-                .Replace("World Championship", "");
+                .Replace("World Championship", "")
+                .Replace("OC", "")
+                .Replace("WC", "");
         }
 
         public string Status()
