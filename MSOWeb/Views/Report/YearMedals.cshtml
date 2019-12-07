@@ -1,28 +1,7 @@
 ﻿@model MSOCore.Reports.YearMedalsGenerator.YearMedalsVm
 @{
-    Layout = "~/Views/Shared/_Layout.cshtml";
+    Layout = "~/Views/Shared/_NewLayoutNoHeader.cshtml";
 }
-
-<style type="text/css">
-    .jmhTable {
-        border: 1px black solid; 
-        width: 400px; 
-        margin-left: 100px
-    }
-    .jmhTable td {
-        vertical-align: middle;
-    }
-    .jmhPaddedHeader {
-        margin: 4px;
-        display: block;
-    }
-    .jmhPadded {
-        margin: 4px;
-        display: block;
-    }
-</style>
-
-<!--h1 class="entry-title">Medals for @Model.Year</h1-->
 
 @foreach (var gameName in Model.Medals.Select(x => x.GameName).Distinct())
 {
@@ -30,18 +9,19 @@
     foreach (var eventName in Model.Medals.Where(x => x.GameName == gameName).Select(x => x.EventName).Distinct())
     {
         var eventCode = Model.Medals.Where(x => x.EventName == eventName).First().EventCode;
-        <table class="jmhTable">
-            <tr>
-                <td colspan="3" style="background: AliceBlue"><span class="jmhPaddedHeader"><a href="/Report/EventResults?year=@Model.Year&eventCode=@eventCode">@eventName</a></span></td>
-            </tr>
+        <table class="table">
+            <thead>
+                <tr>
+                    <td colspan="3"><a href="/Report/EventResults?year=@Model.Year&eventCode=@eventCode">@eventName</a></td>
+                </tr>
+            </thead>
         @foreach (var medal in Model.Medals.Where(x => x.EventName == eventName))
         {
             <tr>
-                <td style="width:100px;"><div class="jmhPadded">@Html.Raw(medal.Medals)</div></td>
-                <td style="width:240px;"><div class="jmhPadded">
-                    <a href="./ContestantMedals?contestantId=@medal.ContestantId">@medal.Name</a>
-                                         </div></td>
-                <td><img class="jmhPadded" src="@medal.Flag"  alt="@medal.Nationality" title="@medal.Nationality"/></td>
+                <td style="width:100px;">@Html.Raw(medal.Medals)</td>
+                <td style="width:240px;">
+                    <a href="./ContestantMedals?contestantId=@medal.ContestantId">@medal.Name</a></td>
+                <td><img src="@medal.Flag"  alt="@medal.Nationality" title="@medal.Nationality"/></td>
             </tr>
         }
         </table>

@@ -1,67 +1,64 @@
 ﻿@model MSOCore.Reports.IndividualMedalTableGenerator.MedalTableVm
 @{
-    Layout = "~/Views/Shared/_Layout.cshtml";
+    Layout = ViewBag.Layout;
 }
 
-<style type="text/css">
-    .jmhFooter {
-        width: 400px; 
-        margin-left: 100px
-    }
-    .jmhTable {
-        border: 1px black solid; 
-        width: 400px; 
-        margin-left: 100px
-    }
-    .jmhTable td {
-        vertical-align: middle;
-    }
-    .jmhPaddedHeader {
-        margin: 4px;
-        display: block;
-    }
-    .jmhPadded {
-        margin: 4px;
-        display: block;
-    }
-</style>
-
+@if (ViewBag.TitleWanted)
+{
 <h1 class="entry-title">Individual All-Time Medal Table</h1>
+}
 
-<table class="jmhTable">
-    <tr style="background: AliceBlue">
-        <td><span class="jmhPaddedHeader">Rank</span></td>
-        <td><span class="jmhPaddedHeader">Name</span></td>
-        <td></td>
-        <td><span class="jmhPaddedHeader">Gold</span></td>
-        <td><span class="jmhPaddedHeader">Silver</span></td>
-        <td><span class="jmhPaddedHeader">Bronze</span></td>
-        <td><span class="jmhPaddedHeader">Total</span></td>
-    </tr>
+<table class="table">
+    <thead>
+        <tr>
+            <td>Rank</td>
+            <td>Name</td>
+            <td></td>
+            <td>Gold</td>
+            <td>Silver</td>
+            <td>Bronze</td>
+            <td>Total</td>
+        </tr>
+    </thead>
     @{ int index = Model.FirstIndex; }
     @foreach (var item in Model.Entries)
     {    
     <tr>
-        <td><div class="jmhPadded">@index</div></td>
-        <td><div class="jmhPadded"><a href="/Report/ContestantMedals?contestantId=@item.ContestantId">@item.Name</a></div></td>
-        <td><img class="jmhPadded" src="@item.Flag" alt="@item.Nationality" title="@item.Nationality"/></td>
-        <td><div class="jmhPadded">@item.Golds</div></td>
-        <td><div class="jmhPadded">@item.Silvers</div></td>
-        <td><div class="jmhPadded">@item.Bronzes</div></td>
-        <td><div class="jmhPadded">@item.Total</div></td>
+        <td>@index</td>
+        <td><a href="/Report/ContestantMedals?contestantId=@item.ContestantId">@item.Name</a></td>
+        <td><img src="@item.Flag" alt="@item.Nationality" title="@item.Nationality"/></td>
+        <td>
+            @if (item.Golds > 0)
+            {
+                <span class="btn" style="width:48px; color:#000; background-color:#d4af37; border-color:#000">@item.Golds</span>
+            }
+        </td>
+        <td>
+            @if (item.Silvers > 0)
+            {
+                <span class="btn" style="width:48px; color:#000; background-color:#c4c7c3; border-color:#000">@item.Silvers</span>
+            }
+        </td>
+        <td>
+            @if (item.Bronzes > 0)
+            {
+                <span class="btn" style="width:48px; color:#fff; background-color:#cd7f32; border-color:#000">@item.Bronzes</span>
+            }
+            </td>
+        <td>@item.Total</td>
     </tr>
         index++;
     }
 </table>
 
-<div class="jmhFooter">
+<div>
     @if (Model.HasPrevious)
     {
-        <a href="/Report/IndividualMedals?page=@Model.PreviousPage">&lt; Previous</a>
+        <a href="/Report/IndividualMedals?page=@Model.PreviousPage&header=@ViewBag.TitleWanted.ToString()">&lt; Previous</a>
     }
     <span style="padding: 32px">Page @Model.Page</span>
     @if (Model.HasNext)
     {
-        <a href="/Report/IndividualMedals?page=@Model.NextPage">Next &gt;</a>
+        <a href="/Report/IndividualMedals?page=@Model.NextPage&header=@ViewBag.TitleWanted.ToString()">Next &gt;</a>
     }
 </div>

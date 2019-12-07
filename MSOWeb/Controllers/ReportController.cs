@@ -21,8 +21,20 @@ namespace MSOWeb.Controllers
             return View(model);
         }
 
-        public ActionResult IndividualMedals(int page = 1)
+        public ActionResult IndividualMedals(int page = 1, bool header = true)
         {
+            ViewBag.Title = "Mind Sports Olympiad Live Results";
+            if (header)
+            {
+                ViewBag.Layout = "~/Views/Shared/_NewLayout.cshtml";
+                ViewBag.TitleWanted = true;
+            }
+            else
+            {
+                ViewBag.Layout = "~/Views/Shared/_NewLayoutNoHeader.cshtml";
+                ViewBag.TitleWanted = false;
+            }
+
             var generator = new IndividualMedalTableGenerator();
 
             var model = generator.GetItems(page, 100);
