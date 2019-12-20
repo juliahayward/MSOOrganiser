@@ -1,4 +1,4 @@
-﻿@model MSOCore.ApiLogic.OlympiadsLogic.OlympiadVm
+﻿@model MSOCore.ApiLogic.OlympiadsLogic.EventVm
 @{
     Layout = "~/Views/Shared/_NewLayout.cshtml";
 }
@@ -8,7 +8,7 @@
 <div class="accordion" id="accordionExample">
     <div class="card">
         <div class="card-header" id="headingOne">
-            <h2>@Model.StartDate.Year: @Model.Name</h2>
+            <h2>@Model.Code: @Model.Name</h2>
             <h2 class="mb-0">
                 <button class="btn btn-primary" disabled type="button">
                     Save
@@ -37,18 +37,43 @@
         <div class="card-header" id="headingTwo">
             <h2 class="mb-0">
                 <button class="btn collapsed" type="button" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-                    Events
+                    Results
                 </button>
             </h2>
         </div>
         <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionExample">
             <div class="card-body">
-                <ul>
-                    @foreach (var e in Model.Events)
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th scope="col">Name</th>
+                            <th scope="col">Junior?</th>
+                            <th scope="col">Medal</th>
+                            <th scope="col">Junior Medal</th>
+                            <th scope="col">Rank</th>
+                            <th scope="col">Score</th>
+                            <th scope="col">Absent</th>
+                            <th scope="col">Tiebreak</th>
+                            <th scope="col">Pentamind</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    @foreach (var c in Model.Entrants)
                     {
-                        <li><a href="/Olympiad/Event/@e.EventId">@e.Code</a> : @e.Name</li>
+                        <tr>
+                            <td>@c.FullName()</td>
+                            <td>???</td>
+                            <td>@c.Medal</td>
+                            <td>@c.JuniorMedal</td>
+                            <td>@c.Rank</td>
+                            <td>@c.Score</td>
+                            <td>@c.Absent</td>
+                            <td>@c.Tiebreak</td>
+                            <td>@c.Pentamind.ToString("F2")</td>
+                        </tr>
                     }
-                </ul>
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>

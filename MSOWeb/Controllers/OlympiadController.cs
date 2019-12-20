@@ -34,5 +34,13 @@ namespace MSOWeb.Controllers
             return new EmptyResult();
         }
 
+        [HttpGet]
+        public ActionResult Event(int id)
+        {
+            var logic = new OlympiadsLogic();
+            var model = logic.GetEvent(id);
+
+            return View(model);
+        }
     }
 }

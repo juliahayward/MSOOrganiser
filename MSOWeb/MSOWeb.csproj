@@ -419,6 +419,7 @@
     <Content Include="Views\Report\CountryMedals.cshtml" />
     <Content Include="Views\Olympiad\Olympiad.cshtml" />
     <Content Include="Views\Olympiad\Index.cshtml" />
+    <Content Include="Views\Olympiad\Event.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
