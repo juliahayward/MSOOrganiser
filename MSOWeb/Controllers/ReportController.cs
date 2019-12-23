@@ -7,11 +7,9 @@ using System.Web.Mvc;
 
 namespace MSOWeb.Controllers
 {
+    [AllowAnonymous]
     public class ReportController : Controller
     {
-        //
-        // GET: /Report/
-
         public ActionResult Nationality()
         {
             var generator = new NationalityReportGenerator();

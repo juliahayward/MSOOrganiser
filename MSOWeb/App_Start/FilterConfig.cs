@@ -52,6 +52,7 @@ namespace MSOWeb
             if (controller.GetCustomAttributes(true).Any(x => x is AllowAnonymousAttribute))
                 return true;
 
+            // The presence of an Authorize attribute lets you in if you're in a specific role...
             var methodAuth = action.GetCustomAttributes(true).FirstOrDefault(x => x is AuthorizeAttribute);
             if (methodAuth != null)
                 return (methodAuth as AuthorizeAttribute).Roles.Contains(role);
@@ -59,7 +60,8 @@ namespace MSOWeb
             if (controllerAuth != null)
                 return (controllerAuth as AuthorizeAttribute).Roles.Contains(role);
 
-            return false;
+            // otherwise, just "are you logged in".
+            return (ticket != null);
         }
     }
 }

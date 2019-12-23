@@ -11,7 +11,7 @@ using MSOCore;
 namespace MSOWeb.Controllers
 {
     // https://www.codeproject.com/Articles/288631/Secure-ASP-NET-MVC-applications
-    //[Authorize(Roles="Superadmin, Admin")]
+    [Authorize(Roles="Superadmin, Admin")]
     public class HomeController : Controller
     {
         private UserLogic _userLogic;
@@ -31,11 +31,13 @@ namespace MSOWeb.Controllers
             return View(model);
         }
 
+        [AllowAnonymous]
         public ActionResult ReleaseNotes()
         {
             return View();
         }
 
+        [AllowAnonymous]
         public ActionResult OrganiserReleaseNotes()
         {
             ViewBag.Layout = "~/Views/Shared/_NewLayoutNoHeader.cshtml";
@@ -79,7 +81,6 @@ namespace MSOWeb.Controllers
             return new RedirectResult("/");
         }
 
-        [AllowAnonymous]
         public ActionResult Logout()
         {
             FormsAuthentication.SignOut();
@@ -87,6 +88,7 @@ namespace MSOWeb.Controllers
             return new RedirectResult("/");
         }
 
+        [Authorize(Roles = "Superadmin, Admin, Arbiter")]
         public ActionResult Downloads()
         {
             var generator = new EventListGenerator();

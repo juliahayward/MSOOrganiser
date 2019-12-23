@@ -7,6 +7,7 @@ using MSOCore.Reports;
 
 namespace MSOWeb.Controllers
 {
+    [AllowAnonymous]
     public class ScheduleController : Controller
     {
         public ActionResult Complete()

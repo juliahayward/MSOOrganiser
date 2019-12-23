@@ -17,11 +17,13 @@ namespace MSOWeb.Controllers
             _userLogic = new UserLogic();
         }
 
+        [AllowAnonymous]
         public ActionResult NewPassword()
         {
             return View();
         }
 
+        [AllowAnonymous]
         [HttpPost]
         public ActionResult NewPasswordRequest(string userName)
         {
@@ -31,11 +33,13 @@ namespace MSOWeb.Controllers
             return RedirectToAction("NewPasswordSent");
         }
 
+        [AllowAnonymous]
         public ActionResult NewPasswordSent()
         {
             return View();
         }
 
+        [AllowAnonymous]
         [HttpGet]
         public ActionResult PasswordReset(int userId, string token)
         {
@@ -50,6 +54,7 @@ namespace MSOWeb.Controllers
             public string Token { get; set; }
         }
 
+        [AllowAnonymous]
         [HttpPost]
         public ActionResult PasswordReset(int userId, string token, string password)
         {
