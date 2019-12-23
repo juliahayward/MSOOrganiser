@@ -11,7 +11,7 @@ using MSOCore;
 namespace MSOWeb.Controllers
 {
     // https://www.codeproject.com/Articles/288631/Secure-ASP-NET-MVC-applications
-    //[Authorize(Roles="Admin")]
+    //[Authorize(Roles="Superadmin, Admin")]
     public class HomeController : Controller
     {
         private UserLogic _userLogic;
