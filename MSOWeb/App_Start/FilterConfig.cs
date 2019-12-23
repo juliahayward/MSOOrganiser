@@ -21,35 +21,43 @@ namespace MSOWeb
         {
             HttpCookie authCookie =
               filterContext.HttpContext.Request.Cookies[FormsAuthentication.FormsCookieName];
+            FormsAuthenticationTicket authTicket = null;
 
             if (authCookie != null)
             {
-                FormsAuthenticationTicket authTicket =
-                       FormsAuthentication.Decrypt(authCookie.Value);
+                authTicket = FormsAuthentication.Decrypt(authCookie.Value);
                 var identity = new GenericIdentity(authTicket.Name, "Forms");
                 var principal = new GenericPrincipal(identity, new string[] { authTicket.UserData });
                 filterContext.HttpContext.User = principal;
             }
 
-            var isAccessAllowed = IsAccessAllowed(filterContext);
+            var isAccessAllowed = IsAccessAllowed(filterContext, authTicket);
             if (!isAccessAllowed)
             {
                 FormsAuthentication.RedirectToLoginPage();
             }
         }
 
-        public static bool IsAccessAllowed(AuthorizationContext filterContext)
+        public static bool IsAccessAllowed(AuthorizationContext filterContext, FormsAuthenticationTicket ticket)
         {
             var controller = filterContext.ActionDescriptor.ControllerDescriptor;
             var action = filterContext.ActionDescriptor;
             var user = filterContext.HttpContext.User;
             var ip = filterContext.HttpContext.Request.UserHostAddress;
+            var role = ticket?.UserData ?? "";
 
             // AllowAnonymous overrides everything else
             if (action.GetCustomAttributes(true).Any(x => x is AllowAnonymousAttribute))
                 return true;
             if (controller.GetCustomAttributes(true).Any(x => x is AllowAnonymousAttribute))
                 return true;
+
+            var methodAuth = action.GetCustomAttributes(true).FirstOrDefault(x => x is AuthorizeAttribute);
+            if (methodAuth != null)
+                return (methodAuth as AuthorizeAttribute).Roles.Contains(role);
+            var controllerAuth = controller.GetCustomAttributes(true).FirstOrDefault(x => x is AuthorizeAttribute);
+            if (controllerAuth != null)
+                return (controllerAuth as AuthorizeAttribute).Roles.Contains(role);
 
             return false;
         }

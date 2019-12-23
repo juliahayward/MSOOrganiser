@@ -7,7 +7,7 @@ using MSOCore.ApiLogic;
 
 namespace MSOWeb.Controllers
 {
-    [Authorize(Roles="Admin")]
+    [Authorize(Roles="Superadmin, Admin")]
     public class OlympiadController : Controller
     {
         public ActionResult Index()
