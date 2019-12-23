@@ -2,6 +2,7 @@ using System.Security.Principal;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Security;
+using System.Linq;
 
 namespace MSOWeb
 {
@@ -30,16 +31,27 @@ namespace MSOWeb
                 filterContext.HttpContext.User = principal;
             }
 
-            var Controller = filterContext.ActionDescriptor.ControllerDescriptor.ControllerName;
-            var Action = filterContext.ActionDescriptor.ActionName;
-            var User = filterContext.HttpContext.User;
-            var IP = filterContext.HttpContext.Request.UserHostAddress;
-
-            var isAccessAllowed = true;// (User.Identity.Name == "julia");// ==  PageAccessManager.IsAccessAllowed(Controller, Action, User, IP);
+            var isAccessAllowed = IsAccessAllowed(filterContext);
             if (!isAccessAllowed)
             {
                 FormsAuthentication.RedirectToLoginPage();
             }
+        }
+
+        public static bool IsAccessAllowed(AuthorizationContext filterContext)
+        {
+            var controller = filterContext.ActionDescriptor.ControllerDescriptor;
+            var action = filterContext.ActionDescriptor;
+            var user = filterContext.HttpContext.User;
+            var ip = filterContext.HttpContext.Request.UserHostAddress;
+
+            // AllowAnonymous overrides everything else
+            if (action.GetCustomAttributes(true).Any(x => x is AllowAnonymousAttribute))
+                return true;
+            if (controller.GetCustomAttributes(true).Any(x => x is AllowAnonymousAttribute))
+                return true;
+
+            return false;
         }
     }
 }

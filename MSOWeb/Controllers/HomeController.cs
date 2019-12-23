@@ -21,7 +21,7 @@ namespace MSOWeb.Controllers
             _userLogic = new UserLogic();
         }
 
-
+        [AllowAnonymous]
         public ActionResult Index()
         {
             var generator = new GameListGenerator();
