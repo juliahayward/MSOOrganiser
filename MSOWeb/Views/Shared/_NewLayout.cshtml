@@ -31,6 +31,12 @@
             <button class="btn btn-success my-2 my-sm-0" id="adminLogout">@HttpContext.Current.User.Identity.Name (logout)</button>
         }
     </nav>
+    @if (TempData["SuccessMessage"] != null) // also alert-info alert-warning alert-danger
+    {
+    <div id="bannerSuccess" class="alert alert-success">
+        <strong>Success!</strong> @TempData["SuccessMessage"].ToString()
+    </div>
+    }
     <div id="page" class="container">
         @RenderBody()
     </div>

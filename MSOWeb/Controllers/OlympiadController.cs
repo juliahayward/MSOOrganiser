@@ -28,10 +28,12 @@ namespace MSOWeb.Controllers
         }
 
         [HttpPost]
-        public ActionResult Olympiad(/* form*/)
+        public ActionResult Olympiad(OlympiadForm form)
         {
             // post to update
-            return new EmptyResult();
+            TempData["SuccessMessage"] = "Saved";
+
+            return new RedirectResult("Olympiad?id=" + form.Id);
         }
 
         [HttpGet]
@@ -42,5 +44,11 @@ namespace MSOWeb.Controllers
 
             return View(model);
         }
+    }
+
+    public class OlympiadForm
+    {
+        public int Id { get; set; }
+        public string Name { get; set; }
     }
 }
