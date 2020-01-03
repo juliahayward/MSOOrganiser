@@ -56,16 +56,18 @@ namespace MSOCore.Reports
                 .ToList();
         }
 
-        public EventResultsVm GetModel(int year, string eventCode)
+        public EventResultsVm GetModel(int? year, string eventCode)
         {
             var context = DataEntitiesProvider.Provide();
 
             // Warning - this will go wonky when I undo the 2007/7002 hack
-            var olympiad = context.Olympiad_Infoes.FirstOrDefault(x => x.YearOf == year);
+            var olympiad = (year == null) 
+                ? context.Olympiad_Infoes.FirstOrDefault(x => x.Current)
+                : context.Olympiad_Infoes.FirstOrDefault(x => x.YearOf == year);
             if (olympiad == null)
                 throw new ArgumentOutOfRangeException("Year " + year + " is not an olympiad year");
 
-            var retval = new EventResultsVm { Year = year, EventCode = eventCode, OlympiadName = olympiad.FullTitle() };
+            var retval = new EventResultsVm { Year = olympiad.YearOf.Value, EventCode = eventCode, OlympiadName = olympiad.FullTitle() };
 
             var evt = context.Events.FirstOrDefault(x => x.OlympiadId == olympiad.Id && x.Code == eventCode);
             if (evt == null)

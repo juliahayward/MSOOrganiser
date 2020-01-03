@@ -1,38 +1,19 @@
 ﻿@model IEnumerable<MSOCore.Reports.EventListGenerator.EventVm>
 @{
-    Layout = "~/Views/Shared/_Layout.cshtml";
+    Layout = "~/Views/Shared/_NewLayout.cshtml";
     ViewBag.Title = "Mind Sports Olympiad - Entrants Download";
 }
 
-<style type="text/css">
-    .jmhTable {
-        border: 1px black solid; 
-        width: 600px; 
-        margin-left: 100px
-    }
-    .jmhTable td {
-        vertical-align: middle;
-    }
-    .jmhPaddedHeader {
-        margin: 4px;
-        display: block;
-    }
-    .jmhPadded {
-        margin: 4px;
-        display: block;
-    }
-</style>
+<h1 class="bd-title" id="content">Mind Sports Olympiad - Entrants Download</h1>
 
-<h1 class="entry-title">Mind Sports Olympiad - Entrants Download</h1>
-
-<h2>Entrants Download</h2>
-
-<ul>
-    @foreach (var game in Model)
+<div class="list-group">
+    @foreach (var evt in Model)
     {
-    <li><span width="400px">@game.Code  : @game.Name </span> 
-        <a href="/apiv1/swissmanagereventcontestants?eventcode=@game.Code" download>for Swiss Manager</a>
-        <a href="/apiv1/swissperfecteventcontestants?eventcode=@game.Code" download>for Swiss Perfect</a> and 
-        <a href="/apiv1/multiplayereventcontestants?eventcode=@game.Code" download>for Mike's multiplayer spreadsheet</a></li>
+    <span>
+        <span>@evt.Code</span> <span>@evt.Name</span>
+        <span class="badge badge-primary badge-pill"><a style="color: white" href="/apiv1/swissmanagereventcontestants?eventcode=@evt.Code" download>for Swiss Manager</a></span>
+        <span class="badge badge-primary badge-pill"><a style="color: white" href="/apiv1/swissperfecteventcontestants?eventcode=@evt.Code" download>for Swiss Perfect</a></span>
+        <span class="badge badge-primary badge-pill"><a style="color: white" href="/apiv1/multiplayereventcontestants?eventcode=@evt.Code" download>for Mike's multiplayer spreadsheet</a></span>
+    </span>
     }
-</ul>
+</div>

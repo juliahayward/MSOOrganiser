@@ -130,41 +130,48 @@
             </div>
         </div>
     </div>
+    <div class="col-sm-3">
+        <div class="card mt-1">
+            <div class="card-body">
+                <h5 class="card-title">Download Entrants (Admin only)</h5>
+                <ul>
+                    <li><a href="/Home/Downloads" class="card-link">Downloads</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
 </div>
 }
-
-
-@*<h2>Entrants Download</h2>
-
-    <ul>
-        <li><a href="/Home/Downloads">Downloads</a></li>
-    </ul>*@
-
-
-
-<h2>Game Medals (all years)</h2>
-
-<ul>
-    @foreach (var game in Model.Where(g => g.Code != "ZZ" && g.Code != "EE" && g.Code != "LP"))
-    {
-        <li><a href="/Report/GameMedals?gameCode=@game.Code">@game.Name</a></li>
-    }
-</ul>
+<div class="row">
+    <div class="col-sm-3">
+        <div class="card mt-1">
+            <div class="card-body">
+                <h5 class="card-title">Game Medals (all years)</h5>
+                <ul>
+                    @foreach (var game in Model.Where(g => g.Code != "ZZ" && g.Code != "EE" && g.Code != "LP"))
+                    {
+                        <li><a href="/Report/GameMedals?gameCode=@game.Code">@game.Name</a></li>
+                    }
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
 
 
 
-@*<h2>Event Statistics</h2>
+    @*<h2>Event Statistics</h2>
 
-    <ul>
+        <ul>
 
-        <li><a href="/Report/EventEntries?eventCode=BARP">Entries : BARP</a></li>
-    </ul>*@
+            <li><a href="/Report/EventEntries?eventCode=BARP">Entries : BARP</a></li>
+        </ul>*@
 
 
 @section footer {
     <footer class="footer">
-    <div class="container">
-        <span class="text-muted">MSO Live Results, last updated @ViewBag.Date - see <a href="/Home/ReleaseNotes">release notes</a></span>
-    </div>
-</footer>
+        <div class="container">
+            <span class="text-muted">MSO Live Results, last updated @ViewBag.Date - see <a href="/Home/ReleaseNotes">release notes</a></span>
+        </div>
+    </footer>
 }
