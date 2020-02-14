@@ -33,7 +33,7 @@ namespace MSOWeb.Controllers
             // post to update
             TempData["SuccessMessage"] = "Saved";
 
-            return new RedirectResult("Olympiad?id=" + form.Id);
+            return new RedirectResult("/Olympiad?id=" + form.Id);
         }
 
         [HttpGet]
@@ -45,11 +45,25 @@ namespace MSOWeb.Controllers
 
             return View(model);
         }
+
+        [HttpPost]
+        public ActionResult Event(EventForm form)
+        {
+            // post to update
+            TempData["SuccessMessage"] = "Saved";
+
+            return new RedirectResult("/Olympiad/Event/" + form.Id + "?editable=true");
+        }
     }
 
     public class OlympiadForm
     {
         public int Id { get; set; }
         public string Name { get; set; }
+    }
+
+    public class EventForm
+    {
+        public int Id { get; set; }
     }
 }

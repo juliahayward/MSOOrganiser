@@ -4,114 +4,117 @@
 }
 
 <h2></h2>
-
-<div class="accordion" id="accordionExample">
-    <div class="card">
-        <div class="card-header" id="headingOne">
-            <h2>@Model.Code: @Model.Name</h2>
-            <h2 class="mb-0">
-                @if (Model.Editable)
-                {
-                <button class="btn btn-primary" disabled type="button">
-                    Save
-                </button>
-                <button class="btn btn-primary" disabled type="button">
-                    Cancel
-                </button>
-                }
-            </h2>
-        </div>
-    </div>
-    <div class="card">
-        <div class="card-header" id="headingOne">
-            <h2 class="mb-0">
-                <button class="btn" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                    General details
-                </button>
-            </h2>
-        </div>
-        <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordionExample">
-            <div class="card-body">
-                Form stuff goes here
+@using (Html.BeginForm("Event", "Olympiad", FormMethod.Post))
+{
+    <input type="hidden" id="Id" value="@Model.EventId" />
+    <div class="accordion" id="accordionExample">
+        <div class="card">
+            <div class="card-header" id="headingOne">
+                <h2>@Model.Code: @Model.Name</h2>
+                <h2 class="mb-0">
+                    @if (Model.Editable)
+                    {
+                        <button class="btn btn-primary" type="submit">
+                            Save
+                        </button>
+                        <button class="btn btn-primary" type="button">
+                            Cancel
+                        </button>
+                    }
+                </h2>
             </div>
         </div>
-    </div>
-    <div class="card">
-        <div class="card-header" id="headingTwo">
-            <h2 class="mb-0">
-                <button class="btn collapsed" type="button" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-                    Results
-                </button>
-            </h2>
+        <div class="card">
+            <div class="card-header" id="headingOne">
+                <h2 class="mb-0">
+                    <button class="btn" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                        General details
+                    </button>
+                </h2>
+            </div>
+            <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordionExample">
+                <div class="card-body">
+                    Form stuff goes here
+                </div>
+            </div>
         </div>
-        <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionExample">
-            <div class="card-body">
-                <table class="table">
-                    <thead>
-                        <tr>
-                            <th scope="col">Name</th>
-                            <th scope="col">Junior?</th>
-                            <th scope="col">Medal</th>
-                            <th scope="col">Junior Medal</th>
-                            <th scope="col">Rank</th>
-                            <th scope="col">Score</th>
-                            <th scope="col">Tiebreak</th>
-                            <th scope="col">Absent</th>
-                            <th scope="col">Pentamind</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach (var c in Model.Entrants)
-                        {
-                            if (Model.Editable)
+        <div class="card">
+            <div class="card-header" id="headingTwo">
+                <h2 class="mb-0">
+                    <button class="btn collapsed" type="button" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                        Results
+                    </button>
+                </h2>
+            </div>
+            <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionExample">
+                <div class="card-body">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th scope="col">Name</th>
+                                <th scope="col">Junior?</th>
+                                <th scope="col">Medal</th>
+                                <th scope="col">Junior Medal</th>
+                                <th scope="col">Rank</th>
+                                <th scope="col">Score</th>
+                                <th scope="col">Tiebreak</th>
+                                <th scope="col">Absent</th>
+                                <th scope="col">Pentamind</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var c in Model.Entrants)
                             {
-                        <tr>
-                            <td>@c.FullName()<input type="hidden" value="@c.EntrantId" /></td>
-                            <td>@c.Junior</td>
-                            <td>
-                                <select style="width: 80px;">
-                                    <option value="">-</option>
-                                    <option value="Gold" @c.GoldSelected>Gold</option>
-                                    <option value="Silver" @c.SilverSelected>Silver</option>
-                                    <option value="Bronze" @c.BronzeSelected>Bronze</option>
-                                </select>
-                            </td>
-                            <td>
-                                @if (c.IsJunior)
+                                if (Model.Editable)
                                 {
-                                <select style="width: 120px;">
-                                    <option value="">-</option>
-                                    <option value="Gold JNR" @c.JGoldSelected>Gold JNR</option>
-                                    <option value="Silver JNR" @c.JSilverSelected>Silver JNR</option>
-                                    <option value="Bronze JNR" @c.JBronzeSelected>Bronze JNR</option>
-                                </select>
+                                    <tr>
+                                        <td>@c.FullName()<input type="hidden" value="@c.EntrantId" /></td>
+                                        <td>@c.Junior</td>
+                                        <td>
+                                            <select style="width: 80px;">
+                                                <option value="">-</option>
+                                                <option value="Gold" @c.GoldSelected>Gold</option>
+                                                <option value="Silver" @c.SilverSelected>Silver</option>
+                                                <option value="Bronze" @c.BronzeSelected>Bronze</option>
+                                            </select>
+                                        </td>
+                                        <td>
+                                            @if (c.IsJunior)
+                                            {
+                                                <select style="width: 120px;">
+                                                    <option value="">-</option>
+                                                    <option value="Gold JNR" @c.JGoldSelected>Gold JNR</option>
+                                                    <option value="Silver JNR" @c.JSilverSelected>Silver JNR</option>
+                                                    <option value="Bronze JNR" @c.JBronzeSelected>Bronze JNR</option>
+                                                </select>
+                                            }
+                                        </td>
+                                        <td>@c.Rank</td>
+                                        <td><input type="text" style="width: 48px; text-align: right" value="@c.Score" /></td>
+                                        <td><input type="text" style="width: 48px; text-align: right" value="@c.Tiebreak" /></td>
+                                        <td><input type="checkbox" @c.AbsentChecked /></td>
+                                        <td>@c.Pentamind.ToString("F2")</td>
+                                    </tr>
                                 }
-                            </td>
-                            <td>@c.Rank</td>
-                            <td><input type="text" style="width: 48px; text-align: right" value="@c.Score" /></td>
-                            <td><input type="text" style="width: 48px; text-align: right" value="@c.Tiebreak" /></td>
-                            <td><input type="checkbox" @c.AbsentChecked /></td>
-                            <td>@c.Pentamind.ToString("F2")</td>
-                        </tr>
+                                else
+                                {
+                                    <tr>
+                                        <td>@c.FullName()</td>
+                                        <td>@c.Junior</td>
+                                        <td>@c.Medal</td>
+                                        <td>@c.JuniorMedal</td>
+                                        <td>@c.Rank</td>
+                                        <td>@c.Score</td>
+                                        <td>@c.Tiebreak</td>
+                                        <td>@c.Absent</td>
+                                        <td>@c.Pentamind.ToString("F2")</td>
+                                    </tr>
+                                }
                             }
-                            else
-                            {
-                                <tr>
-                                    <td>@c.FullName()</td>
-                                    <td>@c.Junior</td>
-                                    <td>@c.Medal</td>
-                                    <td>@c.JuniorMedal</td>
-                                    <td>@c.Rank</td>
-                                    <td>@c.Score</td>
-                                    <td>@c.Tiebreak</td>
-                                    <td>@c.Absent</td>
-                                    <td>@c.Pentamind.ToString("F2")</td>
-                                </tr>
-                            }
-                        }
-                    </tbody>
-                </table>
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
     </div>
-</div>
+}
