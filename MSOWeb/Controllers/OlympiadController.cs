@@ -37,10 +37,11 @@ namespace MSOWeb.Controllers
         }
 
         [HttpGet]
-        public ActionResult Event(int id)
+        public ActionResult Event(int id, bool editable = false)
         {
             var logic = new OlympiadsLogic();
             var model = logic.GetEvent(id);
+            model.Editable = editable;
 
             return View(model);
         }

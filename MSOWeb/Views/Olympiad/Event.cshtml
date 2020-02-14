@@ -10,12 +10,15 @@
         <div class="card-header" id="headingOne">
             <h2>@Model.Code: @Model.Name</h2>
             <h2 class="mb-0">
+                @if (Model.Editable)
+                {
                 <button class="btn btn-primary" disabled type="button">
                     Save
                 </button>
                 <button class="btn btn-primary" disabled type="button">
                     Cancel
                 </button>
+                }
             </h2>
         </div>
     </div>
@@ -52,26 +55,60 @@
                             <th scope="col">Junior Medal</th>
                             <th scope="col">Rank</th>
                             <th scope="col">Score</th>
-                            <th scope="col">Absent</th>
                             <th scope="col">Tiebreak</th>
+                            <th scope="col">Absent</th>
                             <th scope="col">Pentamind</th>
                         </tr>
                     </thead>
                     <tbody>
-                    @foreach (var c in Model.Entrants)
-                    {
+                        @foreach (var c in Model.Entrants)
+                        {
+                            if (Model.Editable)
+                            {
                         <tr>
-                            <td>@c.FullName()</td>
-                            <td>???</td>
-                            <td>@c.Medal</td>
-                            <td>@c.JuniorMedal</td>
+                            <td>@c.FullName()<input type="hidden" value="@c.EntrantId" /></td>
+                            <td>@c.Junior</td>
+                            <td>
+                                <select style="width: 80px;">
+                                    <option value="">-</option>
+                                    <option value="Gold" @c.GoldSelected>Gold</option>
+                                    <option value="Silver" @c.SilverSelected>Silver</option>
+                                    <option value="Bronze" @c.BronzeSelected>Bronze</option>
+                                </select>
+                            </td>
+                            <td>
+                                @if (c.IsJunior)
+                                {
+                                <select style="width: 120px;">
+                                    <option value="">-</option>
+                                    <option value="Gold JNR" @c.JGoldSelected>Gold JNR</option>
+                                    <option value="Silver JNR" @c.JSilverSelected>Silver JNR</option>
+                                    <option value="Bronze JNR" @c.JBronzeSelected>Bronze JNR</option>
+                                </select>
+                                }
+                            </td>
                             <td>@c.Rank</td>
-                            <td>@c.Score</td>
-                            <td>@c.Absent</td>
-                            <td>@c.Tiebreak</td>
+                            <td><input type="text" style="width: 48px; text-align: right" value="@c.Score" /></td>
+                            <td><input type="text" style="width: 48px; text-align: right" value="@c.Tiebreak" /></td>
+                            <td><input type="checkbox" @c.AbsentChecked /></td>
                             <td>@c.Pentamind.ToString("F2")</td>
                         </tr>
-                    }
+                            }
+                            else
+                            {
+                                <tr>
+                                    <td>@c.FullName()</td>
+                                    <td>@c.Junior</td>
+                                    <td>@c.Medal</td>
+                                    <td>@c.JuniorMedal</td>
+                                    <td>@c.Rank</td>
+                                    <td>@c.Score</td>
+                                    <td>@c.Tiebreak</td>
+                                    <td>@c.Absent</td>
+                                    <td>@c.Pentamind.ToString("F2")</td>
+                                </tr>
+                            }
+                        }
                     </tbody>
                 </table>
             </div>

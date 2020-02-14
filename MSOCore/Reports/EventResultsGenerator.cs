@@ -25,6 +25,7 @@ namespace MSOCore.Reports
                 public string Score { get; set; }
                 public double PentaScore { get; set; }
                 public int ContestantId { get; set; }
+
                 public string Name { get; set; }
                 public string Nationality { get; set; }
                 public string Flag { get { return Nationality.GetFlag(); } }

@@ -35,6 +35,7 @@ namespace MSOCore.ApiLogic
 
         public class EventVm
         {
+            public bool Editable { get; set; }
             public int EventId { get; set; }
             public string Code { get; set; }
             public string Name { get; set; }
@@ -47,12 +48,22 @@ namespace MSOCore.ApiLogic
                 public string FirstName { get; set; }
                 public string LastName { get; set; }
                 public string Medal { get; set; }
+                public string GoldSelected { get { return Medal == "Gold" ? "selected" : ""; } }
+                public string SilverSelected { get { return Medal == "Silver" ? "selected" : ""; } }
+                public string BronzeSelected { get { return Medal == "Bronze" ? "selected" : ""; } }
                 public string JuniorMedal { get; set; }
+                public string JGoldSelected { get { return JuniorMedal == "Gold JNR" ? "selected" : ""; } }
+                public string JSilverSelected { get { return JuniorMedal == "Silver JNR" ? "selected" : ""; } }
+                public string JBronzeSelected { get { return JuniorMedal == "Bronze JNR" ? "selected" : ""; } }
                 public int? Rank { get; set; }
                 public string Score { get; set; }
                 public bool Absent { get; set; }
+                public string AbsentChecked { get { return Absent ? "checked" : ""; } }
                 public string Tiebreak { get; set; }
                 public double Pentamind { get; set; }
+                public bool IsJunior { get; set; }
+
+                public string Junior { get { return IsJunior ? "JNR" : ""; } }
 
                 public string FullName() { return FirstName + " " + LastName.ToUpper(); }
             }
@@ -94,7 +105,10 @@ namespace MSOCore.ApiLogic
         {
             var context = DataEntitiesProvider.Provide();
 
-            return context.Events.Where(x => x.EIN == id).Select(e => new EventVm()
+            var e = context.Events.Single(x => x.EIN == id);
+            var olympiad = e.Olympiad_Info;
+
+            return new EventVm()
             {
                 EventId = id,
                 Code = e.Code,
@@ -102,6 +116,7 @@ namespace MSOCore.ApiLogic
                 Entrants = e.Entrants.Select(en => new EventVm.EntrantVm()
                 {
                     EntrantId = en.Mind_Sport_ID.Value,
+                    IsJunior = en.Name.IsJuniorForOlympiad(olympiad),
                     FirstName = en.Name.Firstname,
                     LastName = en.Name.Lastname,
                     Medal = en.Medal,
@@ -112,7 +127,7 @@ namespace MSOCore.ApiLogic
                     Tiebreak = en.Tie_break,
                     Pentamind = en.Penta_Score.Value
                 }).OrderBy(x => x.Rank).ThenBy(x => x.LastName).ThenBy(x => x.FirstName)
-            }).First();
+            };
         }
     }
 }
