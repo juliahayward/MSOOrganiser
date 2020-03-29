@@ -50,7 +50,11 @@ namespace MSOWeb.Controllers
         public ActionResult Event(EventForm form)
         {
             // post to update
-            TempData["SuccessMessage"] = "Saved";
+            // TODO - valiudate
+            // TODO - save
+            // TODO - caluclate ranks and pentamind points
+            // TODO - events with partners
+            TempData["SuccessMessage"] = "Received";
 
             return new RedirectResult("/Olympiad/Event/" + form.Id + "?editable=true");
         }
@@ -65,5 +69,58 @@ namespace MSOWeb.Controllers
     public class EventForm
     {
         public int Id { get; set; }
+
+        public IEnumerable<string> EntrantIdString { get; set; }
+
+        public IEnumerable<string> Medal { get; set; }
+
+        public IEnumerable<string> JuniorMedal { get; set; }
+
+        public IEnumerable<string> Score { get; set; }
+
+        public IEnumerable<string> Tiebreak { get; set; }
+
+        public IEnumerable<string> AbsentString { get; set; }
+
+        public EventForm()
+        {
+            Medal = new List<string>();
+            JuniorMedal = new List<string>();
+            Score = new List<string>();
+            Tiebreak = new List<string>();
+            AbsentString = new List<string>();
+        }
+
+        public IEnumerable<bool> Absent
+        {
+            get
+            {
+                // A workround for checkboxes only submitting "on", never "off" - there's a hidden field in 
+                // front that submits "off" which we delete if we pick up the "on"
+                List<bool> result = new List<bool>();
+                foreach (var s in AbsentString)
+                {
+                    if (s == "off")
+                        result.Add(false);
+                    else if (s == "on")
+                    {
+                        result.RemoveAt(result.LastIndexOf(false));
+                        result.Add(true);
+                    }
+                    else
+                        throw new ArgumentException("Invalid SELECT value: " + s);
+                }
+                return result;
+            }
+        }
+
+        public IEnumerable<int> EntrantId
+        {
+            get
+            {
+                return EntrantIdString.Select(x => int.Parse(x));
+            }
+        }
+
     }
 }

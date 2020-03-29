@@ -60,7 +60,8 @@ namespace MSOCore.ApiLogic
                 public bool Absent { get; set; }
                 public string AbsentChecked { get { return Absent ? "checked" : ""; } }
                 public string Tiebreak { get; set; }
-                public double Pentamind { get; set; }
+                public double? Pentamind { get; set; }
+                public string PentamindString { get { return Pentamind.HasValue ? Pentamind.Value.ToString("F2") : ""; } }
                 public bool IsJunior { get; set; }
 
                 public string Junior { get { return IsJunior ? "JNR" : ""; } }
@@ -125,8 +126,8 @@ namespace MSOCore.ApiLogic
                     Score = en.Score,
                     Absent = en.Absent,
                     Tiebreak = en.Tie_break,
-                    Pentamind = en.Penta_Score.Value
-                }).OrderBy(x => x.Rank).ThenBy(x => x.LastName).ThenBy(x => x.FirstName)
+                    Pentamind = en.Penta_Score
+                }).OrderBy(x => x.Absent).ThenBy(x => x.Rank).ThenBy(x => x.LastName).ThenBy(x => x.FirstName)
             };
         }
     }

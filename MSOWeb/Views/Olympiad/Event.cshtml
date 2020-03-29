@@ -68,10 +68,10 @@
                                 if (Model.Editable)
                                 {
                                     <tr>
-                                        <td>@c.FullName()<input type="hidden" value="@c.EntrantId" /></td>
+                                        <td>@c.FullName()<input type="hidden" name="EntrantIdString" value="@c.EntrantId" /></td>
                                         <td>@c.Junior</td>
                                         <td>
-                                            <select style="width: 80px;">
+                                            <select name="Medal" style="width: 80px;">
                                                 <option value="">-</option>
                                                 <option value="Gold" @c.GoldSelected>Gold</option>
                                                 <option value="Silver" @c.SilverSelected>Silver</option>
@@ -81,19 +81,26 @@
                                         <td>
                                             @if (c.IsJunior)
                                             {
-                                                <select style="width: 120px;">
+                                                <select name="JuniorMedal" style="width: 120px;">
                                                     <option value="">-</option>
                                                     <option value="Gold JNR" @c.JGoldSelected>Gold JNR</option>
                                                     <option value="Silver JNR" @c.JSilverSelected>Silver JNR</option>
                                                     <option value="Bronze JNR" @c.JBronzeSelected>Bronze JNR</option>
                                                 </select>
                                             }
+                                            else
+                                            {
+                                                <input type="hidden" name="JuniorMedal" value="" />
+                                            }
                                         </td>
                                         <td>@c.Rank</td>
-                                        <td><input type="text" style="width: 48px; text-align: right" value="@c.Score" /></td>
-                                        <td><input type="text" style="width: 48px; text-align: right" value="@c.Tiebreak" /></td>
-                                        <td><input type="checkbox" @c.AbsentChecked /></td>
-                                        <td>@c.Pentamind.ToString("F2")</td>
+                                        <td><input type="text" name="Score" style="width: 48px; text-align: right" value="@c.Score" /></td>
+                                        <td><input type="text" name="Tiebreak" style="width: 48px; text-align: right" value="@c.Tiebreak" /></td>
+                                        <td>
+                                            <input type="hidden" name="AbsentString" value="off"/>
+                                            <input type="checkbox" name="AbsentString" @c.AbsentChecked />
+                                        </td>
+                                        <td>@c.PentamindString</td>
                                     </tr>
                                 }
                                 else
@@ -106,8 +113,8 @@
                                         <td>@c.Rank</td>
                                         <td>@c.Score</td>
                                         <td>@c.Tiebreak</td>
-                                        <td>@c.Absent</td>
-                                        <td>@c.Pentamind.ToString("F2")</td>
+                                        <td><input type="checkbox" name="AbsentString" @c.AbsentChecked /></td>
+                                        <td>@c.PentamindString</td>
                                     </tr>
                                 }
                             }
