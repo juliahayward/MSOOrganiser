@@ -34,7 +34,10 @@
             </div>
             <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordionExample">
                 <div class="card-body">
-                    Form stuff goes here
+                    <div class="form-group">
+                        <label for="numberInTeam">Number in team</label>
+                        <input type="text" class="form-control" id="numberInTeam" value="@Model.NumberInTeam">
+                    </div>
                 </div>
             </div>
         </div>
@@ -52,6 +55,10 @@
                         <thead>
                             <tr>
                                 <th scope="col">Name</th>
+                                @if (Model.NumberInTeam > 1)
+                                {
+                                    <th scope="col">Partner/team</th>
+                                }
                                 <th scope="col">Junior?</th>
                                 <th scope="col">Medal</th>
                                 <th scope="col">Junior Medal</th>
@@ -67,55 +74,63 @@
                             {
                                 if (Model.Editable)
                                 {
-                                    <tr>
-                                        <td>@c.FullName()<input type="hidden" name="EntrantIdString" value="@c.EntrantId" /></td>
-                                        <td>@c.Junior</td>
-                                        <td>
-                                            <select name="Medal" style="width: 80px;">
+                            <tr>
+                                <td>@c.FullName()<input type="hidden" name="EntrantIdString" value="@c.EntrantId" /></td>
+                                @if (Model.NumberInTeam > 1)
+                                {
+                                    <td>@c.Partner</td>
+                                }
+                                    <td>@c.Junior</td>
+                                    <td>
+                                        <select name="Medal" style="width: 80px;">
+                                            <option value="">-</option>
+                                            <option value="Gold" @c.GoldSelected>Gold</option>
+                                            <option value="Silver" @c.SilverSelected>Silver</option>
+                                            <option value="Bronze" @c.BronzeSelected>Bronze</option>
+                                        </select>
+                                    </td>
+                                    <td>
+                                        @if (c.IsJunior)
+                                        {
+                                            <select name="JuniorMedal" style="width: 120px;">
                                                 <option value="">-</option>
-                                                <option value="Gold" @c.GoldSelected>Gold</option>
-                                                <option value="Silver" @c.SilverSelected>Silver</option>
-                                                <option value="Bronze" @c.BronzeSelected>Bronze</option>
+                                                <option value="Gold JNR" @c.JGoldSelected>Gold JNR</option>
+                                                <option value="Silver JNR" @c.JSilverSelected>Silver JNR</option>
+                                                <option value="Bronze JNR" @c.JBronzeSelected>Bronze JNR</option>
                                             </select>
-                                        </td>
-                                        <td>
-                                            @if (c.IsJunior)
-                                            {
-                                                <select name="JuniorMedal" style="width: 120px;">
-                                                    <option value="">-</option>
-                                                    <option value="Gold JNR" @c.JGoldSelected>Gold JNR</option>
-                                                    <option value="Silver JNR" @c.JSilverSelected>Silver JNR</option>
-                                                    <option value="Bronze JNR" @c.JBronzeSelected>Bronze JNR</option>
-                                                </select>
-                                            }
-                                            else
-                                            {
-                                                <input type="hidden" name="JuniorMedal" value="" />
-                                            }
-                                        </td>
-                                        <td>@c.Rank</td>
-                                        <td><input type="text" name="Score" style="width: 48px; text-align: right" value="@c.Score" /></td>
-                                        <td><input type="text" name="Tiebreak" style="width: 48px; text-align: right" value="@c.Tiebreak" /></td>
-                                        <td>
-                                            <input type="hidden" name="AbsentString" value="off"/>
-                                            <input type="checkbox" name="AbsentString" @c.AbsentChecked />
-                                        </td>
-                                        <td>@c.PentamindString</td>
-                                    </tr>
+                                        }
+                                        else
+                                        {
+                                            <input type="hidden" name="JuniorMedal" value="" />
+                                        }
+                                    </td>
+                                    <td>@c.Rank</td>
+                                    <td><input type="text" name="Score" style="width: 48px; text-align: right" value="@c.Score" /></td>
+                                    <td><input type="text" name="Tiebreak" style="width: 48px; text-align: right" value="@c.Tiebreak" /></td>
+                                    <td>
+                                        <input type="hidden" name="AbsentString" value="off" />
+                                        <input type="checkbox" name="AbsentString" @c.AbsentChecked />
+                                    </td>
+                                    <td>@c.PentamindString</td>
+                                </tr>
                                 }
                                 else
                                 {
-                                    <tr>
-                                        <td>@c.FullName()</td>
-                                        <td>@c.Junior</td>
-                                        <td>@c.Medal</td>
-                                        <td>@c.JuniorMedal</td>
-                                        <td>@c.Rank</td>
-                                        <td>@c.Score</td>
-                                        <td>@c.Tiebreak</td>
-                                        <td><input type="checkbox" name="AbsentString" @c.AbsentChecked /></td>
-                                        <td>@c.PentamindString</td>
-                                    </tr>
+                            <tr>
+                                <td>@c.FullName()</td>
+                                @if (Model.NumberInTeam > 1)
+                                {
+                                    <td>@c.Partner</td>
+                                }
+                                <td>@c.Junior</td>
+                                    <td>@c.Medal</td>
+                                    <td>@c.JuniorMedal</td>
+                                    <td>@c.Rank</td>
+                                    <td>@c.Score</td>
+                                    <td>@c.Tiebreak</td>
+                                    <td><input type="checkbox" name="AbsentString" @c.AbsentChecked /></td>
+                                    <td>@c.PentamindString</td>
+                                </tr>
                                 }
                             }
                         </tbody>

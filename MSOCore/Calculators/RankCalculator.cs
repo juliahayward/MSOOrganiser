@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace MSOCore.Calculators
 {
+    /// <summary>
+    /// Given a set of entries with scores and absence-flags, calculate ranks
+    /// </summary>
     public class RankCalculator
     {
         public void Calculate(int numberInTeam, bool highScoreIsBest, IEnumerable<IPentaCalculable> entries)

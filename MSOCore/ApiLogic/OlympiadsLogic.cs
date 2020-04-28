@@ -39,6 +39,7 @@ namespace MSOCore.ApiLogic
             public int EventId { get; set; }
             public string Code { get; set; }
             public string Name { get; set; }
+            public int NumberInTeam { get; set; }
 
             public IEnumerable<EntrantVm> Entrants { get; set; }
 
@@ -47,6 +48,7 @@ namespace MSOCore.ApiLogic
                 public int EntrantId { get; set; }
                 public string FirstName { get; set; }
                 public string LastName { get; set; }
+                public string Partner { get; set; }
                 public string Medal { get; set; }
                 public string GoldSelected { get { return Medal == "Gold" ? "selected" : ""; } }
                 public string SilverSelected { get { return Medal == "Silver" ? "selected" : ""; } }
@@ -114,12 +116,14 @@ namespace MSOCore.ApiLogic
                 EventId = id,
                 Code = e.Code,
                 Name = e.Mind_Sport,
+                NumberInTeam = e.Number_in_Team ?? 1,
                 Entrants = e.Entrants.Select(en => new EventVm.EntrantVm()
                 {
                     EntrantId = en.Mind_Sport_ID.Value,
                     IsJunior = en.Name.IsJuniorForOlympiad(olympiad),
                     FirstName = en.Name.Firstname,
                     LastName = en.Name.Lastname,
+                    Partner = en.Partner,
                     Medal = en.Medal,
                     JuniorMedal = en.JuniorMedal,
                     Rank = en.Rank,
