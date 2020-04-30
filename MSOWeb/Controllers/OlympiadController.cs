@@ -75,7 +75,7 @@ namespace MSOWeb.Controllers
             var model = new OlympiadsLogic.UpdateEventModel();
             model.EventId = form.Id;
             model.Entrants = new List<OlympiadsLogic.UpdateEventModel.EntrantVm>();
-            var ie = form.EntrantId.GetEnumerator();
+            var ie = form.EntryNumber.GetEnumerator();
             var ae = form.Absent.GetEnumerator();
             var se = form.Score.GetEnumerator();
             var te = form.Tiebreak.GetEnumerator();
@@ -92,7 +92,7 @@ namespace MSOWeb.Controllers
 
                 model.Entrants.Add(new OlympiadsLogic.UpdateEventModel.EntrantVm()
                 {
-                    EntrantId = ie.Current,
+                    EntryNumber = ie.Current,
                     Absent = ae.Current,
                     Score = se.Current,
                     Tiebreak = te.Current,
@@ -118,7 +118,7 @@ namespace MSOWeb.Controllers
     {
         public int Id { get; set; }
 
-        public IEnumerable<string> EntrantIdString { get; set; }
+        public IEnumerable<string> EntryNumberString { get; set; }
 
         public IEnumerable<string> Medal { get; set; }
 
@@ -162,11 +162,11 @@ namespace MSOWeb.Controllers
             }
         }
 
-        public IEnumerable<int> EntrantId
+        public IEnumerable<int> EntryNumber
         {
             get
             {
-                return EntrantIdString.Select(x => int.Parse(x));
+                return EntryNumberString.Select(x => int.Parse(x));
             }
         }
 

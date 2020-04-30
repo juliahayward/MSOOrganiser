@@ -46,7 +46,7 @@ namespace MSOCore.ApiLogic
 
             public class EntrantVm
             {
-                public int EntrantId { get; set; }
+                public int EntryNumber { get; set; }
                 public string FirstName { get; set; }
                 public string LastName { get; set; }
                 public string Partner { get; set; }
@@ -81,7 +81,7 @@ namespace MSOCore.ApiLogic
 
             public class EntrantVm : IPentaCalculable
             {
-                public int EntrantId { get; set; }
+                public int EntryNumber { get; set; }
                 public string Medal { get; set; }
                 public string JuniorMedal { get; set; }
                 public string Score { get; set; }
@@ -144,7 +144,7 @@ namespace MSOCore.ApiLogic
                 NumberInTeam = e.Number_in_Team,
                 Entrants = e.Entrants.Select(en => new EventVm.EntrantVm()
                 {
-                    EntrantId = en.Mind_Sport_ID.Value,
+                    EntryNumber = en.EntryNumber,
                     IsJunior = en.Name.IsJuniorForOlympiad(olympiad),
                     FirstName = en.Name.Firstname,
                     LastName = en.Name.Lastname,
@@ -163,20 +163,40 @@ namespace MSOCore.ApiLogic
         public void UpdateEvent(UpdateEventModel model)
         {
             var context = DataEntitiesProvider.Provide();
-            var e = context.Events.SingleOrDefault(x => x.EIN == model.EventId);
-            if (e == null) throw new ArgumentOutOfRangeException("Event ID " + model.EventId + " not recognised");
+            var evt = context.Events.SingleOrDefault(x => x.EIN == model.EventId);
+            if (evt == null) throw new ArgumentOutOfRangeException("Event ID " + model.EventId + " not recognised");
 
             // TODO - valiudate
 
+            // Calculate ranks and pentamind points
             var rankCalculator = new RankCalculator();
             // TODO high-score-is-best
-            rankCalculator.Calculate(e.Number_in_Team, true, model.Entrants);
+            rankCalculator.Calculate(evt.Number_in_Team, true, model.Entrants);
 
             var pentaCalculator = new Penta2018Calculator();
-            pentaCalculator.Calculate(e.Number_in_Team, model.Entrants, e.Pentamind, e.PentamindFactor);
+            pentaCalculator.Calculate(evt.Number_in_Team, model.Entrants, evt.Pentamind, evt.PentamindFactor);
 
-            // TODO - save
             // TODO - events with partners
+
+            // Do the saving - see EventPanel. We'remissing bits such as the EventIndexer if only updating results
+            // Event properties
+            // Entrants
+            // Entrants are *not* added here but their ranks etc are
+            foreach (var e in model.Entrants)
+            {
+                var entrant = context.Entrants.First(x => x.EntryNumber == e.EntryNumber);
+                entrant.Absent = e.Absent;
+                entrant.Medal = (string.IsNullOrEmpty(e.Medal)) ? null : e.Medal;
+                entrant.JuniorMedal = (string.IsNullOrEmpty(e.JuniorMedal)) ? null : e.JuniorMedal;
+                entrant.Rank = e.Rank;
+                entrant.Score = (string.IsNullOrWhiteSpace(e.Score)) ? null : e.Score;
+                if (e.Rank > 0) entrant.Penta_Score = e.PentaScore; else entrant.Penta_Score = null;
+                // zero length constraint
+                entrant.Tie_break = (e.Tiebreak == "") ? null : e.Tiebreak;
+                // TODO entrant.Partner = e.TeamOrPair;
+            }
+
+            context.SaveChanges();
         }
     }
 }
