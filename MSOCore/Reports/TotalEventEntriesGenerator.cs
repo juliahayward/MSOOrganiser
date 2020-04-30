@@ -46,7 +46,7 @@ namespace MSOCore.Reports
                 {
                     Code = x.Code,
                     Name = x.Mind_Sport,
-                    IsMetaEvent = !x.Pentamind.Value,
+                    IsMetaEvent = !x.Pentamind,
                     Entrants = (entrants.ContainsKey(x.EIN)) ? entrants[x.EIN] : 0
                 })
                 .OrderBy(x => x.Code);

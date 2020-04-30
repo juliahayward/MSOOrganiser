@@ -957,7 +957,7 @@ namespace MSOOrganiser
             Arbiter = string.Join(", ", evt.Arbiters.Select(a => a.Name.FullName()));
             Location = evt.Location;
             EntryFee = evt.Entry_Fee; // nulls ok
-            NumberInTeam = evt.Number_in_Team.HasValue ? evt.Number_in_Team.Value : 1;
+            NumberInTeam = evt.Number_in_Team;
             PrizeFund = (evt.Prize_fund.HasValue) ? evt.Prize_fund.Value : 0;
             Prize1 = (evt.C1st_Prize != null) ? decimal.Parse(evt.C1st_Prize) : 0;
             Prize2 = (evt.C2nd_Prize != null) ? decimal.Parse(evt.C2nd_Prize) : 0;
@@ -967,7 +967,7 @@ namespace MSOOrganiser
             JuniorPrize3 = (evt.JNR_3rd_Prize != null) ? decimal.Parse(evt.JNR_3rd_Prize) : 0;
             OtherPrizes = evt.Other_Prizes;
             JuniorOtherPrizes = evt.JNR_Other_Prizes;
-            Pentamind = (evt.Pentamind.HasValue) ? evt.Pentamind.Value : false;
+            Pentamind = evt.Pentamind;
             PentamindFactor = evt.PentamindFactor;
             IncludedInMaxFee = (evt.incMaxFee.HasValue) ? evt.incMaxFee.Value : false;
             JuniorMedals = (evt.JNR_Medals.HasValue) ? evt.JNR_Medals.Value : false;

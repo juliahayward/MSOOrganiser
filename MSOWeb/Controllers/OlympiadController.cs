@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using MSOCore.ApiLogic;
+using MSOCore.Calculators;
 
 namespace MSOWeb.Controllers
 {
@@ -49,14 +50,58 @@ namespace MSOWeb.Controllers
         [HttpPost]
         public ActionResult Event(EventForm form)
         {
-            // post to update
-            // TODO - valiudate
-            // TODO - save
-            // TODO - caluclate ranks and pentamind points
-            // TODO - events with partners
-            TempData["SuccessMessage"] = "Received";
+            var model = ParseModelFromForm(form);
 
+            try
+            {
+                var logic = new OlympiadsLogic();
+                logic.UpdateEvent(model);
+                TempData["SuccessMessage"] = "Received";
+            }
+            catch (Exception e)
+            {
+                TempData["FailureMessage"] = e.Message;
+            }
             return new RedirectResult("/Olympiad/Event/" + form.Id + "?editable=true");
+        }
+
+        /// <summary>
+        /// Turn the Form back into a state that's easy to update the database
+        /// </summary>
+        /// <param name="form"></param>
+        /// <returns></returns>
+        private OlympiadsLogic.UpdateEventModel ParseModelFromForm(EventForm form)
+        {
+            var model = new OlympiadsLogic.UpdateEventModel();
+            model.EventId = form.Id;
+            model.Entrants = new List<OlympiadsLogic.UpdateEventModel.EntrantVm>();
+            var ie = form.EntrantId.GetEnumerator();
+            var ae = form.Absent.GetEnumerator();
+            var se = form.Score.GetEnumerator();
+            var te = form.Tiebreak.GetEnumerator();
+            var me = form.Medal.GetEnumerator();
+            var jme = form.JuniorMedal.GetEnumerator();
+
+            while (ie.MoveNext())
+            {
+                ae.MoveNext();
+                se.MoveNext();
+                te.MoveNext();
+                me.MoveNext();
+                jme.MoveNext();
+
+                model.Entrants.Add(new OlympiadsLogic.UpdateEventModel.EntrantVm()
+                {
+                    EntrantId = ie.Current,
+                    Absent = ae.Current,
+                    Score = se.Current,
+                    Tiebreak = te.Current,
+                    Medal = me.Current,
+                    JuniorMedal = jme.Current
+                });
+            };
+
+            return model;
         }
     }
 
@@ -66,6 +111,9 @@ namespace MSOWeb.Controllers
         public string Name { get; set; }
     }
 
+    /// <summary>
+    /// Represents what's posted from the Event
+    /// </summary>
     public class EventForm
     {
         public int Id { get; set; }

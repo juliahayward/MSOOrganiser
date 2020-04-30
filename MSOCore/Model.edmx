@@ -955,9 +955,9 @@ FROM [dbo].[SelectedPeople] AS [SelectedPeople]</DefiningQuery>
           <Property Type="String" Name="Code" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Type="String" Name="Mind_Sport" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Type="String" Name="Type" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Type="Int32" Name="Number_in_Team" />
+          <Property Type="Int32" Name="Number_in_Team"  Nullable="false"/>
           <Property Type="Int32" Name="MAX_Number" />
-          <Property Type="Boolean" Name="Pentamind" />
+          <Property Type="Boolean" Name="Pentamind" Nullable="false" />
           <Property Type="String" Name="Entry_Fee" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Type="Boolean" Name="incMaxFee" />
           <Property Type="Single" Name="No_Sessions" />

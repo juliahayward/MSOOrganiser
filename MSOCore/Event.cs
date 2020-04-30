@@ -27,9 +27,9 @@ namespace MSOCore
         public string Code { get; set; }
         public string Mind_Sport { get; set; }
         public string Type { get; set; }
-        public Nullable<int> Number_in_Team { get; set; }
+        public int Number_in_Team { get; set; }
         public Nullable<int> MAX_Number { get; set; }
-        public Nullable<bool> Pentamind { get; set; }
+        public bool Pentamind { get; set; }
         public string Entry_Fee { get; set; }
         public Nullable<bool> incMaxFee { get; set; }
         public Nullable<float> No_Sessions { get; set; }
