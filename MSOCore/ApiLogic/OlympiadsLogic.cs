@@ -167,6 +167,7 @@ namespace MSOCore.ApiLogic
             if (e == null) throw new ArgumentOutOfRangeException("Event ID " + model.EventId + " not recognised");
 
             // TODO - valiudate
+
             var rankCalculator = new RankCalculator();
             // TODO high-score-is-best
             rankCalculator.Calculate(e.Number_in_Team, true, model.Entrants);

@@ -56,7 +56,7 @@ namespace MSOWeb.Controllers
             {
                 var logic = new OlympiadsLogic();
                 logic.UpdateEvent(model);
-                TempData["SuccessMessage"] = "Received";
+                TempData["SuccessMessage"] = "Event updated";
             }
             catch (Exception e)
             {
