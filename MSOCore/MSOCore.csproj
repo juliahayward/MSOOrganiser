@@ -50,6 +50,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ApiLogic\ContestantsLogic.cs" />
     <Compile Include="ApiLogic\OlympiadEventsApiLogic.cs" />
     <Compile Include="ApiLogic\OlympiadsLogic.cs" />
     <Compile Include="ApiLogic\UserLogic.cs" />

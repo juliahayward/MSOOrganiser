@@ -32,7 +32,7 @@
                     </button>
                 </h2>
             </div>
-            <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordionExample">
+            <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordionExample">
                 <div class="card-body">
                     <div class="form-group">
                         <label for="numberInTeam">Number in team</label>
@@ -49,7 +49,7 @@
                     </button>
                 </h2>
             </div>
-            <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionExample">
+            <div id="collapseTwo" class="collapse show" aria-labelledby="headingTwo" data-parent="#accordionExample">
                 <div class="card-body">
                     <table class="table">
                         <thead>
@@ -75,7 +75,7 @@
                                 if (Model.Editable)
                                 {
                             <tr>
-                                <td>@c.FullName()<input type="hidden" name="EntryNumberString" value="@c.EntryNumber" /></td>
+                                <td><a href="/Contestant/Contestant/@c.ContestantId">@c.FullName()</a><input type="hidden" name="EntryNumberString" value="@c.EntryNumber" /></td>
                                 @if (Model.NumberInTeam > 1)
                                 {
                                     <td>@c.Partner</td>
@@ -117,14 +117,14 @@
                                 else
                                 {
                             <tr>
-                                <td>@c.FullName()</td>
+                                <td><a href="/Contestant/Contestant/@c.ContestantId">@c.FullName()</a></td>
                                 @if (Model.NumberInTeam > 1)
                                 {
                                     <td>@c.Partner</td>
                                 }
-                                <td>@c.Junior</td>
-                                    <td>@c.Medal</td>
-                                    <td>@c.JuniorMedal</td>
+                                    <td>@c.Junior</td>
+                                    <td><span class="btn @c.MedalStyle" style="width:72px;">@c.Medal</span></td>
+                                    <td><span class="btn @c.JuniorMedalStyle" style="width:72px;">@c.JuniorMedal.Replace(" JNR", "")</span></td>
                                     <td>@c.Rank</td>
                                     <td>@c.Score</td>
                                     <td>@c.Tiebreak</td>

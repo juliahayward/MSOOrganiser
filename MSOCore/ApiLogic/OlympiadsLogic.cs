@@ -47,14 +47,17 @@ namespace MSOCore.ApiLogic
             public class EntrantVm
             {
                 public int EntryNumber { get; set; }
+                public int ContestantId { get; set; }
                 public string FirstName { get; set; }
                 public string LastName { get; set; }
                 public string Partner { get; set; }
                 public string Medal { get; set; }
+                public string MedalStyle => Medal.ToLower();
                 public string GoldSelected { get { return Medal == "Gold" ? "selected" : ""; } }
                 public string SilverSelected { get { return Medal == "Silver" ? "selected" : ""; } }
                 public string BronzeSelected { get { return Medal == "Bronze" ? "selected" : ""; } }
                 public string JuniorMedal { get; set; }
+                public string JuniorMedalStyle => JuniorMedal.Replace(" JNR", "").ToLower();
                 public string JGoldSelected { get { return JuniorMedal == "Gold JNR" ? "selected" : ""; } }
                 public string JSilverSelected { get { return JuniorMedal == "Silver JNR" ? "selected" : ""; } }
                 public string JBronzeSelected { get { return JuniorMedal == "Bronze JNR" ? "selected" : ""; } }
@@ -145,12 +148,13 @@ namespace MSOCore.ApiLogic
                 Entrants = e.Entrants.Select(en => new EventVm.EntrantVm()
                 {
                     EntryNumber = en.EntryNumber,
+                    ContestantId = en.Name.Mind_Sport_ID,
                     IsJunior = en.Name.IsJuniorForOlympiad(olympiad),
                     FirstName = en.Name.Firstname,
                     LastName = en.Name.Lastname,
                     Partner = en.Partner,
-                    Medal = en.Medal,
-                    JuniorMedal = en.JuniorMedal,
+                    Medal = en.Medal ?? "",
+                    JuniorMedal = en.JuniorMedal ?? "",
                     Rank = en.Rank,
                     Score = en.Score,
                     Absent = en.Absent,

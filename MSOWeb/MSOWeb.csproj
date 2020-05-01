@@ -131,6 +131,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Controllers\ApiV1Controller.cs" />
+    <Compile Include="Controllers\ContestantController.cs" />
     <Compile Include="Controllers\ErrorController.cs" />
     <Compile Include="Controllers\EventController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -348,6 +349,7 @@
     <Content Include="Content\Images\Flags\zimbabwe.jpg" />
     <Resource Include="Content\favicon.ico" />
     <Content Include="Content\Logo.png" />
+    <Content Include="Content\Styles\Global.css" />
     <Content Include="Content\Styles\Login.css" />
     <Content Include="Global.asax" />
     <Content Include="Scripts\navbar.js" />
@@ -420,6 +422,7 @@
     <Content Include="Views\Olympiad\Olympiad.cshtml" />
     <Content Include="Views\Olympiad\Index.cshtml" />
     <Content Include="Views\Olympiad\Event.cshtml" />
+    <Content Include="Views\Contestant\Contestant.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
