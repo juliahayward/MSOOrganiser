@@ -126,8 +126,7 @@ namespace MSOWeb.Controllers
         {
             var generator = new TotalEventEntriesGenerator();
 
-            if (!year.HasValue) year = DateTime.Now.Year;
-            var model = generator.GetModel(year.Value);
+            var model = generator.GetModel(year);
 
             return View(model);
         }

@@ -188,13 +188,7 @@ namespace MSOOrganiser
 
         private void nationalitiesMenuItem_Click(object sender, RoutedEventArgs e)
         {
-            Cursor = Cursors.Wait;
-
-            var panel = new NationalityReport();
-            panel.Populate();
-            ReplaceMainPanelWith(panel);
-
-            Cursor = Cursors.Arrow;
+            MessageBox.Show("Now on the website");
         }
 
         private void resultsMenuItem_Click(object sender, RoutedEventArgs e)
