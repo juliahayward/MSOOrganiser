@@ -423,6 +423,10 @@
     <Content Include="Views\Olympiad\Index.cshtml" />
     <Content Include="Views\Olympiad\Event.cshtml" />
     <Content Include="Views\Contestant\Contestant.cshtml" />
+    <Content Include="Views\Report\ChessStandings.cshtml" />
+    <Content Include="Views\Report\BackgammonStandings.cshtml" />
+    <Content Include="Views\Report\ChessStandingsnew.cshtml" />
+    <Content Include="Views\Report\BackgammonStandingsnew.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

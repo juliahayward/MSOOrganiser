@@ -93,7 +93,7 @@ namespace MSOWeb.Controllers
         {
             var generator = new EventListGenerator();
 
-            var model = generator.GetItems();
+            var model = generator.GetNonMetaItems();
 
             return View(model);
         }

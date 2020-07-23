@@ -46,5 +46,19 @@ namespace MSOCore.Reports
 
             return games;
         }
+
+        // This excludes meta-events
+        public IEnumerable<EventVm> GetNonMetaItems()
+        {
+            var context = DataEntitiesProvider.Provide();
+            var olympiad = context.Olympiad_Infoes.First(x => x.Current);
+
+            var games = context.Events
+                .Where(e => e.OlympiadId == olympiad.Id && e.Pentamind)
+                .OrderBy(x => x.Code)
+                .Select(g => new EventVm() { Name = g.Mind_Sport, Code = g.Code }).ToList();
+
+            return games;
+        }
     }
 }

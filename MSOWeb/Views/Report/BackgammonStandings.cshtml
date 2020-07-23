@@ -1,0 +1,36 @@
+﻿@model MSOCore.Reports.PentamindStandingsGenerator.PentamindStandingsReportVm
+@{
+    Layout = "~/Views/Shared/_NewLayoutNoHeader.cshtml";
+}
+
+@{ var i = 1; }
+
+<table class="table">
+    <thead>
+        <tr>
+            <td></td>
+            <td><span>Name</span></td>
+            <td><span>Score</span></td>
+            <td colspan="5"><span>Individual events</span></td>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.Standings.Take(40))
+        {
+        <tr>
+            <th scope="row">@i</th>
+            <td><span>@item.Name</span></td>
+            <td style="width: 100px;"><span>@item.TotalScoreStr</span></td>
+            <td style="font-size: small"><span>@item.ScoreStr(0)</span></td>
+            <td style="font-size: small"><span>@item.ScoreStr(1)</span></td>
+            <td style="font-size: small"><span>@item.ScoreStr(2)</span></td>
+            <td style="font-size: small"><span>@item.ScoreStr(3)</span></td>
+            <td style="font-size: small"><span>@item.ScoreStr(4)</span></td>
+        </tr>
+
+            i++;
+        }
+    </tbody>
+</table>
+
+<h3>Top 40 listed. Competitors need 5 events to qualify.</h3>

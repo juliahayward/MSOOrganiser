@@ -122,6 +122,24 @@ namespace MSOWeb.Controllers
             return View("PokerStandings"+view, model);
         }
 
+        public ActionResult ChessStandings(int? year, string view = "")
+        {
+            var generator = new PentamindStandingsGenerator();
+
+            var model = generator.GetChessStandings(year);
+
+            return View("ChessStandings" + view, model);
+        }
+
+        public ActionResult BackgammonStandings(int? year, string view = "")
+        {
+            var generator = new PentamindStandingsGenerator();
+
+            var model = generator.GetBackgammonStandings(year);
+
+            return View("BackgammonStandings" + view, model);
+        }
+
         public ActionResult TotalEventEntries(int? year)
         {
             var generator = new TotalEventEntriesGenerator();

@@ -22,3 +22,4 @@ MSOCore/bin/
 MSOWeb/bin/
 *.user
 *.suo
+RawData/

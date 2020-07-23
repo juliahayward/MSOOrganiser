@@ -49,7 +49,8 @@ namespace MSOCore
         public string Notes { get; set; }
         public Nullable<System.DateTime> date { get; set; }
         public byte[] SSMA_TimeStamp { get; set; }
-    
+        public string OnlineNicknames { get; set; }
+        public string DiscordNickname { get; set; }
         public virtual ICollection<Entrant> Entrants { get; set; }
         public virtual ICollection<Payment> Payments { get; set; }
         public virtual ICollection<Arbiter> Arbiters { get; set; }

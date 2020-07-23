@@ -56,6 +56,7 @@ namespace MSOCore.Reports
 
             public string OlympiadTitle { get; set; }
             public IEnumerable<ContestantStanding> Standings { get; set; }
+            public string EventsNeeded { get; set; }
         }
 
         public PentamindStandingsReportVm GetStandings(int? year, DateTime? date = null)
@@ -65,7 +66,7 @@ namespace MSOCore.Reports
             var context = DataEntitiesProvider.Provide();
             var currentOlympiad = (year.HasValue)
                 ? context.Olympiad_Infoes.Where(x => x.StartDate.HasValue && x.StartDate.Value.Year == year.Value).First()
-                : context.Olympiad_Infoes.OrderByDescending(x => x.StartDate).First();
+                : context.Olympiad_Infoes.First(x => x.Current);
 
             var vm = new PentamindStandingsReportVm();
             vm.OlympiadTitle = currentOlympiad.FullTitle();
@@ -127,7 +128,7 @@ namespace MSOCore.Reports
             var context = DataEntitiesProvider.Provide();
             var currentOlympiad = (year.HasValue)
                 ? context.Olympiad_Infoes.Where(x => x.StartDate.HasValue && x.StartDate.Value.Year == year.Value).First()
-                : context.Olympiad_Infoes.OrderByDescending(x => x.StartDate).First();
+                : context.Olympiad_Infoes.First(x => x.Current);
             var firstDobForJunior = currentOlympiad.FirstDateOfBirthForJunior();
 
             var vm = new PentamindStandingsReportVm();
@@ -181,7 +182,7 @@ namespace MSOCore.Reports
             var context = DataEntitiesProvider.Provide();
             var currentOlympiad = (year.HasValue)
                 ? context.Olympiad_Infoes.Where(x => x.StartDate.HasValue && x.StartDate.Value.Year == year.Value).First()
-                : context.Olympiad_Infoes.OrderByDescending(x => x.StartDate).First();
+                : context.Olympiad_Infoes.First(x => x.Current);
             var lastDobForSenior = currentOlympiad.LastDateOfBirthForSenior();
 
             var vm = new PentamindStandingsReportVm();
@@ -235,7 +236,7 @@ namespace MSOCore.Reports
             var context = DataEntitiesProvider.Provide();
             var currentOlympiad = (year.HasValue)
                 ? context.Olympiad_Infoes.Where(x => x.StartDate.HasValue && x.StartDate.Value.Year == year.Value).First()
-                : context.Olympiad_Infoes.OrderByDescending(x => x.StartDate).First();
+                : context.Olympiad_Infoes.First(x => x.Current);
 
             var def = context.MetaGameDefinitions.First(x =>
                 x.Type == "Eurogames" && x.OlympiadId == currentOlympiad.Id);
@@ -292,7 +293,7 @@ namespace MSOCore.Reports
             var context = DataEntitiesProvider.Provide();
             var currentOlympiad = (year.HasValue)
                 ? context.Olympiad_Infoes.Where(x => x.StartDate.HasValue && x.StartDate.Value.Year == year.Value).First()
-                : context.Olympiad_Infoes.OrderByDescending(x => x.StartDate).First();
+                : context.Olympiad_Infoes.First(x => x.Current);
 
             var def = context.MetaGameDefinitions.First(x =>
                 x.Type == "ModernAbstract" && x.OlympiadId == currentOlympiad.Id);
@@ -347,19 +348,40 @@ namespace MSOCore.Reports
 
         public PentamindStandingsReportVm GetPokerStandings(int? year)
         {
+            int pentaTotal = (year.HasValue && year < 2020) ? 4 : 5; // Todo read off event
+            int pentaLong = 0;  // length irrelevant for poker
+            return GetMetaStandings(year, "Poker", pentaTotal, pentaLong);
+        }
+
+        public PentamindStandingsReportVm GetChessStandings(int? year)
+        {
+            int pentaTotal = 5; // OK for 2020, doesn't apply to other years
+            int pentaLong = 0;  // length irrelevant
+            return GetMetaStandings(year, "Chess", pentaTotal, pentaLong);
+        }
+
+        public PentamindStandingsReportVm GetBackgammonStandings(int? year)
+        {
+            int pentaTotal = 5; // OK for 2020, doesn't apply to other years
+            int pentaLong = 0;  // length irrelevant
+            return GetMetaStandings(year, "Backgammon", pentaTotal, pentaLong);
+        }
+
+        private PentamindStandingsReportVm GetMetaStandings(int? year, string type, int pentaTotal, int pentaLong)
+        { 
             var context = DataEntitiesProvider.Provide();
             var currentOlympiad = (year.HasValue)
                 ? context.Olympiad_Infoes.Where(x => x.StartDate.HasValue && x.StartDate.Value.Year == year.Value).First()
-                : context.Olympiad_Infoes.OrderByDescending(x => x.StartDate).First();
+                : context.Olympiad_Infoes.First(x => x.Current);
 
             var def = context.MetaGameDefinitions.First(x =>
-                x.Type == "Poker" && x.OlympiadId == currentOlympiad.Id);
+                x.Type == type && x.OlympiadId == currentOlympiad.Id);
             var codes = def.SubEvents.Split(',');
 
             var vm = new PentamindStandingsReportVm();
             vm.OlympiadTitle = currentOlympiad.FullTitle();
-            int pentaTotal = 4; // OK for 2019, not sure for older years
-            int pentaLong = 0;  // length irrelevant for poker
+            vm.EventsNeeded = pentaTotal.ToString();
+
             var longSessionEvents = currentOlympiad.Events.Where(x => x.No_Sessions > 1)
                 .Select(x => x.Code)
                 .ToList();

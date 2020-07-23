@@ -55,10 +55,11 @@ namespace MSOCore.ApiLogic
             string token = PasswordResetToken(user);
 
             var client = new SmtpClient();
-            client.Host = "smtp.outlook.com";
+            client.Host = "smtp.office365.com";
+            client.Port = 587;
             client.UseDefaultCredentials = false;
             client.EnableSsl = true;
-            client.Credentials = new NetworkCredential("julia.hayward@btconnect.com", "Choco49late");
+            client.Credentials = new NetworkCredential("", "");
 
             string body = $@"A request to reset the MSO password for user '{userName}' has been received.
  If this is expected, then go to {url}?userId={user.PIN}&token={token} where you can enter a new password.

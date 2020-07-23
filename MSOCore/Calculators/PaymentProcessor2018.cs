@@ -4,6 +4,7 @@ using System.IO;
 using System.Collections.Generic;
 using System.Linq;
 using System.Globalization;
+using MSOCore.Extensions;
 
 namespace MSOCore.Calculators
 {
@@ -22,16 +23,21 @@ namespace MSOCore.Calculators
                 order2018.BookingPrice = decimal.Parse(order.booking_price.Value);
                 order2018.BookingSpaces = order.booking_spaces.Value;
                 order2018.BookingStatus = order.booking_status.Value;
+                order2018.DiscordNickname = order["Discord username"].Value;
+                order2018.OnlineNicknames = order["Usernames for relevant platforms"].Value;
                 order2018.Timestamp = order.timestamp.Value;
                 order2018.DoBString = order.date_of_birth.Value;
-                order2018.Attendees.Add(new Order2018.Attendee()
+                var attendee = new Order2018.Attendee()
                 {
                     Title = order.attendees.customer.title.Value,
                     FirstName = order.attendees.customer.first_name.Value,
                     LastName = order.attendees.customer.last_name.Value,
                     CountryCode = SubstituteCountryCode(order.attendees.customer.country_to_represent.Value),
                     Email = order.attendees.customer.email.Value, 
-                });
+                };
+                attendee.FirstName = attendee.FirstName.DecodeEncodedNonAsciiCharacters();
+                attendee.LastName = attendee.LastName.DecodeEncodedNonAsciiCharacters();
+                order2018.Attendees.Add(attendee);
                 foreach (var o1 in order.events)
                 {
                     var evt = o1.Value;
@@ -81,9 +87,9 @@ namespace MSOCore.Calculators
                         && x.Lastname.ToLower() == attendee.LastName.ToLower());
 
                     if (contestant == null)
-                        contestant = CreateEntrant(context, order.DateOfBirth, attendee, countries);
+                        contestant = CreateEntrant(context, order, attendee, countries);
                     else
-                        UpdateEntrant(context, contestant, order.DateOfBirth, attendee.Email);
+                        UpdateEntrant(context, contestant, order, attendee.Email);
 
                     bool newEventFound = false;
                     foreach (var evt in order.Events)
@@ -96,6 +102,8 @@ namespace MSOCore.Calculators
 
                         if (!events.ContainsKey(evt.Code))
                             throw new ArgumentOutOfRangeException($"Event code {evt.Code} not recognised");
+                        if (events[evt.Code].Entry_Fee == null)
+                            throw new ArgumentNullException($"Event code {evt.Code} has no entry fee specified");
 
                         // Put the contestant into the right event
                         var entrant = Entrant.NewEntrant(events[evt.Code].EIN, evt.Code, olympiad.Id, contestant,
@@ -148,7 +156,7 @@ namespace MSOCore.Calculators
         }
 
         private Contestant CreateEntrant(DataEntities context, 
-            DateTime? dob,
+            Order2018 order,
             Order2018.Attendee entrant,
             Dictionary<string, string> countries)
         {
@@ -162,7 +170,9 @@ namespace MSOCore.Calculators
                 Nationality = countries[entrant.CountryCode],
                 Title = entrant.Title,
                 Male = (entrant.Title == "Mr"),
-                DateofBirth = dob,
+                DateofBirth = order.DateOfBirth,
+                OnlineNicknames = order.OnlineNicknames,
+                DiscordNickname = order.DiscordNickname,
                 email = entrant.Email
             };
 
@@ -172,10 +182,16 @@ namespace MSOCore.Calculators
             return contestant;
         }
 
-        private void UpdateEntrant(DataEntities context, Contestant contestant, DateTime? dateOfBirth, string email)
+        private void UpdateEntrant(DataEntities context, Contestant contestant, Order2018 order, string email)
         {
-            if (dateOfBirth != null)
-                contestant.DateofBirth = dateOfBirth;
+            if (order.DateOfBirth != null)
+                contestant.DateofBirth = order.DateOfBirth;
+            if (order.OnlineNicknames != null)
+                contestant.OnlineNicknames = order.OnlineNicknames;
+            if (order.DiscordNickname != null)
+                contestant.DiscordNickname = order.DiscordNickname;
+            if (!string.IsNullOrEmpty(email))
+                contestant.email = email;
             if (!string.IsNullOrEmpty(email))
                 contestant.email = email;
 
@@ -191,6 +207,8 @@ namespace MSOCore.Calculators
         public string BookingStatus { get; set; }
         public long Timestamp { get; set; }
         public string DoBString { get; set; }
+        public string OnlineNicknames { get; set; }
+        public string DiscordNickname { get; set; }
         public DateTime? DateOfBirth { get {
                 DateTime dob;
                 var success = DateTime.TryParseExact(DoBString, "yyyy-MM-dd", CultureInfo.InvariantCulture, System.Globalization.DateTimeStyles.None, out dob);
