@@ -5,6 +5,7 @@ using System.Net;
 using System.Net.Mail;
 using System.Reflection;
 using System.Security.Cryptography;
+using System.Configuration;
 
 namespace MSOCore.ApiLogic
 {
@@ -48,6 +49,9 @@ namespace MSOCore.ApiLogic
 
         public void SendUserPasswordResetLink(string userName, string url)
         {
+            var sender = ConfigurationManager.AppSettings["EmailUser"];
+            var password = ConfigurationManager.AppSettings["EmailPassword"];
+
             var context = DataEntitiesProvider.Provide();
             var user = context.Users.FirstOrDefault(x => x.Name == userName);
             if (user == null)
@@ -59,7 +63,7 @@ namespace MSOCore.ApiLogic
             client.Port = 587;
             client.UseDefaultCredentials = false;
             client.EnableSsl = true;
-            client.Credentials = new NetworkCredential("", "");
+            client.Credentials = new NetworkCredential(sender, password);
 
             string body = $@"A request to reset the MSO password for user '{userName}' has been received.
  If this is expected, then go to {url}?userId={user.PIN}&token={token} where you can enter a new password.
