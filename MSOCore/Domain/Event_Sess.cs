@@ -21,6 +21,8 @@ namespace MSOCore
                 EIN = evt.EIN,
                 Event = evt,
                 INDEX = this.INDEX,
+                StartTime = this.StartTime,
+                EndTime = this.EndTime,
                 Session = this.Session,
                 Session1 = this.Session1    // Sessions ARE shared
             };
@@ -28,7 +30,23 @@ namespace MSOCore
             return es;
         }
 
-        public DateTime ActualStart { get { return this.Date.Value.Add(Session1.StartTime.Value); } }
-        public DateTime ActualEnd { get { return this.Date.Value.Add(Session1.FinishTime.Value); } }
+        public DateTime ActualStart
+        {
+            get
+            {
+                if (StartTime != null)
+                    return this.Date.Value.Add(StartTime.Value);
+                return this.Date.Value.Add(Session1.StartTime.Value);
+            }
+        }
+        public DateTime ActualEnd
+        {
+            get
+            {
+                if (EndTime != null)
+                    return this.Date.Value.Add(EndTime.Value);
+                return this.Date.Value.Add(Session1.FinishTime.Value);
+            }
+        }
     }
 }

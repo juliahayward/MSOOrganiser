@@ -79,6 +79,8 @@ warning 6002: The table/view 'mso_prod.dbo.Badges - Misc' does not have a primar
           <Property Name="EIN" Type="int" />
           <Property Name="Date" Type="datetime2" Precision="0" />
           <Property Name="Session" Type="nvarchar" MaxLength="50" />
+          <Property Name="StartTime" Type="time" Precision="0" />
+          <Property Name="EndTime" Type="time" Precision="0" />
         </EntityType>
         <EntityType Name="Events">
           <Key>
@@ -945,6 +947,8 @@ FROM [dbo].[SelectedPeople] AS [SelectedPeople]</DefiningQuery>
           <Property Type="Int32" Name="EIN" />
           <Property Type="DateTime" Name="Date" Precision="0" />
           <Property Type="String" Name="Session" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Type="Time" Name="StartTime" Precision="0" />
+          <Property Type="Time" Name="EndTime" Precision="0" />
           <NavigationProperty Name="Event" Relationship="DataModel.Event_Sess_EventsEvent_Sess" FromRole="Event_Sess" ToRole="Event" />
           <NavigationProperty Name="Session1" Relationship="DataModel.Event_Sess_SessionEvent_Sess" FromRole="Event_Sess" ToRole="Session" />
         </EntityType>
@@ -1608,6 +1612,8 @@ FROM [dbo].[SelectedPeople] AS [SelectedPeople]</DefiningQuery>
                 <ScalarProperty Name="Date" ColumnName="Date" />
                 <ScalarProperty Name="EIN" ColumnName="EIN" />
                 <ScalarProperty Name="INDEX" ColumnName="INDEX" />
+                <ScalarProperty Name="StartTime" ColumnName="StartTime" />
+                <ScalarProperty Name="EndTime" ColumnName="EndTime" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

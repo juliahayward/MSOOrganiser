@@ -18,7 +18,10 @@ namespace MSOCore
         public Nullable<int> EIN { get; set; }
         public Nullable<System.DateTime> Date { get; set; }
         public string Session { get; set; }
-    
+
+        public Nullable<TimeSpan> StartTime { get; set; }
+        public Nullable<TimeSpan> EndTime { get; set; }
+
         public virtual Event Event { get; set; }
         public virtual Session Session1 { get; set; }
     }
