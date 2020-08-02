@@ -3,6 +3,8 @@ using System.Web;
 using System.Web.Mvc;
 using System.Web.Security;
 using System.Linq;
+using System;
+using MSOWeb.Filters;
 
 namespace MSOWeb
 {
@@ -12,6 +14,7 @@ namespace MSOWeb
         {
             filters.Add(new HandleErrorAttribute());
             filters.Add(new SecurityFilter());
+            FilterProviders.Providers.Add(new PerformanceTestFilterProvider());
         }
     }
 
@@ -23,15 +26,25 @@ namespace MSOWeb
               filterContext.HttpContext.Request.Cookies[FormsAuthentication.FormsCookieName];
             FormsAuthenticationTicket authTicket = null;
 
-            if (authCookie != null)
+            bool isAccessAllowed;
+            try
             {
-                authTicket = FormsAuthentication.Decrypt(authCookie.Value);
-                var identity = new GenericIdentity(authTicket.Name, "Forms");
-                var principal = new GenericPrincipal(identity, new string[] { authTicket.UserData });
-                filterContext.HttpContext.User = principal;
+                if (authCookie != null)
+                {
+
+                    authTicket = FormsAuthentication.Decrypt(authCookie.Value);
+                    var identity = new GenericIdentity(authTicket.Name, "Forms");
+                    var principal = new GenericPrincipal(identity, new string[] { authTicket.UserData });
+                    filterContext.HttpContext.User = principal;
+                }
+                isAccessAllowed = IsAccessAllowed(filterContext, authTicket);
+            }
+            catch (ArgumentException)
+            {
+                https://stackoverflow.com/questions/18895746/invalid-value-for-encryptedticket-parameter
+                isAccessAllowed = false;
             }
 
-            var isAccessAllowed = IsAccessAllowed(filterContext, authTicket);
             if (!isAccessAllowed)
             {
                 FormsAuthentication.RedirectToLoginPage();

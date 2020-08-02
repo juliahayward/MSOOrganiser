@@ -75,7 +75,7 @@
                                 if (Model.Editable)
                                 {
                             <tr>
-                                <td><a href="/Contestant/Contestant/@c.ContestantId">@c.FullName()</a><input type="hidden" name="EntryNumberString" value="@c.EntryNumber" /></td>
+                                <td><a href="/Contestant/Contestant/@c.ContestantId" title="Online: @c.OnlineNicknames">@c.FullName()</a><input type="hidden" name="EntryNumberString" value="@c.EntryNumber" /></td>
                                 @if (Model.NumberInTeam > 1)
                                 {
                                     <td>@c.Partner</td>

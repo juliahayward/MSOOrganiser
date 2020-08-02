@@ -642,6 +642,7 @@ namespace MSOOrganiser
 
         private void prepayments_Click(object sender, RoutedEventArgs e)
         {
+            // This was for 2017 and prior, where stuff was written to the DB
             PaymentProcessorResult result;
             using (new SpinnyCursor())
             {
@@ -654,6 +655,8 @@ namespace MSOOrganiser
 
         private void prepayments2018_Click(object sender, RoutedEventArgs e)
         {
+            MessageBox.Show("You can do this via the web now!");
+
             var dlg = new OpenFileDialog();
             dlg.FileName = "Data File";
             dlg.DefaultExt = ".json";

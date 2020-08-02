@@ -114,7 +114,7 @@
     <div class="col-sm-3">
         <div class="card mt-1">
             <div class="card-body">
-                <h5 class="card-title">Reports (Admin only)</h5>
+                <h5 class="card-title">Reports</h5>
                 <ul>
                     <li><a href="/Report/Nationality" class="card-link">Contestants, by nation</a></li>
                     <li><a href="/Report/TotalEventEntries" class="card-link">Entries per Event</a></li>
@@ -125,13 +125,26 @@
     <div class="col-sm-3">
         <div class="card mt-1">
             <div class="card-body">
-                <h5 class="card-title">Download Entrants (Admin only)</h5>
+                <h5 class="card-title">Download Entrants (Arbiter/Admin only)</h5>
                 <ul>
                     <li><a href="/Home/Downloads" class="card-link">Downloads</a></li>
                 </ul>
             </div>
         </div>
     </div>
+    @if (HttpContext.Current.User.IsInRole("Superadmin"))
+    {
+        <div class="col-sm-3">
+            <div class="card mt-1">
+                <div class="card-body">
+                    <h5 class="card-title">Maintenance (Superadmin only)</h5>
+                    <ul>
+                        <li><a href="/Upload" class="card-link">Upload</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    }
 </div>
 }
 <div class="row">

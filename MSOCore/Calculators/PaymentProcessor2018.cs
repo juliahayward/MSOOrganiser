@@ -25,6 +25,7 @@ namespace MSOCore.Calculators
                 order2018.BookingStatus = order.booking_status.Value;
                 order2018.DiscordNickname = order["Discord username"].Value;
                 order2018.OnlineNicknames = order["Usernames for relevant platforms"].Value;
+                order2018.Whatsapp = (order["WhatsApp with this number"] != null && order["WhatsApp with this number"].Value == "1");
                 order2018.Timestamp = order.timestamp.Value;
                 order2018.DoBString = order.date_of_birth.Value;
                 var attendee = new Order2018.Attendee()
@@ -74,6 +75,7 @@ namespace MSOCore.Calculators
             var countries = context.Nationalities
                 .Where(x => x.ISO2 != null)
                 .ToDictionary(n => n.ISO2, n => n.Name);
+            countries.Add("", "");
             var events = context.Events.Where(x => x.OlympiadId == olympiad.Id)
                 .ToDictionary(e => e.Code, e => e);
             var entryFees = context.Fees.ToDictionary(x => x.Code, x => x);
@@ -173,6 +175,7 @@ namespace MSOCore.Calculators
                 DateofBirth = order.DateOfBirth,
                 OnlineNicknames = order.OnlineNicknames,
                 DiscordNickname = order.DiscordNickname,
+                Whatsapp = order.Whatsapp,
                 email = entrant.Email
             };
 
@@ -190,6 +193,7 @@ namespace MSOCore.Calculators
                 contestant.OnlineNicknames = order.OnlineNicknames;
             if (order.DiscordNickname != null)
                 contestant.DiscordNickname = order.DiscordNickname;
+            contestant.Whatsapp = order.Whatsapp;
             if (!string.IsNullOrEmpty(email))
                 contestant.email = email;
             if (!string.IsNullOrEmpty(email))
@@ -209,6 +213,8 @@ namespace MSOCore.Calculators
         public string DoBString { get; set; }
         public string OnlineNicknames { get; set; }
         public string DiscordNickname { get; set; }
+
+        public bool Whatsapp { get; set; }
         public DateTime? DateOfBirth { get {
                 DateTime dob;
                 var success = DateTime.TryParseExact(DoBString, "yyyy-MM-dd", CultureInfo.InvariantCulture, System.Globalization.DateTimeStyles.None, out dob);

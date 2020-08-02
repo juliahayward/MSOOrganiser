@@ -11,6 +11,12 @@ namespace MSOCore.Calculators
     /// </summary>
     public class RankCalculator
     {
+        public bool CanCalculate(IEnumerable<IPentaCalculable> entries)
+        {
+            // The website posts scores as blanks; this lets us work out if we're ready to do ranks yet.
+            return !entries.Any(x => !x.Absent && x.Score == "");
+        }
+
         public void Calculate(int numberInTeam, bool highScoreIsBest, IEnumerable<IPentaCalculable> entries)
         {
             if (!entries.Any()) return;

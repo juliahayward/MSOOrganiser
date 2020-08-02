@@ -73,6 +73,8 @@ namespace MSOCore.ApiLogic
                 public string Junior { get { return IsJunior ? "JNR" : ""; } }
 
                 public string FullName() { return FirstName + " " + LastName.ToUpper(); }
+
+                public string OnlineNicknames { get; set; }
             }
         }
 
@@ -159,7 +161,8 @@ namespace MSOCore.ApiLogic
                     Score = en.Score,
                     Absent = en.Absent,
                     Tiebreak = en.Tie_break,
-                    Pentamind = en.Penta_Score
+                    Pentamind = en.Penta_Score,
+                    OnlineNicknames = en.Name.OnlineNicknames
                 }).OrderBy(x => x.Absent).ThenBy(x => x.Rank).ThenBy(x => x.LastName).ThenBy(x => x.FirstName)
             };
         }
@@ -174,12 +177,14 @@ namespace MSOCore.ApiLogic
 
             // Calculate ranks and pentamind points
             var rankCalculator = new RankCalculator();
-            // TODO high-score-is-best
-            rankCalculator.Calculate(evt.Number_in_Team, true, model.Entrants);
+            if (rankCalculator.CanCalculate(model.Entrants))
+            {
+                // TODO high-score-is-best
+                rankCalculator.Calculate(evt.Number_in_Team, true, model.Entrants);
 
-            var pentaCalculator = new Penta2018Calculator();
-            pentaCalculator.Calculate(evt.Number_in_Team, model.Entrants, evt.Pentamind, evt.PentamindFactor);
-
+                var pentaCalculator = new Penta2018Calculator();
+                pentaCalculator.Calculate(evt.Number_in_Team, model.Entrants, evt.Pentamind, evt.PentamindFactor);
+            }
             // TODO - events with partners
 
             // Do the saving - see EventPanel. We'remissing bits such as the EventIndexer if only updating results

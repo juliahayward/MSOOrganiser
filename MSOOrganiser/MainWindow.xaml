@@ -43,7 +43,6 @@
                     <MenuItem Header="Copy Events from Previous Year" Click="copyEventsMenuItem_Click"/>
                     <MenuItem Header="Calculate seedings" Click="calculateSeedings_Click" />
                     <MenuItem Header="Calculate ELOs" Click="calculateElos_Click" />
-                    <MenuItem Header="Load online entries (2017)" Click="prepayments_Click" IsEnabled="false"/>
                     <MenuItem Header="Load entries from file (2018+)" Click="prepayments2018_Click"/>
                     <MenuItem Header="Extract emails from file (2018+)" Click="extractEmails_Click"/>
                     <MenuItem Header="Freeze metagame standings" Click="freezeMetaGames_Click" />

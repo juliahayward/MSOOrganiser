@@ -138,7 +138,9 @@
     <Compile Include="Controllers\OlympiadController.cs" />
     <Compile Include="Controllers\ReportController.cs" />
     <Compile Include="Controllers\ScheduleController.cs" />
+    <Compile Include="Controllers\UploadController.cs" />
     <Compile Include="Controllers\UserController.cs" />
+    <Compile Include="Filters\PerformanceFilter.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -427,6 +429,7 @@
     <Content Include="Views\Report\BackgammonStandings.cshtml" />
     <Content Include="Views\Report\ChessStandingsnew.cshtml" />
     <Content Include="Views\Report\BackgammonStandingsnew.cshtml" />
+    <Content Include="Views\Upload\Index.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

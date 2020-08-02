@@ -58,7 +58,7 @@ namespace MSOWeb.Controllers
                 foreach (var c in data.Contestants.OrderByDescending(c => c.SeedingPoints))
                 {
                     index++;
-                    builder.Append($"{index}|{c.FirstName}|{c.LastName}|{c.ContestantId}|{c.RatingPoints}|{c.SeedingPoints}||||||||\r\n");
+                    builder.Append($"{index}|{c.FirstName}|{c.LastName}|{c.ContestantId}|{c.RatingPoints}|{c.SeedingPoints}|{c.Phone}|{c.Email}|{c.OnlineNicknames}|{c.DiscordNickname}|{c.Whatsapp}|||\r\n");
                 }
 
                 Response.AddHeader("Content-Disposition", $"attachment;filename={eventCode}.txt");
@@ -69,6 +69,32 @@ namespace MSOWeb.Controllers
                 return HttpNotFound();
             }
         }
+
+        public ActionResult PlainEventContestants(string eventCode)
+        {
+            // See help in SP98
+            var l = new OlympiadEventsApiLogic();
+            try
+            {
+                var data = l.GetEventContestants(eventCode);
+                var builder = new StringBuilder();
+                int index = 0;
+                builder.Append($"Index,First Name,Last Name,ContestantId,RatingPoints,SeedingPoints,Phone,Email,Online Nicknames,Discord Nickname,Whatsapp\r\n");
+                foreach (var c in data.Contestants.OrderByDescending(c => c.SeedingPoints))
+                {
+                    index++;
+                    builder.Append($"{index},{c.FirstName},{c.LastName},{c.ContestantId},{c.RatingPoints},{c.SeedingPoints},{c.Phone},{c.Email},\"{c.OnlineNicknames}\",{c.DiscordNickname},{c.Whatsapp}\r\n");
+                }
+
+                Response.AddHeader("Content-Disposition", $"attachment;filename={eventCode}.csv");
+                return Content(builder.ToString(), MediaTypeNames.Text.Plain);
+            }
+            catch (ArgumentOutOfRangeException)
+            {
+                return HttpNotFound();
+            }
+        }
+
 
         [HttpPost]
         public ActionResult AddEventEntry(string data)

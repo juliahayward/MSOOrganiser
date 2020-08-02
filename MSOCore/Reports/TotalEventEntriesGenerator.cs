@@ -17,6 +17,7 @@ namespace MSOCore.Reports
             {
                 public string Name { get; set; }
                 public string Code { get; set; }
+                public int EventId { get; set; }
                 public int Entrants { get; set; }
                 public bool IsMetaEvent { get; set; }
             }
@@ -35,21 +36,28 @@ namespace MSOCore.Reports
                 ? context.Olympiad_Infoes.First(x => x.YearOf == year.Value)
                 : context.Olympiad_Infoes.First(x => x.Current);
 
-            var events = context.Events.Where(x => x.OlympiadId == olympiad.Id).ToList();
+            var events = context.Events.Where(x => x.OlympiadId == olympiad.Id)
+                .Select(x => new TotalEventEntriesVm.EventVm()
+                {
+                    EventId = x.EIN,
+                    Code = x.Code,
+                    Name = x.Mind_Sport,
+                    IsMetaEvent = !x.Pentamind
+                })
+                .OrderBy(x => x.Code).ToList();
 
             var entrants = context.Entrants.Where(x => x.OlympiadId == olympiad.Id)
+                .ToList()
                 .GroupBy(x => x.EventId)
                 .ToDictionary(x => x.Key, x => x.Count());
 
-            vm.Events = events
-                .Select(x => new TotalEventEntriesVm.EventVm()
-                {
-                    Code = x.Code,
-                    Name = x.Mind_Sport,
-                    IsMetaEvent = !x.Pentamind,
-                    Entrants = (entrants.ContainsKey(x.EIN)) ? entrants[x.EIN] : 0
-                })
-                .OrderBy(x => x.Code);
+            foreach (var ev in events)
+            {
+                ev.Entrants = (entrants.ContainsKey(ev.EventId)) ? entrants[ev.EventId] : 0;
+            }
+
+            vm.Events = events;
+                
             return vm;
         }
     }

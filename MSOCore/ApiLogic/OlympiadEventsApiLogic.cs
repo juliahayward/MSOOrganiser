@@ -67,6 +67,8 @@ namespace MSOCore.ApiLogic
                 public string Email { get; set; }
                 public string Phone { get; set; }
                 public string OnlineNicknames { get; set; }
+                public string DiscordNickname { get; set; }
+                public string Whatsapp { get; set; }
                 public bool IsJunior { get; set; }
                 public bool IsSenior { get; set; }
                 public int SeedingPoints { get; set; }
@@ -118,8 +120,10 @@ namespace MSOCore.ApiLogic
                     FirstName = e.Name.Firstname,
                     LastName = e.Name.Lastname,
                     Email = e.Name.email,
-                    Phone = $"Day: {e.Name.DayPhone}, Evening: {e.Name.EvePhone}",
+                    Phone = $"Day: {e.Name.DayPhone} Evening: {e.Name.EvePhone}",
                     OnlineNicknames = e.Name.OnlineNicknames,
+                    DiscordNickname = e.Name.DiscordNickname,
+                    Whatsapp = e.Name.Whatsapp ? "yes" : "no",
                     IsJunior = e.Name.IsJuniorForOlympiad(currentOlympiad),
                     IsSenior = e.Name.IsSeniorForOlympiad(currentOlympiad)
                 }).ToList();

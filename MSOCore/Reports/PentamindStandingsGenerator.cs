@@ -258,6 +258,7 @@ namespace MSOCore.Reports
                 .ToList();
 
             var calc = new EurogameMetaScoreCalculator();
+            bool allDifferentGames = (year == 2020);
 
             var standings = new List<PentamindStandingsReportVm.ContestantStanding>();
             foreach (var r in results)
@@ -278,7 +279,7 @@ namespace MSOCore.Reports
                     IsEuroGame = (codes.Contains(x.e.Game_Code))
                 }).ToList();
 
-                standing.Scores = calc.SelectBestScores(standing.Scores, pentaLong, pentaTotal, currentOlympiad.StartDate.Value.Year);
+                standing.Scores = calc.SelectBestScores(standing.Scores, pentaLong, pentaTotal, currentOlympiad.StartDate.Value.Year, allDifferentGames);
                 standing.TotalScore = standing.Scores.Sum(x => x.Score);
                 standing.IsValid = (standing.Scores.Count() == pentaTotal);
                 standings.Add(standing);
@@ -315,6 +316,7 @@ namespace MSOCore.Reports
                 .ToList();
 
             var calc = new EurogameMetaScoreCalculator();
+            bool allDifferentGames = (year == 2020);
 
             var standings = new List<PentamindStandingsReportVm.ContestantStanding>();
             foreach (var r in results)
@@ -336,7 +338,7 @@ namespace MSOCore.Reports
                     IsModernAbstract = (codes.Contains(x.e.Game_Code))
                 }).ToList();
 
-                standing.Scores = calc.SelectBestScores(standing.Scores, pentaLong, pentaTotal, currentOlympiad.StartDate.Value.Year);
+                standing.Scores = calc.SelectBestScores(standing.Scores, pentaLong, pentaTotal, currentOlympiad.StartDate.Value.Year, allDifferentGames);
                 standing.TotalScore = standing.Scores.Sum(x => x.Score);
                 standing.IsValid = (standing.Scores.Count() == pentaTotal);
                 standings.Add(standing);
@@ -355,6 +357,8 @@ namespace MSOCore.Reports
 
         public PentamindStandingsReportVm GetChessStandings(int? year)
         {
+            if (year < 2020) throw new ArgumentOutOfRangeException("No Chess meta-events before 2020");
+
             int pentaTotal = 5; // OK for 2020, doesn't apply to other years
             int pentaLong = 0;  // length irrelevant
             return GetMetaStandings(year, "Chess", pentaTotal, pentaLong);
@@ -362,6 +366,8 @@ namespace MSOCore.Reports
 
         public PentamindStandingsReportVm GetBackgammonStandings(int? year)
         {
+            if (year < 2020) throw new ArgumentOutOfRangeException("No Backgammon meta-events before 2020");
+
             int pentaTotal = 5; // OK for 2020, doesn't apply to other years
             int pentaLong = 0;  // length irrelevant
             return GetMetaStandings(year, "Backgammon", pentaTotal, pentaLong);
