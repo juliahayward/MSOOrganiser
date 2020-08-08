@@ -73,6 +73,8 @@ namespace MSOCore.ApiLogic
                 public bool IsSenior { get; set; }
                 public int SeedingPoints { get; set; }
                 public int RatingPoints { get; set; }
+                
+                public int EntryId { get; set; }
             }
 
             public string EventCode { get; set; }
@@ -125,7 +127,8 @@ namespace MSOCore.ApiLogic
                     DiscordNickname = e.Name.DiscordNickname,
                     Whatsapp = e.Name.Whatsapp ? "yes" : "no",
                     IsJunior = e.Name.IsJuniorForOlympiad(currentOlympiad),
-                    IsSenior = e.Name.IsSeniorForOlympiad(currentOlympiad)
+                    IsSenior = e.Name.IsSeniorForOlympiad(currentOlympiad),
+                    EntryId = e.EntryNumber
                 }).ToList();
 
             foreach (var c in vm.Contestants)

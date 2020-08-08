@@ -132,12 +132,12 @@
             </div>
         </div>
     </div>
-    @if (HttpContext.Current.User.IsInRole("Superadmin"))
+    @if (HttpContext.Current.User.IsInRole("Admin") || HttpContext.Current.User.IsInRole("Superadmin"))
     {
         <div class="col-sm-3">
             <div class="card mt-1">
                 <div class="card-body">
-                    <h5 class="card-title">Maintenance (Superadmin only)</h5>
+                    <h5 class="card-title">WooCommerce Link (Admin only)</h5>
                     <ul>
                         <li><a href="/Upload" class="card-link">Upload</a></li>
                     </ul>

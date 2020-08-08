@@ -258,7 +258,7 @@ namespace MSOCore.Reports
                 .ToList();
 
             var calc = new EurogameMetaScoreCalculator();
-            bool allDifferentGames = (year == 2020);
+            bool allDifferentGames = ((year ?? currentOlympiad.YearOf) == 2020);
 
             var standings = new List<PentamindStandingsReportVm.ContestantStanding>();
             foreach (var r in results)
@@ -316,7 +316,7 @@ namespace MSOCore.Reports
                 .ToList();
 
             var calc = new EurogameMetaScoreCalculator();
-            bool allDifferentGames = (year == 2020);
+            bool allDifferentGames = ((year ?? currentOlympiad.YearOf) == 2020);
 
             var standings = new List<PentamindStandingsReportVm.ContestantStanding>();
             foreach (var r in results)

@@ -44,6 +44,10 @@ namespace MSOCore.ApiLogic
 
             public IEnumerable<EntrantVm> Entrants { get; set; }
 
+            public int TotalEntrants { get { return Entrants.Count(); } }
+            public int NoResultEntrants {  get { return Entrants.Count(x => string.IsNullOrEmpty(x.Score)); } }
+            public int AbsentEntrants { get { return Entrants.Count(x => x.Absent); } }
+
             public class EntrantVm
             {
                 public int EntryNumber { get; set; }
@@ -163,7 +167,8 @@ namespace MSOCore.ApiLogic
                     Tiebreak = en.Tie_break,
                     Pentamind = en.Penta_Score,
                     OnlineNicknames = en.Name.OnlineNicknames
-                }).OrderBy(x => x.Absent).ThenBy(x => x.Rank).ThenBy(x => x.LastName).ThenBy(x => x.FirstName)
+                }).OrderBy(x => x.Absent).ThenBy(x => string.IsNullOrEmpty(x.Score) ? 0 : 1)
+                    .ThenBy(x => x.Rank).ThenBy(x => x.LastName).ThenBy(x => x.FirstName)
             };
         }
 

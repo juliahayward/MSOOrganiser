@@ -12,18 +12,21 @@ namespace MSOWeb.Controllers
     {
         //
         // GET: /Upload/
-        [Authorize(Roles = "Superadmin")]
+        [Authorize(Roles = "Superadmin, Admin")]
         public ActionResult Index()
         {
             return View();
         }
 
-        [Authorize(Roles = "Superadmin")]
+        [Authorize(Roles = "Superadmin, Admin")]
         [HttpPost]
         public ActionResult Upload(HttpPostedFileBase inputFile)
         {
             try
             {
+                if (inputFile == null)
+                    throw new FileNotFoundException("Please select a file");
+
                 var filename = (Directory.Exists("C:\\inetpub\\wwwroot\\msoweb\\rawdata"))
                 ? "C:\\inetpub\\wwwroot\\msoweb\\rawdata\\upload" + DateTime.Now.ToString("yyyy-MM-dd-HHmm") + ".json"
                 : "C:\\src\\juliahayward\\MSOOrganiser\\MSOWeb\\RawData\\upload" + DateTime.Now.ToString("yyyy-MM-dd-HHmm") + ".json";

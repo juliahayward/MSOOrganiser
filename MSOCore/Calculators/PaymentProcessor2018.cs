@@ -134,7 +134,8 @@ namespace MSOCore.Calculators
             }
 
             var param = context.Parameters.First(x => x.Id == 1);
-            param.Value = DateTime.Now.ToString("dd MMM yyyy, hh:mm");
+            // MSO happens in GMT = UTC+1 (hack)
+            param.Value = DateTime.UtcNow.AddHours(1).ToString("dd MMM yyyy, HH:mm");
             context.SaveChanges();
         }
 
@@ -190,7 +191,13 @@ namespace MSOCore.Calculators
             if (order.DateOfBirth != null)
                 contestant.DateofBirth = order.DateOfBirth;
             if (order.OnlineNicknames != null)
-                contestant.OnlineNicknames = order.OnlineNicknames;
+            {
+                // Contestants may use different nicknames for different servers, and submit separate orders
+                if (contestant.OnlineNicknames == null)
+                    contestant.OnlineNicknames = order.OnlineNicknames;
+                else if (!contestant.OnlineNicknames.Contains(order.OnlineNicknames))
+                    contestant.OnlineNicknames += "; " + order.OnlineNicknames;
+            }
             if (order.DiscordNickname != null)
                 contestant.DiscordNickname = order.DiscordNickname;
             contestant.Whatsapp = order.Whatsapp;
