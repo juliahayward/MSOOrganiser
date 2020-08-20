@@ -44,7 +44,7 @@ namespace MSOCore.Reports
             foreach (var key in totals.Keys.OrderBy(x => x))
                 yield return new NationalityVm()
                 {
-                    Nationality = key,
+                    Nationality = (string.IsNullOrEmpty(key) ? "Unknown" : key),
                     NumberOfMales = males.ContainsKey(key) ? males[key] : 0,
                     NumberOfFemales = females.ContainsKey(key) ? females[key] : 0,
                     Total = totals[key].ToString()

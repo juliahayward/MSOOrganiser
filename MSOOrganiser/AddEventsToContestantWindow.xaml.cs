@@ -139,22 +139,25 @@ namespace MSOOrganiser
                 get
                 {
                     return Event.Event_Sess.Any()
-                        && Event.Event_Sess.First().Date.HasValue 
-                        && Event.Event_Sess.First().Session1.StartTime.HasValue;
+                        && Event.Event_Sess.First().Date.HasValue
+                        && (Event.Event_Sess.First().StartTime.HasValue || Event.Event_Sess.First().Session1.StartTime.HasValue);
                 }
             }
             public DateTime Start
             {
                 get
                 {
-                    return Event.Event_Sess.First().Date.Value + Event.Event_Sess.First().Session1.StartTime.Value;
+                    return Event.Event_Sess.First().Date.Value + 
+                        ((Event.Event_Sess.First().StartTime.HasValue) ? Event.Event_Sess.First().StartTime.Value :
+                                            Event.Event_Sess.First().Session1.StartTime.Value);
                 }
             }
             public DateTime End
             {
                 get
                 {
-                    return Event.Event_Sess.Last().Date.Value + Event.Event_Sess.Last().Session1.FinishTime.Value;
+                    return Event.Event_Sess.Last().Date.Value + ((Event.Event_Sess.Last().EndTime.HasValue) ? Event.Event_Sess.Last().EndTime.Value :
+                                            Event.Event_Sess.Last().Session1.FinishTime.Value);
                 }
             }
             private Visibility _Visibility = Visibility.Visible;

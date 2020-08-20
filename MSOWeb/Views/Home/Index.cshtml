@@ -145,6 +145,19 @@
             </div>
         </div>
     }
+    @if (HttpContext.Current.User.IsInRole("Superadmin"))
+    {
+        <div class="col-sm-3">
+            <div class="card mt-1">
+                <div class="card-body">
+                    <h5 class="card-title">Edit (Superadmin only)</h5>
+                    <ul>
+                        <li><a href="/Olympiad/CurrentOlympiad" class="card-link">Edit data</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    }
 </div>
 }
 <div class="row">

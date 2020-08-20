@@ -24,12 +24,12 @@ namespace MSOCore.Calculators
     {
         public abstract double Formula(int numberOfTeams, double myPosition);
 
-        public void Calculate(int numberInTeam, IEnumerable<IPentaCalculable> entries, bool isInPentamind = true, float premiumFactor = 1.0f)
+        public void Calculate(int numberInTeam, IEnumerable<IPentaCalculable> entries, bool isInPentamind = true, float premiumFactor = 1.0f, int overridingNumberOfTeams=0)
         {
             if (entries.Any(x => x.Absent == false && x.Rank == 0))
                 throw new ArgumentException("At least one player was present but has no rank");
 
-            var numberOfTeams = entries.Count(x => !x.Absent) / numberInTeam;
+            var numberOfTeams = (overridingNumberOfTeams>0) ? overridingNumberOfTeams:  entries.Count(x => !x.Absent) / numberInTeam;
 
             foreach (var entry in entries)
             {

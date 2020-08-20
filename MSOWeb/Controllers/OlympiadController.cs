@@ -28,6 +28,15 @@ namespace MSOWeb.Controllers
             return View(model);
         }
 
+        [HttpGet]
+        public ActionResult CurrentOlympiad()
+        {
+            var logic = new OlympiadsLogic();
+            var id = logic.GetCurrentOlympiadId();
+
+            return RedirectToAction("Olympiad", new { id=id });
+        }
+
         [HttpPost]
         public ActionResult Olympiad(OlympiadForm form)
         {
@@ -54,6 +63,7 @@ namespace MSOWeb.Controllers
 
             try
             {
+                model.Validate();
                 var logic = new OlympiadsLogic();
                 logic.UpdateEvent(model);
                 TempData["SuccessMessage"] = "Event updated";

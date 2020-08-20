@@ -78,7 +78,7 @@ namespace MSOCore.Reports
 
                 standing.Scores = r.Select(x => new PokerStandingsReportVm.EventScore()
                 {
-                    Code = x.e.Game_Code,
+                    Code = x.e.Event.Code,
                     GameCode = x.e.Event.Game.Code,
                     Score = (double)x.e.Penta_Score
                 }).ToList();

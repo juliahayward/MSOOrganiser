@@ -49,7 +49,8 @@
                     <ul>
                         @foreach (var e in Model.Events)
                         {
-                            <li><a href="/Olympiad/Event/@e.EventId">@e.Code</a> : @e.Name</li>
+                            string Parameters = (HttpContext.Current.User.IsInRole("Admin") || HttpContext.Current.User.IsInRole("Superadmin")) ? "?editable=true" : "";
+                            <li><a href="/Olympiad/Event/@e.EventId@Parameters">@e.Code</a> : @e.Name</li>
                         }
                     </ul>
                 </div>

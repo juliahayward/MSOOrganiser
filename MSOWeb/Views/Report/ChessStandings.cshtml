@@ -1,6 +1,7 @@
 ﻿@model MSOCore.Reports.PentamindStandingsGenerator.PentamindStandingsReportVm
 @{
     Layout = "~/Views/Shared/_NewLayoutNoHeader.cshtml";
+    TempData["AutoRefresh"] = true;
 }
 
 @{ var i = 1; }
@@ -24,6 +25,7 @@
             <td style="font-size: small"><span>@item.ScoreStr(0)</span></td>
             <td style="font-size: small"><span>@item.ScoreStr(1)</span></td>
             <td style="font-size: small"><span>@item.ScoreStr(2)</span></td>
+            <td style="font-size: small"><span>@item.ScoreStr(3)</span></td>
             <td style="font-size: small"><span>@item.ScoreStr(4)</span></td>
         </tr>
 

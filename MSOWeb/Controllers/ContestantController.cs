@@ -20,5 +20,67 @@ namespace MSOWeb.Controllers
             return View(model);
         }
 
+        [Authorize(Roles = "Superadmin, Admin")]
+        [HttpPost]
+        public ActionResult Contestant(ContestantForm form)
+        {
+            var model = ParseModelFromForm(form);
+
+            try
+            {
+                var logic = new ContestantsLogic();
+                logic.UpdateContestant(model);
+                TempData["SuccessMessage"] = "Contestant updated";
+            }
+            catch (Exception e)
+            {
+                TempData["FailureMessage"] = e.Message;
+            }
+            return new RedirectResult("/Contestant/Contestant/" + form.Id + "?editable=true");
+        }
+
+        private ContestantsLogic.ContestantVm ParseModelFromForm(ContestantForm form)
+        {
+            var model = new ContestantsLogic.ContestantVm()
+            {
+                ContestantId = form.Id,
+                Nationality = form.Nationality,
+                OnlineNicknames = form.OnlineNicknames
+            };
+            return model;
+        }
+
+        [Authorize(Roles = "Superadmin, Admin")]
+        [HttpGet]
+        public ActionResult ContestantForName(string name)
+        {
+            var logic = new ContestantsLogic();
+            var model = logic.GetContestantsForName(name);
+
+            if (model.Count() > 20) return new HttpStatusCodeResult(400, "Too many results: please be more specific");
+
+            return Json(model, JsonRequestBehavior.AllowGet);
+        }
+
+        [Authorize(Roles = "Superadmin, Admin")]
+        [HttpPost]
+        public ActionResult AddContestantToEvent(int contestantId, int eventId)
+        {
+            var logic = new ContestantsLogic();
+
+            // TODO - verify event is in current olympiad;
+            logic.AddContestantToEvent(contestantId, eventId);
+            // todo - refresh page
+            
+            return Json("done");
+        }
     }
+
+    public class ContestantForm
+    {
+        public int Id { get; set; }
+        public string Nationality { get; set; }
+        public string OnlineNicknames { get; set; }
+    }
+
 }

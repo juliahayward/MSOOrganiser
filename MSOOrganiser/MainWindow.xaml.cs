@@ -17,6 +17,7 @@ using System.Windows.Input;
 using System.Windows.Threading;
 using MSOCore.Reports;
 using System.Reflection;
+using System.IO;
 
 namespace MSOOrganiser
 {
@@ -1059,6 +1060,69 @@ namespace MSOOrganiser
                 var calculator = new SeedingScoreCalculator();
                 calculator.CalculateRatings();
             }
+        }
+
+        private void importDR_Click(object sender, RoutedEventArgs e)
+        {
+            var context = DataEntitiesProvider.Provide();
+            var currentOlympiad = context.Olympiad_Infoes.First(x => x.Current);
+            var evt = context.Events.First(x => x.EIN == 2525);
+
+            using (var fr = new StreamReader(new FileStream("C:\\users\\julia.hayward\\desktop\\drbj.csv", FileMode.Open, FileAccess.Read)))
+            {
+                while (!fr.EndOfStream)
+                {
+                    var line = fr.ReadLine();
+                    var pieces = line.Split(',');
+                    var rank = pieces[0].Trim();
+                    string firstname, lastname;
+                    if (pieces[1].Contains(";"))
+                    {
+                        lastname = pieces[1].Substring(0, pieces[1].IndexOf(";")).Trim();
+                        firstname = pieces[1].Substring(pieces[1].IndexOf(";") + 1).Trim();
+                    }
+                    else if (pieces[1].Trim().Contains(" "))
+                    {
+                        lastname = pieces[1].Substring(0, pieces[1].Trim().IndexOf(" ")).Trim();
+                        firstname = pieces[1].Substring(pieces[1].Trim().IndexOf(" ") + 1).Trim();
+                    }
+                    else
+                    {
+                        lastname = pieces[1].Trim();
+                        firstname = "";
+                    }
+                    var nationality = pieces[3].Trim();
+                    var yob = pieces[2].Trim();
+                    DateTime? dob = (yob.Length > 1) ? new DateTime(int.Parse(yob), 1, 1) : (DateTime?)null;
+                    var username = pieces[5].Trim();
+                    var score = pieces[4].Trim();
+                    bool female = (pieces[6].Contains("f"));
+
+                    var c = new Contestant()
+                    {
+                        Firstname = firstname,
+                        Lastname = lastname,
+                        Male = !female,
+                        DateofBirth = dob,
+                        Nationality = nationality,
+                        OnlineNicknames = "playelephant: " + username
+                    };
+
+                    var ent = new Entrant()
+                    {
+                        Event = evt,
+                        Score = score,
+                        Tie_break = (200 - int.Parse(rank)).ToString(),
+                        Game_Code="DRBJ",
+                        OlympiadId=25
+                    };
+
+                    c.Entrants.Add(ent);
+                    context.Contestants.Add(c);
+                    context.SaveChanges();
+                }
+            }
+
         }
     }
 

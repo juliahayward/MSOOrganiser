@@ -36,6 +36,8 @@ namespace MSOCore.ApiLogic
 
         public class EventVm
         {
+            public int OlympiadId { get; set; }
+            public int OlympiadYear { get; set; }
             public bool Editable { get; set; }
             public int EventId { get; set; }
             public string Code { get; set; }
@@ -45,7 +47,8 @@ namespace MSOCore.ApiLogic
             public IEnumerable<EntrantVm> Entrants { get; set; }
 
             public int TotalEntrants { get { return Entrants.Count(); } }
-            public int NoResultEntrants {  get { return Entrants.Count(x => string.IsNullOrEmpty(x.Score)); } }
+            public int ResultEntrants { get { return Entrants.Count(x => !string.IsNullOrEmpty(x.Score)); } }
+            public int NoResultEntrants {  get { return Entrants.Count(x => !x.Absent && string.IsNullOrEmpty(x.Score)); } }
             public int AbsentEntrants { get { return Entrants.Count(x => x.Absent); } }
 
             public class EntrantVm
@@ -99,6 +102,17 @@ namespace MSOCore.ApiLogic
                 public int Rank { get; set; }
                 public float PentaScore { get; set; }
             }
+
+            public void Validate()
+            {
+                foreach (var entrant in Entrants)
+                {
+                    if (entrant.Absent && !(string.IsNullOrEmpty(entrant.Score)))
+                        throw new InvalidOperationException($"Entrants cannot be both absent and have a score");
+                    if (entrant.Absent && !(string.IsNullOrEmpty(entrant.Tiebreak)))
+                        throw new InvalidOperationException($"Entrants cannot be both absent and have a tiebreak");
+                }
+            }
         }
 
         public IEnumerable<OlympiadListVm> GetOlympiads()
@@ -112,6 +126,12 @@ namespace MSOCore.ApiLogic
                 Venue = x.Venue,
                 StartDate = x.StartDate.Value
             }).OrderByDescending(x => x.StartDate);
+        }
+
+        public int GetCurrentOlympiadId()
+        {
+            var context = DataEntitiesProvider.Provide();
+            return context.Olympiad_Infoes.Single(x => x.Current).Id;
         }
 
         public OlympiadVm GetOlympiad(int id)
@@ -147,6 +167,8 @@ namespace MSOCore.ApiLogic
 
             return new EventVm()
             {
+                OlympiadId=e.OlympiadId,
+                OlympiadYear = e.Olympiad_Info.YearOf.Value,
                 EventId = id,
                 Code = e.Code,
                 Name = e.Mind_Sport,
@@ -168,7 +190,9 @@ namespace MSOCore.ApiLogic
                     Pentamind = en.Penta_Score,
                     OnlineNicknames = en.Name.OnlineNicknames
                 }).OrderBy(x => x.Absent).ThenBy(x => string.IsNullOrEmpty(x.Score) ? 0 : 1)
-                    .ThenBy(x => x.Rank).ThenBy(x => x.LastName).ThenBy(x => x.FirstName)
+                    .ThenBy(x => x.Rank).ThenByDescending(x=>x.Score)
+                    .ThenByDescending(x=>x.Tiebreak)
+                    .ThenBy(x => x.LastName).ThenBy(x => x.FirstName)
             };
         }
 
@@ -181,14 +205,23 @@ namespace MSOCore.ApiLogic
             // TODO - valiudate
 
             // Calculate ranks and pentamind points
-            var rankCalculator = new RankCalculator();
+            var rankCalculator = RankCalculatorFactory.Get(evt);
             if (rankCalculator.CanCalculate(model.Entrants))
             {
                 // TODO high-score-is-best
                 rankCalculator.Calculate(evt.Number_in_Team, true, model.Entrants);
 
+                // TODO some nasty hard coding - also these big events can't be done via the desktop
+                int overridingNumberOfEntrants = 0;
+                if (evt.OlympiadId == 25 && evt.Code == "POTH") overridingNumberOfEntrants = 1049;
+                if (evt.OlympiadId == 25 && evt.Code == "POOM") overridingNumberOfEntrants = 499;
+                if (evt.OlympiadId == 25 && evt.Code == "PO7S") overridingNumberOfEntrants = 339;
+                if (evt.OlympiadId == 25 && evt.Code == "POHU") overridingNumberOfEntrants = 704;
+                if (evt.OlympiadId == 25 && evt.Code == "PO5D") overridingNumberOfEntrants = 258;
+                if (evt.OlympiadId == 25 && evt.Code == "POOH") overridingNumberOfEntrants = 332;
+
                 var pentaCalculator = new Penta2018Calculator();
-                pentaCalculator.Calculate(evt.Number_in_Team, model.Entrants, evt.Pentamind, evt.PentamindFactor);
+                pentaCalculator.Calculate(evt.Number_in_Team, model.Entrants, evt.Pentamind, evt.PentamindFactor, overridingNumberOfEntrants);
             }
             // TODO - events with partners
 

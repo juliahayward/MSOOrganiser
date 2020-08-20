@@ -3,13 +3,13 @@
     Layout = "~/Views/Shared/_NewLayout.cshtml";
 }
 
-<h2></h2>
 @using (Html.BeginForm("Event", "Olympiad", FormMethod.Post))
 {
     <input type="hidden" id="Id" value="@Model.EventId" />
     <div class="accordion" id="accordionExample">
         <div class="card">
             <div class="card-header" id="headingOne">
+                <a href="/Olympiad/Olympiad/@Model.OlympiadId">@Model.OlympiadYear Olympiad</a>
                 <h2>@Model.Code: @Model.Name</h2>
                 <h2 class="mb-0">
                     @if (Model.Editable)
@@ -47,8 +47,11 @@
                     <button class="btn collapsed" type="button" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
                         Results
                     </button>
+                    <button class="btn btn-primary" type="button" style="float:right" data-toggle="modal" data-target="#addContestantModal">
+                        Add a Contestant
+                    </button>
                 </h2>
-                @Model.NoResultEntrants without result, @Model.AbsentEntrants absent, @Model.TotalEntrants total
+                @Model.ResultEntrants with result, @Model.NoResultEntrants awaiting result, @Model.AbsentEntrants absent, @Model.TotalEntrants total
             </div>
             <div id="collapseTwo" class="collapse show" aria-labelledby="headingTwo" data-parent="#accordionExample">
                 <div class="card-body">
@@ -75,67 +78,92 @@
                             {
                                 if (Model.Editable)
                                 {
-                            <tr>
-                                <td><a href="/Contestant/Contestant/@c.ContestantId" title="Online: @c.OnlineNicknames">@c.FullName()</a><input type="hidden" name="EntryNumberString" value="@c.EntryNumber" /><br/>@c.OnlineNicknames</td>
-                                @if (Model.NumberInTeam > 1)
-                                {
-                                    <td>@c.Partner</td>
-                                }
-                                    <td>@c.Junior</td>
-                                    <td>
-                                        <select name="Medal" style="width: 80px;">
-                                            <option value="">-</option>
-                                            <option value="Gold" @c.GoldSelected>Gold</option>
-                                            <option value="Silver" @c.SilverSelected>Silver</option>
-                                            <option value="Bronze" @c.BronzeSelected>Bronze</option>
-                                        </select>
-                                    </td>
-                                    <td>
-                                        @if (c.IsJunior)
+                                    <tr>
+                                        <td><a href="/Contestant/Contestant/@c.ContestantId" title="Online: @c.OnlineNicknames">@c.FullName()</a><input type="hidden" name="EntryNumberString" value="@c.EntryNumber" /><br />@c.OnlineNicknames</td>
+                                        @if (Model.NumberInTeam > 1)
                                         {
-                                            <select name="JuniorMedal" style="width: 120px;">
+                                            <td>@c.Partner</td>
+                                        }
+                                        <td>@c.Junior</td>
+                                        <td>
+                                            <select name="Medal" style="width: 80px;">
                                                 <option value="">-</option>
-                                                <option value="Gold JNR" @c.JGoldSelected>Gold JNR</option>
-                                                <option value="Silver JNR" @c.JSilverSelected>Silver JNR</option>
-                                                <option value="Bronze JNR" @c.JBronzeSelected>Bronze JNR</option>
+                                                <option value="Gold" @c.GoldSelected>Gold</option>
+                                                <option value="Silver" @c.SilverSelected>Silver</option>
+                                                <option value="Bronze" @c.BronzeSelected>Bronze</option>
                                             </select>
-                                        }
-                                        else
-                                        {
-                                            <input type="hidden" name="JuniorMedal" value="" />
-                                        }
-                                    </td>
-                                    <td>@c.Rank</td>
-                                    <td><input type="text" name="Score" style="width: 48px; text-align: right" value="@c.Score" /></td>
-                                    <td><input type="text" name="Tiebreak" style="width: 48px; text-align: right" value="@c.Tiebreak" /></td>
-                                    <td>
-                                        <input type="hidden" name="AbsentString" value="off" />
-                                        <input type="checkbox" name="AbsentString" @c.AbsentChecked />
-                                    </td>
-                                    <td>@c.PentamindString</td>
-                                </tr>
+                                        </td>
+                                        <td>
+                                            @if (c.IsJunior)
+                                            {
+                                                <select name="JuniorMedal" style="width: 120px;">
+                                                    <option value="">-</option>
+                                                    <option value="Gold JNR" @c.JGoldSelected>Gold JNR</option>
+                                                    <option value="Silver JNR" @c.JSilverSelected>Silver JNR</option>
+                                                    <option value="Bronze JNR" @c.JBronzeSelected>Bronze JNR</option>
+                                                </select>
+                                            }
+                                            else
+                                            {
+                                                <input type="hidden" name="JuniorMedal" value="" />
+                                            }
+                                        </td>
+                                        <td>@c.Rank</td>
+                                        <td><input type="text" name="Score" style="width: 48px; text-align: right" value="@c.Score" /></td>
+                                        <td><input type="text" name="Tiebreak" style="width: 48px; text-align: right" value="@c.Tiebreak" /></td>
+                                        <td>
+                                            <input type="hidden" name="AbsentString" value="off" />
+                                            <input type="checkbox" name="AbsentString" @c.AbsentChecked />
+                                        </td>
+                                        <td>@c.PentamindString</td>
+                                    </tr>
                                 }
                                 else
                                 {
-                            <tr>
-                                <td><a href="/Contestant/Contestant/@c.ContestantId" title="Online: @c.OnlineNicknames">@c.FullName()</a><br />@c.OnlineNicknames</td>
-                                @if (Model.NumberInTeam > 1)
-                                {
-                                    <td>@c.Partner</td>
-                                }
-                                    <td>@c.Junior</td>
-                                    <td><span class="btn @c.MedalStyle" style="width:72px;">@c.Medal</span></td>
-                                    <td><span class="btn @c.JuniorMedalStyle" style="width:72px;">@c.JuniorMedal.Replace(" JNR", "")</span></td>
-                                    <td>@c.Rank</td>
-                                    <td>@c.Score</td>
-                                    <td>@c.Tiebreak</td>
-                                    <td><input type="checkbox" name="AbsentString" @c.AbsentChecked /></td>
-                                    <td>@c.PentamindString</td>
-                                </tr>
+                                    <tr>
+                                        <td><a href="/Contestant/Contestant/@c.ContestantId" title="Online: @c.OnlineNicknames">@c.FullName()</a><br />@c.OnlineNicknames</td>
+                                        @if (Model.NumberInTeam > 1)
+                                        {
+                                            <td>@c.Partner</td>
+                                        }
+                                        <td>@c.Junior</td>
+                                        <td><span class="btn @c.MedalStyle" style="width:72px;">@c.Medal</span></td>
+                                        <td><span class="btn @c.JuniorMedalStyle" style="width:72px;">@c.JuniorMedal.Replace(" JNR", "")</span></td>
+                                        <td>@c.Rank</td>
+                                        <td>@c.Score</td>
+                                        <td>@c.Tiebreak</td>
+                                        <td><input type="checkbox" name="AbsentString" @c.AbsentChecked /></td>
+                                        <td>@c.PentamindString</td>
+                                    </tr>
                                 }
                             }
                         </tbody>
                     </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- https://getbootstrap.com/docs/4.0/components/modal/ -->
+    <div class="modal" tabindex="-1" role="dialog" id="addContestantModal">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Add Contestant</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="searchName" class="col-form-label">Search for name/nickname:</label>
+                        <input type="text" class="form-control" id="searchName">
+                    </div>
+                    <table id="suggestions">
+                    </table>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" id="searchContestant">Search</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                 </div>
             </div>
         </div>

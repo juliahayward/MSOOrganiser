@@ -1,6 +1,7 @@
 ﻿@model MSOCore.Reports.PentamindStandingsGenerator.PentamindStandingsReportVm
 @{
     Layout = "~/Views/Shared/_NewLayoutNoHeader.cshtml";
+    TempData["AutoRefresh"] = true;
 }
 
 @{ var i = 1; }
@@ -11,7 +12,7 @@
             <td></td>
             <td><span>Name</span></td>
             <td><span>Score</span></td>
-            <td colspan="4"><span>Individual events</span></td>
+            <td colspan="@Model.EventsNeeded"><span>Individual events</span></td>
         </tr>
     </thead>
     <tbody>
@@ -21,10 +22,10 @@
                 <th scope="row">@i</th>
                 <td><span>@item.Name</span></td>
                 <td style="width: 100px;"><span>@item.TotalScoreStr</span></td>
-                <td style="font-size: small"><span>@item.ScoreStr(0)</span></td>
-                <td style="font-size: small"><span>@item.ScoreStr(1)</span></td>
-                <td style="font-size: small"><span>@item.ScoreStr(2)</span></td>
-                <td style="font-size: small"><span>@item.ScoreStr(3)</span></td>
+                @for (var idx = 0; idx < @Model.EventsNeeded; idx++)
+                {
+                <td style="font-size: small"><span>@item.ScoreStr(idx)</span></td>
+                }
             </tr>
 
             i++;

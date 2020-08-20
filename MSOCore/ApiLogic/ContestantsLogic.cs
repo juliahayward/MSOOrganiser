@@ -12,9 +12,15 @@ namespace MSOCore.ApiLogic
         {
             public bool IsEditable { get; set; }
             public string FullName { get; set; }
+            public string Firstname { get; set; }
+            public string Initials { get; set; }
+            public string Lastname { get; set; }
             public int ContestantId { get; set; }
+            public string Nationality { get; set; }
 
+            public string OnlineNicknames { get; set; }
             public IEnumerable<EventVm> Events { get; set; }
+            public IEnumerable<string> Nationalities { get; set; }
 
             public class EventVm
             {
@@ -46,7 +52,13 @@ namespace MSOCore.ApiLogic
             var olympiad = context.Olympiad_Infoes.First(x => x.Current);
 
             vm.ContestantId = id;
+            vm.Firstname = contestant.Firstname;
+            vm.Initials = contestant.Initials;
+            vm.Lastname = contestant.Lastname;
             vm.FullName = contestant.FullName();
+            vm.OnlineNicknames = contestant.OnlineNicknames;
+            vm.Nationality = contestant.Nationality;
+            vm.Nationalities = context.Nationalities.Select(x => x.Name).OrderBy(x => x);
 
             var entries = contestant.Entrants
                 .Join(context.Events, e => e.Game_Code, g => g.Code, (e, g) => new { e = e, g = g })
@@ -54,26 +66,80 @@ namespace MSOCore.ApiLogic
                 .OrderBy(x => x.e.Game_Code).ToList();
 
             vm.Events = entries.Select(e => new ContestantVm.EventVm()
-                {
-                    EventId = e.e.EventId.Value,
-                    Absent = e.e.Absent,
-                    Code = e.e.Game_Code,
-                    Name = e.g.Mind_Sport,
-                    Fee = e.e.Fee,
-                    //StandardFee = (e.g.Entry_Fee != null) ? fees[e.g.Entry_Fee].Value : 0,
-                    //IncludedInMaxFee = (e.g.incMaxFee.HasValue && e.g.incMaxFee.Value),
-                    //IsEvent = (e.g.Number > 0),
-                    Medal = e.e.Medal ?? "",
-                    JuniorMedal = e.e.JuniorMedal ?? "",
-                    Partner = e.e.Partner ?? "",
-                    Penta = e.e.Penta_Score,
-                    Rank = e.e.Rank.HasValue ? e.e.Rank.Value : 0,
-                    // Receipt = e.e.Receipt.Value,
-                    // TieBreak = e.e.Tie_break ?? "",
-                    //Date = e.e.Event.Start
-                }).OrderBy(x => x.Code);
+            {
+                EventId = e.e.EventId.Value,
+                Absent = e.e.Absent,
+                Code = e.e.Game_Code,
+                Name = e.g.Mind_Sport,
+                Fee = e.e.Fee,
+                //StandardFee = (e.g.Entry_Fee != null) ? fees[e.g.Entry_Fee].Value : 0,
+                //IncludedInMaxFee = (e.g.incMaxFee.HasValue && e.g.incMaxFee.Value),
+                //IsEvent = (e.g.Number > 0),
+                Medal = e.e.Medal ?? "",
+                JuniorMedal = e.e.JuniorMedal ?? "",
+                Partner = e.e.Partner ?? "",
+                Penta = e.e.Penta_Score,
+                Rank = e.e.Rank.HasValue ? e.e.Rank.Value : 0,
+                // Receipt = e.e.Receipt.Value,
+                // TieBreak = e.e.Tie_break ?? "",
+                //Date = e.e.Event.Start
+            }).OrderBy(x => x.Code);
 
             return vm;
+        }
+
+        public void UpdateContestant(ContestantVm model)
+        {
+            var context = DataEntitiesProvider.Provide();
+            var c = context.Contestants.SingleOrDefault(x => x.Mind_Sport_ID == model.ContestantId);
+            if (c == null)
+                throw new ArgumentOutOfRangeException("Contestant ID " + model.ContestantId + " not recognised");
+            if (!context.Nationalities.Any(x => x.Name == model.Nationality))
+                throw new ArgumentOutOfRangeException("Nationality " + model.Nationality + " not recognised");
+
+            c.OnlineNicknames = model.OnlineNicknames;
+            c.Nationality = model.Nationality;
+
+            context.SaveChanges();
+        }
+
+
+        public class ContestantForNameVm
+        {
+            public string Name { get; set; }
+            public string Nickname { get; set; }
+            public int Id { get; set; }
+        }
+
+        public IEnumerable<ContestantForNameVm> GetContestantsForName(string name)
+        {
+            var context = DataEntitiesProvider.Provide();
+            var contestants = context.Contestants.Where(c =>
+                (c.Firstname != null && c.Firstname.Contains(name)) || (c.Lastname != null && c.Lastname.Contains(name)) || (c.OnlineNicknames != null && c.OnlineNicknames.Contains(name))
+                ).ToList();
+
+            foreach (var c in contestants.OrderBy(x => x.Lastname).ThenBy(x => x.Firstname))
+                yield return new ContestantForNameVm { Name = c.FullNameWithInitials(), Nickname = c.OnlineNicknames ?? "", Id = c.Mind_Sport_ID };
+        }
+
+        public void AddContestantToEvent(int contestantId, int eventId)
+        {
+            var context = DataEntitiesProvider.Provide();
+            if (context.Entrants.Any(e => e.Mind_Sport_ID == contestantId && e.EventId == eventId)) return;  // no need
+
+            var evt = context.Events.First(x => x.EIN == eventId);
+            var contestant = context.Contestants.First(x => x.Mind_Sport_ID == contestantId);
+
+            var newEntrant = new Entrant()
+            {
+                EventId = eventId,
+                OlympiadId = evt.OlympiadId,
+                Name = contestant,
+                Absent = false
+            };
+
+            context.Entrants.Add(newEntrant);
+            context.SaveChanges();
         }
     }
 }

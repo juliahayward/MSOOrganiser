@@ -1,6 +1,7 @@
 ﻿@model MSOCore.Reports.YearMedalsGenerator.YearMedalsVm
 @{
     Layout = "~/Views/Shared/_NewLayoutNoHeader.cshtml";
+    TempData["AutoRefresh"] = true;
 }
 
 @foreach (var gameName in Model.Medals.Select(x => x.GameName).Distinct())

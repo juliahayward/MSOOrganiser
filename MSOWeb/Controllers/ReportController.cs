@@ -86,13 +86,24 @@ namespace MSOWeb.Controllers
             }
         }
 
-        public ActionResult PentamindStandings(int? year, DateTime? date, string view="")
+        public ActionResult PentamindStandings(int? year, DateTime? date, string view="", int count=100)
         {
             var generator = new PentamindStandingsGenerator();
 
             var model = generator.GetStandings(year, date);
+            model.TopNRequired = count;
 
             return View("PentamindStandings"+view, model);
+        }
+
+        public ActionResult WomensPentamindStandings(int? year, DateTime? date, string view = "", int count = 100)
+        {
+            var generator = new PentamindStandingsGenerator();
+
+            var model = generator.GetStandings(year, date, true);
+            model.TopNRequired = count;
+
+            return View("PentamindStandings" + view, model);
         }
 
         public ActionResult EurogamesStandings(int? year, string view="")
