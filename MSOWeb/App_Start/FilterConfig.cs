@@ -41,7 +41,7 @@ namespace MSOWeb
             }
             catch (ArgumentException)
             {
-                https://stackoverflow.com/questions/18895746/invalid-value-for-encryptedticket-parameter
+                // https://stackoverflow.com/questions/18895746/invalid-value-for-encryptedticket-parameter
                 isAccessAllowed = false;
             }
 

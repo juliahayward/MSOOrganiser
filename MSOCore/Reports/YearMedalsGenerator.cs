@@ -55,7 +55,7 @@ namespace MSOCore.Reports
                     && (x.Medal != null || x.JuniorMedal != null))
                 .Join(context.Contestants, e => e.Mind_Sport_ID, c => c.Mind_Sport_ID, (e, c) => new { e, c })
                 .Join(context.Events.Where(x => x.OlympiadId == olympiadId),
-                        ec => ec.e.Game_Code, ev => ev.Code, (ec, ev) => new { ec, ev })
+                        ec => ec.e.EventId, ev => ev.EIN, (ec, ev) => new { ec, ev })
                 .Select(ecv => new YearMedalsVm.MedalVm()
                 {
                     EventCode = ecv.ev.Code,

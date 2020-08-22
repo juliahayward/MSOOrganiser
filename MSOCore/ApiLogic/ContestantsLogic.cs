@@ -11,10 +11,15 @@ namespace MSOCore.ApiLogic
         public class ContestantVm
         {
             public bool IsEditable { get; set; }
+            public string Title { get; set; }
             public string FullName { get; set; }
             public string Firstname { get; set; }
             public string Initials { get; set; }
             public string Lastname { get; set; }
+
+            public bool IsMale { get; set; }
+            // Todo shouldn't be a binary
+            public bool IsFemale { get { return !IsMale; } }
             public int ContestantId { get; set; }
             public string Nationality { get; set; }
 
@@ -52,24 +57,26 @@ namespace MSOCore.ApiLogic
             var olympiad = context.Olympiad_Infoes.First(x => x.Current);
 
             vm.ContestantId = id;
+            vm.Title = contestant.Title;
             vm.Firstname = contestant.Firstname;
             vm.Initials = contestant.Initials;
             vm.Lastname = contestant.Lastname;
             vm.FullName = contestant.FullName();
+            vm.IsMale = contestant.Male;
             vm.OnlineNicknames = contestant.OnlineNicknames;
             vm.Nationality = contestant.Nationality;
             vm.Nationalities = context.Nationalities.Select(x => x.Name).OrderBy(x => x);
 
             var entries = contestant.Entrants
-                .Join(context.Events, e => e.Game_Code, g => g.Code, (e, g) => new { e = e, g = g })
+                .Join(context.Events, e => e.EventId, g => g.EIN, (e, g) => new { e = e, g = g })
                 .Where(x => x.e.OlympiadId == olympiad.Id && x.g.OlympiadId == olympiad.Id)
-                .OrderBy(x => x.e.Game_Code).ToList();
+                .OrderBy(x => x.g.Code).ToList();
 
             vm.Events = entries.Select(e => new ContestantVm.EventVm()
             {
                 EventId = e.e.EventId.Value,
                 Absent = e.e.Absent,
-                Code = e.e.Game_Code,
+                Code = e.g.Code,
                 Name = e.g.Mind_Sport,
                 Fee = e.e.Fee,
                 //StandardFee = (e.g.Entry_Fee != null) ? fees[e.g.Entry_Fee].Value : 0,
@@ -97,6 +104,11 @@ namespace MSOCore.ApiLogic
             if (!context.Nationalities.Any(x => x.Name == model.Nationality))
                 throw new ArgumentOutOfRangeException("Nationality " + model.Nationality + " not recognised");
 
+            c.Title = model.Title;
+            c.Firstname = model.Firstname;
+            c.Initials = model.Initials;
+            c.Lastname = model.Lastname;
+            c.Male = model.IsMale;
             c.OnlineNicknames = model.OnlineNicknames;
             c.Nationality = model.Nationality;
 

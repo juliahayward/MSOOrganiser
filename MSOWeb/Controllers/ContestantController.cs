@@ -44,6 +44,11 @@ namespace MSOWeb.Controllers
             var model = new ContestantsLogic.ContestantVm()
             {
                 ContestantId = form.Id,
+                Title = form.Title,
+                Firstname = form.Firstname,
+                Initials = form.Initials,
+                Lastname = form.Lastname,
+                IsMale = (form.Gender == "Male"),
                 Nationality = form.Nationality,
                 OnlineNicknames = form.OnlineNicknames
             };
@@ -79,6 +84,11 @@ namespace MSOWeb.Controllers
     public class ContestantForm
     {
         public int Id { get; set; }
+        public string Title { get; set; }
+        public string Firstname { get; set; }
+        public string Initials { get; set; }
+        public string Lastname { get; set; }
+        public string Gender { get; set; }
         public string Nationality { get; set; }
         public string OnlineNicknames { get; set; }
     }

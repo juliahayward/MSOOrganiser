@@ -163,6 +163,7 @@ namespace MSOCore.Reports
                 {
                     ContestantId = r.Key,
                     Name = r.First().c.FullName(),
+                    Nationality = r.First().c.Nationality,
                     IsInWomensPenta = false // irrelevant for junior
                 };
 
@@ -217,6 +218,7 @@ namespace MSOCore.Reports
                 {
                     ContestantId = r.Key,
                     Name = r.First().c.FullName(),
+                    Nationality = r.First().c.Nationality,
                     IsInWomensPenta = false // irrelevant for Senior
                 };
 
@@ -275,6 +277,7 @@ namespace MSOCore.Reports
                 {
                     ContestantId = r.Key,
                     Name = r.First().c.FullName(),
+                    Nationality = r.First().c.Nationality,
                     IsInWomensPenta = false // irrelevant for Euro
                 };
 
@@ -333,6 +336,7 @@ namespace MSOCore.Reports
                 {
                     ContestantId = r.Key,
                     Name = r.First().c.FullName(),
+                    Nationality = r.First().c.Nationality,
                     IsInWomensPenta = false // irrelevant for Modern Abstract
                 };
 
@@ -416,6 +420,7 @@ namespace MSOCore.Reports
                 {
                     ContestantId = r.Key,
                     Name = r.First().c.FullName(),
+                    Nationality = r.First().c.Nationality,
                     IsInWomensPenta = false // irrelevant for Modern Abstract
                 };
 

@@ -19,7 +19,7 @@
         </tr>
     </thead>
     <tbody>
-        @foreach (var item in Model.Standings.Take(100))
+        @foreach (var item in Model.TopNStandings)
         {
             <tr>
                 <th scope="row">@i</th>
@@ -40,4 +40,4 @@
     </tbody>
 </table>
 
-<h3>Top 100 listed. Competitors need 5 events to qualify.</h3>
+<h3>Top @Model.TopNRequired listed. Competitors need 5 events to qualify.</h3>

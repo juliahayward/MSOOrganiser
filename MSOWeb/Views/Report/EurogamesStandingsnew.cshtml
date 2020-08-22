@@ -18,11 +18,11 @@
         </tr>
     </thead>
     <tbody>
-        @foreach (var item in Model.Standings.Take(40))
+        @foreach (var item in Model.TopNStandings)
     {
         <tr>
             <th scope="row">@i</th>
-            <td><span>@item.Name</span></td>
+            <td><img src="@item.Flag" title="@item.Nationality" height="20" style="margin-right: 4px" /><span>@item.Name</span></td>
             <td><span>@item.TotalScoreStr</span></td>
             <td style="font-size: small"><span>@item.ScoreStr(0)</span></td>
             <td style="font-size: small"><span>@item.ScoreStr(1)</span></td>
@@ -36,4 +36,4 @@
     </tbody>
 </table>
 
-<h3>Top 40 listed. Competitors need 5 events to qualify.</h3>
+<h3>Top @Model.TopNRequired listed. Competitors need 5 events to qualify.</h3>

@@ -33,9 +33,8 @@
     $("#addContestantModal").on("click", "a", function () {
         var eventId = $(this).data("event");
         var contestantId = $(this).data("contestant");
-        alert("add " + contestantId + " to " + eventId);
         $.post("/Contestant/AddContestantToEvent", { contestantId: contestantId, eventId: eventId }, function (data) {
-            alert("added")
+            alert("added");
         });
     });
 });

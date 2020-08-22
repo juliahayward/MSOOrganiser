@@ -96,7 +96,7 @@ namespace MSOWeb.Controllers
             return View("PentamindStandings"+view, model);
         }
 
-        public ActionResult WomensPentamindStandings(int? year, DateTime? date, string view = "", int count = 100)
+        public ActionResult WomensPentamindStandings(int? year, DateTime? date, string view = "", int count = 40)
         {
             var generator = new PentamindStandingsGenerator();
 
@@ -106,47 +106,52 @@ namespace MSOWeb.Controllers
             return View("PentamindStandings" + view, model);
         }
 
-        public ActionResult EurogamesStandings(int? year, string view="")
+        public ActionResult EurogamesStandings(int? year, string view="", int count = 40)
         {
             var generator = new PentamindStandingsGenerator();
 
             var model = generator.GetEuroStandings(year);
+            model.TopNRequired = count;
 
             return View("EurogamesStandings"+view, model);
         }
 
-        public ActionResult ModernAbstractStandings(int? year, string view="")
+        public ActionResult ModernAbstractStandings(int? year, string view="", int count = 40)
         {
             var generator = new PentamindStandingsGenerator();
 
             var model = generator.GetModernAbstractStandings(year);
+            model.TopNRequired = count;
 
             return View("ModernAbstractStandings"+view, model);
         }
 
-        public ActionResult PokerStandings(int? year, string view="")
+        public ActionResult PokerStandings(int? year, string view="", int count = 40)
         {
             var generator = new PentamindStandingsGenerator();
 
             var model = generator.GetPokerStandings(year);
+            model.TopNRequired = count;
 
             return View("PokerStandings"+view, model);
         }
 
-        public ActionResult ChessStandings(int? year, string view = "")
+        public ActionResult ChessStandings(int? year, string view = "", int count = 40)
         {
             var generator = new PentamindStandingsGenerator();
 
             var model = generator.GetChessStandings(year);
+            model.TopNRequired = count;
 
             return View("ChessStandings" + view, model);
         }
 
-        public ActionResult BackgammonStandings(int? year, string view = "")
+        public ActionResult BackgammonStandings(int? year, string view = "", int count = 40)
         {
             var generator = new PentamindStandingsGenerator();
 
             var model = generator.GetBackgammonStandings(year);
+            model.TopNRequired = count;
 
             return View("BackgammonStandings" + view, model);
         }

@@ -34,15 +34,41 @@
             </div>
             <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordionExample">
                 <div class="card-body">
-                    <div class="form-inline">
-                        <div class="form-group mb-4">
-                            <input type="text" class="form-control" name="Firstname" id="Firstname" placeholder="First name" value="@Model.Firstname">
+                    <div class="form-row">
+                        <div class="form-group col-md-1">
+                            <label for="Title">Title</label>
+                            <select class="form-control" name="Title" id="Title">
+                                <option value="">-</option>
+                                <option selected="@(Model.Title == "Mr")">Mr</option>
+                                <option selected="@(Model.Title == "Mrs")">Mrs</option>
+                                <option selected="@(Model.Title == "Ms")">Ms</option>
+                                <option selected="@(Model.Title == "Master")">Master</option>
+                                <option selected="@(Model.Title == "Miss")">Miss</option>
+                                <option selected="@(Model.Title == "Dr")">Dr</option>
+                                <option selected="@(Model.Title == "Prof")">Prof</option>
+                                <option selected="@(Model.Title == "Sir")">Sir</option>
+                                <option selected="@(Model.Title == "Lady")">Lady</option>
+                            </select>
                         </div>
-                        <div class="form-group mb-4">
+                        <div class="form-group col-md-3">
+                            <label for="Firstname">First name (s)</label>
+                            <input type="text" class="form-control" name="Firstname" id="Firstname" placeholder="First names" value="@Model.Firstname">
+                        </div>
+                        <div class="form-group col-md-1">
+                            <label for="Initials">Initials</label>
                             <input type="text" class="form-control" name="Initials" id="Initials" placeholder="Initials" value="@Model.Initials">
                         </div>
-                        <div class="form-group mb-4">
-                            <input type="text" class="form-control" name="Lastname" id="Lastname" placeholder="Last name"  value="@Model.Lastname">
+                        <div class="form-group col-md-3">
+                            <label for="Lastname">Last name</label>
+                            <input type="text" class="form-control" name="Lastname" id="Lastname" placeholder="Last name" value="@Model.Lastname">
+                        </div>
+                        <div class="form-group col-md-2">
+                            <label for="Gender">Gender</label>
+                            <select class="form-control" name="Gender" id="Gender">
+                                <option selected="@(Model.IsMale)">Male</option>
+                                <option selected="@(Model.IsFemale)">Female</option>
+                                <option>Other</option>
+                            </select>
                         </div>
                     </div>
                     <div class="form-group">

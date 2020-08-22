@@ -99,7 +99,8 @@ namespace MSOCore.Calculators
                         // Shouldn't happen post-fix by Vika
                         if (evt.Code == "")
                             continue;
-                        if (contestant.Entrants.Any(x => x.Game_Code == evt.Code && x.OlympiadId == olympiad.Id))
+                        // yes the first clause is necessary
+                        if (contestant.Entrants.Any(x => x.Event != null && x.Event.Code == evt.Code && x.OlympiadId == olympiad.Id))
                             continue;
 
                         if (!events.ContainsKey(evt.Code))
