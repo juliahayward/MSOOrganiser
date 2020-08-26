@@ -220,6 +220,7 @@ namespace MSOCore.ApiLogic
                 if (evt.OlympiadId == 25 && evt.Code == "PO5D") overridingNumberOfEntrants = 258;
                 if (evt.OlympiadId == 25 && evt.Code == "POOH") overridingNumberOfEntrants = 332;
                 if (evt.OlympiadId == 25 && evt.Code == "POH6") overridingNumberOfEntrants = 380;
+                if (evt.OlympiadId == 25 && evt.Code == "PZKK") overridingNumberOfEntrants = 380;
 
                 var pentaCalculator = new Penta2018Calculator();
                 pentaCalculator.Calculate(evt.Number_in_Team, model.Entrants, evt.Pentamind, evt.PentamindFactor, overridingNumberOfEntrants);

@@ -47,7 +47,7 @@
                     <button class="btn collapsed" type="button" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
                         Results
                     </button>
-                    <button class="btn btn-primary" type="button" style="float:right" data-toggle="modal" data-target="#addContestantModal">
+                    <button class="btn btn-primary" id="openAddContestantModal" type="button" style="float:right" data-toggle="modal" data-target="#addContestantModal">
                         Add a Contestant
                     </button>
                 </h2>
@@ -109,8 +109,8 @@
                                             }
                                         </td>
                                         <td>@c.Rank</td>
-                                        <td><input type="text" name="Score" style="width: 48px; text-align: right" value="@c.Score" /></td>
-                                        <td><input type="text" name="Tiebreak" style="width: 48px; text-align: right" value="@c.Tiebreak" /></td>
+                                        <td><input type="text" autocomplete="off" name="Score" style="width: 48px; text-align: right" value="@c.Score" /></td>
+                                        <td><input type="text" autocomplete="off" name="Tiebreak" style="width: 48px; text-align: right" value="@c.Tiebreak" /></td>
                                         <td>
                                             <input type="hidden" name="AbsentString" value="off" />
                                             <input type="checkbox" name="AbsentString" @c.AbsentChecked />
@@ -160,6 +160,16 @@
                     </div>
                     <table id="suggestions">
                     </table>
+                    <div class="form-group" id="newName">
+                        <div class="form-row align-items-center">
+                            <div class="col-auto">
+                                <input type="text" class="form-control" id="newFirstName" placeholder="First name">
+                            </div>
+                            <div class="col-auto">
+                                <input type="text" class="form-control" id="newLastName" placeholder="Last name">
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-primary" id="searchContestant">Search</button>

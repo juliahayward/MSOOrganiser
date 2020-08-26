@@ -80,8 +80,8 @@ namespace MSOCore.Reports
                 .Select(e => new EventResultsVm.EntrantVm()
                 {                
                     ContestantId = e.Name.Mind_Sport_ID,
-                    Medal = e.Medal,
-                    JuniorMedal = e.JuniorMedal,
+                    Medal = e.Medal ?? "",
+                    JuniorMedal = e.JuniorMedal ?? "",
                     Score = e.Score,
                     PentaScore = (double)e.Penta_Score,
                     Rank = e.Rank.Value,

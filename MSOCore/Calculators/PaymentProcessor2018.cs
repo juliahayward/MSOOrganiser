@@ -174,7 +174,7 @@ namespace MSOCore.Calculators
                 Nationality = countries[entrant.CountryCode],
                 Title = entrant.Title,
                 Male = (entrant.Title == "Mr"),
-                DateofBirth = order.DateOfBirth,
+                DateofBirth = SanitiseDateOfBirth(order.DateOfBirth),
                 OnlineNicknames = order.OnlineNicknames,
                 DiscordNickname = order.DiscordNickname,
                 Whatsapp = order.Whatsapp,
@@ -189,7 +189,7 @@ namespace MSOCore.Calculators
 
         private void UpdateEntrant(DataEntities context, Contestant contestant, Order2018 order, string email)
         {
-            if (order.DateOfBirth != null)
+            if (IsSanitisedDateOfBirth(order.DateOfBirth))
                 contestant.DateofBirth = order.DateOfBirth;
             if (order.OnlineNicknames != null)
             {
@@ -208,6 +208,34 @@ namespace MSOCore.Calculators
                 contestant.email = email;
 
             context.SaveChanges();
+        }
+
+        public DateTime? SanitiseDateOfBirth(DateTime? order_dob)
+        {
+            if (!order_dob.HasValue)
+                return order_dob;
+            // Catch people who put in today's date
+            if (DateTime.Now.AddYears(-2) < order_dob)
+                return null;
+            // Catch people who put in silly old values
+            if (DateTime.Now.AddYears(-120) < order_dob)
+                return null;
+
+            return order_dob;
+        }
+
+        public bool IsSanitisedDateOfBirth(DateTime? order_dob)
+        {
+            if (!order_dob.HasValue)
+                return true;
+            // Catch people who put in today's date
+            if (DateTime.Now.AddYears(-2) < order_dob)
+                return false;
+            // Catch people who put in silly old values
+            if (DateTime.Now.AddYears(-120) < order_dob)
+                return false;
+
+            return true;
         }
     }
 

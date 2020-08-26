@@ -1066,14 +1066,14 @@ namespace MSOOrganiser
         {
             var context = DataEntitiesProvider.Provide();
             var currentOlympiad = context.Olympiad_Infoes.First(x => x.Current);
-            var evt = context.Events.First(x => x.EIN == 2525);
+            var evt = context.Events.First(x => x.EIN == 2527);
 
-            using (var fr = new StreamReader(new FileStream("C:\\users\\julia.hayward\\desktop\\drbj.csv", FileMode.Open, FileAccess.Read)))
+            using (var fr = new StreamReader(new FileStream("C:\\users\\julia.hayward\\desktop\\drrj.txt", FileMode.Open, FileAccess.Read)))
             {
                 while (!fr.EndOfStream)
                 {
                     var line = fr.ReadLine();
-                    var pieces = line.Split(',');
+                    var pieces = line.Split('\t');
                     var rank = pieces[0].Trim();
                     string firstname, lastname;
                     if (pieces[1].Contains(";"))
@@ -1098,27 +1098,33 @@ namespace MSOOrganiser
                     var score = pieces[4].Trim();
                     bool female = (pieces[6].Contains("f"));
 
-                    var c = new Contestant()
+                    Contestant c = context.Contestants.FirstOrDefault(x => x.Lastname == lastname && x.Firstname == firstname);
+
+                    if (c == null)
                     {
-                        Firstname = firstname,
-                        Lastname = lastname,
-                        Male = !female,
-                        DateofBirth = dob,
-                        Nationality = nationality,
-                        OnlineNicknames = "playelephant: " + username
-                    };
+                        c = new Contestant()
+                        {
+                            Firstname = firstname,
+                            Lastname = lastname,
+                            Male = !female,
+                            DateofBirth = dob,
+                            Nationality = nationality,
+                            OnlineNicknames = "playelephant: " + username
+                        };
+                        context.Contestants.Add(c);
+                    }
 
                     var ent = new Entrant()
                     {
                         Event = evt,
                         Score = score,
                         Tie_break = (200 - int.Parse(rank)).ToString(),
-                        Game_Code="DRBJ",
+                        Game_Code="DRRJ",
                         OlympiadId=25
                     };
 
                     c.Entrants.Add(ent);
-                    context.Contestants.Add(c);
+                    
                     context.SaveChanges();
                 }
             }

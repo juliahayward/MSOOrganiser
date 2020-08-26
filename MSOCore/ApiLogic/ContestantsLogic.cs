@@ -24,6 +24,8 @@ namespace MSOCore.ApiLogic
             public string Nationality { get; set; }
 
             public string OnlineNicknames { get; set; }
+
+            public string Notes { get; set; }
             public IEnumerable<EventVm> Events { get; set; }
             public IEnumerable<string> Nationalities { get; set; }
 
@@ -66,6 +68,7 @@ namespace MSOCore.ApiLogic
             vm.OnlineNicknames = contestant.OnlineNicknames;
             vm.Nationality = contestant.Nationality;
             vm.Nationalities = context.Nationalities.Select(x => x.Name).OrderBy(x => x);
+            vm.Notes = contestant.Notes;
 
             var entries = contestant.Entrants
                 .Join(context.Events, e => e.EventId, g => g.EIN, (e, g) => new { e = e, g = g })
@@ -111,6 +114,7 @@ namespace MSOCore.ApiLogic
             c.Male = model.IsMale;
             c.OnlineNicknames = model.OnlineNicknames;
             c.Nationality = model.Nationality;
+            c.Notes = model.Notes;
 
             context.SaveChanges();
         }
@@ -141,6 +145,32 @@ namespace MSOCore.ApiLogic
 
             var evt = context.Events.First(x => x.EIN == eventId);
             var contestant = context.Contestants.First(x => x.Mind_Sport_ID == contestantId);
+
+            var newEntrant = new Entrant()
+            {
+                EventId = eventId,
+                OlympiadId = evt.OlympiadId,
+                Name = contestant,
+                Absent = false
+            };
+
+            context.Entrants.Add(newEntrant);
+            context.SaveChanges();
+        }
+
+        public void AddNewContestantToEvent(string firstName, string lastName, int eventId)
+        {
+            var context = DataEntitiesProvider.Provide();
+
+            var contestant = new Contestant()
+            {
+                Firstname = firstName,
+                Lastname = lastName
+            };
+
+            context.Contestants.Add(contestant);
+
+            var evt = context.Events.First(x => x.EIN == eventId);
 
             var newEntrant = new Entrant()
             {

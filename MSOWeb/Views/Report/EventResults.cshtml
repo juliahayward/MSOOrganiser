@@ -1,61 +1,67 @@
 ﻿@using MSOCore.Extensions;
 @model MSOCore.Reports.EventResultsGenerator.EventResultsVm
 @{
-    Layout = "~/Views/Shared/_Layout.cshtml";
+    Layout = "~/Views/Shared/_NewLayoutNoHeader.cshtml";
+    TempData["AutoRefresh"] = true;
 }
 
-<style type="text/css">
-    .jmhTable {
-        border: 1px black solid; 
-        width: 500px; 
-    }
-    .jmhTable td {
-        vertical-align: middle;
-    }
-    .jmhPaddedHeader {
-        margin: 4px;
-        display: block;
-    }
-    .jmhPadded {
-        margin: 4px;
-        display: block;
-    }
-</style>
+<h2 class="entry-title">Full results for @Model.Year @Model.EventName (@Model.EventCode)</h2>
 
-<h1 class="entry-title">Full results for @Model.Year @Model.EventName (@Model.EventCode)</h1>
-
-        <table class="jmhTable">
-            <tr>
-                <td colspan="7" style="background: AliceBlue"><span class="jmhPaddedHeader">@Model.EventName</span></td>
-            </tr>
-            <tr>
-                <td style="background: AliceBlue"><span class="jmhPaddedHeader">Position</span></td>
-                <td style="background: AliceBlue"><span class="jmhPaddedHeader">Medal</span></td>
-                <td style="background: AliceBlue"><span class="jmhPaddedHeader"></span></td>
-                <td style="background: AliceBlue"><span class="jmhPaddedHeader">Score</span></td>
-                <td style="background: AliceBlue"><span class="jmhPaddedHeader">Pentamind</span></td>
-                <td style="background: AliceBlue"><span class="jmhPaddedHeader">Name</span></td>
-                <td style="background: AliceBlue"><span class="jmhPaddedHeader"></span></td>
-            </tr>
+<table class="table">
+    <thead>
+        <tr>
+            <td>Position</td>
+            <td>Medal</td>
+            <td>Score</td>
+            <td>Pentamind</td>
+            <td>Name</td>
+            <td></td>
+        </tr>
+    </thead>
+    <tbody>
         @foreach (var entrant in Model.Entrants)
         {
             <tr>
-                <td style="width: 50px;"><div class="jmhPadded">@entrant.Rank.ToString().Ordinal()</div></td>
-                <td style="width:100px;"><div class="jmhPadded">@entrant.Medal</div></td>
-                <td style="width:100px;"><div class="jmhPadded">@entrant.JuniorMedal</div></td>
-                <td style="width: 50px;"><div class="jmhPadded">@entrant.Score</div></td>
-                <td style="width: 50px;"><div class="jmhPadded">@entrant.PentaScore.ToString("0.00")</div></td>
-                <td style="width:240px;"><div class="jmhPadded">
-                    <a href="./ContestantMedals?contestantId=@entrant.ContestantId">@entrant.Name</a>
-                                         </div></td>
-                <td><img class="jmhPadded" src="@entrant.Flag"  alt="@entrant.Nationality" title="@entrant.Nationality"/></td>
+                <td>@entrant.Rank.ToString().Ordinal()</td>
+                <td>
+                    @if (entrant.Medal == "Gold")
+                    {
+                        <span class="btn gold" style="width:48px;">G</span>
+                    }
+                    @if (entrant.Medal == "Silver")
+                    {
+                        <span class="btn silver" style="width:48px;">S</span>
+                    }
+                    @if (entrant.Medal == "Bronze")
+                    {
+                        <span class="btn bronze" style="width:48px;">B</span>
+                    }
+                    @if (entrant.JuniorMedal.Contains("Gold"))
+                    {
+                        <span class="btn gold" style="width:48px;">JNR</span>
+                    }
+                    @if (entrant.JuniorMedal.Contains("Silver"))
+                    {
+                        <span class="btn silver" style="width:48px;">JNR</span>
+                    }
+                    @if (entrant.JuniorMedal.Contains("Bronze"))
+                    {
+                        <span class="btn bronze" style="width:48px;">JNR</span>
+                    }
+                </td>
+                <td>@entrant.Score</td>
+                <td>@entrant.PentaScore.ToString("0.00")</td>
+                <td><a href="./ContestantMedals?contestantId=@entrant.ContestantId">@entrant.Name</a></td>
+                <td><img src="@entrant.Flag" alt="@entrant.Nationality" title="@entrant.Nationality" /></td>
             </tr>
         }
+
         @if (!Model.Entrants.Any())
         {
             <tr>
                 <td colspan="6">Results will be published here as soon as they have been verified by the Arbiters</td>
             </tr>
         }
-        </table>
-        <p></p>
+    </tbody>
+</table>
+

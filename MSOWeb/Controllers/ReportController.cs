@@ -88,12 +88,27 @@ namespace MSOWeb.Controllers
 
         public ActionResult PentamindStandings(int? year, DateTime? date, string view="", int count=100)
         {
-            var generator = new PentamindStandingsGenerator();
-
-            var model = generator.GetStandings(year, date);
+            PentamindStandingsGenerator.PentamindStandingsReportVm model;
+            if (System.Web.HttpContext.Current.Application["Pentamind"] != null)
+            {
+                model = System.Web.HttpContext.Current.Application["Pentamind"] as PentamindStandingsGenerator.PentamindStandingsReportVm;
+            }
+            else
+            {
+                var generator = new PentamindStandingsGenerator();
+                model = generator.GetStandings(year, date);
+                System.Web.HttpContext.Current.Application["Pentamind"] = model;
+            }
             model.TopNRequired = count;
 
             return View("PentamindStandings"+view, model);
+        }
+
+        public ActionResult ClearPentamindStandingsCache()
+        {
+            System.Web.HttpContext.Current.Application["Pentamind"] = null;
+
+            return new RedirectResult("/");
         }
 
         public ActionResult WomensPentamindStandings(int? year, DateTime? date, string view = "", int count = 40)

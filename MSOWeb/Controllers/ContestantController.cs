@@ -50,7 +50,8 @@ namespace MSOWeb.Controllers
                 Lastname = form.Lastname,
                 IsMale = (form.Gender == "Male"),
                 Nationality = form.Nationality,
-                OnlineNicknames = form.OnlineNicknames
+                OnlineNicknames = form.OnlineNicknames,
+                Notes = form.Notes
             };
             return model;
         }
@@ -79,6 +80,19 @@ namespace MSOWeb.Controllers
             
             return Json("done");
         }
+
+        [Authorize(Roles = "Superadmin, Admin")]
+        [HttpPost]
+        public ActionResult AddNewContestantToEvent(string firstName, string lastName, int eventId)
+        {
+            var logic = new ContestantsLogic();
+
+            // TODO - verify event is in current olympiad;
+            logic.AddNewContestantToEvent(firstName, lastName, eventId);
+            // todo - refresh page
+
+            return Json("done");
+        }
     }
 
     public class ContestantForm
@@ -91,6 +105,7 @@ namespace MSOWeb.Controllers
         public string Gender { get; set; }
         public string Nationality { get; set; }
         public string OnlineNicknames { get; set; }
+        public string Notes { get; set; }
     }
 
 }
