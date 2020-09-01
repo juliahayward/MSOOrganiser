@@ -75,6 +75,39 @@ namespace MSOWeb.Controllers
             return new RedirectResult("/Olympiad/Event/" + form.Id + "?editable=true");
         }
 
+        [HttpPost]
+        public ActionResult FreezeEvent(int eventId)
+        {
+            var logic = new OlympiadsLogic();
+            try
+            {
+                logic.FreezeEvent(eventId);
+                TempData["SuccessMessage"] = "Standings generated";
+            }
+            catch (Exception e)
+            {
+                TempData["FailureMessage"] = e.Message;
+            }
+            return Json(new { eventId = eventId });
+        }
+
+        [HttpPost]
+        public ActionResult DeleteEntrant(int entrantId)
+        {
+            var logic = new OlympiadsLogic();
+            try
+            {
+                logic.DeleteEntrant(entrantId);
+                TempData["SuccessMessage"] = "Deleted";
+            }
+            catch (Exception e)
+            {
+                TempData["FailureMessage"] = e.Message;
+            }
+            return Json(new { entrantId = entrantId });
+        }
+
+
         /// <summary>
         /// Turn the Form back into a state that's easy to update the database
         /// </summary>

@@ -59,12 +59,22 @@ namespace MSOCore.Reports
             public IEnumerable<ContestantStanding> Standings { get; set; }
 
             public int TopNRequired { get; set; }
+            public Func<ContestantStanding, bool> StandingsFilter { get; set; }
 
-            public IEnumerable<ContestantStanding> TopNStandings => Standings.Take(TopNRequired);
+            public IEnumerable<ContestantStanding> TopNStandings
+            {
+                get
+                {
+                    if (StandingsFilter != null)    
+                        return Standings.Where(StandingsFilter).Take(TopNRequired);
+                    else
+                        return Standings.Take(TopNRequired);
+                }
+            }
             public int EventsNeeded { get; set; }
         }
 
-        public PentamindStandingsReportVm GetStandings(int? year, DateTime? date = null, bool women=false)
+        public PentamindStandingsReportVm GetStandings(int? year, DateTime? date = null)
         {
             DateTime? endOfDay = (date.HasValue) ? date.Value.AddDays(1) : (DateTime?)null;
 
@@ -124,9 +134,6 @@ namespace MSOCore.Reports
             }
 
             vm.Standings = standings.OrderByDescending(x => x.TotalScore);
-
-            if (women) vm.Standings = vm.Standings.Where(x => x.IsInWomensPenta);
-
             return vm;
         }
 

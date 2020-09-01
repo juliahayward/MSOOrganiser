@@ -88,18 +88,9 @@ namespace MSOWeb.Controllers
 
         public ActionResult PentamindStandings(int? year, DateTime? date, string view="", int count=100)
         {
-            PentamindStandingsGenerator.PentamindStandingsReportVm model;
-            if (System.Web.HttpContext.Current.Application["Pentamind"] != null)
-            {
-                model = System.Web.HttpContext.Current.Application["Pentamind"] as PentamindStandingsGenerator.PentamindStandingsReportVm;
-            }
-            else
-            {
-                var generator = new PentamindStandingsGenerator();
-                model = generator.GetStandings(year, date);
-                System.Web.HttpContext.Current.Application["Pentamind"] = model;
-            }
+            var model = GetPentamindStandings(year, date);
             model.TopNRequired = count;
+            model.StandingsFilter = (x => true);
 
             return View("PentamindStandings"+view, model);
         }
@@ -113,12 +104,45 @@ namespace MSOWeb.Controllers
 
         public ActionResult WomensPentamindStandings(int? year, DateTime? date, string view = "", int count = 40)
         {
-            var generator = new PentamindStandingsGenerator();
-
-            var model = generator.GetStandings(year, date, true);
+            var model = GetPentamindStandings(year, date);
             model.TopNRequired = count;
+            model.StandingsFilter = (x => x.IsInWomensPenta);
 
             return View("PentamindStandings" + view, model);
+        }
+
+        public ActionResult SeniorPentamindStandings(int? year, DateTime? date, string view = "", int count = 40)
+        {
+            var model = GetPentamindStandings(year, date);
+            model.TopNRequired = count;
+            model.StandingsFilter = x => x.IsSenior;
+
+            return View("PentamindStandings" + view, model);
+        }
+
+        public ActionResult JuniorPentamindStandings(int? year, DateTime? date, string view = "", int count = 40)
+        {
+            var model = GetPentamindStandings(year, date);
+            model.TopNRequired = count;
+            model.StandingsFilter = x => x.IsJunior;
+
+            return View("PentamindStandings" + view, model);
+        }
+
+        public PentamindStandingsGenerator.PentamindStandingsReportVm GetPentamindStandings(int? year, DateTime? date)
+        {
+            PentamindStandingsGenerator.PentamindStandingsReportVm model;
+            if (System.Web.HttpContext.Current.Application["Pentamind"] != null)
+            {
+                model = System.Web.HttpContext.Current.Application["Pentamind"] as PentamindStandingsGenerator.PentamindStandingsReportVm;
+            }
+            else
+            {
+                var generator = new PentamindStandingsGenerator();
+                model = generator.GetStandings(year, date);
+                System.Web.HttpContext.Current.Application["Pentamind"] = model;
+            }
+            return model;
         }
 
         public ActionResult EurogamesStandings(int? year, string view="", int count = 40)

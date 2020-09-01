@@ -991,9 +991,8 @@ private string _Notes;
             IsJuniorForOlympiad = Contestant.IsJuniorForOlympiad(DateOfBirth, olympiad);
             var contestantId = int.Parse(ContestantId);
             var entrants = context.Entrants
-                .Join(context.Events, e => e.Game_Code, g => g.Code, (e, g) => new { e = e, g = g })
-                .Where(x => x.e.OlympiadId == olympiadId && x.g.OlympiadId == olympiadId && x.e.Mind_Sport_ID == contestantId)
-                .OrderBy(x => x.e.Game_Code).ToList();
+                .Where(x => x.Event.OlympiadId == olympiadId && x.Mind_Sport_ID == contestantId)
+                .OrderBy(x => x.Event.Code).ToList();
      
             var allFees = context.Fees.ToList();
             var fees = (IsJuniorForOlympiad)
@@ -1005,22 +1004,22 @@ private string _Notes;
                 // TODO: this is really an EntrantVm not an EventVm
                 Events.Add(new EventVm()
                 {
-                    EventId = e.e.EventId.Value,
-                    Absent = e.e.Absent,
-                    EventCode = e.e.Game_Code,
-                    EventName = e.g.Mind_Sport,
-                    Fee = e.e.Fee,
-                    StandardFee = (e.g.Entry_Fee != null) ? fees[e.g.Entry_Fee].Value : 0,
-                    IncludedInMaxFee = (e.g.incMaxFee.HasValue && e.g.incMaxFee.Value),
-                    IsEvent = (e.g.Number > 0),
-                    Medal = e.e.Medal ?? "",
-                    JuniorMedal = e.e.JuniorMedal ?? "",
-                    Partner = e.e.Partner ?? "",
-                    Penta = e.e.Penta_Score.HasValue ? e.e.Penta_Score.Value.ToString() : "",
-                    Rank = e.e.Rank.HasValue ? e.e.Rank.Value : 0,
-                    Receipt = e.e.Receipt.Value,
-                    TieBreak = e.e.Tie_break ?? "",
-                    Date = e.e.Event.Start
+                    EventId = e.EventId.Value,
+                    Absent = e.Absent,
+                    EventCode = e.Event.Code,
+                    EventName = e.Event.Mind_Sport,
+                    Fee = e.Fee,
+                    StandardFee = (e.Event.Entry_Fee != null) ? fees[e.Event.Entry_Fee].Value : 0,
+                    IncludedInMaxFee = (e.Event.incMaxFee.HasValue && e.Event.incMaxFee.Value),
+                    IsEvent = (e.Event.Number > 0),
+                    Medal = e.Medal ?? "",
+                    JuniorMedal = e.JuniorMedal ?? "",
+                    Partner = e.Partner ?? "",
+                    Penta = e.Penta_Score.HasValue ? e.Penta_Score.Value.ToString() : "",
+                    Rank = e.Rank.HasValue ? e.Rank.Value : 0,
+                    Receipt = e.Receipt.Value,
+                    TieBreak = e.Tie_break ?? "",
+                    Date = e.Event.Start
                 });
             }
         }

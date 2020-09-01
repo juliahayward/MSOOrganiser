@@ -46,6 +46,10 @@ namespace MSOCore.Calculators
                     bestCombination = combination;
                 }
             }
+
+            if (bestCombination != null)
+                bestCombination = bestCombination.OrderByDescending(c => c.Score);
+
             return bestCombination;
         }
     }

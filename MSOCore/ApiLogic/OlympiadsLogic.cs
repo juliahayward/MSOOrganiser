@@ -9,6 +9,7 @@ namespace MSOCore.ApiLogic
 {
     public class OlympiadsLogic
     {
+        public static string[] MetaEvents = { "PEWC", "MBWC", "EGWC", "POAC", "CHCC", "BACC", "PEWO", "PEJR", "PESR" };
         public class OlympiadListVm
         {
             public int Id { get; set; }
@@ -36,6 +37,7 @@ namespace MSOCore.ApiLogic
 
         public class EventVm
         {
+            public bool IsMetaEvent { get { return (MetaEvents.Contains(Code)); } }
             public int OlympiadId { get; set; }
             public int OlympiadYear { get; set; }
             public bool Editable { get; set; }
@@ -82,6 +84,7 @@ namespace MSOCore.ApiLogic
                 public string FullName() { return FirstName + " " + LastName.ToUpper(); }
 
                 public string OnlineNicknames { get; set; }
+                public bool IsDeletable { get { return string.IsNullOrEmpty(Score); } }
             }
         }
 
@@ -245,6 +248,48 @@ namespace MSOCore.ApiLogic
                 // TODO entrant.Partner = e.TeamOrPair;
             }
 
+            context.SaveChanges();
+        }
+
+        public void FreezeEvent(int eventId)
+        {
+            var context = DataEntitiesProvider.Provide();
+            var evt = context.Events.SingleOrDefault(x => x.EIN == eventId);
+
+            if (!evt.Olympiad_Info.Current)
+                throw new ArgumentOutOfRangeException("Can't freeze for past olympiads");
+            if (!MetaEvents.Contains(evt.Code))
+                throw new ArgumentOutOfRangeException("Can't freeze an ordinary event");
+
+            var freezer = new MetaEventFreezer();
+            switch (evt.Code)
+            {
+                case "PEWC":
+                    freezer.FreezePentamind();
+                    return;
+                case "MBWC":
+                    freezer.FreezeModernAbstract();
+                    return;
+                case "EGWC":
+                    freezer.FreezeEurogames();
+                    return;
+                case "POAC":
+                    freezer.FreezePoker();
+                    return;
+                case "CHCC":
+                    freezer.FreezeChess();
+                    return;
+                case "BACC":
+                    freezer.FreezeBackgammon();
+                    return;
+            }
+        }
+
+        public void DeleteEntrant(int entrantId)
+        {
+            var context = DataEntitiesProvider.Provide();
+            var entrant = context.Entrants.SingleOrDefault(x => x.EntryNumber == entrantId);
+            context.Entrants.Remove(entrant);
             context.SaveChanges();
         }
     }

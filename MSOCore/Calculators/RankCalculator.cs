@@ -10,7 +10,7 @@ namespace MSOCore.Calculators
     {
         public static IRankCalculator Get(Event ev)
         {
-            if (ev.OlympiadId == 25 /* 2010 online */ && ev.Code.StartsWith("PO"))
+            if (ev.OlympiadId == 25 /* 2010 online */ && (ev.Code.StartsWith("PO") || ev.Code == "PZKK"))
                 return new PokerstarsRankCalculator();
 
             return new RankCalculator();

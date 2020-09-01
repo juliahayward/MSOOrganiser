@@ -14,9 +14,23 @@
 
     setTimeout(function () { $("#bannerSuccess").hide("slow"); }, 3000);
 
+    $(".fnDeleteEntrant").on("click", function () {
+        var entrant = $(this).data("entrant");
+        $.post("/Olympiad/DeleteEntrant", { entrantId: entrant }, function (data) {
+            alert("deleted, please refresh");
+        });
+    });
+
     $("#openAddContestantModal").on("click", function () {
         $("#searchName").focus();
         $("#newName").hide();
+    });
+
+    $("#generateStandings").on("click", function () {
+        var eventId = $("#Id").val();
+        $.post("/Olympiad/FreezeEvent", { eventId: eventId }, function (data) {
+            alert("generated, please refresh");
+        });
     });
 
     $("#searchContestant").on("click", function () {

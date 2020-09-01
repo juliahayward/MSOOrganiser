@@ -47,9 +47,18 @@
                     <button class="btn collapsed" type="button" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
                         Results
                     </button>
-                    <button class="btn btn-primary" id="openAddContestantModal" type="button" style="float:right" data-toggle="modal" data-target="#addContestantModal">
-                        Add a Contestant
-                    </button>
+                    @if (Model.IsMetaEvent && HttpContext.Current.User.IsInRole("Superadmin"))
+                    {
+                        <button class="btn btn-primary" id="generateStandings" type="button" style="float:right">
+                            Generate from Live Standings
+                        </button>
+                    }
+                    else
+                    {
+                        <button class="btn btn-primary" id="openAddContestantModal" type="button" style="float:right" data-toggle="modal" data-target="#addContestantModal">
+                            Add a Contestant
+                        </button>
+                    }
                 </h2>
                 @Model.ResultEntrants with result, @Model.NoResultEntrants awaiting result, @Model.AbsentEntrants absent, @Model.TotalEntrants total
             </div>
@@ -71,6 +80,7 @@
                                 <th scope="col">Tiebreak</th>
                                 <th scope="col">Absent</th>
                                 <th scope="col">Pentamind</th>
+                                <th scope="col"></th>
                             </tr>
                         </thead>
                         <tbody>
@@ -116,6 +126,7 @@
                                             <input type="checkbox" name="AbsentString" @c.AbsentChecked />
                                         </td>
                                         <td>@c.PentamindString</td>
+                                        <td>@if(c.IsDeletable){<i class="fa fa-trash-o fnDeleteEntrant" data-entrant="@c.EntryNumber" title="Delete"></i>}</td>
                                     </tr>
                                 }
                                 else
@@ -134,6 +145,7 @@
                                         <td>@c.Tiebreak</td>
                                         <td><input type="checkbox" name="AbsentString" @c.AbsentChecked /></td>
                                         <td>@c.PentamindString</td>
+                                        <td></td>
                                     </tr>
                                 }
                             }
@@ -158,8 +170,7 @@
                         <label for="searchName" class="col-form-label">Search for name/nickname:</label>
                         <input type="text" class="form-control" id="searchName">
                     </div>
-                    <table id="suggestions">
-                    </table>
+                    <table id="suggestions"></table>
                     <div class="form-group" id="newName">
                         <div class="form-row align-items-center">
                             <div class="col-auto">
