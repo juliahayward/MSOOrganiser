@@ -54,15 +54,12 @@ namespace MSOCore.Reports
 
             var medalEvents1 = context.Entrants.Where(x => x.Mind_Sport_ID == id &&
                         (x.Medal != null || x.JuniorMedal != null) && x.OlympiadId != null)
-                .Join(context.Events,
-                x => new { code = x.Game_Code, year = x.OlympiadId.Value },
-                e => new { code = e.Code, year = e.OlympiadId }, (x, e) => new { x, e })
-                .Select(xe => new ContestantVm.MedalVm
+                .Select(x => new ContestantVm.MedalVm
                 {
-                    Year = xe.e.Olympiad_Info.YearOf.Value,
-                    Code = xe.x.Game_Code,
-                    Name = xe.e.Mind_Sport,
-                    Medal = xe.x.Medal ?? xe.x.JuniorMedal
+                    Year = x.Event.Olympiad_Info.YearOf.Value,
+                    Code = x.Event.Code,
+                    Name = x.Event.Mind_Sport,
+                    Medal = x.Medal ?? x.JuniorMedal
                 })
                 .OrderByDescending(x => x.Year);
             var medalEvents = medalEvents1.ToList();
