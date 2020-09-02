@@ -805,13 +805,9 @@
     <Content Include="Views\Report\EventResultsIndex.cshtml" />
     <Content Include="Views\Schedule\Complete.cshtml" />
     <Content Include="Views\Schedule\Today.cshtml" />
-    <Content Include="Views\Report\PentamindStandingsnew.cshtml" />
-    <Content Include="Views\Report\EurogamesStandingsnew.cshtml" />
-    <Content Include="Views\Report\ModernAbstractStandingsnew.cshtml" />
     <Content Include="Views\Home\ReleaseNotes.cshtml" />
     <Content Include="Views\Shared\_NewLayoutWithFooter.cshtml" />
     <Content Include="Views\Shared\_NewLayoutNoHeader.cshtml" />
-    <Content Include="Views\Report\PokerStandingsnew.cshtml" />
     <Content Include="Views\Report\PokerStandings.cshtml" />
     <Content Include="Views\User\NewPassword.cshtml" />
     <Content Include="Views\User\NewPasswordSent.cshtml" />
@@ -823,8 +819,6 @@
     <Content Include="Views\Contestant\Contestant.cshtml" />
     <Content Include="Views\Report\ChessStandings.cshtml" />
     <Content Include="Views\Report\BackgammonStandings.cshtml" />
-    <Content Include="Views\Report\ChessStandingsnew.cshtml" />
-    <Content Include="Views\Report\BackgammonStandingsnew.cshtml" />
     <Content Include="Views\Upload\Index.cshtml" />
   </ItemGroup>
   <PropertyGroup>

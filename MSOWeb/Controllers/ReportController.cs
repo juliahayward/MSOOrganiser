@@ -91,9 +91,9 @@ namespace MSOWeb.Controllers
             var model = GetPentamindStandings(year, date);
             model.TopNRequired = count;
             model.StandingsFilter = (x => true);
-            string view = (header) ? "new" : "";
+            model.HeaderRequired = header;
 
-            return View("PentamindStandings"+view, model);
+            return View("PentamindStandings", model);
         }
 
         public ActionResult ClearPentamindStandingsCache()
@@ -108,9 +108,9 @@ namespace MSOWeb.Controllers
             var model = GetPentamindStandings(year, date);
             model.TopNRequired = count;
             model.StandingsFilter = (x => x.IsInWomensPenta);
-            string view = (header) ? "new" : "";
+            model.HeaderRequired = header;
 
-            return View("PentamindStandings" + view, model);
+            return View("PentamindStandings", model);
         }
 
         public ActionResult SeniorPentamindStandings(int? year, DateTime? date, bool header = false, int count = 40)
@@ -118,9 +118,9 @@ namespace MSOWeb.Controllers
             var model = GetPentamindStandings(year, date);
             model.TopNRequired = count;
             model.StandingsFilter = x => x.IsSenior;
-            string view = (header) ? "new" : "";
+            model.HeaderRequired = header;
 
-            return View("PentamindStandings" + view, model);
+            return View("PentamindStandings", model);
         }
 
         public ActionResult JuniorPentamindStandings(int? year, DateTime? date, bool header = false, int count = 40)
@@ -128,9 +128,9 @@ namespace MSOWeb.Controllers
             var model = GetPentamindStandings(year, date);
             model.TopNRequired = count;
             model.StandingsFilter = x => x.IsJunior;
-            string view = (header) ? "new" : "";
+            model.HeaderRequired = header;
 
-            return View("PentamindStandings" + view, model);
+            return View("PentamindStandings", model);
         }
 
         public PentamindStandingsGenerator.PentamindStandingsReportVm GetPentamindStandings(int? year, DateTime? date)
@@ -155,9 +155,9 @@ namespace MSOWeb.Controllers
 
             var model = generator.GetEuroStandings(year);
             model.TopNRequired = count;
-            string view = (header) ? "new" : "";
+            model.HeaderRequired = header;
 
-            return View("EurogamesStandings"+view, model);
+            return View("EurogamesStandings", model);
         }
 
         public ActionResult ModernAbstractStandings(int? year, bool header = false, int count = 40)
@@ -166,9 +166,9 @@ namespace MSOWeb.Controllers
 
             var model = generator.GetModernAbstractStandings(year);
             model.TopNRequired = count;
-            string view = (header) ? "new" : "";
+            model.HeaderRequired = header;
 
-            return View("ModernAbstractStandings"+view, model);
+            return View("ModernAbstractStandings", model);
         }
 
         public ActionResult PokerStandings(int? year, bool header = false, int count = 40)
@@ -177,9 +177,9 @@ namespace MSOWeb.Controllers
 
             var model = generator.GetPokerStandings(year);
             model.TopNRequired = count;
-            string view = (header) ? "new" : "";
+            model.HeaderRequired = header;
 
-            return View("PokerStandings"+view, model);
+            return View("PokerStandings", model);
         }
 
         public ActionResult ChessStandings(int? year, bool header = false, int count = 40)
@@ -188,9 +188,9 @@ namespace MSOWeb.Controllers
 
             var model = generator.GetChessStandings(year);
             model.TopNRequired = count;
-            string view = (header) ? "new" : "";
+            model.HeaderRequired = header;
 
-            return View("ChessStandings" + view, model);
+            return View("ChessStandings", model);
         }
 
         public ActionResult BackgammonStandings(int? year, bool header = false, int count = 40)
@@ -199,9 +199,9 @@ namespace MSOWeb.Controllers
 
             var model = generator.GetBackgammonStandings(year);
             model.TopNRequired = count;
-            string view = (header) ? "new" : "";
+            model.HeaderRequired = header;
 
-            return View("BackgammonStandings" + view, model);
+            return View("BackgammonStandings", model);
         }
 
         public ActionResult TotalEventEntries(int? year)

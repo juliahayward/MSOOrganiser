@@ -58,6 +58,7 @@ namespace MSOCore.Reports
             public string OlympiadTitle { get; set; }
             public IEnumerable<ContestantStanding> Standings { get; set; }
 
+            public bool HeaderRequired { get; set; }
             public int TopNRequired { get; set; }
             public Func<ContestantStanding, bool> StandingsFilter { get; set; }
 

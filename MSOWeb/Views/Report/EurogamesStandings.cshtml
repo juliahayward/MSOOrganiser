@@ -1,7 +1,16 @@
 ﻿@model MSOCore.Reports.PentamindStandingsGenerator.PentamindStandingsReportVm
 @{
-    Layout = "~/Views/Shared/_NewLayoutNoHeader.cshtml";
+    if (Model.HeaderRequired)
+    { Layout = "~/Views/Shared/_NewLayout.cshtml"; }
+    else
+    { Layout = "~/Views/Shared/_NewLayoutNoHeader.cshtml"; }
     TempData["AutoRefresh"] = true;
+}
+
+@if (Model.HeaderRequired)
+{
+    <h1 class="entry-title">Eurogames Standings</h1>
+    <p>All standings are provisional until formally announced at the closing ceremony, 6pm Monday 31st. Any data errors <b>must</b> be reported by 3pm on the 31st to ensure correction</p>
 }
 
 @{ var i = 1; }
@@ -18,16 +27,16 @@
     <tbody>
         @foreach (var item in Model.TopNStandings)
         {
-            <tr>
-                <th scope="row">@i</th>
-                <td><span>@item.Name</span></td>
-                <td><span>@item.TotalScoreStr</span></td>
-                <td style="font-size: small"><span>@item.ScoreStr(0)</span></td>
-                <td style="font-size: small"><span>@item.ScoreStr(1)</span></td>
-                <td style="font-size: small"><span>@item.ScoreStr(2)</span></td>
-                <td style="font-size: small"><span>@item.ScoreStr(3)</span></td>
-                <td style="font-size: small"><span>@item.ScoreStr(4)</span></td>
-            </tr>
+        <tr>
+            <th scope="row">@i</th>
+            <td><img src="@item.Flag" title="@item.Nationality" height="20" style="margin-right: 4px" /><span>@item.Name</span></td>
+            <td><span>@item.TotalScoreStr</span></td>
+            <td style="font-size: small"><span>@item.ScoreStr(0)</span></td>
+            <td style="font-size: small"><span>@item.ScoreStr(1)</span></td>
+            <td style="font-size: small"><span>@item.ScoreStr(2)</span></td>
+            <td style="font-size: small"><span>@item.ScoreStr(3)</span></td>
+            <td style="font-size: small"><span>@item.ScoreStr(4)</span></td>
+        </tr>
 
             i++;
         }
