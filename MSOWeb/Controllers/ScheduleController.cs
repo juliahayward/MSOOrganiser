@@ -19,11 +19,13 @@ namespace MSOWeb.Controllers
             return View(model);
         }
 
-        public ActionResult Today()
+        public ActionResult Today(string date = null)
         {
             var generator = new ScheduleGenerator();
 
-            var model = generator.GetDaySchedule(DateTime.Now.Date);
+            DateTime chosenDate = (date == null) ? DateTime.Now.Date : DateTime.Parse(date).Date;
+
+            var model = generator.GetDaySchedule(chosenDate);
 
             return View(model);
         }

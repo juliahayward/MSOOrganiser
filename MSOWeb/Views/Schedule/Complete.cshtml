@@ -28,6 +28,10 @@
     {<span class="badge badge-warning badge-pill">PM</span>}
                             @if (evt.HasEveBadge)
     {<span class="badge badge-success badge-pill">Eve</span>}
+                            @if (evt.Location != null)
+                            {
+                                <br /><span>@evt.Location</span>
+                            }
                     </li>
                     }
                 </ul>

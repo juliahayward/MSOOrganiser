@@ -240,7 +240,7 @@ namespace MSOWeb.Controllers
             return View(model);
         }
 
-        // For evaluation only
+        /* For evaluation only
         public ActionResult PentamindStandings4Cats(int? year)
         {
             var generator = new PentamindStandings4CatsGenerator();
@@ -248,6 +248,6 @@ namespace MSOWeb.Controllers
             var model = generator.GetStandings(year);
 
             return View(model);
-        }
+        }*/
     }
 }

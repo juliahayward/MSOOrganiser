@@ -20,6 +20,7 @@ namespace MSOCore.Reports
             public string Name { get; set; }
             public DateTime Start { get; set; }
             public DateTime End { get; set; }
+            public string Location { get; set; }
             public bool HasAMBadge { get; set; }
             public bool HasPMBadge { get; set; }
             public bool HasEveBadge { get; set; }
@@ -52,7 +53,8 @@ namespace MSOCore.Reports
                         Name = e.Mind_Sport,
                         HasAMBadge = e.Event_Sess.Any(s => Mornings.Contains(s.Session)),
                         HasPMBadge = e.Event_Sess.Any(s => Afternoons.Contains(s.Session)),
-                        HasEveBadge = e.Event_Sess.Any(s => Evenings.Contains(s.Session))
+                        HasEveBadge = e.Event_Sess.Any(s => Evenings.Contains(s.Session)),
+                        Location = e.Location
                     })
                     .ToList();
             }
@@ -60,21 +62,26 @@ namespace MSOCore.Reports
             return dates;
         }
 
-        public IList<ScheduleEventVm> GetDaySchedule(DateTime today)
+        public DayScheduleVm GetDaySchedule(DateTime today)
         {
             var context = DataEntitiesProvider.Provide();
             var olympiad = context.Olympiad_Infoes.First(x => x.Current);
 
-            return olympiad.Events
+            var model = new DayScheduleVm();
+            model.DateValue = today;
+
+            model.Events = olympiad.Events
                     .Where(x => x.Event_Sess.Any(s => s.Date == today))
                     .OrderBy(x => x.Start).ThenBy(x => x.End)
                     .Select(e => new ScheduleEventVm()
                     {
                         Name = e.Mind_Sport,
                         Start = e.Start.Value,
-                        End = e.End.Value
+                        End = e.End.Value,
+                        Location = e.Location
                     })
                     .ToList();
+            return model;
         }
     }
 }
