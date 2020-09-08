@@ -74,6 +74,8 @@ namespace MSOCore.Reports
             if (evt == null)
                 throw new ArgumentOutOfRangeException("Event " + eventCode + " did not take place in " + year);
 
+            bool isPentamind = eventCode.StartsWith("PE");
+
             retval.EventName = evt.Mind_Sport;
             retval.Entrants = evt.Entrants
                 .Where(e => e.Rank.HasValue && e.Rank.Value > 0)
@@ -82,8 +84,8 @@ namespace MSOCore.Reports
                     ContestantId = e.Name.Mind_Sport_ID,
                     Medal = e.Medal ?? "",
                     JuniorMedal = e.JuniorMedal ?? "",
-                    Score = e.Score,
-                    PentaScore = (double)e.Penta_Score,
+                    Score = (isPentamind) ? "" : e.Score,
+                    PentaScore = (isPentamind) ? double.Parse(e.Score) : (double)e.Penta_Score,
                     Rank = e.Rank.Value,
                     Name = e.Name.FullName(),
                     Nationality = e.Name.Nationality ?? "default",

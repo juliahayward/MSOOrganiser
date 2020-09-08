@@ -27,8 +27,14 @@ namespace MSOCore.Reports
             var context = DataEntitiesProvider.Provide();
 
             var olympiad = (year.HasValue)
-                ? context.Olympiad_Infoes.First(x => x.YearOf == year.Value)
-                : context.Olympiad_Infoes.OrderByDescending(x => x.YearOf).First();
+                ? context.Olympiad_Infoes.FirstOrDefault(x => x.YearOf == year.Value)
+                : context.Olympiad_Infoes.First(x => x.Current);
+
+            if (olympiad == null)
+            {
+                var message = (year.HasValue) ? "No Olympiad for year " + year.Value : "No current Olympiad";
+                throw new ArgumentOutOfRangeException(message);
+            }
 
             vm.EventYear = olympiad.YearOf.Value;
 
