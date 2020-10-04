@@ -157,6 +157,9 @@ warning 6002: The table/view 'mso_prod.dbo.Badges - Misc' does not have a primar
           <Property Name="SSMA_TimeStamp" Type="timestamp" StoreGeneratedPattern="Computed" Nullable="false" />
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="CategoryId" Type="int" />
+          <Property Name="FindOutMoreLink" Type="nvarchar(max)" />
+          <Property Name="OnlineSiteName" Type="nvarchar(max)" />
+          <Property Name="OnlineSiteUrl" Type="nvarchar(max)" />
         </EntityType>
         <EntityType Name="GlobalSettings">
           <Key>
@@ -1020,6 +1023,9 @@ FROM [dbo].[SelectedPeople] AS [SelectedPeople]</DefiningQuery>
           <NavigationProperty Name="Events" Relationship="DataModel.FK__Events__GameId__4A8310C6" FromRole="Game" ToRole="Event" />
           <Property Type="Int32" Name="CategoryId" />
           <NavigationProperty Name="GameCategory" Relationship="DataModel.FK__Games__CategoryI__503BEA1C" FromRole="Game" ToRole="GameCategory" />
+          <Property Type="String" Name="FindOutMoreLink" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="OnlineSiteName" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="OnlineSiteUrl" MaxLength="Max" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="Information">
           <Key>
@@ -1679,6 +1685,9 @@ FROM [dbo].[SelectedPeople] AS [SelectedPeople]</DefiningQuery>
                 <ScalarProperty Name="Contacts" ColumnName="Contacts" />
                 <ScalarProperty Name="Mind_Sport" ColumnName="Mind Sport" />
                 <ScalarProperty Name="Code" ColumnName="Code" />
+                <ScalarProperty Name="FindOutMoreLink" ColumnName="FindOutMoreLink" />
+                <ScalarProperty Name="OnlineSiteName" ColumnName="OnlineSiteName" />
+                <ScalarProperty Name="OnlineSiteUrl" ColumnName="OnlineSiteUrl" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

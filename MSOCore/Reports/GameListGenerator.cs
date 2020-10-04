@@ -1,8 +1,5 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace MSOCore.Reports
 {
@@ -12,6 +9,9 @@ namespace MSOCore.Reports
         {
             public string Name { get; set; }
             public string Code { get; set; }
+            public string FindOutMoreLink { get; set; }
+            public string OnlineSiteName { get; set; }
+            public string OnlineSiteUrl { get; set; }
         }
 
         public IEnumerable<GameVm> GetItems()
@@ -20,7 +20,13 @@ namespace MSOCore.Reports
 
             var games = context.Games
                 .OrderBy(x => x.Mind_Sport)
-                .Select(g => new GameVm() { Name = g.Mind_Sport, Code = g.Code }).ToList();
+                .Select(g => new GameVm() {
+                    Name = g.Mind_Sport,
+                    Code = g.Code,
+                    FindOutMoreLink = g.FindOutMoreLink,
+                    OnlineSiteName = g.OnlineSiteName,
+                    OnlineSiteUrl = g.OnlineSiteUrl
+                }).ToList();
 
             return games;
         }

@@ -167,16 +167,38 @@
 </div>
 }
 <div class="row">
-    <div class="col-sm-3">
-        <div class="card mt-1">
+    <div class="col-sm-12">
+        <div class="card">
             <div class="card-body">
-                <h5 class="card-title">Game Medals (all years)</h5>
-                <ul>
-                    @foreach (var game in Model.Where(g => g.Code != "ZZ" && g.Code != "EE" && g.Code != "LP"))
-                    {
-                        <li><a href="/Report/GameMedals?gameCode=@game.Code">@game.Name</a></li>
-                    }
-                </ul>
+                <h5 class="card-title">All MSO Events</h5>
+                <table class="table">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th scope="col">Name</th>
+                            <th scope="col">Years</th>
+                            <th scope="col"></th>
+                            <th scope="col">Play online</th>
+                            <th scope="col">More links</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var game in Model.Where(g => g.Code != "ZZ" && g.Code != "EE" && g.Code != "LP"))
+                        {
+                        <tr>
+                            <td>@game.Name</td>
+                            <td></td>
+                            <td><a href="/Report/GameMedals?gameCode=@game.Code">Past Medals</a></td>
+                            <td>
+                                @if (!string.IsNullOrEmpty(game.OnlineSiteName))
+                                {<a href="@game.OnlineSiteUrl">@game.OnlineSiteName</a>}
+                            </td>
+                            <td>@if (!string.IsNullOrEmpty(game.FindOutMoreLink))
+                            {<a href="@game.FindOutMoreLink">Find out more</a>}
+                            </td>
+                        </tr>
+                        }
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>
