@@ -57,7 +57,9 @@ namespace MSOCore.Reports
         public IEnumerable<EventVm> GetNonMetaItems()
         {
             var context = DataEntitiesProvider.Provide();
-            var olympiad = context.Olympiad_Infoes.First(x => x.Current);
+            var olympiad = context.Olympiad_Infoes.FirstOrDefault(x => x.Current);
+            if (olympiad == null)
+                throw new NoCurrentOlympiadException();
 
             var games = context.Events
                 .Where(e => e.OlympiadId == olympiad.Id && e.Pentamind)

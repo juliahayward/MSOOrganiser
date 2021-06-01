@@ -14,6 +14,7 @@ namespace MSOCore.ApiLogic
         {
             public int Id { get; set; }
             public string Name { get; set; }
+            public bool IsCurrent { get; set; }
             public string Venue { get; set; }
             public DateTime StartDate { get; set; }
         }
@@ -127,14 +128,18 @@ namespace MSOCore.ApiLogic
                 Id = x.Id,
                 Name = x.Number + " " + x.Title,
                 Venue = x.Venue,
-                StartDate = x.StartDate.Value
+                StartDate = x.StartDate.Value,
+                IsCurrent = x.Current
             }).OrderByDescending(x => x.StartDate);
         }
 
         public int GetCurrentOlympiadId()
         {
             var context = DataEntitiesProvider.Provide();
-            return context.Olympiad_Infoes.Single(x => x.Current).Id;
+            var olympiad = context.Olympiad_Infoes.SingleOrDefault(x => x.Current);
+            if (olympiad == null)
+                throw new NoCurrentOlympiadException();
+            return olympiad.Id;
         }
 
         public OlympiadVm GetOlympiad(int id)

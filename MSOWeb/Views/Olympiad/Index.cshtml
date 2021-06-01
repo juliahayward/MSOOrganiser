@@ -21,7 +21,14 @@
     <div class="card">
         <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordionExample">
             <div class="card-body">
-                @o.StartDate.Year: <a href="/Olympiad/Olympiad/@o.Id">@o.Name</a>, @o.Venue
+                @if (o.IsCurrent)
+                {
+                <span>@o.StartDate.Year: <a href="/Olympiad/Olympiad/@o.Id"> @o.Name </a>, @o.Venue</span> <span class="badge badge-primary badge-pill">Current</span>
+                }
+                else
+                {
+                    <span>@o.StartDate.Year: @o.Name, @o.Venue</span>
+                }
             </div>
         </div>
     </div>

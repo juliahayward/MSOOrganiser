@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using MSOCore;
 using MSOCore.ApiLogic;
 using MSOCore.Calculators;
 
@@ -32,9 +33,16 @@ namespace MSOWeb.Controllers
         public ActionResult CurrentOlympiad()
         {
             var logic = new OlympiadsLogic();
-            var id = logic.GetCurrentOlympiadId();
-
-            return RedirectToAction("Olympiad", new { id=id });
+            try
+            {
+                var id = logic.GetCurrentOlympiadId();
+                return RedirectToAction("Olympiad", new { id = id });
+            }
+            catch (NoCurrentOlympiadException e)
+            {
+                TempData["FailureMessage"] = "There is no current Olympiad to edit";
+                return RedirectToAction("Index");
+            }
         }
 
         [HttpPost]

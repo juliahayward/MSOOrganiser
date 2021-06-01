@@ -91,11 +91,19 @@ namespace MSOWeb.Controllers
         [Authorize(Roles = "Superadmin, Admin, Arbiter")]
         public ActionResult Downloads()
         {
-            var generator = new EventListGenerator();
+            try
+            {
+                var generator = new EventListGenerator();
 
-            var model = generator.GetNonMetaItems();
+                var model = generator.GetNonMetaItems();
 
-            return View(model);
+                return View(model);
+            }
+            catch (NoCurrentOlympiadException e)
+            {
+                TempData["FailureMessage"] = "There is no current Olympiad";
+                return View(new EventListGenerator.EventVm[0]);
+            }
         }
     }
 }

@@ -34,7 +34,7 @@ namespace MSOCore.Reports
 
             var olympiad = (year.HasValue)
                 ? context.Olympiad_Infoes.First(x => x.YearOf == year.Value)
-                : context.Olympiad_Infoes.First(x => x.Current);
+                : context.Olympiad_Infoes.FirstOrDefault(x => x.Current);
 
             var events = context.Events.Where(x => x.OlympiadId == olympiad.Id)
                 .Select(x => new TotalEventEntriesVm.EventVm()

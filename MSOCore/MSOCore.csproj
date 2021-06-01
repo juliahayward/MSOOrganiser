@@ -151,6 +151,7 @@
     <Compile Include="Nationality.cs">
       <DependentUpon>Model.tt</DependentUpon>
     </Compile>
+    <Compile Include="NoCurrentOlympiadException.cs" />
     <Compile Include="Olympiad_Info.cs">
       <DependentUpon>Model.tt</DependentUpon>
     </Compile>
