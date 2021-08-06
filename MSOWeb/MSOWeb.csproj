@@ -747,6 +747,7 @@
     </Content>
     <Resource Include="Content\favicon.ico" />
     <Content Include="Content\Logo.png" />
+    <Content Include="Content\Styles\EmbeddedOverrides.css" />
     <Content Include="Content\Styles\Global.css" />
     <Content Include="Content\Styles\Login.css" />
     <Content Include="Global.asax" />

@@ -33,6 +33,7 @@
     <Reference Include="EntityFramework">
       <HintPath>..\packages\EntityFramework.5.0.0\lib\net45\EntityFramework.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.VisualBasic" />
     <Reference Include="Newtonsoft.Json, Version=8.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.8.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
       <Private>True</Private>
@@ -66,7 +67,9 @@
     <Compile Include="Calculators\MetaEventFreezer.cs" />
     <Compile Include="Calculators\NumberListContractor.cs" />
     <Compile Include="Calculators\PaymentProcessor.cs" />
+    <Compile Include="Calculators\PaymentProcessor2021.cs" />
     <Compile Include="Calculators\PaymentProcessor2018.cs" />
+    <Compile Include="Calculators\Penta2021Calculator.cs" />
     <Compile Include="Calculators\PentamindMetaScoreCalculator.cs" />
     <Compile Include="Calculators\RankCalculator.cs" />
     <Compile Include="Calculators\PentaPre2010Calculator.cs" />
@@ -246,6 +249,9 @@
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Connected Services\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

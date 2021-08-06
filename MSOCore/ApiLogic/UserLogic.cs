@@ -34,6 +34,25 @@ namespace MSOCore.ApiLogic
 
         private bool VerifyPassword(DataEntities context, User user, string enteredPassword)
         {
+            
+            // Prepare any users added manually
+            if (user.Salt == null)
+            {
+                // Hash the password in the database
+                var hashAlgorithm = new SHA256Managed();
+                var saltBytes = new byte[8];
+                RNGCryptoServiceProvider rng = new RNGCryptoServiceProvider();
+                rng.GetNonZeroBytes(saltBytes);
+                user.Salt = Convert.ToBase64String(saltBytes);
+
+                var inputBytes = System.Text.Encoding.UTF8.GetBytes(user.Salt + user.Password);
+                var outputBytes = hashAlgorithm.ComputeHash(inputBytes);
+                user.Hash = Convert.ToBase64String(outputBytes);
+
+                user.Password = null;
+                context.SaveChanges();
+            }
+
             var computedHash = GetHash(user.Salt + enteredPassword);
             return (computedHash == user.Hash);
         }

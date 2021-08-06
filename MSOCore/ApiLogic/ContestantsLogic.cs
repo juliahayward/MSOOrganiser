@@ -24,10 +24,15 @@ namespace MSOCore.ApiLogic
             public string Nationality { get; set; }
 
             public string OnlineNicknames { get; set; }
+            public string BgaNickname { get; set; }
 
             public string Notes { get; set; }
             public IEnumerable<EventVm> Events { get; set; }
             public IEnumerable<string> Nationalities { get; set; }
+
+            public DateTime? DateOfBirth { get; set; }
+
+            public string DisplayDateOfBirth => DateOfBirth?.ToString("dd/MM/yyyy") ?? "";
 
             public class EventVm
             {
@@ -64,8 +69,10 @@ namespace MSOCore.ApiLogic
             vm.Initials = contestant.Initials;
             vm.Lastname = contestant.Lastname;
             vm.FullName = contestant.FullName();
+            vm.DateOfBirth = contestant.DateofBirth;
             vm.IsMale = contestant.Male;
             vm.OnlineNicknames = contestant.OnlineNicknames;
+            vm.BgaNickname = contestant.BgaNickname;
             vm.Nationality = contestant.Nationality;
             vm.Nationalities = context.Nationalities.Select(x => x.Name).OrderBy(x => x);
             vm.Notes = contestant.Notes;
@@ -111,8 +118,10 @@ namespace MSOCore.ApiLogic
             c.Firstname = model.Firstname;
             c.Initials = model.Initials;
             c.Lastname = model.Lastname;
+            c.DateofBirth = model.DateOfBirth;
             c.Male = model.IsMale;
             c.OnlineNicknames = model.OnlineNicknames;
+            c.BgaNickname = model.BgaNickname;
             c.Nationality = model.Nationality;
             c.Notes = model.Notes;
 
@@ -131,11 +140,13 @@ namespace MSOCore.ApiLogic
         {
             var context = DataEntitiesProvider.Provide();
             var contestants = context.Contestants.Where(c =>
-                (c.Firstname != null && c.Firstname.Contains(name)) || (c.Lastname != null && c.Lastname.Contains(name)) || (c.OnlineNicknames != null && c.OnlineNicknames.Contains(name))
+                (c.Firstname != null && c.Firstname.Contains(name)) || (c.Lastname != null && c.Lastname.Contains(name)) || 
+                (c.BgaNickname != null && c.BgaNickname.Contains(name)) || 
+                (c.OnlineNicknames != null && c.OnlineNicknames.Contains(name))
                 ).ToList();
 
             foreach (var c in contestants.OrderBy(x => x.Lastname).ThenBy(x => x.Firstname))
-                yield return new ContestantForNameVm { Name = c.FullNameWithInitials(), Nickname = c.OnlineNicknames ?? "", Id = c.Mind_Sport_ID };
+                yield return new ContestantForNameVm { Name = c.FullNameWithInitials(), Nickname = c.AllOnlineNicknames ?? "", Id = c.Mind_Sport_ID };
         }
 
         public void AddContestantToEvent(int contestantId, int eventId)

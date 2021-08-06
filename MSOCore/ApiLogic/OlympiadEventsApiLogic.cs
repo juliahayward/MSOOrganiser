@@ -67,6 +67,9 @@ namespace MSOCore.ApiLogic
                 public string Email { get; set; }
                 public string Phone { get; set; }
                 public string OnlineNicknames { get; set; }
+                public string BgaNickname { get; set; }
+
+                public string AllOnlineNicknames { get; set; }
                 public string DiscordNickname { get; set; }
                 public string Whatsapp { get; set; }
                 public bool IsJunior { get; set; }
@@ -125,6 +128,8 @@ namespace MSOCore.ApiLogic
                     Email = e.Name.email,
                     Phone = $"Day: {e.Name.DayPhone} Evening: {e.Name.EvePhone}",
                     OnlineNicknames = e.Name.OnlineNicknames,
+                    BgaNickname = e.Name.BgaNickname,
+                    AllOnlineNicknames = e.Name.AllOnlineNicknames,
                     DiscordNickname = e.Name.DiscordNickname,
                     Whatsapp = e.Name.Whatsapp ? "yes" : "no",
                     IsJunior = e.Name.IsJuniorForOlympiad(currentOlympiad),

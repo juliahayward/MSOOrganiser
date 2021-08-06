@@ -43,6 +43,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AutoMailer.cs" />
     <Compile Include="MSOAgentServiceInstaller.cs">
       <SubType>Component</SubType>
     </Compile>

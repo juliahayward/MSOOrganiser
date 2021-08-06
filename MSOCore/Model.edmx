@@ -248,6 +248,7 @@ warning 6002: The table/view 'mso_prod.dbo.MetaGameDefinition' does not have a p
           <Property Name="date" Type="datetime2" Precision="0" />
           <Property Name="SSMA_TimeStamp" Type="timestamp" StoreGeneratedPattern="Computed" Nullable="false" />
           <Property Name="OnlineNicknames" Type="nvarchar(max)" />
+          <Property Name="BgaNickname" Type="nvarchar" MaxLength="50" />
           <Property Name="DiscordNickname" Type="nvarchar(max)" />
           <Property Name="Whatsapp" Type="bit" />
         </EntityType>
@@ -1077,6 +1078,7 @@ FROM [dbo].[SelectedPeople] AS [SelectedPeople]</DefiningQuery>
           <Property Type="DateTime" Name="date" Precision="0" />
           <Property Type="Binary" Name="SSMA_TimeStamp" Nullable="false" MaxLength="8" FixedLength="true" annotation:StoreGeneratedPattern="Computed" />
           <Property Type="String" Name="OnlineNicknames" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="BgaNickname" FixedLength="true" Unicode="true" />
           <Property Type="String" Name="DiscordNickname" FixedLength="false" Unicode="true" />
           <Property Type="Boolean" Name="Whatsapp" />
           <NavigationProperty Name="Entrants" Relationship="DataModel.Entrants_NamesEntrants" FromRole="Name" ToRole="Entrant" />
@@ -1742,6 +1744,7 @@ FROM [dbo].[SelectedPeople] AS [SelectedPeople]</DefiningQuery>
                 <ScalarProperty Name="Title" ColumnName="Title" />
                 <ScalarProperty Name="Mind_Sport_ID" ColumnName="Mind Sport ID" />
                 <ScalarProperty Name="OnlineNicknames" ColumnName="OnlineNicknames" />
+                <ScalarProperty Name="BgaNickname" ColumnName="BgaNickname" />
                 <ScalarProperty Name="DiscordNickname" ColumnName="DiscordNickname" />
                 <ScalarProperty Name="Whatsapp" ColumnName="Whatsapp" />
               </MappingFragment>

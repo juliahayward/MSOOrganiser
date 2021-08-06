@@ -5,6 +5,7 @@
     ViewBag.Title = "Mind Sports Olympiad Live Results";
     System.Reflection.Assembly assembly = System.Reflection.Assembly.GetExecutingAssembly();
     System.IO.FileInfo fileInfo = new System.IO.FileInfo(assembly.Location);
+    ViewBag.Version = assembly.GetName().Version;
     ViewBag.Date = fileInfo.LastWriteTime.ToString("dd MMM yyyy");
 }
 
@@ -90,6 +91,7 @@
                 <h5 class="card-title">Past year's medals</h5>
                 <h6 class="card-subtitle mb-2 text-muted">Winners in previous years</h6>
                 <ul>
+					<li><a href="/Report/YearMedals?year=2020" class="card-link">2020</a></li>
                     <li><a href="/Report/YearMedals?year=2019" class="card-link">2019</a></li>
                     <li><a href="/Report/YearMedals?year=2018" class="card-link">2018</a></li>
                     <li><a href="/Report/YearMedals?year=2017" class="card-link">2017</a></li>
@@ -150,7 +152,7 @@
             </div>
         </div>
     }
-    @if (HttpContext.Current.User.IsInRole("Superadmin") || HttpContext.Current.User.IsInRole("Superadmin"))
+    @if (HttpContext.Current.User.IsInRole("Admin") || HttpContext.Current.User.IsInRole("Superadmin"))
     {
         <div class="col-sm-3">
             <div class="card mt-1">
@@ -159,6 +161,7 @@
                     <ul>
                         <li><a href="/Olympiad/CurrentOlympiad" class="card-link">Edit data</a></li>
                         <li><a href="/Report/ClearPentamindStandingsCache" class="card-link">Recalculate Pentamind</a></li>
+                        <li><a href="/Report/RecalculateSeedings" class="card-link">Recalculate Seedings</a></li>
                     </ul>
                 </div>
             </div>
@@ -217,7 +220,7 @@
 @section footer {
     <footer class="footer">
         <div class="container">
-            <span class="text-muted">MSO Live Results, last updated @ViewBag.Date - see <a href="/Home/ReleaseNotes">release notes</a></span>
+            <span class="text-muted">MSO Live Results @ViewBag.Version, last updated @ViewBag.Date - see <a href="/Home/ReleaseNotes">release notes</a></span>
         </div>
     </footer>
 }

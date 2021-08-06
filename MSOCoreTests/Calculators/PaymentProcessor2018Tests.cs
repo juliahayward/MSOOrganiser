@@ -17,4 +17,17 @@ namespace MSOCoreTests.Calculators
             Assert.IsFalse(order.Any(o => o.Attendees.Count > 1));
         }
     }
+
+    [TestClass]
+    public class PaymentProcessor2021Tests
+    {
+        [TestMethod]
+        public void TestParseWordpressFile()
+        {
+            var file = @"c:\src\juliahayward\MSOOrganiser\RawData\2021-test\bookings-0e36a55b72764f7233c971c06d9f67ad.csv";
+            var processor = new PaymentProcessor2021();
+            var orders = processor.ParseCsvFile(file);
+            Assert.AreEqual(1812, orders.Count());
+        }
+    }
 }

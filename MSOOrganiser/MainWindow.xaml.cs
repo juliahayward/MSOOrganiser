@@ -943,11 +943,7 @@ namespace MSOOrganiser
 
         private void calculateSeedings_Click(object sender, RoutedEventArgs e)
         {
-            using (new SpinnyCursor())
-            {
-                var calculator = new SeedingScoreCalculator();
-                calculator.CalculateSeedings();
-            }
+            // dead
         }
 
         private void calculateElos_Click(object sender, RoutedEventArgs e)

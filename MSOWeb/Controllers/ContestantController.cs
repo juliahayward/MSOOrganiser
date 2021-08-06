@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -48,9 +49,11 @@ namespace MSOWeb.Controllers
                 Firstname = form.Firstname,
                 Initials = form.Initials,
                 Lastname = form.Lastname,
+                DateOfBirth = form.ParsedDateOfBirth,
                 IsMale = (form.Gender == "Male"),
                 Nationality = form.Nationality,
                 OnlineNicknames = form.OnlineNicknames,
+                BgaNickname = form.BgaNickname,
                 Notes = form.Notes
             };
             return model;
@@ -103,8 +106,13 @@ namespace MSOWeb.Controllers
         public string Initials { get; set; }
         public string Lastname { get; set; }
         public string Gender { get; set; }
+        public string DateOfBirth { get; set; }
+
+        public DateTime? ParsedDateOfBirth => (DateOfBirth != null) ? DateTime.ParseExact(DateOfBirth, "dd/MM/yyyy", CultureInfo.InvariantCulture) : (DateTime?)null;
         public string Nationality { get; set; }
         public string OnlineNicknames { get; set; }
+
+        public string BgaNickname { get; set; }
         public string Notes { get; set; }
     }
 

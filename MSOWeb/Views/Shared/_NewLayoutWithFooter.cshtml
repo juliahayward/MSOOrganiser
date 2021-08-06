@@ -16,6 +16,10 @@
     <link rel="icon" href="/Content/favicon.ico">
     <!-- Bootstrap 4 styling -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    @if (Request.Params["embedded"] == "true")
+    {
+        <link rel="stylesheet" href="/Content/Styles/EmbeddedOverrides.css">
+    }
     <style type="text/css" id="custom-background-css">
         body {
             background-color: #f9f9f9;

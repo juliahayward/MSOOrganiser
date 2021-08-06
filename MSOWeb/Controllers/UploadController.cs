@@ -28,8 +28,8 @@ namespace MSOWeb.Controllers
                     throw new FileNotFoundException("Please select a file");
 
                 var filename = (Directory.Exists("C:\\inetpub\\wwwroot\\msoweb\\rawdata"))
-                ? "C:\\inetpub\\wwwroot\\msoweb\\rawdata\\upload" + DateTime.Now.ToString("yyyy-MM-dd-HHmm") + ".json"
-                : "C:\\src\\juliahayward\\MSOOrganiser\\MSOWeb\\RawData\\upload" + DateTime.Now.ToString("yyyy-MM-dd-HHmm") + ".json";
+                ? "C:\\inetpub\\wwwroot\\msoweb\\rawdata\\upload" + DateTime.Now.ToString("yyyy-MM-dd-HHmm") + ".csv"
+                : "C:\\src\\juliahayward\\MSOOrganiser\\MSOWeb\\RawData\\upload" + DateTime.Now.ToString("yyyy-MM-dd-HHmm") + ".csv";
 
                 using (var source = new StreamReader(inputFile.InputStream))
                 {
@@ -40,8 +40,8 @@ namespace MSOWeb.Controllers
                     }
                 }
 
-                var processor = new PaymentProcessor2018();
-                var orders = processor.ParseJsonFile(filename);
+                var processor = new PaymentProcessor2021();
+                var orders = processor.ParseCsvFile(filename);
                 processor.ProcessAll(orders);
 
                 TempData["SuccessMessage"] = $"Loaded {orders.Count()} orders ";

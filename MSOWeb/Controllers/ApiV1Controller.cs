@@ -58,7 +58,7 @@ namespace MSOWeb.Controllers
                 foreach (var c in data.Contestants.OrderByDescending(c => c.SeedingPoints))
                 {
                     index++;
-                    builder.Append($"{index}|{c.FirstName}|{c.LastName}|{c.ContestantId}|{c.RatingPoints}|{c.SeedingPoints}|{c.Phone}|{c.Email}|{c.OnlineNicknames}|{c.DiscordNickname}|{c.Whatsapp}|{c.EntryId}|{c.Nationality}|\r\n");
+                    builder.Append($"{index}|{c.FirstName}|{c.LastName}|{c.ContestantId}|{c.RatingPoints}|{c.SeedingPoints}|{c.Phone}|{c.Email}|{c.AllOnlineNicknames}|{c.DiscordNickname}|{c.Whatsapp}|{c.EntryId}|{c.Nationality}|\r\n");
                 }
 
                 Response.AddHeader("Content-Disposition", $"attachment;filename={eventCode}.txt");
@@ -83,7 +83,7 @@ namespace MSOWeb.Controllers
                 foreach (var c in data.Contestants.OrderByDescending(c => c.SeedingPoints))
                 {
                     index++;
-                    builder.Append($"{index},{c.FirstName},{c.LastName},{c.ContestantId},{c.RatingPoints},{c.SeedingPoints},{c.Phone},{c.Email},\"{c.OnlineNicknames}\",{c.DiscordNickname},{c.Whatsapp},{c.EntryId},{c.Nationality}\r\n");
+                    builder.Append($"{index},{c.FirstName},{c.LastName},{c.ContestantId},{c.RatingPoints},{c.SeedingPoints},{c.Phone},{c.Email},\"{c.AllOnlineNicknames}\",{c.DiscordNickname},{c.Whatsapp},{c.EntryId},{c.Nationality}\r\n");
                 }
 
                 Response.AddHeader("Content-Disposition", $"attachment;filename={eventCode}.csv");

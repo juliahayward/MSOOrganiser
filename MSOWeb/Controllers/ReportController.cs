@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using MSOCore.Calculators;
 
 namespace MSOWeb.Controllers
 {
@@ -69,8 +70,8 @@ namespace MSOWeb.Controllers
 
         public ActionResult GameMedals(string gameCode)
         {
-            // If someone puts in a 4 letter code, reduce it to a 2
-            gameCode = gameCode.Substring(0, 2);
+            // If someone puts in a 4 letter code, reduce it to a 2 (note - some games now 3-letters)
+            if (gameCode.Length >= 4) gameCode.Substring(0, gameCode.Length - 2);
 
             try
             {
@@ -102,6 +103,15 @@ namespace MSOWeb.Controllers
 
             return new RedirectResult("/");
         }
+
+        public ActionResult RecalculateSeedings()
+        {
+            var calculator = new SeedingScoreCalculator();
+            calculator.CalculateSeedings();
+
+            return new RedirectResult("/");
+        }
+
 
         public ActionResult WomensPentamindStandings(int? year, DateTime? date, bool header = false, int count = 40)
         {

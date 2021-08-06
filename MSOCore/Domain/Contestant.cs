@@ -48,5 +48,13 @@ namespace MSOCore
         {
             return (IsJuniorForOlympiad(olympiad)) ? "JNR" : "";
         }
+
+        public string AllOnlineNicknames
+        {
+            get
+            {
+                return "BGA:" + (BgaNickname ?? "-") + " Other: " + OnlineNicknames;
+            }
+        }
     }
 }
