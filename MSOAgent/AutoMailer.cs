@@ -52,8 +52,8 @@ namespace MSOAgent
                     string body = $@"Today's MSO update email";
 
                     using (MailMessage message = new MailMessage(
-                        new MailAddress("julia.hayward@btconnect.com", "Mind Sports Olympiad"),
-                        new MailAddress("julia.hayward@btconnect.com")))
+                        new MailAddress(mailsender, "Mind Sports Olympiad"),
+                        new MailAddress(mailsender)))
                     {
                         message.Body = body;
                         message.Subject = "MSO: Daily mail";
