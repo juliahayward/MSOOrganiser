@@ -100,6 +100,11 @@ namespace MSOWeb.Controllers
         public ActionResult ClearPentamindStandingsCache()
         {
             System.Web.HttpContext.Current.Application["Pentamind"] = null;
+            System.Web.HttpContext.Current.Application["Eurogames"] = null;
+            System.Web.HttpContext.Current.Application["ModernAbstract"] = null;
+            System.Web.HttpContext.Current.Application["Poker"] = null;
+            System.Web.HttpContext.Current.Application["Chess"] = null;
+            System.Web.HttpContext.Current.Application["Backgammon"] = null;
 
             return new RedirectResult("/");
         }
@@ -112,6 +117,13 @@ namespace MSOWeb.Controllers
             return new RedirectResult("/");
         }
 
+        public ActionResult RecalculateElos()
+        {
+            var calculator = new SeedingScoreCalculator();
+            calculator.CalculateRatings();
+
+            return new RedirectResult("/");
+        }
 
         public ActionResult WomensPentamindStandings(int? year, DateTime? date, bool header = false, int count = 40)
         {
@@ -161,35 +173,77 @@ namespace MSOWeb.Controllers
 
         public ActionResult EurogamesStandings(int? year, bool header = false, int count = 40)
         {
-            var generator = new PentamindStandingsGenerator();
-
-            var model = generator.GetEuroStandings(year);
+            var model = GetEurogameStandings(year);
             model.TopNRequired = count;
             model.HeaderRequired = header;
 
             return View("EurogamesStandings", model);
         }
 
+        public PentamindStandingsGenerator.PentamindStandingsReportVm GetEurogameStandings(int? year)
+        {
+            PentamindStandingsGenerator.PentamindStandingsReportVm model;
+            if (System.Web.HttpContext.Current.Application["Eurogames"] != null)
+            {
+                model = System.Web.HttpContext.Current.Application["Eurogames"] as PentamindStandingsGenerator.PentamindStandingsReportVm;
+            }
+            else
+            {
+                var generator = new PentamindStandingsGenerator();
+                model = generator.GetEuroStandings(year);
+                System.Web.HttpContext.Current.Application["Eurogames"] = model;
+            }
+            return model;
+        }
+
         public ActionResult ModernAbstractStandings(int? year, bool header = false, int count = 40)
         {
-            var generator = new PentamindStandingsGenerator();
-
-            var model = generator.GetModernAbstractStandings(year);
+            var model = GetModernAbstractStandings(year);
             model.TopNRequired = count;
             model.HeaderRequired = header;
 
             return View("ModernAbstractStandings", model);
         }
 
+        public PentamindStandingsGenerator.PentamindStandingsReportVm GetModernAbstractStandings(int? year)
+        {
+            PentamindStandingsGenerator.PentamindStandingsReportVm model;
+            if (System.Web.HttpContext.Current.Application["ModernAbstract"] != null)
+            {
+                model = System.Web.HttpContext.Current.Application["ModernAbstract"] as PentamindStandingsGenerator.PentamindStandingsReportVm;
+            }
+            else
+            {
+                var generator = new PentamindStandingsGenerator();
+                model = generator.GetModernAbstractStandings(year);
+                System.Web.HttpContext.Current.Application["ModernAbstract"] = model;
+            }
+            return model;
+        }
+
         public ActionResult PokerStandings(int? year, bool header = false, int count = 40)
         {
-            var generator = new PentamindStandingsGenerator();
-
-            var model = generator.GetPokerStandings(year);
+            var model = GetPokerStandings(year);
             model.TopNRequired = count;
             model.HeaderRequired = header;
 
             return View("PokerStandings", model);
+        }
+
+        public PentamindStandingsGenerator.PentamindStandingsReportVm GetPokerStandings(int? year)
+        {
+            PentamindStandingsGenerator.PentamindStandingsReportVm model;
+            if (System.Web.HttpContext.Current.Application["Poker"] != null)
+            {
+                model = System.Web.HttpContext.Current.Application["Poker"] as PentamindStandingsGenerator.PentamindStandingsReportVm;
+            }
+            else
+            {
+                var generator = new PentamindStandingsGenerator();
+                model = generator.GetPokerStandings(year);
+                System.Web.HttpContext.Current.Application["Poker"] = model;
+            }
+            return model;
         }
 
         public ActionResult ChessStandings(int? year, bool header = false, int count = 40)
@@ -203,6 +257,22 @@ namespace MSOWeb.Controllers
             return View("ChessStandings", model);
         }
 
+        public PentamindStandingsGenerator.PentamindStandingsReportVm GetChessStandings(int? year)
+        {
+            PentamindStandingsGenerator.PentamindStandingsReportVm model;
+            if (System.Web.HttpContext.Current.Application["Chess"] != null)
+            {
+                model = System.Web.HttpContext.Current.Application["Chess"] as PentamindStandingsGenerator.PentamindStandingsReportVm;
+            }
+            else
+            {
+                var generator = new PentamindStandingsGenerator();
+                model = generator.GetChessStandings(year);
+                System.Web.HttpContext.Current.Application["Chess"] = model;
+            }
+            return model;
+        }
+
         public ActionResult BackgammonStandings(int? year, bool header = false, int count = 40)
         {
             var generator = new PentamindStandingsGenerator();
@@ -212,6 +282,22 @@ namespace MSOWeb.Controllers
             model.HeaderRequired = header;
 
             return View("BackgammonStandings", model);
+        }
+
+        public PentamindStandingsGenerator.PentamindStandingsReportVm GetBackgammonStandings(int? year)
+        {
+            PentamindStandingsGenerator.PentamindStandingsReportVm model;
+            if (System.Web.HttpContext.Current.Application["Backgammon"] != null)
+            {
+                model = System.Web.HttpContext.Current.Application["Backgammon"] as PentamindStandingsGenerator.PentamindStandingsReportVm;
+            }
+            else
+            {
+                var generator = new PentamindStandingsGenerator();
+                model = generator.GetBackgammonStandings(year);
+                System.Web.HttpContext.Current.Application["Backgammon"] = model;
+            }
+            return model;
         }
 
         public ActionResult TotalEventEntries(int? year)

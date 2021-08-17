@@ -26,6 +26,11 @@
         $("#newName").hide();
     });
 
+    $("#uploadFromPokerstars").on("click", function () {
+        var eventId = $("#Id").val();
+        window.location = "/Upload/Pokerstars/" + eventId;
+    });
+
     $("#generateStandings").on("click", function () {
         var eventId = $("#Id").val();
         $.post("/Olympiad/FreezeEvent", { eventId: eventId }, function (data) {
@@ -45,6 +50,7 @@
                 $("#suggestions").append("<tr><td><a href=\"#\" class=\"addContToEvent\" data-event=\"" + eventId + "\" data-contestant=\"" + data[i].Id + "\">" + data[i].Name + "</a><br />" + data[i].Nickname + "</td></tr>");
             }
             $("#suggestions").append("<tr><td><a href=\"#\" class=\"addContToEvent\" data-event=\"" + eventId + "\" data-contestant=\"0\">New contestant</a><br /></td></tr>");
+            $("#newNameLink").html("<a href=\"#\" class=\"addContToEvent\" data-event=\"" + eventId + "\" data-contestant=\"0\">Add</a>");
             $("#newName").show();
         }).fail(function () {
             alert("Too many results - please be more specific");

@@ -1,0 +1,26 @@
+﻿@{
+    Layout = "~/Views/Shared/_NewLayout.cshtml";
+}
+
+<h1>Upload from Pokerstars</h1>
+<h2>@Model.Code: @Model.Name</h2>
+
+@using (Html.BeginForm("UploadPokerstars", "Upload", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    <input type="hidden" id="eventId" name="eventId" value="@Model.EventId" />
+    <p>Input is expected to be a flat text file with lines like <b>1: userId (Country), 10,000 (15%)</b>. Non-conforming lines will be ignored.</p>
+    <div class="input-group mb-3">
+        <div class="input-group-prepend">
+            <span class="input-group-text">Upload</span>
+        </div>
+        <div class="custom-file">
+            <input type="file" class="custom-file-input" id="inputFile" name="inputFile">
+            <label class="custom-file-label" for="inputFile">Choose file</label>
+        </div>
+    </div>
+
+    <button class="btn btn-primary" type="submit">
+        Upload
+    </button>
+}
+

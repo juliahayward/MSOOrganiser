@@ -26,9 +26,9 @@ namespace MSOCore.Calculators
             {
                 // Effectively capping off at 100
                 if (p <= 10)
-                    return 100 * (105 / 99 / 106) * (100 - p);
+                    return 100.0 * (105.0 / 99.0 / 106.0) * (100.0 - p);
                 else
-                    return 100 * (105 * 90 / 99 / 106) * (n - p) / (n - 10);
+                    return 100.0 * (105.0 * 90.0 / 99.0 / 106.0) * (n - p) / (n - 10);
             }
         }
     }

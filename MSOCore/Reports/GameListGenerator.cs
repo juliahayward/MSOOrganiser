@@ -8,6 +8,7 @@ namespace MSOCore.Reports
         public class GameVm
         {
             public string Name { get; set; }
+            public string Years { get; set; }
             public string Code { get; set; }
             public string FindOutMoreLink { get; set; }
             public string OnlineSiteName { get; set; }
@@ -23,6 +24,7 @@ namespace MSOCore.Reports
                 .Select(g => new GameVm() {
                     Name = g.Mind_Sport,
                     Code = g.Code,
+                    Years = "",
                     FindOutMoreLink = g.FindOutMoreLink,
                     OnlineSiteName = g.OnlineSiteName,
                     OnlineSiteUrl = g.OnlineSiteUrl

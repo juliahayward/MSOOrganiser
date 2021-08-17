@@ -37,10 +37,7 @@
                 <MenuItem Header="Data"
                           Visibility="{Binding IsLoggedIn, Converter={StaticResource BoolToVisibilityConverter}}">
                     <MenuItem Header="Copy Events from Previous Year" Click="copyEventsMenuItem_Click"/>
-                    <MenuItem Header="Calculate seedings" Click="calculateSeedings_Click" />
-                    <MenuItem Header="Calculate ELOs" Click="calculateElos_Click" />
                     <MenuItem Header="Import DR" Click="importDR_Click" />
-                    <MenuItem Header="Load entries from file (2018+)" Click="prepayments2018_Click"/>
                     <MenuItem Header="Extract emails from file (2018+)" Click="extractEmails_Click"/>
                 </MenuItem>
                 <MenuItem Header="Reports"

@@ -149,10 +149,12 @@ namespace MSOCore.ApiLogic
                 yield return new ContestantForNameVm { Name = c.FullNameWithInitials(), Nickname = c.AllOnlineNicknames ?? "", Id = c.Mind_Sport_ID };
         }
 
-        public void AddContestantToEvent(int contestantId, int eventId)
+        public Entrant AddContestantToEvent(int contestantId, int eventId)
         {
             var context = DataEntitiesProvider.Provide();
-            if (context.Entrants.Any(e => e.Mind_Sport_ID == contestantId && e.EventId == eventId)) return;  // no need
+            var existingEntrants = context.Entrants.Where(e => e.Mind_Sport_ID == contestantId && e.EventId == eventId).ToList();
+            if (existingEntrants.Any()) 
+                return existingEntrants.First();  // no need
 
             var evt = context.Events.First(x => x.EIN == eventId);
             var contestant = context.Contestants.First(x => x.Mind_Sport_ID == contestantId);
@@ -167,16 +169,28 @@ namespace MSOCore.ApiLogic
 
             context.Entrants.Add(newEntrant);
             context.SaveChanges();
+            return newEntrant;
         }
 
-        public void AddNewContestantToEvent(string firstName, string lastName, int eventId)
+        public Entrant AddNewContestantToEvent(string firstName, string lastName, int eventId)
         {
+            return AddNewContestantToEvent(firstName, lastName, "", "", eventId);
+        }
+
+        public Entrant AddNewContestantToEvent(string firstName, string lastName, string onlineNickname, string country, int eventId)
+        {
+            if (string.IsNullOrEmpty(firstName) && string.IsNullOrEmpty(lastName))
+                throw new ArgumentException("You must specify at least one of first name and last name");
+
             var context = DataEntitiesProvider.Provide();
 
             var contestant = new Contestant()
             {
-                Firstname = firstName,
-                Lastname = lastName
+                Firstname = firstName ?? "",
+                Lastname = lastName ?? "",
+                Nationality = country ?? "",
+                OnlineNicknames = onlineNickname ?? "",
+                Male = true         // The default, to exclude unknown people from Women's Pentamind until we have confirmed they are eligible
             };
 
             context.Contestants.Add(contestant);
@@ -193,6 +207,7 @@ namespace MSOCore.ApiLogic
 
             context.Entrants.Add(newEntrant);
             context.SaveChanges();
+            return newEntrant;
         }
     }
 }

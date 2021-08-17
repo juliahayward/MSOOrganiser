@@ -46,6 +46,7 @@ namespace MSOCore.ApiLogic
             public string Code { get; set; }
             public string Name { get; set; }
             public int NumberInTeam { get; set; }
+            public string Location { get; set; }
 
             public IEnumerable<EntrantVm> Entrants { get; set; }
 
@@ -183,6 +184,7 @@ namespace MSOCore.ApiLogic
                 Code = e.Code,
                 Name = e.Mind_Sport,
                 NumberInTeam = e.Number_in_Team,
+                Location = e.Location ?? "",
                 Entrants = e.Entrants.Select(en => new EventVm.EntrantVm()
                 {
                     EntryNumber = en.EntryNumber,

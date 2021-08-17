@@ -24,7 +24,7 @@ namespace MSOCore.Calculators
 
                 var order = new Order2021()
                 {
-                    WordpressId = fields[0],
+                    WordpressId = int.Parse(fields[0]),
                     // Oh designers, please use "normal" characters as much as possible!!
                     EventName = fields[1].Replace("’", "'").Replace("×", "x"), 
                     FirstName = fields[9],
@@ -42,8 +42,10 @@ namespace MSOCore.Calculators
             parser.Close();
         }
 
-        public void ProcessAll(IEnumerable<Order2021> orders)
+        public int ProcessAll(IEnumerable<Order2021> orders)
         {
+            var loaded = 0;
+
             var context = DataEntitiesProvider.Provide();
             var olympiad = context.Olympiad_Infoes.First(x => x.Current);
             var events = context.Events.Where(x => x.OlympiadId == olympiad.Id)
@@ -52,8 +54,15 @@ namespace MSOCore.Calculators
                 .ToDictionary(e => e.Mind_Sport, e => e);
             var entryFees = context.Fees.ToDictionary(x => x.Code, x => x);
 
+            var highestNumberParam = context.Parameters.First(x => x.Id == 2);
+            var highestOrderNumberAlreadySeen = int.Parse(highestNumberParam.Value);
+            int highestInThisBatch = highestOrderNumberAlreadySeen;
+
             foreach (var order in orders)
             {
+                if (order.WordpressId <= highestOrderNumberAlreadySeen) continue;
+                highestInThisBatch = Math.Max(highestInThisBatch, order.WordpressId);
+
                 var contestant = context.Contestants.FirstOrDefault(
                         x => (x.Firstname.ToLower() == order.FirstName.ToLower()
                              && x.Lastname.ToLower() == order.LastName.ToLower()
@@ -82,6 +91,7 @@ namespace MSOCore.Calculators
                 Event evt = eventsByName[order.EventName];
                 var entrant = Entrant.NewEntrant(events[evt.Code].EIN, evt.Code, olympiad.Id, contestant, entryFees[evt.Entry_Fee].Adult.Value);
                 contestant.Entrants.Add(entrant);
+                loaded++;
 
                 // 2021 has no payments - see 2018 when we go back to real world
                 context.SaveChanges();
@@ -90,7 +100,10 @@ namespace MSOCore.Calculators
             var param = context.Parameters.First(x => x.Id == 1);
             // MSO happens in GMT = UTC+1 (hack)
             param.Value = DateTime.UtcNow.AddHours(1).ToString("dd MMM yyyy, HH:mm");
+            highestNumberParam.Value = highestInThisBatch.ToString();
             context.SaveChanges();
+
+            return loaded;
         }
 
         private Contestant CreateEntrant(DataEntities context, Order2021 order)
@@ -143,7 +156,7 @@ namespace MSOCore.Calculators
             if (DateTime.Now.AddYears(-2) < orderDob)
                 return null;
             // Catch people who put in silly old values
-            if (DateTime.Now.AddYears(-120) < orderDob)
+            if (DateTime.Now.AddYears(-120) > orderDob)
                 return null;
 
             return orderDob;
@@ -157,7 +170,7 @@ namespace MSOCore.Calculators
             if (DateTime.Now.AddYears(-2) < orderDob)
                 return false;
             // Catch people who put in silly old values
-            if (DateTime.Now.AddYears(-120) < orderDob)
+            if (DateTime.Now.AddYears(-120) > orderDob)
                 return false;
 
             return true;
@@ -166,7 +179,7 @@ namespace MSOCore.Calculators
 
     public class Order2021
     {
-        public string WordpressId { get; set; }
+        public int WordpressId { get; set; }
         public string EventName { get; set; }
         public string Title { get; set; }
         public string FirstName { get; set; }

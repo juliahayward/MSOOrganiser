@@ -58,6 +58,12 @@
                         <button class="btn btn-primary" id="openAddContestantModal" type="button" style="float:right" data-toggle="modal" data-target="#addContestantModal">
                             Add a Contestant
                         </button>
+                        if (Model.Location == "Pokerstars")
+                        {
+                            <button class="btn btn-primary" id="uploadFromPokerstars" type="button" style="float: right; margin-right: 8px;">
+                                Upload from Pokerstars
+                            </button>
+                        }
                     }
                 </h2>
                 @Model.ResultEntrants with result, @Model.NoResultEntrants awaiting result, @Model.AbsentEntrants absent, @Model.TotalEntrants total
@@ -178,6 +184,8 @@
                             </div>
                             <div class="col-auto">
                                 <input type="text" class="form-control" id="newLastName" placeholder="Last name">
+                            </div>
+                            <div class="col-auto" id="newNameLink">
                             </div>
                         </div>
                     </div>

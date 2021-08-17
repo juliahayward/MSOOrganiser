@@ -22,10 +22,13 @@ namespace MSOWeb.Filters
         {
             stopWatch.Stop();
             var executionTime = stopWatch.ElapsedMilliseconds;
-
-            var context = DataEntitiesProvider.Provide();
-            context.Database.ExecuteSqlCommand($"INSERT INTO [PageLoadTime] VALUES ('{DateTime.Now.ToString("yyyy-MM-dd HH:mm")}', '{filterContext.HttpContext.Request.Url}', {executionTime})");
-
+            // Log only if there's a potential performance problem
+            if (executionTime > 100)
+            {
+                var context = DataEntitiesProvider.Provide();
+                context.Database.ExecuteSqlCommand(
+                    $"INSERT INTO [PageLoadTime] VALUES ('{DateTime.Now.ToString("yyyy-MM-dd HH:mm")}', '{filterContext.HttpContext.Request.Url}', {executionTime})");
+            }
         }
     }
 

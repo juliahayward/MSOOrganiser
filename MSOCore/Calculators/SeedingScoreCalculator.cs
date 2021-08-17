@@ -147,6 +147,9 @@ I have attached my sheet again which should show all of the ratings to compare a
 
             foreach (var key in dict.Keys)
             {
+                // why???
+                if (key.EventCode == null) continue;
+
                 var top2 = dict[key].OrderByDescending(x => x).Take(2);
 
                 var rating = new Rating()

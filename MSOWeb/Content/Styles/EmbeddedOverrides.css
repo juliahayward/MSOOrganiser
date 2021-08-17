@@ -1,3 +1,17 @@
 ﻿body {
-    font-family: "Comic Sans MS"
+    font-family: brandon-grotesque, sans-serif;
+    text-transform: uppercase;
+    color: #0060a5;
+}
+
+a {
+    color: #0093fd;
+}
+
+nav {
+    display: none;
+}
+
+h1 {
+    display: none;
 }

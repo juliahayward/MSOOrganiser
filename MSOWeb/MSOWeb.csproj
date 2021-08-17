@@ -821,6 +821,7 @@
     <Content Include="Views\Report\ChessStandings.cshtml" />
     <Content Include="Views\Report\BackgammonStandings.cshtml" />
     <Content Include="Views\Upload\Index.cshtml" />
+    <Content Include="Views\Upload\Pokerstars.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

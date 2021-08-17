@@ -16,7 +16,7 @@
                 <h5 class="card-title">Registration</h5>
                 <h6 class="card-subtitle mb-2 text-muted">Sign up for events online</h6>
                 <p>Places are limited and events may be very popular - don't miss out.</p>
-                <a href="https://msoworld.com/events-woo-ev-products/" class="btn btn-primary">Register now!</a>
+                <a href="https://mindsportsolympiad.com/" class="btn btn-primary">Register now!</a>
             </div>
         </div>
     </div>
@@ -69,8 +69,7 @@
         <div class="card mt-1">
             <div class="card-body">
                 <h5 class="card-title">Live streaming</h5>
-                <p>Watch events as they happen, with expert commentary. A different game will be streamed each session.</p>
-                <a href="https://www.bondora.com/en/pentamind" class="btn btn-primary">Watch now</a>
+                Sadly, no live streaming in 2021 but all games are online and you can watch most...
             </div>
         </div>
     </div>
@@ -144,7 +143,7 @@
         <div class="col-sm-3">
             <div class="card mt-1">
                 <div class="card-body">
-                    <h5 class="card-title">WooCommerce Link (Admin only)</h5>
+                    <h5 class="card-title">Upload orders (Admin only)</h5>
                     <ul>
                         <li><a href="/Upload" class="card-link">Upload</a></li>
                     </ul>
@@ -162,6 +161,7 @@
                         <li><a href="/Olympiad/CurrentOlympiad" class="card-link">Edit data</a></li>
                         <li><a href="/Report/ClearPentamindStandingsCache" class="card-link">Recalculate Pentamind</a></li>
                         <li><a href="/Report/RecalculateSeedings" class="card-link">Recalculate Seedings</a></li>
+                        <li><a href="/Report/RecalculateElos" class="card-link">Recalculate ELOs</a></li>
                     </ul>
                 </div>
             </div>
@@ -189,7 +189,7 @@
                         {
                         <tr>
                             <td>@game.Name</td>
-                            <td></td>
+                            <td>@game.Years</td>
                             <td><a href="/Report/GameMedals?gameCode=@game.Code">Past Medals</a></td>
                             <td>
                                 @if (!string.IsNullOrEmpty(game.OnlineSiteName))

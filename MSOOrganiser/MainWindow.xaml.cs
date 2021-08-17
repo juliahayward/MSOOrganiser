@@ -641,44 +641,6 @@ namespace MSOOrganiser
             this.Status.Text = "";
         }
 
-        private void prepayments_Click(object sender, RoutedEventArgs e)
-        {
-            // This was for 2017 and prior, where stuff was written to the DB
-            PaymentProcessorResult result;
-            using (new SpinnyCursor())
-            {
-                var processor = new PaymentProcessor();
-                result = processor.ProcessAll();
-            }
-            MessageBox.Show("Loaded " + result.SingleEventOrders + " single-event orders and "
-                + Environment.NewLine + result.MaxFeeOrders + " all-you-can-play orders");
-        }
-
-        private void prepayments2018_Click(object sender, RoutedEventArgs e)
-        {
-            MessageBox.Show("You can do this via the web now!");
-
-            var dlg = new OpenFileDialog();
-            dlg.FileName = "Data File";
-            dlg.DefaultExt = ".json";
-            dlg.Filter = "JSON documents |*.json";
-
-            var result = dlg.ShowDialog();
-            if (result == true)
-            {
-                string filename = dlg.FileName;
-                int ppResult;
-                using (new SpinnyCursor())
-                {
-                    var processor = new PaymentProcessor2018();
-                    var orders = processor.ParseJsonFile(filename);
-                    processor.ProcessAll(orders);
-
-                    MessageBox.Show("Loaded " + orders.Count() + " orders ");
-                }
-            }
-        }
-
         private void extractEmails_Click(object sender, RoutedEventArgs e)
         {
             var dlg = new OpenFileDialog();
@@ -941,19 +903,6 @@ namespace MSOOrganiser
             context.SaveChanges();
         }
 
-        private void calculateSeedings_Click(object sender, RoutedEventArgs e)
-        {
-            // dead
-        }
-
-        private void calculateElos_Click(object sender, RoutedEventArgs e)
-        {
-            using (new SpinnyCursor())
-            {
-                var calculator = new SeedingScoreCalculator();
-                calculator.CalculateRatings();
-            }
-        }
 
         private void importDR_Click(object sender, RoutedEventArgs e)
         {
