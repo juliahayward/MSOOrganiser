@@ -463,9 +463,6 @@
     <Content Include="Content\Images\Flags\luxemburg.jpg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Content\Images\Flags\macedonia.jpg">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
     <Content Include="Content\Images\Flags\madagascar.jpg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

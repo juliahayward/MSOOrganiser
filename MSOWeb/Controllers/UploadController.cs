@@ -140,9 +140,7 @@ namespace MSOWeb.Controllers
                     // Can't reconcile this user id - must be a new person
                     else if (matchingContestants.Count() == 0)
                     {
-                        var entrant = logic.AddNewContestantToEvent("--" + element.UserId + "--", "", element.UserId, element.Country, eventId);
-                        entrant.Score = (-element.Rank).ToString();
-                        context.SaveChanges();
+                        var entrant = logic.AddNewContestantWithScoreToEvent("--" + element.UserId + "--", "", element.UserId, element.Country, -element.Rank, eventId);
                     }
                     // We know who it is
                     else

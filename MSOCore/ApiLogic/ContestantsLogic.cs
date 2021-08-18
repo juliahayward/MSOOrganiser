@@ -174,10 +174,36 @@ namespace MSOCore.ApiLogic
 
         public Entrant AddNewContestantToEvent(string firstName, string lastName, int eventId)
         {
-            return AddNewContestantToEvent(firstName, lastName, "", "", eventId);
+            if (string.IsNullOrEmpty(firstName) && string.IsNullOrEmpty(lastName))
+                throw new ArgumentException("You must specify at least one of first name and last name");
+
+            var context = DataEntitiesProvider.Provide();
+
+            var contestant = new Contestant()
+            {
+                Firstname = firstName ?? "",
+                Lastname = lastName ?? "",
+                Male = true         // The default, to exclude unknown people from Women's Pentamind until we have confirmed they are eligible
+            };
+
+            context.Contestants.Add(contestant);
+
+            var evt = context.Events.First(x => x.EIN == eventId);
+
+            var newEntrant = new Entrant()
+            {
+                EventId = eventId,
+                OlympiadId = evt.OlympiadId,
+                Name = contestant,
+                Absent = false
+            };
+
+            context.Entrants.Add(newEntrant);
+            context.SaveChanges();
+            return newEntrant;
         }
 
-        public Entrant AddNewContestantToEvent(string firstName, string lastName, string onlineNickname, string country, int eventId)
+        public Entrant AddNewContestantWithScoreToEvent(string firstName, string lastName, string onlineNickname, string country, int score, int eventId)
         {
             if (string.IsNullOrEmpty(firstName) && string.IsNullOrEmpty(lastName))
                 throw new ArgumentException("You must specify at least one of first name and last name");
@@ -202,6 +228,7 @@ namespace MSOCore.ApiLogic
                 EventId = eventId,
                 OlympiadId = evt.OlympiadId,
                 Name = contestant,
+                Score = score.ToString(),
                 Absent = false
             };
 
