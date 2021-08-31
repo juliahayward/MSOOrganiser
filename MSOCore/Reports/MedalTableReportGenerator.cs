@@ -3,6 +3,7 @@ using MSOCore.Extensions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -56,22 +57,22 @@ namespace MSOCore.Reports
                 .Select(ec => new { Nationality = ec.c.Nationality ?? "Other", Medal = ec.e.Medal, JuniorMedal = ec.e.JuniorMedal  })
                 .ToList();
 
-            var g = entrants.Where(x => x.Medal == Medals.Gold).GroupBy(x => x.Nationality)
+            var g = entrants.Where(x => x.Medal == Medals.Gold).GroupBy(x => CanonicalNationality(x.Nationality))
                 .ToDictionary(x => x.Key, x => x.Count());
-            var s = entrants.Where(x => x.Medal == Medals.Silver).GroupBy(x => x.Nationality)
+            var s = entrants.Where(x => x.Medal == Medals.Silver).GroupBy(x => CanonicalNationality(x.Nationality))
                  .ToDictionary(x => x.Key, x => x.Count());
-            var b = entrants.Where(x => x.Medal == Medals.Bronze).GroupBy(x => x.Nationality)
+            var b = entrants.Where(x => x.Medal == Medals.Bronze).GroupBy(x => CanonicalNationality(x.Nationality))
                 .ToDictionary(x => x.Key, x => x.Count());
-            var jg = entrants.Where(x => x.JuniorMedal == Medals.JnrGold).GroupBy(x => x.Nationality)
+            var jg = entrants.Where(x => x.JuniorMedal == Medals.JnrGold).GroupBy(x => CanonicalNationality(x.Nationality))
                 .ToDictionary(x => x.Key, x => x.Count());
-            var js = entrants.Where(x => x.JuniorMedal == Medals.JnrSilver).GroupBy(x => x.Nationality)
+            var js = entrants.Where(x => x.JuniorMedal == Medals.JnrSilver).GroupBy(x => CanonicalNationality(x.Nationality))
                 .ToDictionary(x => x.Key, x => x.Count());
-            var jb = entrants.Where(x => x.JuniorMedal == Medals.JnrBronze).GroupBy(x => x.Nationality)
+            var jb = entrants.Where(x => x.JuniorMedal == Medals.JnrBronze).GroupBy(x => CanonicalNationality(x.Nationality))
                 .ToDictionary(x => x.Key, x => x.Count());
 
             List<MedalTableVm> results = new List<MedalTableVm>();
 
-            foreach (var n in entrants.Select(x => x.Nationality).Distinct())
+            foreach (var n in entrants.Select(x => CanonicalNationality(x.Nationality)).Distinct())
             {
                 results.Add(new MedalTableVm()
                 {
@@ -89,6 +90,15 @@ namespace MSOCore.Reports
                 .ThenByDescending(x => x.Silvers)
                 .ThenByDescending(x => x.Bronzes)
                 .ThenBy(x => x.Nationality);
+        }
+
+        // Fix for 2021 medal table
+        private string CanonicalNationality(string nat)
+        {
+            List<string> nats = new List<string>() {"England", "Scotland", "Wales", "Great Britain", "Northern Ireland"};
+            if (nats.Contains(nat))
+                return "Great Britain";
+            return nat;
         }
     }
 }

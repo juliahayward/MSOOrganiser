@@ -14,7 +14,15 @@
         @evt.Code : @evt.Name
         @if (evt.HasResults)
         {
-            <span class="badge badge-primary badge-pill">Ready!</span>
+            <span class="badge badge-success badge-pill">Ready!</span>
+        }
+        @if (evt.Started && !evt.Finished)
+        {
+            <span class="badge badge-danger badge-pill">In Play</span>
+        }
+        @if (evt.Finished && !evt.HasResults)
+        {
+            <span class="badge badge-danger badge-pill">Results in preparation</span>
         }
     </a>
     }

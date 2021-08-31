@@ -99,7 +99,7 @@ namespace MSOWeb.Controllers
 
                 return View(model);
             }
-            catch (NoCurrentOlympiadException e)
+            catch (NoCurrentOlympiadException)
             {
                 TempData["FailureMessage"] = "There is no current Olympiad";
                 return View(new EventListGenerator.EventVm[0]);

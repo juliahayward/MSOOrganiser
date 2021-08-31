@@ -110,8 +110,8 @@ namespace MSOCore.Calculators
         {
             var contestant = new Contestant()
             {
-                Firstname = order.FirstName,
-                Lastname = order.LastName,
+                Firstname = order.FirstName ?? "",
+                Lastname = order.LastName ?? "",
                 Nationality = order.LocalisedNationality,
                 Title = order.Title,
                 Male = (order.Title == "Mr"),

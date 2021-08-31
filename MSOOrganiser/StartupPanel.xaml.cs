@@ -30,7 +30,7 @@ namespace MSOOrganiser
 
         public void HideScriptErrors(WebBrowser wb, bool hide)
         {
-        http://stackoverflow.com/questions/1298255/how-do-i-suppress-script-errors-when-using-the-wpf-webbrowser-control
+             //http://stackoverflow.com/questions/1298255/how-do-i-suppress-script-errors-when-using-the-wpf-webbrowser-control
             var fiComWebBrowser = typeof(WebBrowser).GetField("_axIWebBrowser2", BindingFlags.Instance | BindingFlags.NonPublic);
             if (fiComWebBrowser == null) return;
             var objComWebBrowser = fiComWebBrowser.GetValue(wb);

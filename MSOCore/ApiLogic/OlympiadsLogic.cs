@@ -203,8 +203,8 @@ namespace MSOCore.ApiLogic
                     OnlineNicknames = en.Name.OnlineNicknames,
                     BgaNickname = en.Name.BgaNickname,
                     AllOnlineNicknames = en.Name.AllOnlineNicknames
-                }).OrderBy(x => x.Absent).ThenBy(x => string.IsNullOrEmpty(x.Score) ? 0 : 1)
-                    .ThenBy(x => x.Rank).ThenByDescending(x=>x.Score)
+                }).ToList().OrderBy(x => x.Absent).ThenBy(x => string.IsNullOrEmpty(x.Score) ? 0 : 1)
+                    .ThenBy(x => x.Rank).ThenByDescending(x=> string.IsNullOrEmpty(x.Score) ? 0.0d : double.Parse(x.Score))
                     .ThenByDescending(x=>x.Tiebreak)
                     .ThenBy(x => x.LastName).ThenBy(x => x.FirstName)
             };
@@ -227,14 +227,14 @@ namespace MSOCore.ApiLogic
 
                 // TODO some nasty hard coding for 2020 - also these big events can't be done via the desktop
                 int overridingNumberOfEntrants = 0;
-          /*      if (evt.OlympiadId == 25 && evt.Code == "POTH") overridingNumberOfEntrants = 1049;
-                if (evt.OlympiadId == 25 && evt.Code == "POOM") overridingNumberOfEntrants = 499;
-                if (evt.OlympiadId == 25 && evt.Code == "PO7S") overridingNumberOfEntrants = 339;
-                if (evt.OlympiadId == 25 && evt.Code == "POHU") overridingNumberOfEntrants = 704;
-                if (evt.OlympiadId == 25 && evt.Code == "PO5D") overridingNumberOfEntrants = 258;
-                if (evt.OlympiadId == 25 && evt.Code == "POOH") overridingNumberOfEntrants = 332;
-                if (evt.OlympiadId == 25 && evt.Code == "POH6") overridingNumberOfEntrants = 380;
-                if (evt.OlympiadId == 25 && evt.Code == "PZKK") overridingNumberOfEntrants = 380; */
+                /*      if (evt.OlympiadId == 25 && evt.Code == "POTH") overridingNumberOfEntrants = 1049;
+                      if (evt.OlympiadId == 25 && evt.Code == "POOM") overridingNumberOfEntrants = 499;
+                      if (evt.OlympiadId == 25 && evt.Code == "PO7S") overridingNumberOfEntrants = 339;
+                      if (evt.OlympiadId == 25 && evt.Code == "POHU") overridingNumberOfEntrants = 704;
+                      if (evt.OlympiadId == 25 && evt.Code == "PO5D") overridingNumberOfEntrants = 258;
+                      if (evt.OlympiadId == 25 && evt.Code == "POOH") overridingNumberOfEntrants = 332;
+                      if (evt.OlympiadId == 25 && evt.Code == "POH6") overridingNumberOfEntrants = 380;
+                      if (evt.OlympiadId == 25 && evt.Code == "PZKK") overridingNumberOfEntrants = 380; */
 
                 var pentaCalculator = new Penta2021Calculator();
                 pentaCalculator.Calculate(evt.Number_in_Team, model.Entrants, evt.Pentamind, evt.PentamindFactor, overridingNumberOfEntrants);

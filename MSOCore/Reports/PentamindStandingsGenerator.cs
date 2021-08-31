@@ -125,7 +125,8 @@ namespace MSOCore.Reports
                     GameCode = x.e.Event.Game.Code,
                     Score = (double)x.e.Penta_Score,
                     IsLongSession = longSessionEvents.Contains(x.e.Event.Code),
-                    IsEuroGame = (x.e.Event.Game.GameCategory.Id == 3)
+                    // TODO: 7 Wonders Duel is not considered a Eurogame even through the underlying Game is.
+                    IsEuroGame = (x.e.Event.Game.GameCategory.Id == 3 && x.e.Event.Code != "WODU")
                 }).ToList();
 
                 standing.Scores = calc.SelectBestScores(standing.Scores, pentaLong, pentaTotal, currentOlympiad.StartDate.Value.Year);
@@ -276,7 +277,7 @@ namespace MSOCore.Reports
                 .ToList();
 
             var calc = new EurogameMetaScoreCalculator();
-            bool allDifferentGames = ((year ?? currentOlympiad.YearOf) == 2020);
+            bool allDifferentGames = ((year ?? currentOlympiad.YearOf) == 2020 || (year ?? currentOlympiad.YearOf) == 2021);
 
             var standings = new List<PentamindStandingsReportVm.ContestantStanding>();
             foreach (var r in results)
@@ -335,7 +336,7 @@ namespace MSOCore.Reports
                 .ToList();
 
             var calc = new EurogameMetaScoreCalculator();
-            bool allDifferentGames = ((year ?? currentOlympiad.YearOf) == 2020);
+            bool allDifferentGames = ((year ?? currentOlympiad.YearOf) == 2020 || (year ?? currentOlympiad.YearOf) == 2021);
 
             var standings = new List<PentamindStandingsReportVm.ContestantStanding>();
             foreach (var r in results)

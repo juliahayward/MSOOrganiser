@@ -22,13 +22,32 @@
     });
 
     $("#openAddContestantModal").on("click", function () {
-        $("#searchName").focus();
         $("#newName").hide();
+        $("#searchName").focus();
+    });
+
+    $("#searchName").on("keypress", function (event) {
+        var keycode = (event.keyCode ? event.keyCode : event.which);
+        if (keycode == '13') {
+            $("#searchContestant").click();
+            return false;
+        }
     });
 
     $("#uploadFromPokerstars").on("click", function () {
         var eventId = $("#Id").val();
         window.location = "/Upload/Pokerstars/" + eventId;
+    });
+
+    $("#uploadFromWorldPuzzle").on("click", function () {
+        var eventId = $("#Id").val();
+        window.location = "/Upload/WorldPuzzle/" + eventId;
+    });
+
+
+    $("#uploadFromRussianFed").on("click", function () {
+        var eventId = $("#Id").val();
+        window.location = "/Upload/RussianDraughts/" + eventId;
     });
 
     $("#generateStandings").on("click", function () {

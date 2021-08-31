@@ -17,6 +17,7 @@ namespace MSOAgent
         private static Timer mailTimer;
         private static double FIVE_MINS = 5 * 60 * 1000;
         private static DateTime lastMailRun = DateTime.UtcNow.Date.AddDays(-1);
+        private static DateTime lastDataRun = DateTime.UtcNow.Date.AddDays(-1);
 
         public AutoMailer()
         {
@@ -34,17 +35,16 @@ namespace MSOAgent
 
         private void MailTimer_Elapsed(object sender, ElapsedEventArgs e)
         {
-            DateTime oneDayAfterLast = lastMailRun.AddDays(1);
             var now = DateTime.UtcNow;
-            if (now > oneDayAfterLast && now.Hour >= 8)
+            if (now > lastMailRun.AddDays(1) && now.Hour >= 8)
             {
                 SendContestantEmails();
-                lastMailRun = DateTime.UtcNow.Date;
+                lastMailRun = now.Date;
             }
-            if (now > oneDayAfterLast && now.Hour >= 6)
+            if (now > lastDataRun.AddDays(1) && now.Hour >= 6)
             {
                 SendDataIntegrityEmails();
-                lastMailRun = DateTime.UtcNow.Date;
+                lastDataRun = now.Date;
             }
         }
 

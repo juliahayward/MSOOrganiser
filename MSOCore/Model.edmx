@@ -156,7 +156,7 @@ warning 6002: The table/view 'mso_prod.dbo.Badges - Misc' does not have a primar
           <Property Name="Logo" Type="varbinary(max)" />
           <Property Name="SSMA_TimeStamp" Type="timestamp" StoreGeneratedPattern="Computed" Nullable="false" />
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="CategoryId" Type="int" />
+          <Property Name="CategoryId" Type="int" Nullable="false" />
           <Property Name="FindOutMoreLink" Type="nvarchar(max)" />
           <Property Name="OnlineSiteName" Type="nvarchar(max)" />
           <Property Name="OnlineSiteUrl" Type="nvarchar(max)" />
@@ -226,7 +226,7 @@ warning 6002: The table/view 'mso_prod.dbo.MetaGameDefinition' does not have a p
           <Property Name="Title" Type="nvarchar" MaxLength="50" />
           <Property Name="Lastname" Type="nvarchar" MaxLength="50" />
           <Property Name="Firstname" Type="nvarchar" MaxLength="50" />
-          <Property Name="Initials" Type="nvarchar" MaxLength="10" />
+          <Property Name="Initials" Type="nvarchar" MaxLength="50" />
           <Property Name="Male" Type="bit" Nullable="false" />
           <Property Name="Nationality" Type="nvarchar" MaxLength="50" />
           <Property Name="DayPhone" Type="nvarchar" MaxLength="50" />
@@ -536,7 +536,7 @@ warning 6002: The table/view 'mso_prod.dbo.SelectedPeople' does not have a prima
           </ReferentialConstraint>
         </Association>
         <Association Name="FK__Games__CategoryI__473C8FC7">
-          <End Role="GameCategories" Type="Self.GameCategories" Multiplicity="0..1" />
+          <End Role="GameCategories" Type="Self.GameCategories" Multiplicity="1" />
           <End Role="Games" Type="Self.Games" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="GameCategories">
@@ -1022,7 +1022,7 @@ FROM [dbo].[SelectedPeople] AS [SelectedPeople]</DefiningQuery>
           <Property Type="Binary" Name="SSMA_TimeStamp" Nullable="false" MaxLength="8" FixedLength="true" annotation:StoreGeneratedPattern="Computed" />
           <Property Type="Int32" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <NavigationProperty Name="Events" Relationship="DataModel.FK__Events__GameId__4A8310C6" FromRole="Game" ToRole="Event" />
-          <Property Type="Int32" Name="CategoryId" />
+          <Property Type="Int32" Name="CategoryId" Nullable="false" />
           <NavigationProperty Name="GameCategory" Relationship="DataModel.FK__Games__CategoryI__503BEA1C" FromRole="Game" ToRole="GameCategory" />
           <Property Type="String" Name="FindOutMoreLink" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Type="String" Name="OnlineSiteName" MaxLength="Max" FixedLength="false" Unicode="true" />
@@ -1056,7 +1056,7 @@ FROM [dbo].[SelectedPeople] AS [SelectedPeople]</DefiningQuery>
           <Property Type="String" Name="Title" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Type="String" Name="Lastname" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Type="String" Name="Firstname" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Type="String" Name="Initials" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="Initials" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Type="Boolean" Name="Male" Nullable="false" />
           <Property Type="String" Name="Nationality" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Type="String" Name="DayPhone" MaxLength="50" FixedLength="false" Unicode="true" />
@@ -1396,7 +1396,7 @@ FROM [dbo].[SelectedPeople] AS [SelectedPeople]</DefiningQuery>
           <NavigationProperty Name="Games" Relationship="DataModel.FK__Games__CategoryI__503BEA1C" FromRole="GameCategory" ToRole="Game" />
         </EntityType>
         <Association Name="FK__Games__CategoryI__503BEA1C">
-          <End Type="DataModel.GameCategory" Role="GameCategory" Multiplicity="0..1" />
+          <End Type="DataModel.GameCategory" Role="GameCategory" Multiplicity="1" />
           <End Type="DataModel.Game" Role="Game" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="GameCategory">

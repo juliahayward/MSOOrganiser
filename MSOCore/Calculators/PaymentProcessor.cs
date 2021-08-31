@@ -282,8 +282,8 @@ namespace MSOCore.Calculators
             {
                 var contestant = new Contestant()
                 {
-                    Firstname = entrant.FirstName,
-                    Lastname = entrant.LastName,
+                    Firstname = entrant.FirstName ?? "",
+                    Lastname = entrant.LastName ?? "",
                     Nationality = entrant.Country,
                     DateofBirth = entrant.DoB,
                     Title = entrant.Title,

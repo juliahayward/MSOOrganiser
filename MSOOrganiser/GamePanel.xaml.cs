@@ -292,7 +292,7 @@ namespace MSOOrganiser
                 Contacts = dbGame.Contacts;
                 Equipment = dbGame.Equipment;
                 Rules = dbGame.Rules;
-                CategoryId = dbGame.CategoryId ?? 0;
+                CategoryId = dbGame.CategoryId;
             }
             IsDirty = false;
         }
@@ -322,7 +322,7 @@ namespace MSOOrganiser
                     Contacts = this.Contacts,
                     Equipment = this.Equipment,
                     Rules = this.Rules,
-                    CategoryId = (this.CategoryId == 0) ? (int?)null : this.CategoryId
+                    CategoryId = this.CategoryId
                 };
                 context.Games.Add(dbGame);
                 dropdownRefreshNeeded = true;
@@ -335,7 +335,7 @@ namespace MSOOrganiser
                 dbGame.Contacts = (Contacts == "") ? null : Contacts;   // TODO zero length contraints
                 dbGame.Equipment = (Equipment == "") ? null : Equipment;
                 dbGame.Rules = (Rules == "") ? null : Rules;
-                dbGame.CategoryId = (this.CategoryId == 0) ? (int?)null : this.CategoryId;
+                dbGame.CategoryId = this.CategoryId;
             }
             context.SaveChanges();
             IsDirty = false;

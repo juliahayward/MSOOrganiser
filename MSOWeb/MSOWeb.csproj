@@ -748,7 +748,9 @@
     <Content Include="Content\Styles\Global.css" />
     <Content Include="Content\Styles\Login.css" />
     <Content Include="Global.asax" />
-    <Content Include="Scripts\navbar.js" />
+    <Content Include="Scripts\navbar.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
@@ -819,6 +821,8 @@
     <Content Include="Views\Report\BackgammonStandings.cshtml" />
     <Content Include="Views\Upload\Index.cshtml" />
     <Content Include="Views\Upload\Pokerstars.cshtml" />
+    <Content Include="Views\Upload\WorldPuzzle.cshtml" />
+    <Content Include="Views\Upload\RussianDraughts.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

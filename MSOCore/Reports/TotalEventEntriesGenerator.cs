@@ -30,7 +30,7 @@ namespace MSOCore.Reports
             var context = DataEntitiesProvider.Provide();
 
             var param = context.Parameters.First(x => x.Id == 1);
-            vm.LastLoadedCaption = "Last load from WooCommerce: " + param.Value;
+            vm.LastLoadedCaption = "Last load from website: " + param.Value;
 
             var olympiad = (year.HasValue)
                 ? context.Olympiad_Infoes.First(x => x.YearOf == year.Value)

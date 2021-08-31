@@ -27,7 +27,7 @@ namespace MSOCore
         public byte[] Logo { get; set; }
         public byte[] SSMA_TimeStamp { get; set; }
         public int Id { get; set; }
-        public Nullable<int> CategoryId { get; set; }
+        public int CategoryId { get; set; }
         public string FindOutMoreLink { get; set; }
         public string OnlineSiteName { get; set; }
         public string OnlineSiteUrl { get; set; }

@@ -64,6 +64,18 @@
                                 Upload from Pokerstars
                             </button>
                         }
+                        if (Model.Location == "WorldPuzzle")
+                        {
+                            <button class="btn btn-primary" id="uploadFromWorldPuzzle" type="button" style="float: right; margin-right: 8px;">
+                                Upload from WorldPuzzle
+                            </button>
+                        }
+                        if (Model.Location == "PlayElephant")
+                        {
+                            <button class="btn btn-primary" id="uploadFromRussianFed" type="button" style="float: right; margin-right: 8px;">
+                                Upload from Russian Federation CSV
+                            </button>
+                        }
                     }
                 </h2>
                 @Model.ResultEntrants with result, @Model.NoResultEntrants awaiting result, @Model.AbsentEntrants absent, @Model.TotalEntrants total

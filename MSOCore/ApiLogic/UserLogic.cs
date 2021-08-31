@@ -75,6 +75,9 @@ namespace MSOCore.ApiLogic
             var user = context.Users.FirstOrDefault(x => x.Name == userName);
             if (user == null)
                 return;
+            if (user.Email == null)
+                throw new ArgumentNullException("We don't have your email. Please contact Julia");
+
             string token = PasswordResetToken(user);
 
             var client = new SmtpClient();

@@ -38,7 +38,7 @@ namespace MSOWeb.Controllers
                 var id = logic.GetCurrentOlympiadId();
                 return RedirectToAction("Olympiad", new { id = id });
             }
-            catch (NoCurrentOlympiadException e)
+            catch (NoCurrentOlympiadException)
             {
                 TempData["FailureMessage"] = "There is no current Olympiad to edit";
                 return RedirectToAction("Index");

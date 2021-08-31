@@ -81,7 +81,7 @@ namespace MSOCore.Reports
                     Code = x.e.Event.Code,
                     GameCode = x.e.Event.Game.Code,
                     Score = (double)x.e.Penta_Score,
-                    CategoryId = x.e.Event.Game.CategoryId.Value
+                    CategoryId = x.e.Event.Game.CategoryId
                 })
                 .OrderByDescending(x => x.Score)
                 .ToList();

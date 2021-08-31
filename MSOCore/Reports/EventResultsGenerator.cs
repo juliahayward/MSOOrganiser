@@ -37,6 +37,8 @@ namespace MSOCore.Reports
             public string Name { get; set; }
             public string Code { get; set; }
             public bool HasResults { get; set; }
+            public bool Started { get; set; }
+            public bool Finished { get; set; }
         }
 
         public IEnumerable<EventsIndexEventVm> GetEventsIndex()
@@ -51,9 +53,11 @@ namespace MSOCore.Reports
                 {
                     Code = x.Code,
                     Name = x.Mind_Sport,
-                    HasResults = x.Entrants.Any(e => e.Penta_Score.HasValue && e.Penta_Score.Value > 0)
+                    HasResults = x.Entrants.Any(e => e.Penta_Score.HasValue && e.Penta_Score.Value > 0),
+                    Started = (x.Start < DateTime.Now),
+                    Finished = (x.End < DateTime.Now)
                 })
-                .OrderBy(x => x.Name)
+                .OrderBy(x => x.Code)
                 .ToList();
         }
 
