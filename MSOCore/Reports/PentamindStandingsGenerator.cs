@@ -51,7 +51,7 @@ namespace MSOCore.Reports
                 public string GameStr(int place)
                 {
                     var score = Scores.ElementAtOrDefault(place);
-                    return (score != null) ? score.ToString().Substring(0, 4) : "";
+                    return (score != null) ? score.ToString().Split(':')[0] : "";
                 }
             }
 
