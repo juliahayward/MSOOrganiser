@@ -31,7 +31,7 @@
         <tr>
             <th scope="row">@i</th>
             <td><img src="@item.Flag" title="@item.Nationality" height="20" style="margin-right: 4px" /></td>
-            <td><span>@item.Name</span></td>
+            <td><span><a href="/Report/ContestantMedals?contestantId=@item.ContestantId">@item.Name</a></span></td>
             <td style="width: 100px;"><span>@item.TotalScoreStr</span></td>
             <td style="font-size: small"><span>@item.ScoreStr(0)</span></td>
             <td style="font-size: small"><span>@item.ScoreStr(1)</span></td>
