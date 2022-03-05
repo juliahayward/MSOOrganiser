@@ -15,6 +15,8 @@ namespace MSOCore.Reports
             public string EventCode { get; set; }
             public string EventName { get; set; }
             public string OlympiadName { get; set; }
+
+            public string PointsType { get; set; }
             public IEnumerable<EntrantVm> Entrants { get; set; }
 
             public class EntrantVm
@@ -72,27 +74,29 @@ namespace MSOCore.Reports
             if (olympiad == null)
                 throw new ArgumentOutOfRangeException("Year " + year + " is not an olympiad year");
 
-            var retval = new EventResultsVm { Year = olympiad.YearOf.Value, EventCode = eventCode, OlympiadName = olympiad.FullTitle() };
+            var retval = new EventResultsVm { Year = olympiad.YearOf.Value, EventCode = eventCode, OlympiadName = olympiad.FullTitle(), PointsType = olympiad.Ruleset };
 
             var evt = context.Events.FirstOrDefault(x => x.OlympiadId == olympiad.Id && x.Code == eventCode);
             if (evt == null)
                 throw new ArgumentOutOfRangeException("Event " + eventCode + " did not take place in " + year);
 
-            bool isPentamind = eventCode.StartsWith("PE");
+            var metaEvents = context.MetaGameDefinitions.Select(x => x.Event.Code).Distinct();
+            bool isPentamind = eventCode.StartsWith("PE") || metaEvents.Contains(eventCode);
 
             retval.EventName = evt.Mind_Sport;
             retval.Entrants = evt.Entrants
-                .Where(e => e.Rank.HasValue && e.Rank.Value > 0)
-                .Select(e => new EventResultsVm.EntrantVm()
+                .Join(context.Contestants, e => e.Mind_Sport_ID, c => c.Mind_Sport_ID, (e, c) => new { e, c })
+                .Where(ec => ec.e.Rank.HasValue && ec.e.Rank.Value > 0)
+                .Select(ec => new EventResultsVm.EntrantVm()
                 {                
-                    ContestantId = e.Name.Mind_Sport_ID,
-                    Medal = e.Medal ?? "",
-                    JuniorMedal = e.JuniorMedal ?? "",
-                    Score = (isPentamind) ? "" : e.Score,
-                    PentaScore = (isPentamind) ? double.Parse(e.Score) : (double)e.Penta_Score,
-                    Rank = e.Rank.Value,
-                    Name = e.Name.FullName(),
-                    Nationality = e.Name.Nationality ?? "default",
+                    ContestantId = ec.c.Mind_Sport_ID,
+                    Medal = ec.e.Medal ?? "",
+                    JuniorMedal = ec.e.JuniorMedal ?? "",
+                    Score = (isPentamind) ? "" : ec.e.Score,
+                    PentaScore = (isPentamind) ? double.Parse(ec.e.Score) : (double)ec.e.Penta_Score,
+                    Rank = ec.e.Rank.Value,
+                    Name = ec.c.FullName(),
+                    Nationality = ec.c.Nationality ?? "default",
                 })
                 .ToList()
                 .OrderBy(x => x.Rank)

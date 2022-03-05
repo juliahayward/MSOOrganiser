@@ -26,6 +26,7 @@ namespace MSOCore.ApiLogic
             public string OnlineNicknames { get; set; }
             public string BgaNickname { get; set; }
 
+            public string PointsType { get; set; }
             public string Notes { get; set; }
             public IEnumerable<EventVm> Events { get; set; }
             public IEnumerable<string> Nationalities { get; set; }
@@ -76,6 +77,7 @@ namespace MSOCore.ApiLogic
             vm.Nationality = contestant.Nationality;
             vm.Nationalities = context.Nationalities.Select(x => x.Name).OrderBy(x => x);
             vm.Notes = contestant.Notes;
+            vm.PointsType = olympiad.Ruleset;
 
             var entries = contestant.Entrants
                 .Join(context.Events, e => e.EventId, g => g.EIN, (e, g) => new { e = e, g = g })

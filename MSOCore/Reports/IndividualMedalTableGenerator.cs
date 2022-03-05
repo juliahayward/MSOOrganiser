@@ -45,27 +45,20 @@ namespace MSOCore.Reports
             var medals = new[] { "Gold", "Silver", "Bronze" };
 
             var context = DataEntitiesProvider.Provide();
-            var medalCounts = context.Entrants.Where(x => medals.Contains(x.Medal))
-                .GroupBy(x => x.Mind_Sport_ID.Value, x => x)
-                .Select(x => new 
-                { 
-                    ContestantId = x.Key, 
-                    Golds = x.Count(e => e.Medal == "Gold"),
-                    Silvers = x.Count(e => e.Medal == "Silver"),
-                    Bronzes = x.Count(e => e.Medal == "Bronze")
-                });
-
-            var entries = medalCounts.Join(context.Contestants, 
-                mc => mc.ContestantId, c => c.Mind_Sport_ID,
-                (mc, c) => new MedalTableVm.MedalTableEntryVm
+            var entries = context.Entrants.Join(context.Contestants, e => e.Mind_Sport_ID, c => c.Mind_Sport_ID, (e, c) => new {e, c})
+                .Where(x => medals.Contains(x.e.Medal))
+                .ToList()
+                .GroupBy(x => x.e.Mind_Sport_ID.Value, x => x)
+                .ToList()
+                .Select(x => new MedalTableVm.MedalTableEntryVm
                 {
-                    ContestantId = mc.ContestantId,
-                    Golds = mc.Golds,
-                    Silvers = mc.Silvers,
-                    Bronzes = mc.Bronzes,
-                    FirstName = c.Firstname,
-                    LastName = c.Lastname,
-                    Nationality = c.Nationality ?? "default"
+                    ContestantId = x.Key,
+                    Golds = x.Count(ec => ec.e.Medal == "Gold"),
+                    Silvers = x.Count(ec => ec.e.Medal == "Silver"),
+                    Bronzes = x.Count(ec => ec.e.Medal == "Bronze"),
+                    FirstName = x.First().c.Firstname,
+                    LastName = x.First().c.Lastname,
+                    Nationality = x.First().c.Nationality ?? "default"
                 })
                 .ToList()
                 .OrderByDescending(m => m.Golds).ThenByDescending(x => x.Silvers).ThenByDescending(x => x.Bronzes);

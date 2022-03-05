@@ -97,7 +97,7 @@
                                 <th scope="col">Score</th>
                                 <th scope="col">Tiebreak</th>
                                 <th scope="col">Absent</th>
-                                <th scope="col">Pentamind</th>
+                                <th scope="col">@Model.PointsType</th>
                                 <th scope="col"></th>
                             </tr>
                         </thead>
@@ -107,7 +107,7 @@
                                 if (Model.Editable)
                                 {
                                     <tr>
-                                        <td><a href="/Contestant/Contestant/@c.ContestantId" title="Online: @c.AllOnlineNicknames">@c.FullName()</a><input type="hidden" name="EntryNumberString" value="@c.EntryNumber" /><br />@c.OnlineNicknames</td>
+                                        <td><a href="/Contestant/Contestant/@c.ContestantId?editable=true" title="Online: @c.AllOnlineNicknames">@c.FullName()</a><input type="hidden" name="EntryNumberString" value="@c.EntryNumber" /><br />@c.OnlineNicknames</td>
                                         @if (Model.NumberInTeam > 1)
                                         {
                                             <td>@c.Partner</td>

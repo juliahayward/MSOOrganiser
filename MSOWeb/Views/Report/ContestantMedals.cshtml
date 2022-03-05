@@ -1,72 +1,153 @@
 ﻿@model MSOCore.Reports.ContestantMedalsGenerator.ContestantVm
 @{
-    Layout = "~/Views/Shared/_Layout.cshtml";
+    Layout = "~/Views/Shared/_NewLayout.cshtml";
 }
 
-<style type="text/css">
-    .jmhTable {
-        border: 1px black solid; 
-        width: 400px; 
-        margin-left: 100px
-    }
-    .jmhTable td {
-        vertical-align: middle;
-    }
-    .jmhPaddedHeader {
-        margin: 4px;
-        display: block;
-    }
-    .jmhPadded {
-        margin: 4px;
-        display: block;
-    }
-</style>
-
-
-<h1 class="entry-title">All time record: @Model.Name
-    <img src="@Model.Flag" style="width: 52px" alt="@Model.Nationality" title="@Model.Nationality"/>
-</h1>
-
-@if (Model.HasTitles())
-{
-<h1 class="entry-title">Titles:</h1>
-}
-@if (Model.Grandmasters.Any())
-{
-<p><b>Grandmaster</b></p>
-<ul>
-    @foreach (var code in Model.Grandmasters)
+<div class="accordion" id="accordionExample">
+    <div class="card">
+        <div class="card-header" id="headingOne">
+            <h2>@Model.Name<img style="float: right" src="~/Content/Images/Flags/@(Model.Nationality).jpg" title="@(Model.Nationality)" height="40" /></h2>
+            <h2 class="mb-0">
+                <!-- buttons -->
+            </h2>
+        </div>
+    </div>
+    @if (Model.HasTitles())
     {
-    <li>@code</li>
+        <div class="card">
+            <div class="card-header" id="headingOne">
+                <h2 class="mb-0">
+                    <button class="btn" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                        Titles
+                    </button>
+                </h2>
+            </div>
+            <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordionExample">
+                <div class="card-body">
+                    @if (Model.Grandmasters.Any())
+                    {
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th scope="col">Grandmaster</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var c in Model.Grandmasters)
+                                {
+                                    <tr>
+                                        <td>@c</td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    }
+                    @if (Model.InternationalMasters.Any())
+                    {
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th scope="col">International Master</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var c in Model.InternationalMasters)
+                                {
+                                    <tr>
+                                        <td>@c</td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    }
+                    @if (Model.CandidateMasters.Any())
+                    {
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th scope="col">Candidate Master</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var c in Model.CandidateMasters)
+                                {
+                                    <tr>
+                                        <td>@c</td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    }
+                </div>
+            </div>
+        </div>
     }
-</ul>
-}
-@if (Model.InternationalMasters.Any())
-{
-<p><b>International Master</b></p>
-<ul>
-    @foreach (var code in Model.InternationalMasters)
-    {
-    <li>@code</li>
-    }
-</ul>
-}
-@if (Model.CandidateMasters.Any())
-{
-<p><b>Candidate Master</b></p>
-<ul>
-    @foreach (var code in Model.CandidateMasters)
-    {
-    <li>@code</li>
-    }
-</ul>
-}
-
-<h1 class="entry-title">Medals:</h1>
-<p><b>Gold: @Model.Golds, Silver: @Model.Silvers, Bronze: @Model.Bronzes</b></p>
-<ul>
-    @foreach (var medal in Model.Medals)
-    {
-    <li>@medal.Name: @medal.Medal (@medal.Year)</li>
-    }
-</ul>
+    <div class="card">
+        <div class="card-header" id="headingOne">
+            <h2 class="mb-0">
+                <button class="btn" type="button" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                    Medals
+                </button>
+            </h2>
+        </div>
+        <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionExample">
+            <div class="card-body">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th scope="col">Gold: @Model.Golds, Silver: @Model.Silvers, Bronze: @Model.Bronzes</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var medal in Model.Medals)
+                        {
+                            <tr>
+                                <td>@medal.Name: @medal.Medal (@medal.Year)</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="card">
+        <div class="card-header" id="headingThree">
+            <h2 class="mb-0">
+                <button class="btn collapsed" type="button" data-toggle="collapse" data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                    This year's Events
+                </button>
+            </h2>
+        </div>
+        <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordionExample">
+            <div class="card-body">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th scope="col">Code</th>
+                            <th scope="col">Name</th>
+                            <th scope="col">Partner</th>
+                            <th scope="col">Medal</th>
+                            <th scope="col">Junior Medal</th>
+                            <th scope="col">Rank</th>
+                            <th scope="col">@Model.PointsType</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var c in Model.Events)
+                        {
+                            <tr>
+                                <td>@c.Code</td>
+                                <td>@c.Name</td>
+                                <td>@c.Partner</td>
+                                <td><span class="btn @c.MedalStyle" style="width:72px;">@c.Medal</span></td>
+                                <td><span class="btn @c.JuniorMedalStyle" style="width:72px;">@c.JuniorMedal</span></td>
+                                <td>@c.RankString</td>
+                                <td>@c.PentaString</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

@@ -19,6 +19,21 @@ namespace MSOCore.Reports
                 public string Code { get; set; }
             }
 
+            public class EventVm
+            {
+                public string Code { get; set; }
+                public string Name { get; set; }
+                public string Medal { get; set; }
+                public string MedalStyle => Medal?.ToLower() ?? "";
+                public string JuniorMedal { get; set; }
+                public string JuniorMedalStyle => JuniorMedal?.Replace(" JNR", "").ToLower() ?? "";
+                public string Partner { get; set; }
+                public double? Penta { get; set; }
+                public string PentaString => (Penta.HasValue) ? Penta.Value.ToString("F2") : "";
+                public int? Rank { get; set; }
+                public string RankString => (Rank != null && Rank > 0) ? Rank.ToString() : "";
+            }
+
             public int Id { get; set; }
             public string Name { get; set; }
             public string Nationality { get; set; }
@@ -30,7 +45,10 @@ namespace MSOCore.Reports
                 }
             }
 
+            public string PointsType { get; set; }
+
             public IEnumerable<MedalVm> Medals { get; set; }
+            public IEnumerable<EventVm> Events { get; set; }
             public int Golds { get { return Medals.Count(x => x.Medal.StartsWith("Gold")); } }
             public int Silvers { get { return Medals.Count(x => x.Medal.StartsWith("Silver")); } }
             public int Bronzes { get { return Medals.Count(x => x.Medal.StartsWith("Bronze")); } }
@@ -48,6 +66,7 @@ namespace MSOCore.Reports
         {
             var context = DataEntitiesProvider.Provide();
 
+            var currentOlympiad = context.Olympiad_Infoes.First(x => x.Current);
             var contestant = context.Contestants.FirstOrDefault(x => x.Mind_Sport_ID == id);
             if (contestant == null)
                 throw new ArgumentOutOfRangeException($"No contestant with id {id}");
@@ -85,6 +104,11 @@ namespace MSOCore.Reports
                     cmCodes.Add(name);
             }
 
+            var events = context.Entrants
+                .Where(x => x.Mind_Sport_ID == id && x.OlympiadId == currentOlympiad.Id && !x.Absent)
+                .Select(x => new ContestantVm.EventVm() { Code = x.Event.Code, Name = x.Event.Mind_Sport, Rank = x.Rank, Medal = x.Medal, JuniorMedal = x.JuniorMedal, Partner = x.Partner, Penta = x.Penta_Score})
+                .OrderBy(evt => evt.Name);
+
             var model = new ContestantVm
             {
                 Id = id,
@@ -93,7 +117,9 @@ namespace MSOCore.Reports
                 Medals = medalEvents,
                 Grandmasters = gmCodes,
                 InternationalMasters = imCodes,
-                CandidateMasters = cmCodes
+                CandidateMasters = cmCodes,
+                Events = events,
+                PointsType = currentOlympiad.Ruleset
             };
 
             return model;

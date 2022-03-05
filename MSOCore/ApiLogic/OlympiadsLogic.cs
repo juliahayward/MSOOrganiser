@@ -48,6 +48,8 @@ namespace MSOCore.ApiLogic
             public int NumberInTeam { get; set; }
             public string Location { get; set; }
 
+            public string PointsType { get; set; }
+
             public IEnumerable<EntrantVm> Entrants { get; set; }
 
             public int TotalEntrants { get { return Entrants.Count(); } }
@@ -178,13 +180,14 @@ namespace MSOCore.ApiLogic
 
             return new EventVm()
             {
-                OlympiadId=e.OlympiadId,
+                OlympiadId = e.OlympiadId,
                 OlympiadYear = e.Olympiad_Info.YearOf.Value,
                 EventId = id,
                 Code = e.Code,
                 Name = e.Mind_Sport,
                 NumberInTeam = e.Number_in_Team,
                 Location = e.Location ?? "",
+                PointsType = olympiad.Ruleset,
                 Entrants = e.Entrants.Select(en => new EventVm.EntrantVm()
                 {
                     EntryNumber = en.EntryNumber,
