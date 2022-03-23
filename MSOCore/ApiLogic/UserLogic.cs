@@ -80,6 +80,7 @@ namespace MSOCore.ApiLogic
 
             string token = PasswordResetToken(user);
 
+            ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
             var client = new SmtpClient();
             client.Host = "smtp.office365.com";
             client.Port = 587;

@@ -57,6 +57,7 @@ namespace MSOAgent
                 var mailsender = ConfigurationManager.AppSettings["EmailUser"];
                 var password = ConfigurationManager.AppSettings["EmailPassword"];
 
+                ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
                 var client = new SmtpClient();
                 client.Host = "smtp.office365.com";
                 client.Port = 587;
@@ -93,6 +94,7 @@ namespace MSOAgent
                 var mailsender = ConfigurationManager.AppSettings["EmailUser"];
                 var password = ConfigurationManager.AppSettings["EmailPassword"];
 
+                ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
                 var client = new SmtpClient();
                 client.Host = "smtp.office365.com";
                 client.Port = 587;
