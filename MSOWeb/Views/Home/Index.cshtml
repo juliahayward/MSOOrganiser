@@ -45,8 +45,33 @@
     <div class="col-sm-3">
         <div class="card mt-1">
             <div class="card-body">
-                <h5 class="card-title">Meta-events</h5>
-                <h6 class="card-subtitle mb-2 text-muted">Live scores for Pentamind, etc.</h6>
+                <h5 class="card-title">Grand Prix 2022</h5>
+                <h6 class="card-subtitle mb-2 text-muted">Live scores for meta-events</h6>
+                <ul>
+                    <li><a href="/Report/GrandPrixStandings?header=true" class="card-link">Grand Prix</a></li>
+                    <ul>
+                        <li><a href="/Report/SeniorGrandPrixStandings?header=true" class="card-link">Seniors</a></li>
+                        <li><a href="/Report/JuniorGrandPrixStandings?header=true" class="card-link">Juniors</a></li>
+                        <li><a href="/Report/WomensGrandPrixStandings?header=true" class="card-link">Women</a></li>
+                    </ul>
+                    <li><a href="/Report/GPCategoryStandings?header=true&category=Chess" class="card-link">Chess</a></li>
+                    <li><a href="/Report/GPCategoryStandings?header=true&category=Poker" class="card-link">Poker</a></li>
+                    <li><a href="/Report/GPCategoryStandings?header=true&category=Backgammon" class="card-link">Backgammon</a></li>
+                    <li><a href="/Report/GPCategoryStandings?header=true&category=Draughts" class="card-link">Draughts</a></li>
+                    <li><a href="/Report/GPCategoryStandings?header=true&category=Multiplayer" class="card-link">Multiplayer</a></li>
+                    <li><a href="/Report/GPCategoryStandings?header=true&category=Abstract" class="card-link">Abstract</a></li>
+                    <li><a href="/Report/GPCategoryStandings?header=true&category=ImperfectInfo" class="card-link">Imperfect Info</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-sm-3">
+        <div class="card mt-1">
+            <div class="card-body">
+                <h5 class="card-title">MSO 2022</h5>
+                <h6 class="card-subtitle mb-2 text-muted">Live scores for meta-events</h6>
                 <ul>
                     <li><a href="/Report/PentamindStandings?header=true" class="card-link">Pentamind</a></li>
                     <ul>
@@ -60,16 +85,6 @@
                     <li><a href="/Report/ChessStandings?header=true" class="card-link">Chess</a></li>
                     <li><a href="/Report/BackgammonStandings?header=true" class="card-link">Backgammon</a></li>
                 </ul>
-            </div>
-        </div>
-    </div>
-</div>
-<div class="row">
-    <div class="col-sm-3">
-        <div class="card mt-1">
-            <div class="card-body">
-                <h5 class="card-title">Live streaming</h5>
-                Sadly, no live streaming in 2021 but all games are online and you can watch most...
             </div>
         </div>
     </div>
@@ -90,7 +105,9 @@
                 <h5 class="card-title">Past year's medals</h5>
                 <h6 class="card-subtitle mb-2 text-muted">Winners in previous years</h6>
                 <ul>
-					<li><a href="/Report/YearMedals?year=2020" class="card-link">2020</a></li>
+                    <!-- TODO : in 2022 there will be both GP and live - need an olympiad id -->
+                    <li><a href="/Report/YearMedals?year=2021" class="card-link">2021</a></li>
+                    <li><a href="/Report/YearMedals?year=2020" class="card-link">2020</a></li>
                     <li><a href="/Report/YearMedals?year=2019" class="card-link">2019</a></li>
                     <li><a href="/Report/YearMedals?year=2018" class="card-link">2018</a></li>
                     <li><a href="/Report/YearMedals?year=2017" class="card-link">2017</a></li>
