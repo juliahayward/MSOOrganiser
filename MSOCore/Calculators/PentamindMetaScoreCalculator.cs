@@ -42,7 +42,7 @@ namespace MSOCore.Calculators
                 // Must have max 3 Eurogames
                 if (year >= 2016 && combination.Where(x => x.IsEuroGame).Count() > 3) continue;
                 // Must have max 3 Modern Abstract
-                if (year == 2021 && combination.Where(x => x.IsModernAbstract).Count() > 3) continue;
+                if (year >= 2021 && combination.Where(x => x.IsModernAbstract).Count() > 3) continue;
 
                 if (combination.Sum(x => x.Score) > bestScore)
                 {

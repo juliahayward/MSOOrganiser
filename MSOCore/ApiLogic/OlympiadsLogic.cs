@@ -239,7 +239,7 @@ namespace MSOCore.ApiLogic
                       if (evt.OlympiadId == 25 && evt.Code == "POH6") overridingNumberOfEntrants = 380;
                       if (evt.OlympiadId == 25 && evt.Code == "PZKK") overridingNumberOfEntrants = 380; */
 
-                var pentaCalculator = new Penta2021Calculator();
+                var pentaCalculator = PentaCalculatorFactory.Get(evt.Olympiad_Info);
                 pentaCalculator.Calculate(evt.Number_in_Team, model.Entrants, evt.Pentamind, evt.PentamindFactor, overridingNumberOfEntrants);
             }
             // TODO - events with partners

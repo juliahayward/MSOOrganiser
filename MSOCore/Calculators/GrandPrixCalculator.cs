@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace MSOCore.Calculators
 {
-    public class GrandPrixCalculator
+    public class GrandPrixCalculator : IPentaCalculator
     {
         public void Calculate(int numberInTeam, IEnumerable<IPentaCalculable> entries, bool isInPentamind = true, float premiumFactor = 1.0f, int overridingNumberOfTeams = 0)
         {

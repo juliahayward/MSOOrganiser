@@ -6,7 +6,16 @@ using System.Threading.Tasks;
 
 namespace MSOCore.Calculators
 {
-    
+    public class PentaCalculatorFactory
+    {
+        public static IPentaCalculator Get(Olympiad_Info olympiad)
+        {
+            if (olympiad.Ruleset == "GrandPrix")
+                return new GrandPrixCalculator();
+            else
+                return new Penta2021Calculator();
+        }
+    }
     public class Penta2010Calculator : PentaCalculator
     {
         public override double Formula(int n, double p)
@@ -20,7 +29,14 @@ namespace MSOCore.Calculators
         }
     }
         
-    public abstract class PentaCalculator
+
+    public interface IPentaCalculator
+    {
+        void Calculate(int numberInTeam, IEnumerable<IPentaCalculable> entries, bool isInPentamind = true, float premiumFactor = 1.0f, int overridingNumberOfTeams = 0);
+
+    }
+
+    public abstract class PentaCalculator : IPentaCalculator
     {
         public abstract double Formula(int numberOfTeams, double myPosition);
 
