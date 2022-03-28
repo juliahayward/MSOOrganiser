@@ -50,10 +50,10 @@ namespace MSOCore
         public Nullable<System.DateTime> date { get; set; }
         public byte[] SSMA_TimeStamp { get; set; }
         public string OnlineNicknames { get; set; }
-
         public string BgaNickname { get; set; }
         public string DiscordNickname { get; set; }
         public bool Whatsapp { get; set; }
+    
         public virtual ICollection<Entrant> Entrants { get; set; }
         public virtual ICollection<Payment> Payments { get; set; }
         public virtual ICollection<Arbiter> Arbiters { get; set; }

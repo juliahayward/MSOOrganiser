@@ -12,16 +12,19 @@ namespace MSOCore
     using System;
     using System.Collections.Generic;
     
-    public partial class Event_Sess
+    public partial class GameVariant
     {
-        public int INDEX { get; set; }
-        public Nullable<int> EIN { get; set; }
-        public Nullable<System.DateTime> Date { get; set; }
-        public string Session { get; set; }
-        public Nullable<System.TimeSpan> StartTime { get; set; }
-        public Nullable<System.TimeSpan> EndTime { get; set; }
+        public GameVariant()
+        {
+            this.Events = new HashSet<Event>();
+        }
     
-        public virtual Event Event { get; set; }
-        public virtual Session Session1 { get; set; }
+        public int Id { get; set; }
+        public string Name { get; set; }
+        public int GameId { get; set; }
+        public byte[] SSMA_TimeStamp { get; set; }
+    
+        public virtual Game Game { get; set; }
+        public virtual ICollection<Event> Events { get; set; }
     }
 }

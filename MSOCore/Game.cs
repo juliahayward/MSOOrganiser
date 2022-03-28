@@ -17,6 +17,7 @@ namespace MSOCore
         public Game()
         {
             this.Events = new HashSet<Event>();
+            this.GameVariants = new HashSet<GameVariant>();
         }
     
         public string Code { get; set; }
@@ -31,8 +32,9 @@ namespace MSOCore
         public string FindOutMoreLink { get; set; }
         public string OnlineSiteName { get; set; }
         public string OnlineSiteUrl { get; set; }
-
+    
         public virtual ICollection<Event> Events { get; set; }
         public virtual GameCategory GameCategory { get; set; }
+        public virtual ICollection<GameVariant> GameVariants { get; set; }
     }
 }

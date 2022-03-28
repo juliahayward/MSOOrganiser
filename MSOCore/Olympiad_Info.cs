@@ -38,9 +38,8 @@ namespace MSOCore
         public bool Current { get; set; }
         public byte[] SSMA_TimeStamp { get; set; }
         public int Id { get; set; }
-
         public string Ruleset { get; set; }
-
+    
         public virtual ICollection<Event> Events { get; set; }
         public virtual ICollection<Location> Locations { get; set; }
         public virtual ICollection<WomenNotInWomensPentamind> WomenNotInWomensPentaminds { get; set; }

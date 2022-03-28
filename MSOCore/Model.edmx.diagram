@@ -40,8 +40,7 @@
         <AssociationConnector Association="DataModel.FK__Events__GameId__4A8310C6" ManuallyRouted="true" >
           <ConnectorPoint PointX="5.1261528461538459" PointY="8.75" />
           <ConnectorPoint PointX="4.75" PointY="8.3738471538461532" />
-          <ConnectorPoint PointX="4.75" PointY="9.0089322916666656" />
-          <ConnectorPoint PointX="4.375" PointY="4.567506203308767" />
+          <ConnectorPoint PointX="4.375" PointY="4.5680613360127609" />
         </AssociationConnector>
         <AssociationConnector Association="DataModel.FK__Entrants__EventI__4B7734FF" ManuallyRouted="false" >
         </AssociationConnector>
@@ -61,6 +60,9 @@
         <EntityTypeShape EntityType="DataModel.Parameter" Width="1.5" PointX="13.375" PointY="6.75" />
         <EntityTypeShape EntityType="DataModel.Rating" Width="1.5" PointX="13.375" PointY="10" />
         <AssociationConnector Association="DataModel.FK__Ratings__Contest__190BB0C3" />
+        <EntityTypeShape EntityType="DataModel.GameVariant" Width="1.5" PointX="7.375" PointY="29.75" />
+        <AssociationConnector Association="DataModel.FK__GameVaria__GameI__65570293" />
+        <AssociationConnector Association="DataModel.FK_Event_GameVariant" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

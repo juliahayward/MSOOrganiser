@@ -17,7 +17,6 @@ namespace MSOCore
         public Nullable<int> Year { get; set; }
         public int EntryNumber { get; set; }
         public Nullable<int> Mind_Sport_ID { get; set; }
-        [Obsolete("Use Event.Code instead")]
         public string Game_Code { get; set; }
         public Nullable<bool> Receipt { get; set; }
         public string Partner { get; set; }

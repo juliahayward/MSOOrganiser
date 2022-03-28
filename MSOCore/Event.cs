@@ -53,6 +53,7 @@ namespace MSOCore
         public Nullable<int> GameId { get; set; }
         public bool ConsistentWithBoardability { get; set; }
         public float PentamindFactor { get; set; }
+        public Nullable<int> GameVariantId { get; set; }
     
         public virtual ICollection<Event_Sess> Event_Sess { get; set; }
         public virtual ICollection<Arbiter> Arbiters { get; set; }
@@ -60,5 +61,6 @@ namespace MSOCore
         public virtual Game Game { get; set; }
         public virtual ICollection<Entrant> Entrants { get; set; }
         public virtual ICollection<MetaGameDefinition> MetaGameDefinitions { get; set; }
+        public virtual GameVariant GameVariant { get; set; }
     }
 }

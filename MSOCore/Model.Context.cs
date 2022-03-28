@@ -57,5 +57,6 @@ namespace MSOCore
         public DbSet<MetaGameDefinition> MetaGameDefinitions { get; set; }
         public DbSet<Parameter> Parameters { get; set; }
         public DbSet<Rating> Ratings { get; set; }
+        public DbSet<GameVariant> GameVariants { get; set; }
     }
 }

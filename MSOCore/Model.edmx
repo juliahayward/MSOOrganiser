@@ -79,8 +79,8 @@ warning 6002: The table/view 'mso_prod.dbo.Badges - Misc' does not have a primar
           <Property Name="EIN" Type="int" />
           <Property Name="Date" Type="datetime2" Precision="0" />
           <Property Name="Session" Type="nvarchar" MaxLength="50" />
-          <Property Name="StartTime" Type="time" Precision="0" />
-          <Property Name="EndTime" Type="time" Precision="0" />
+          <Property Name="StartTime" Type="time" Precision="7" />
+          <Property Name="EndTime" Type="time" Precision="7" />
         </EntityType>
         <EntityType Name="Events">
           <Key>
@@ -91,9 +91,9 @@ warning 6002: The table/view 'mso_prod.dbo.Badges - Misc' does not have a primar
           <Property Name="Code" Type="nvarchar" MaxLength="50" />
           <Property Name="Mind Sport" Type="nvarchar" MaxLength="100" />
           <Property Name="Type" Type="nvarchar" MaxLength="50" />
-          <Property Name="Number in Team" Type="int" />
+          <Property Name="Number in Team" Type="int" Nullable="false" />
           <Property Name="MAX Number" Type="int" />
-          <Property Name="Pentamind" Type="bit" />
+          <Property Name="Pentamind" Type="bit" Nullable="false" />
           <Property Name="Entry Fee" Type="nvarchar" MaxLength="50" />
           <Property Name="incMaxFee" Type="bit" />
           <Property Name="No Sessions" Type="real" />
@@ -117,6 +117,7 @@ warning 6002: The table/view 'mso_prod.dbo.Badges - Misc' does not have a primar
           <Property Name="GameId" Type="int" />
           <Property Name="ConsistentWithBoardability" Type="bit" Nullable="false" />
           <Property Name="PentamindFactor" Type="float" Nullable="false" />
+          <Property Name="GameVariantId" Type="int" />
         </EntityType>
         <EntityType Name="EventType">
           <Key>
@@ -148,7 +149,7 @@ warning 6002: The table/view 'mso_prod.dbo.Badges - Misc' does not have a primar
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Name="Code" Type="nvarchar" MaxLength="2" />
+          <Property Name="Code" Type="nvarchar" MaxLength="3" Nullable="false" />
           <Property Name="Mind Sport" Type="nvarchar" MaxLength="100" />
           <Property Name="Contacts" Type="nvarchar(max)" />
           <Property Name="Equipment" Type="nvarchar(max)" />
@@ -160,6 +161,15 @@ warning 6002: The table/view 'mso_prod.dbo.Badges - Misc' does not have a primar
           <Property Name="FindOutMoreLink" Type="nvarchar(max)" />
           <Property Name="OnlineSiteName" Type="nvarchar(max)" />
           <Property Name="OnlineSiteUrl" Type="nvarchar(max)" />
+        </EntityType>
+        <EntityType Name="GameVariants">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="100" />
+          <Property Name="GameId" Type="int" Nullable="false" />
+          <Property Name="SSMA_TimeStamp" Type="timestamp" StoreGeneratedPattern="Computed" Nullable="false" />
         </EntityType>
         <EntityType Name="GlobalSettings">
           <Key>
@@ -248,9 +258,9 @@ warning 6002: The table/view 'mso_prod.dbo.MetaGameDefinition' does not have a p
           <Property Name="date" Type="datetime2" Precision="0" />
           <Property Name="SSMA_TimeStamp" Type="timestamp" StoreGeneratedPattern="Computed" Nullable="false" />
           <Property Name="OnlineNicknames" Type="nvarchar(max)" />
-          <Property Name="BgaNickname" Type="nvarchar" MaxLength="50" />
           <Property Name="DiscordNickname" Type="nvarchar(max)" />
-          <Property Name="Whatsapp" Type="bit" />
+          <Property Name="Whatsapp" Type="bit" Nullable="false" />
+          <Property Name="BgaNickname" Type="nvarchar" MaxLength="50" />
         </EntityType>
         <EntityType Name="Nationalities">
           <Key>
@@ -548,6 +558,18 @@ warning 6002: The table/view 'mso_prod.dbo.SelectedPeople' does not have a prima
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK__GameVaria__GameI__65570293">
+          <End Role="Games" Type="Self.Games" Multiplicity="1" />
+          <End Role="GameVariants" Type="Self.GameVariants" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Games">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="GameVariants">
+              <PropertyRef Name="GameId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK__Location__Olympi__12C8C788">
           <End Role="Olympiad Info" Type="Self.Olympiad Info" Multiplicity="0..1" />
           <End Role="Location" Type="Self.Location" Multiplicity="*" />
@@ -581,6 +603,18 @@ warning 6002: The table/view 'mso_prod.dbo.SelectedPeople' does not have a prima
             </Principal>
             <Dependent Role="Seedings">
               <PropertyRef Name="ContestantId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Event_GameVariant">
+          <End Role="GameVariants" Type="Self.GameVariants" Multiplicity="0..1" />
+          <End Role="Events" Type="Self.Events" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="GameVariants">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Events">
+              <PropertyRef Name="GameVariantId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -655,6 +689,7 @@ warning 6002: The table/view 'mso_prod.dbo.SelectedPeople' does not have a prima
           <EntitySet Name="Fees" EntityType="Self.Fees" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="GameCategories" EntityType="Self.GameCategories" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Games" EntityType="Self.Games" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="GameVariants" EntityType="Self.GameVariants" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="GlobalSettings" EntityType="Self.GlobalSettings" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Location" EntityType="Self.Location" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Names" EntityType="Self.Names" Schema="dbo" store:Type="Tables" />
@@ -755,6 +790,10 @@ FROM [dbo].[SelectedPeople] AS [SelectedPeople]</DefiningQuery>
             <End Role="GameCategories" EntitySet="GameCategories" />
             <End Role="Games" EntitySet="Games" />
           </AssociationSet>
+          <AssociationSet Name="FK__GameVaria__GameI__65570293" Association="Self.FK__GameVaria__GameI__65570293">
+            <End Role="Games" EntitySet="Games" />
+            <End Role="GameVariants" EntitySet="GameVariants" />
+          </AssociationSet>
           <AssociationSet Name="FK__Location__Olympi__12C8C788" Association="Self.FK__Location__Olympi__12C8C788">
             <End Role="Olympiad Info" EntitySet="Olympiad Info" />
             <End Role="Location" EntitySet="Location" />
@@ -766,6 +805,10 @@ FROM [dbo].[SelectedPeople] AS [SelectedPeople]</DefiningQuery>
           <AssociationSet Name="FK__Seedings__Contes__1387E197" Association="Self.FK__Seedings__Contes__1387E197">
             <End Role="Names" EntitySet="Names" />
             <End Role="Seedings" EntitySet="Seedings" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Event_GameVariant" Association="Self.FK_Event_GameVariant">
+            <End Role="GameVariants" EntitySet="GameVariants" />
+            <End Role="Events" EntitySet="Events" />
           </AssociationSet>
           <AssociationSet Name="FK_MetaGameDefinition_Event" Association="Self.FK_MetaGameDefinition_Event">
             <End Role="Events" EntitySet="Events" />
@@ -897,6 +940,15 @@ FROM [dbo].[SelectedPeople] AS [SelectedPeople]</DefiningQuery>
             <End Role="Contestant" EntitySet="Contestants" />
             <End Role="Rating" EntitySet="Ratings" />
           </AssociationSet>
+          <EntitySet Name="GameVariants" EntityType="DataModel.GameVariant" />
+          <AssociationSet Name="FK__GameVaria__GameI__65570293" Association="DataModel.FK__GameVaria__GameI__65570293">
+            <End Role="Game" EntitySet="Games" />
+            <End Role="GameVariant" EntitySet="GameVariants" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Event_GameVariant" Association="DataModel.FK_Event_GameVariant">
+            <End Role="GameVariant" EntitySet="GameVariants" />
+            <End Role="Event" EntitySet="Events" />
+          </AssociationSet>
         </EntityContainer>
         <EntityType Name="Badges___Misc">
           <Key>
@@ -953,8 +1005,8 @@ FROM [dbo].[SelectedPeople] AS [SelectedPeople]</DefiningQuery>
           <Property Type="Int32" Name="EIN" />
           <Property Type="DateTime" Name="Date" Precision="0" />
           <Property Type="String" Name="Session" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Type="Time" Name="StartTime" Precision="0" />
-          <Property Type="Time" Name="EndTime" Precision="0" />
+          <Property Type="Time" Name="StartTime" Precision="7" />
+          <Property Type="Time" Name="EndTime" Precision="7" />
           <NavigationProperty Name="Event" Relationship="DataModel.Event_Sess_EventsEvent_Sess" FromRole="Event_Sess" ToRole="Event" />
           <NavigationProperty Name="Session1" Relationship="DataModel.Event_Sess_SessionEvent_Sess" FromRole="Event_Sess" ToRole="Session" />
         </EntityType>
@@ -999,6 +1051,8 @@ FROM [dbo].[SelectedPeople] AS [SelectedPeople]</DefiningQuery>
           <Property Name="ConsistentWithBoardability" Type="Boolean" Nullable="false" />
           <Property Name="PentamindFactor" Type="Single" Nullable="false" />
           <NavigationProperty Name="MetaGameDefinitions" Relationship="DataModel.FK_MetaGameDefinition_Event" FromRole="Event" ToRole="MetaGameDefinition" />
+          <Property Name="GameVariantId" Type="Int32" />
+          <NavigationProperty Name="GameVariant" Relationship="DataModel.FK_Event_GameVariant" FromRole="Event" ToRole="GameVariant" />
         </EntityType>
         <EntityType Name="EventType">
           <Key>
@@ -1014,7 +1068,7 @@ FROM [dbo].[SelectedPeople] AS [SelectedPeople]</DefiningQuery>
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Type="String" Name="Code" MaxLength="2" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="Code" MaxLength="3" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Type="String" Name="Mind_Sport" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Type="String" Name="Contacts" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Type="String" Name="Equipment" MaxLength="Max" FixedLength="false" Unicode="true" />
@@ -1028,6 +1082,7 @@ FROM [dbo].[SelectedPeople] AS [SelectedPeople]</DefiningQuery>
           <Property Type="String" Name="FindOutMoreLink" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Type="String" Name="OnlineSiteName" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Type="String" Name="OnlineSiteUrl" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="GameVariants" Relationship="DataModel.FK__GameVaria__GameI__65570293" FromRole="Game" ToRole="GameVariant" />
         </EntityType>
         <EntityType Name="Information">
           <Key>
@@ -1078,10 +1133,10 @@ FROM [dbo].[SelectedPeople] AS [SelectedPeople]</DefiningQuery>
           <Property Type="String" Name="Notes" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Type="DateTime" Name="date" Precision="0" />
           <Property Type="Binary" Name="SSMA_TimeStamp" Nullable="false" MaxLength="8" FixedLength="true" annotation:StoreGeneratedPattern="Computed" />
-          <Property Type="String" Name="OnlineNicknames" FixedLength="false" Unicode="true" />
-          <Property Type="String" Name="BgaNickname" FixedLength="true" Unicode="true" />
-          <Property Type="String" Name="DiscordNickname" FixedLength="false" Unicode="true" />
-          <Property Type="Boolean" Name="Whatsapp" />
+          <Property Type="String" Name="OnlineNicknames" FixedLength="false" Unicode="true" MaxLength="Max" />
+          <Property Type="String" Name="BgaNickname" FixedLength="false" Unicode="true" MaxLength="50" />
+          <Property Type="String" Name="DiscordNickname" FixedLength="false" Unicode="true" MaxLength="Max" />
+          <Property Type="Boolean" Name="Whatsapp" Nullable="false" />
           <NavigationProperty Name="Entrants" Relationship="DataModel.Entrants_NamesEntrants" FromRole="Name" ToRole="Entrant" />
           <NavigationProperty Name="Payments" Relationship="DataModel.Payments_NamesPayments" FromRole="Name" ToRole="Payment" />
           <NavigationProperty Name="Arbiters" Relationship="DataModel.Arbiters_NamesArbiters" FromRole="Contestant" ToRole="Arbiter" />
@@ -1563,6 +1618,41 @@ FROM [dbo].[SelectedPeople] AS [SelectedPeople]</DefiningQuery>
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="GameVariant">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="GameId" Type="Int32" Nullable="false" />
+          <Property Name="SSMA_TimeStamp" Type="Binary" Nullable="false" MaxLength="8" FixedLength="true" annotation:StoreGeneratedPattern="Computed" />
+          <NavigationProperty Name="Game" Relationship="DataModel.FK__GameVaria__GameI__65570293" FromRole="GameVariant" ToRole="Game" />
+          <NavigationProperty Name="Events" Relationship="DataModel.FK_Event_GameVariant" FromRole="GameVariant" ToRole="Event" />
+        </EntityType>
+        <Association Name="FK__GameVaria__GameI__65570293">
+          <End Type="DataModel.Game" Role="Game" Multiplicity="1" />
+          <End Type="DataModel.GameVariant" Role="GameVariant" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Game">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="GameVariant">
+              <PropertyRef Name="GameId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Event_GameVariant">
+          <End Type="DataModel.GameVariant" Role="GameVariant" Multiplicity="0..1" />
+          <End Type="DataModel.Event" Role="Event" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="GameVariant">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Event">
+              <PropertyRef Name="GameVariantId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -1632,6 +1722,7 @@ FROM [dbo].[SelectedPeople] AS [SelectedPeople]</DefiningQuery>
           <EntitySetMapping Name="Events">
             <EntityTypeMapping TypeName="DataModel.Event">
               <MappingFragment StoreEntitySet="Events">
+                <ScalarProperty Name="GameVariantId" ColumnName="GameVariantId" />
                 <ScalarProperty Name="PentamindFactor" ColumnName="PentamindFactor" />
                 <ScalarProperty Name="ConsistentWithBoardability" ColumnName="ConsistentWithBoardability" />
                 <ScalarProperty Name="GameId" ColumnName="GameId" />
@@ -1998,6 +2089,16 @@ FROM [dbo].[SelectedPeople] AS [SelectedPeople]</DefiningQuery>
                 <ScalarProperty Name="QuasiEloRating" ColumnName="QuasiEloRating" />
                 <ScalarProperty Name="EventCode" ColumnName="EventCode" />
                 <ScalarProperty Name="ContestantId" ColumnName="ContestantId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="GameVariants">
+            <EntityTypeMapping TypeName="DataModel.GameVariant">
+              <MappingFragment StoreEntitySet="GameVariants">
+                <ScalarProperty Name="SSMA_TimeStamp" ColumnName="SSMA_TimeStamp" />
+                <ScalarProperty Name="GameId" ColumnName="GameId" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
