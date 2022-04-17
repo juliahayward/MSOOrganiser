@@ -71,6 +71,7 @@
     <Compile Include="Extensions\StringExtensionTests.cs" />
     <Compile Include="IndividualMedalTableGeneratorTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Reports\GrandPrixMetaScoreCalculatorTests.cs" />
     <Compile Include="Reports\PentamindReportGeneratorTests.cs" />
     <Compile Include="Sandbox\Sandbox.cs" />
     <Compile Include="Web\ApiV1ControllerTests.cs" />

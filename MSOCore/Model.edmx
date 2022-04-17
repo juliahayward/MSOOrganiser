@@ -118,6 +118,7 @@ warning 6002: The table/view 'mso_prod.dbo.Badges - Misc' does not have a primar
           <Property Name="ConsistentWithBoardability" Type="bit" Nullable="false" />
           <Property Name="PentamindFactor" Type="float" Nullable="false" />
           <Property Name="GameVariantId" Type="int" />
+          <Property Name="GPCategory" Type="nvarchar" MaxLength="20" />
         </EntityType>
         <EntityType Name="EventType">
           <Key>
@@ -1053,6 +1054,7 @@ FROM [dbo].[SelectedPeople] AS [SelectedPeople]</DefiningQuery>
           <NavigationProperty Name="MetaGameDefinitions" Relationship="DataModel.FK_MetaGameDefinition_Event" FromRole="Event" ToRole="MetaGameDefinition" />
           <Property Name="GameVariantId" Type="Int32" />
           <NavigationProperty Name="GameVariant" Relationship="DataModel.FK_Event_GameVariant" FromRole="Event" ToRole="GameVariant" />
+          <Property Name="GPCategory" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="EventType">
           <Key>
@@ -1722,6 +1724,7 @@ FROM [dbo].[SelectedPeople] AS [SelectedPeople]</DefiningQuery>
           <EntitySetMapping Name="Events">
             <EntityTypeMapping TypeName="DataModel.Event">
               <MappingFragment StoreEntitySet="Events">
+                <ScalarProperty Name="GPCategory" ColumnName="GPCategory" />
                 <ScalarProperty Name="GameVariantId" ColumnName="GameVariantId" />
                 <ScalarProperty Name="PentamindFactor" ColumnName="PentamindFactor" />
                 <ScalarProperty Name="ConsistentWithBoardability" ColumnName="ConsistentWithBoardability" />

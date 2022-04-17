@@ -1,0 +1,53 @@
+﻿@model MSOCore.Reports.GrandPrixStandingsGenerator.GrandPrixStandingsReportVm
+@{
+    if (Model.HeaderRequired)
+    { Layout = "~/Views/Shared/_NewLayout.cshtml"; }
+    else
+    { Layout = "~/Views/Shared/_NewLayoutNoHeader.cshtml"; }
+    TempData["AutoRefresh"] = true;
+}
+
+@if (Model.HeaderRequired)
+{
+    <h1>Grand Prix Standings</h1>
+    <p>All standings are provisional until formally announced at the closing ceremony. Any data errors <b>must</b> be reported two hours before the ceremony to ensure correction</p>
+}
+
+@{ var i = 1; }
+
+<table class="table">
+    <thead>
+        <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td>Name</td>
+            <td>Score</td>
+            <td>Individual events</td>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.TopNStandings)
+        {
+            <tr>
+                <th scope="row">@i</th>
+                <td><span>@item.JuniorFlag</span><span>@item.SeniorFlag</span></td>
+                <td><span>@item.FemaleFlag</span></td>
+                <td><img src="@item.Flag" title="@item.Nationality" height="20" style="margin-right: 4px" /></td>
+                <td><span><a href="/Report/ContestantMedals?contestantId=@item.ContestantId">@item.Name</a></span></td>
+                <td><span>@item.TotalScoreStr</span></td>
+                <td style="font-size: small">
+                    @foreach (var score in item.Scores)
+                    {
+                        <span><a href="/Report/EventResults?eventCode=@score.EventCode">@score.ToString()</a></span>
+                    }
+                </td>
+            </tr>
+
+            i++;
+        }
+    </tbody>
+</table>
+
+<h3>Top @Model.TopNRequired listed.</h3>

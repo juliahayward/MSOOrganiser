@@ -97,6 +97,16 @@ namespace MSOWeb.Controllers
             return View("PentamindStandings", model);
         }
 
+        public ActionResult GrandPrixStandings(int? year, DateTime? date, bool header = false, int count = 100)
+        {
+            var model = GetGrandPrixStandings(year, date);
+            model.TopNRequired = count;
+            model.StandingsFilter = (x => true);
+            model.HeaderRequired = header;
+
+            return View("GrandPrixStandings", model);
+        }
+
         public ActionResult ClearPentamindStandingsCache()
         {
             System.Web.HttpContext.Current.Application["Pentamind"] = null;
@@ -105,7 +115,15 @@ namespace MSOWeb.Controllers
             System.Web.HttpContext.Current.Application["Poker"] = null;
             System.Web.HttpContext.Current.Application["Chess"] = null;
             System.Web.HttpContext.Current.Application["Backgammon"] = null;
-
+            System.Web.HttpContext.Current.Application["GrandPrix"] = null;
+            // GP categories
+            System.Web.HttpContext.Current.Application["imperfectinfo"] = null;
+            System.Web.HttpContext.Current.Application["abstract"] = null;
+            System.Web.HttpContext.Current.Application["backgammon"] = null;
+            System.Web.HttpContext.Current.Application["chess"] = null;
+            System.Web.HttpContext.Current.Application["poker"] = null;
+            System.Web.HttpContext.Current.Application["draughts"] = null;
+            System.Web.HttpContext.Current.Application["multiplayer"] = null;
             return new RedirectResult("/");
         }
 
@@ -155,6 +173,37 @@ namespace MSOWeb.Controllers
             return View("PentamindStandings", model);
         }
 
+
+        public ActionResult WomensGrandPrixStandings(int? year, DateTime? date, bool header = false, int count = 40)
+        {
+            var model = GetGrandPrixStandings(year, date);
+            model.TopNRequired = count;
+            model.StandingsFilter = (x => x.IsInWomensPenta);
+            model.HeaderRequired = header;
+
+            return View("GrandPrixStandings", model);
+        }
+
+        public ActionResult SeniorGrandPrixStandings(int? year, DateTime? date, bool header = false, int count = 40)
+        {
+            var model = GetGrandPrixStandings(year, date);
+            model.TopNRequired = count;
+            model.StandingsFilter = x => x.IsSenior;
+            model.HeaderRequired = header;
+
+            return View("GrandPrixStandings", model);
+        }
+
+        public ActionResult JuniorGrandPrixStandings(int? year, DateTime? date, bool header = false, int count = 40)
+        {
+            var model = GetGrandPrixStandings(year, date);
+            model.TopNRequired = count;
+            model.StandingsFilter = x => x.IsJunior;
+            model.HeaderRequired = header;
+
+            return View("GrandPrixStandings", model);
+        }
+
         public PentamindStandingsGenerator.PentamindStandingsReportVm GetPentamindStandings(int? year, DateTime? date)
         {
             PentamindStandingsGenerator.PentamindStandingsReportVm model;
@@ -167,6 +216,22 @@ namespace MSOWeb.Controllers
                 var generator = new PentamindStandingsGenerator();
                 model = generator.GetStandings(year, date);
                 System.Web.HttpContext.Current.Application["Pentamind"] = model;
+            }
+            return model;
+        }
+
+        public GrandPrixStandingsGenerator.GrandPrixStandingsReportVm GetGrandPrixStandings(int? year, DateTime? date)
+        {
+            GrandPrixStandingsGenerator.GrandPrixStandingsReportVm model;
+            if (System.Web.HttpContext.Current.Application["GrandPrix"] != null)
+            {
+                model = System.Web.HttpContext.Current.Application["GrandPrix"] as GrandPrixStandingsGenerator.GrandPrixStandingsReportVm;
+            }
+            else
+            {
+                var generator = new GrandPrixStandingsGenerator();
+                model = generator.GetStandings(year, date);
+                System.Web.HttpContext.Current.Application["GrandPrix"] = model;
             }
             return model;
         }
@@ -296,6 +361,31 @@ namespace MSOWeb.Controllers
                 var generator = new PentamindStandingsGenerator();
                 model = generator.GetBackgammonStandings(year);
                 System.Web.HttpContext.Current.Application["Backgammon"] = model;
+            }
+            return model;
+        }
+
+        public ActionResult GPCategoryStandings(string category, int? year, bool header = false, int count = 40)
+        {
+            var model = GetGPCategoryStandings(category, year);
+            model.TopNRequired = count;
+            model.HeaderRequired = header;
+
+            return View("GrandPrixStandings", model);
+        }
+
+        public GrandPrixStandingsGenerator.GrandPrixStandingsReportVm GetGPCategoryStandings(string category, int? year)
+        {
+            GrandPrixStandingsGenerator.GrandPrixStandingsReportVm model;
+            if (System.Web.HttpContext.Current.Application[category] != null)
+            {
+                model = System.Web.HttpContext.Current.Application[category] as GrandPrixStandingsGenerator.GrandPrixStandingsReportVm;
+            }
+            else
+            {
+                var generator = new GrandPrixStandingsGenerator();
+                model = generator.GetGPCategoryStandings(category, year);
+                System.Web.HttpContext.Current.Application[category] = model;
             }
             return model;
         }

@@ -54,6 +54,7 @@ namespace MSOCore
         public bool ConsistentWithBoardability { get; set; }
         public float PentamindFactor { get; set; }
         public Nullable<int> GameVariantId { get; set; }
+        public string GPCategory { get; set; }
     
         public virtual ICollection<Event_Sess> Event_Sess { get; set; }
         public virtual ICollection<Arbiter> Arbiters { get; set; }
