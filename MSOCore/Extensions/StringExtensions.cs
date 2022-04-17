@@ -79,5 +79,10 @@ namespace MSOCore.Extensions
                     return ((char)int.Parse(m.Groups["Value"].Value, NumberStyles.HexNumber)).ToString();
                 });
         }
+
+        public static string ToTitleCase(this string value)
+        {
+            return CultureInfo.CurrentCulture.TextInfo.ToTitleCase(value);
+        }
     }
 }
