@@ -35,7 +35,7 @@ namespace MSOWeb.Controllers
 
                 var filename = (Directory.Exists("C:\\inetpub\\wwwroot\\msoweb\\rawdata"))
                 ? "C:\\inetpub\\wwwroot\\msoweb\\rawdata\\upload" + DateTime.Now.ToString("yyyy-MM-dd-HHmm") + ".csv"
-                : "C:\\src\\juliahayward\\MSOOrganiser\\MSOWeb\\RawData\\upload" + DateTime.Now.ToString("yyyy-MM-dd-HHmm") + ".csv";
+                : "C:\\Users\\Julia\\OneDrive\\Src\\MSOOrganiser\\MSOWeb\\RawData\\upload" + DateTime.Now.ToString("yyyy-MM-dd-HHmm") + ".csv";
 
                 using (var source = new StreamReader(inputFile.InputStream))
                 {
@@ -115,10 +115,16 @@ namespace MSOWeb.Controllers
                 var lines = fileInput.Split('\n');
                 foreach (string line in lines)
                 {
+                    if (string.IsNullOrWhiteSpace(line)) continue;
+
+                    int rank = 0;
                     var parts = line.Split(':', '(', ')');
+                    bool validRank = int.TryParse(parts[0].Trim(), out rank);
+                    if (!validRank) continue;
+
                     model.Elements.Add(new PokerstarsResultModel.PokerstarsResultElement()
                     {
-                        Rank = int.Parse(parts[0].Trim()),
+                        Rank = rank,
                         UserId = parts[1].Trim(),
                         Country = parts[2].Trim()
                     });
@@ -414,6 +420,115 @@ namespace MSOWeb.Controllers
                 }
 
                 //TempData["SuccessMessage"] = $"Loaded {model.Elements.Count} results from file. Ambiguous: {ambiguous}";
+            }
+            catch (Exception e)
+            {
+                TempData["FailureMessage"] = e.Message;
+            }
+            return new RedirectResult("/Olympiad/Event/" + eventId + "?editable=true");
+        }
+
+        public class PlayStrategyResultModel
+        {
+            public class PlayStrategyResultElement
+            {
+                public int Rank { get; set; }
+                public string Nickname { get; set; }
+                public string Score { get; set; }
+            }
+
+            public readonly List<PlayStrategyResultElement> Elements = new List<PlayStrategyResultElement>();
+        }
+
+        [Authorize(Roles = "Superadmin, Admin")]
+        public ActionResult PlayStrategy(int id)
+        {
+            var context = DataEntitiesProvider.Provide();
+            var evt = context.Events.FirstOrDefault(x => x.EIN == id);
+            if (evt == null) throw new ArgumentException("No event with this ID");
+            if (evt.Location != "PlayStrategy") throw new ArgumentException("This is not a PlayStrategy event");
+
+            var model = new EventUploadVM() { EventId = id, Name = evt.Mind_Sport, Code = evt.Code };
+            return View(model);
+        }
+
+        [Authorize(Roles = "Superadmin, Admin")]
+        [HttpPost]
+        public ActionResult UploadPlayStrategy(int eventId, HttpPostedFileBase inputFile)
+        {
+            try
+            {
+                if (inputFile == null)
+                    throw new FileNotFoundException("Please select a file");
+
+                PlayStrategyResultModel model = new PlayStrategyResultModel();
+                string fileInput = "";
+                using (var source = new StreamReader(inputFile.InputStream, Encoding.UTF8))
+                {
+                    using (var target = new StringWriter())
+                    {
+                        target.Write(source.ReadToEnd());
+                        fileInput = target.ToString();
+                    }
+                }
+
+                ContestantsLogic logic = new ContestantsLogic();
+                int rank;
+
+                var lines = fileInput.Split('\n');
+                foreach (string line in lines)
+                {
+                    var parts = line.Split(',');
+                    // Intermediate headers
+                    if (!int.TryParse(parts[0], out rank)) continue;
+                    string nickname = parts[2].Trim();
+                    model.Elements.Add(new PlayStrategyResultModel.PlayStrategyResultElement()
+                    {
+                        Rank = rank,
+                        Nickname = nickname,
+                        Score = parts[4].Trim(),
+                    });
+                }
+
+                var context = DataEntitiesProvider.Provide();
+                var evt = context.Events.FirstOrDefault(x => x.EIN == eventId);
+                if (evt == null) throw new ArgumentException("No event with this ID");
+                if (evt.Location != "PlayStrategy") throw new ArgumentException("This is not a PlayStrategy event");
+                var entrants = evt.Entrants.ToList();
+
+                string ambiguous = "";
+
+                foreach (var element in model.Elements)
+                {
+                    var matchingContestants = context.Contestants.Where(x => x.OnlineNicknames.Contains(element.Nickname)).ToList();
+                    if (matchingContestants.Count() > 1)
+                    {
+                        ambiguous += element.Nickname + ",";
+                    }
+                    // Can't reconcile this user id - must be a new person
+                    else if (matchingContestants.Count() == 0)
+                    {
+                        logic.AddNewContestantWithScoreToEvent(element.Nickname, "", element.Nickname, "", element.Rank, element.Score, "-"+element.Rank, eventId);
+                    }
+                    // We know who it is
+                    else
+                    {
+                        var entrant = entrants.FirstOrDefault(x =>
+                            x.Mind_Sport_ID == matchingContestants.Single().Mind_Sport_ID);
+                        if (entrant == null)
+                        {
+                            logic.AddContestantWithScoreToEvent(matchingContestants.Single().Mind_Sport_ID,
+                                element.Rank, element.Score, "-"+element.Rank, eventId);
+                        }
+                        else
+                        {
+                            entrant.Rank = element.Rank;
+                            entrant.Score = element.Score;
+                            context.SaveChanges();
+                        }
+                    }
+                }
+                TempData["SuccessMessage"] = $"Loaded {model.Elements.Count} results from file. Ambiguous: {ambiguous}";
             }
             catch (Exception e)
             {

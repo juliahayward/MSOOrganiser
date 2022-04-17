@@ -820,6 +820,8 @@
     <Content Include="Views\Upload\Pokerstars.cshtml" />
     <Content Include="Views\Upload\WorldPuzzle.cshtml" />
     <Content Include="Views\Upload\RussianDraughts.cshtml" />
+    <Content Include="Views\Report\GrandPrixStandings.cshtml" />
+    <Content Include="Views\Upload\PlayStrategy.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

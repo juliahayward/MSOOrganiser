@@ -50,6 +50,11 @@
         window.location = "/Upload/RussianDraughts/" + eventId;
     });
 
+    $("#uploadFromPlayStrategy").on("click", function () {
+        var eventId = $("#Id").val();
+        window.location = "/Upload/PlayStrategy/" + eventId;
+    });
+
     $("#generateStandings").on("click", function () {
         var eventId = $("#Id").val();
         $.post("/Olympiad/FreezeEvent", { eventId: eventId }, function (data) {

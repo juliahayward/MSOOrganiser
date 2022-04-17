@@ -72,6 +72,7 @@
     <Compile Include="Calculators\PaymentProcessor2021.cs" />
     <Compile Include="Calculators\PaymentProcessor2018.cs" />
     <Compile Include="Calculators\Penta2021Calculator.cs" />
+    <Compile Include="Calculators\GrandPrixMetaScoreCalculator.cs" />
     <Compile Include="Calculators\PentamindMetaScoreCalculator.cs" />
     <Compile Include="Calculators\RankCalculator.cs" />
     <Compile Include="Calculators\PentaPre2010Calculator.cs" />
@@ -184,6 +185,7 @@
     <Compile Include="Reports\EventsWithPrizesReportGenerator.cs" />
     <Compile Include="Reports\EventResultsGenerator.cs" />
     <Compile Include="Reports\GameListGenerator.cs" />
+    <Compile Include="Reports\GrandPrixStandingsGenerator.cs" />
     <Compile Include="Reports\PeopleOwingMoneyReportGenerator.cs" />
     <Compile Include="Reports\ScheduleGenerator.cs" />
     <Compile Include="Reports\TotalEventEntriesGenerator.cs" />
