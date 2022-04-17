@@ -19,23 +19,38 @@ namespace MSOCore.Calculators
             while (!parser.EndOfData)
             {
                 string[] fields = parser.ReadFields();
-                if (fields[0] == "ID") // header
+                if (fields[0].Contains("ID")) // header
                     continue;
 
-                var order = new Order2021()
+                // Fields from Wordpress 2022:
+                // 0 Order ID,
+                // 1 Order Date,
+                // 2 Billing First Name,
+                // 3 Billing Last Name,
+                // 4 Billing Email Address,
+                // 5 Quantity,
+                // 6 Order Line Title,
+                // 7 billing_title,
+                // 8 billing_nationality,
+                // 9 billing_platform_username,
+                // 10 billing_discord_username,
+                // 11 billing_date_of_birthday,
+                // 12 billing_underage,
+                // 13 billing_gardian_name,
+                // 14 billing_gardian_email
+                 var order = new Order2021()
                 {
                     WordpressId = int.Parse(fields[0]),
-                    // Oh designers, please use "normal" characters as much as possible!!
-                    EventName = fields[1].Replace("’", "'").Replace("×", "x"), 
-                    FirstName = fields[9],
-                    Email = fields[10],
-                    Title = fields[14],
-                    LastName = fields[15],
-                    Phone = fields[16],
-                    LocalisedNationality = fields[17],
-                    OnlineNickname = fields[18],
-                    DiscordNickname = fields[19],
-                    DoBString = fields[20]
+                    EventName = fields[6], 
+                    FirstName = fields[2],
+                    Email = fields[4],
+                    Title = fields[7].ToTitleCase(),
+                    LastName = fields[3],
+                    Phone = null,
+                    LocalisedNationality = fields[8],
+                    OnlineNickname = fields[9],
+                    DiscordNickname = fields[10],
+                    DoBString = fields[11]
                 };
                 yield return order;
             }
@@ -51,7 +66,8 @@ namespace MSOCore.Calculators
             var events = context.Events.Where(x => x.OlympiadId == olympiad.Id)
                 .ToDictionary(e => e.Code, e => e);
             var eventsByName = context.Events.Where(x => x.OlympiadId == olympiad.Id)
-                .ToDictionary(e => e.Mind_Sport, e => e);
+                .ToDictionary(e => e.Notes, e => e);
+
             var entryFees = context.Fees.ToDictionary(x => x.Code, x => x);
 
             var highestNumberParam = context.Parameters.First(x => x.Id == 2);
@@ -79,7 +95,7 @@ namespace MSOCore.Calculators
 
                 // Already entered?
                 if (contestant.Entrants.Any(x =>
-                    x.Event != null && x.Event.Mind_Sport == order.EventName && x.OlympiadId == olympiad.Id))
+                    x.Event != null && x.Event.Notes == order.EventName && x.OlympiadId == olympiad.Id))
                     continue;
 
                 if (!eventsByName.ContainsKey(order.EventName))
@@ -114,7 +130,7 @@ namespace MSOCore.Calculators
                 Lastname = order.LastName ?? "",
                 Nationality = order.LocalisedNationality,
                 Title = order.Title,
-                Male = (order.Title == "Mr"),
+                Male = (order.Title == "Mr" || order.Title == "Master"),
                 DateofBirth = SanitiseDateOfBirth(order.DateOfBirth),
                 OnlineNicknames = order.OnlineNickname,
                 DiscordNickname = order.DiscordNickname,
