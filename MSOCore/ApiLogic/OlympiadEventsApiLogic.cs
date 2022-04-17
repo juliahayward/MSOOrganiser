@@ -109,7 +109,7 @@ namespace MSOCore.ApiLogic
             var context = DataEntitiesProvider.Provide();
             var vm = new EventContestantsVm();
 
-            var currentOlympiad = context.Olympiad_Infoes.OrderByDescending(x => x.StartDate).First();
+            var currentOlympiad = context.Olympiad_Infoes.First(x=>x.Current);
             var evt = currentOlympiad.Events.SingleOrDefault(x => x.Code == eventCode);
             var elos = context.Ratings.Where(s => s.EventCode == eventCode).ToDictionary(s => s.ContestantId, s => s.QuasiEloRating);
             var seedings = context.Seedings.Where(s => s.EventCode == eventCode).ToDictionary(s => s.ContestantId, s => s.Score);
