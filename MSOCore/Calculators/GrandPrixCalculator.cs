@@ -17,7 +17,9 @@ namespace MSOCore.Calculators
 
             foreach (var entry in entries)
             {
-                if (entry.Absent || !isInPentamind)
+                // Withdrawn entrants score 0 regardless of where they come, but still remain in the right rank (so they
+                // don't push other entrants upwards)
+                if (entry.Absent || entry.Withdrawn || !isInPentamind)
                 {
                     entry.PentaScore = 0;
                     continue;
@@ -35,20 +37,22 @@ namespace MSOCore.Calculators
 
         private double Formula(int numberOfEntrants, int myRank, int numberOfTeamsOnMyRank)
         {
+            float smallEventFactor = (numberOfEntrants >= 10) ? 1 : numberOfEntrants / 10.0f;
             float totalScore = 0;
             for (int i=0; i<numberOfTeamsOnMyRank; i++)
             {
                 totalScore += Formula1(numberOfEntrants, myRank + i, myRank);
             }
-            return Math.Round(totalScore / numberOfTeamsOnMyRank);
+            return Math.Round(totalScore * smallEventFactor / numberOfTeamsOnMyRank, MidpointRounding.AwayFromZero);
         }
 
         private int Formula1(int numberOfEntrants, int actualRank, int rankOfFirstInGroup)
         {
             if (actualRank == 1) return 40;
-            else if (actualRank == 2) return 28;
-            else if (actualRank == 3) return 20;
-            else if (actualRank == 4) return 12;
+            // Only the top half score, regardless of 1st-4th
+            else if (actualRank == 2 && numberOfEntrants >= 4) return 28;
+            else if (actualRank == 3 && numberOfEntrants >= 6) return 20;
+            else if (actualRank == 4 && numberOfEntrants >= 8) return 12;
             else if (rankOfFirstInGroup <= numberOfEntrants * 0.05) return 8;
             else if (rankOfFirstInGroup <= numberOfEntrants * 0.10) return 6;
             else if (rankOfFirstInGroup <= numberOfEntrants * 0.25) return 4;

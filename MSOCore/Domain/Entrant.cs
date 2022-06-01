@@ -13,6 +13,7 @@ namespace MSOCore
             return new Entrant()
                     {
                         Absent = false,
+                        Withdrawn = false,
                         Comment = null,
                         Date = null,
                         // EntryNumber = id

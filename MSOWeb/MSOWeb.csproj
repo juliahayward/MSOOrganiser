@@ -45,6 +45,9 @@
     <Reference Include="EntityFramework, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.5.0.0\lib\net45\EntityFramework.dll</HintPath>
     </Reference>
+    <Reference Include="HtmlAgilityPack, Version=1.11.42.0, Culture=neutral, PublicKeyToken=bd319b19eaf3b43a, processorArchitecture=MSIL">
+      <HintPath>..\packages\HtmlAgilityPack.1.11.42\lib\Net45\HtmlAgilityPack.dll</HintPath>
+    </Reference>
     <Reference Include="JuliaHayward.Common, Version=0.1.3.12352, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\JuliaHayward.Common.0.1.3.12352\lib\net40\JuliaHayward.Common.dll</HintPath>
       <Private>True</Private>
@@ -822,6 +825,7 @@
     <Content Include="Views\Upload\RussianDraughts.cshtml" />
     <Content Include="Views\Report\GrandPrixStandings.cshtml" />
     <Content Include="Views\Upload\PlayStrategy.cshtml" />
+    <Content Include="Views\Upload\BoardGameArena.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

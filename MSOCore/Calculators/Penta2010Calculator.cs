@@ -49,7 +49,7 @@ namespace MSOCore.Calculators
 
             foreach (var entry in entries)
             {
-                if (entry.Absent || !isInPentamind)
+                if (entry.Absent || entry.Withdrawn || !isInPentamind)
                 {
                     entry.PentaScore = 0;
                     continue;

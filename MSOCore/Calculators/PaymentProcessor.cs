@@ -287,7 +287,7 @@ namespace MSOCore.Calculators
                     Nationality = entrant.Country,
                     DateofBirth = entrant.DoB,
                     Title = entrant.Title,
-                    Male = (entrant.Title == "Mr")
+                    Male = (entrant.Title == "MR")
                 };
 
                 context.Contestants.Add(contestant);

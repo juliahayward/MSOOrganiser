@@ -27,6 +27,11 @@ namespace MSOCore.Calculators
                     if (alreadyCountedVariants.Contains(score.GameVariantCode.Value)) continue;
                     alreadyCountedVariants.Add(score.GameVariantCode.Value);
                 }
+                else // Some games have no Variants, in which case the whole Game counts as a variant
+                {
+                    if (alreadyCountedGames.Contains(score.GameCode)) continue;
+                    // Will be added to the list later
+                }
 
                 var s = score.Clone();
                 // If this is the best in a category, double the points, 
@@ -39,7 +44,7 @@ namespace MSOCore.Calculators
                 // If this is not the best in a Game, then halve the points
                 if (alreadyCountedGames.Contains(score.GameCode))
                 {
-                    s.Score = Math.Round(score.Score / 2);
+                    s.Score = Math.Round(s.Score / 2, MidpointRounding.AwayFromZero);
                 }
                 else 
                 { 

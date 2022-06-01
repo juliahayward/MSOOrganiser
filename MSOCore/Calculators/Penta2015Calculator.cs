@@ -13,6 +13,8 @@ namespace MSOCore.Calculators
         int Rank { get; set; }
         float PentaScore { get; set; }
         bool Absent { get; set; }
+
+        bool Withdrawn { get; set; }
     }
 
     public class Penta2015Calculator : PentaCalculator

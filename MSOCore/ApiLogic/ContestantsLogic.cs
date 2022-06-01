@@ -52,7 +52,11 @@ namespace MSOCore.ApiLogic
                 public int Rank { get; set; }
                 public string RankString => (Rank > 0) ? Rank.ToString() : "";
                 public bool Absent { get; set; }
+
+                public bool Withdrawn { get; set; }
                 public string AbsentString => (Absent) ? "Yes" : "";
+
+                public string WithdrawnString => (Withdrawn) ? "Yes" : "";
             }
         }
 
@@ -88,6 +92,7 @@ namespace MSOCore.ApiLogic
             {
                 EventId = e.e.EventId.Value,
                 Absent = e.e.Absent,
+                Withdrawn = e.e.Withdrawn,
                 Code = e.g.Code,
                 Name = e.g.Mind_Sport,
                 Fee = e.e.Fee,
@@ -165,7 +170,8 @@ namespace MSOCore.ApiLogic
                 EventId = eventId,
                 OlympiadId = evt.OlympiadId,
                 Name = contestant,
-                Absent = false
+                Absent = false,
+                Withdrawn = false,
             };
 
             context.Entrants.Add(newEntrant);
@@ -187,6 +193,7 @@ namespace MSOCore.ApiLogic
                 OlympiadId = evt.OlympiadId,
                 Name = contestant,
                 Absent = false,
+                Withdrawn = false,
                 Rank = rank,
                 Score =  score
             };
@@ -195,7 +202,7 @@ namespace MSOCore.ApiLogic
             context.SaveChanges();
         }
 
-        public void AddContestantWithScoreToEvent(int contestantId, int rank, string score, string tiebreak, int eventId)
+        public void AddContestantWithScoreToEvent(int contestantId, int rank, string score, string tiebreak, int eventId, bool withdrawn = false)
         {
             var context = DataEntitiesProvider.Provide();
             var existingEntrants = context.Entrants.Where(e => e.Mind_Sport_ID == contestantId && e.EventId == eventId).ToList();
@@ -210,6 +217,7 @@ namespace MSOCore.ApiLogic
                 OlympiadId = evt.OlympiadId,
                 Name = contestant,
                 Absent = false,
+                Withdrawn = false,
                 Rank = rank,
                 Score = score,
                 Tie_break = tiebreak
@@ -242,7 +250,8 @@ namespace MSOCore.ApiLogic
                 EventId = eventId,
                 OlympiadId = evt.OlympiadId,
                 Name = contestant,
-                Absent = false
+                Absent = false,
+                Withdrawn = false,
             };
 
             context.Entrants.Add(newEntrant);
@@ -251,39 +260,10 @@ namespace MSOCore.ApiLogic
 
         public void AddNewContestantWithScoreToEvent(string firstName, string lastName, string onlineNickname, string country, int rank, string score, int eventId)
         {
-            if (string.IsNullOrEmpty(firstName) && string.IsNullOrEmpty(lastName))
-                throw new ArgumentException("You must specify at least one of first name and last name");
-
-            var context = DataEntitiesProvider.Provide();
-
-            var contestant = new Contestant()
-            {
-                Firstname = firstName ?? "",
-                Lastname = lastName ?? "",
-                Nationality = country ?? "",
-                OnlineNicknames = onlineNickname ?? "",
-                Male = true         // The default, to exclude unknown people from Women's Pentamind until we have confirmed they are eligible
-            };
-
-            context.Contestants.Add(contestant);
-
-            var evt = context.Events.First(x => x.EIN == eventId);
-
-            var newEntrant = new Entrant()
-            {
-                EventId = eventId,
-                OlympiadId = evt.OlympiadId,
-                Name = contestant,
-                Score = score,
-                Rank = rank,
-                Absent = false
-            };
-
-            context.Entrants.Add(newEntrant);
-            context.SaveChanges();
+            AddNewContestantWithScoreToEvent(firstName, lastName, onlineNickname, country, rank, score, null, eventId);
         }
 
-        public void AddNewContestantWithScoreToEvent(string firstName, string lastName, string onlineNickname, string country, int rank, string score, string tiebreak, int eventId)
+        public void AddNewContestantWithScoreToEvent(string firstName, string lastName, string onlineNickname, string country, int rank, string score, string tiebreak, int eventId, bool withdrawn = false)
         {
             if (string.IsNullOrEmpty(firstName) && string.IsNullOrEmpty(lastName))
                 throw new ArgumentException("You must specify at least one of first name and last name");
@@ -311,6 +291,7 @@ namespace MSOCore.ApiLogic
                 Score = score,
                 Rank = rank,
                 Absent = false,
+                Withdrawn = withdrawn,
                 Tie_break =  tiebreak
             };
 

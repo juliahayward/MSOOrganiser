@@ -22,7 +22,7 @@ namespace MSOCore.Reports
         public IEnumerable<NationalityVm> GetItemsForLatest()
         {
             var context = DataEntitiesProvider.Provide();
-            var olympiad = context.Olympiad_Infoes.OrderByDescending(x => x.StartDate).First();
+            var olympiad = context.Olympiad_Infoes.First(x => x.Current);
 
             return GetItems(olympiad.Id);
         }

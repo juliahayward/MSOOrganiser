@@ -82,6 +82,12 @@
                                 Upload from PlayStrategy (CSV)
                             </button>
                         }
+                        if (Model.Location == "BoardGameArena")
+                        {
+                            <button class="btn btn-primary" id="uploadFromBoardGameArena" type="button" style="float: right; margin-right: 8px;">
+                                Upload from BoardGameArena (URL)
+                            </button>
+                        }
                     }
                 </h2>
                 @Model.ResultEntrants with result, @Model.NoResultEntrants awaiting result, @Model.AbsentEntrants absent, @Model.TotalEntrants total
@@ -103,6 +109,7 @@
                                 <th scope="col">Score</th>
                                 <th scope="col">Tiebreak</th>
                                 <th scope="col">Absent</th>
+                                <th scope="col">Withdrawn</th>
                                 <th scope="col">@Model.PointsType</th>
                                 <th scope="col"></th>
                             </tr>
@@ -112,65 +119,71 @@
                             {
                                 if (Model.Editable)
                                 {
-                                    <tr>
-                                        <td><a href="/Contestant/Contestant/@c.ContestantId?editable=true" title="Online: @c.AllOnlineNicknames">@c.FullName()</a><input type="hidden" name="EntryNumberString" value="@c.EntryNumber" /><br />@c.OnlineNicknames</td>
-                                        @if (Model.NumberInTeam > 1)
-                                        {
-                                            <td>@c.Partner</td>
-                                        }
-                                        <td>@c.Junior</td>
-                                        <td>
-                                            <select name="Medal" style="width: 80px;">
-                                                <option value="">-</option>
-                                                <option value="Gold" @c.GoldSelected>Gold</option>
-                                                <option value="Silver" @c.SilverSelected>Silver</option>
-                                                <option value="Bronze" @c.BronzeSelected>Bronze</option>
-                                            </select>
-                                        </td>
-                                        <td>
-                                            @if (c.IsJunior)
-                                            {
-                                                <select name="JuniorMedal" style="width: 120px;">
-                                                    <option value="">-</option>
-                                                    <option value="Gold JNR" @c.JGoldSelected>Gold JNR</option>
-                                                    <option value="Silver JNR" @c.JSilverSelected>Silver JNR</option>
-                                                    <option value="Bronze JNR" @c.JBronzeSelected>Bronze JNR</option>
-                                                </select>
-                                            }
-                                            else
-                                            {
-                                                <input type="hidden" name="JuniorMedal" value="" />
-                                            }
-                                        </td>
-                                        <td>@c.Rank</td>
-                                        <td><input type="text" autocomplete="off" name="Score" style="width: 48px; text-align: right" value="@c.Score" /></td>
-                                        <td><input type="text" autocomplete="off" name="Tiebreak" style="width: 48px; text-align: right" value="@c.Tiebreak" /></td>
-                                        <td>
-                                            <input type="hidden" name="AbsentString" value="off" />
-                                            <input type="checkbox" name="AbsentString" @c.AbsentChecked />
-                                        </td>
-                                        <td>@c.PentamindString</td>
-                                        <td>@if(c.IsDeletable){<i class="fa fa-trash-o fnDeleteEntrant" data-entrant="@c.EntryNumber" title="Delete"></i>}</td>
-                                    </tr>
+                            <tr>
+                                <td><a href="/Contestant/Contestant/@c.ContestantId?editable=true" title="Online: @c.AllOnlineNicknames">@c.FullName()</a><input type="hidden" name="EntryNumberString" value="@c.EntryNumber" /><br />@c.OnlineNicknames</td>
+                                @if (Model.NumberInTeam > 1)
+                                {
+                                    <td>@c.Partner</td>
+                                }
+                                <td>@c.Junior</td>
+                                <td>
+                                    <select name="Medal" style="width: 80px;">
+                                        <option value="">-</option>
+                                        <option value="Gold" @c.GoldSelected>Gold</option>
+                                        <option value="Silver" @c.SilverSelected>Silver</option>
+                                        <option value="Bronze" @c.BronzeSelected>Bronze</option>
+                                    </select>
+                                </td>
+                                <td>
+                                    @if (c.IsJunior)
+                                    {
+                                        <select name="JuniorMedal" style="width: 120px;">
+                                            <option value="">-</option>
+                                            <option value="Gold JNR" @c.JGoldSelected>Gold JNR</option>
+                                            <option value="Silver JNR" @c.JSilverSelected>Silver JNR</option>
+                                            <option value="Bronze JNR" @c.JBronzeSelected>Bronze JNR</option>
+                                        </select>
+                                    }
+                                    else
+                                    {
+                                        <input type="hidden" name="JuniorMedal" value="" />
+                                    }
+                                </td>
+                                <td>@c.Rank</td>
+                                <td><input type="text" autocomplete="off" name="Score" style="width: 48px; text-align: right" value="@c.Score" /></td>
+                                <td><input type="text" autocomplete="off" name="Tiebreak" style="width: 48px; text-align: right" value="@c.Tiebreak" /></td>
+                                <td>
+                                    <input type="hidden" name="AbsentString" value="off" />
+                                    <input type="checkbox" name="AbsentString" @c.AbsentChecked />
+                                </td>
+                                <td>
+                                    <input type="hidden" name="WithdrawnString" value="off" />
+                                    <input type="checkbox" name="WithdrawnString" @c.WithdrawnChecked />
+                                </td>
+                                <td>@c.PentamindString</td>
+                                <td>@if (c.IsDeletable)
+                                {<i class="fa fa-trash-o fnDeleteEntrant" data-entrant="@c.EntryNumber" title="Delete"></i>}</td>
+                            </tr>
                                 }
                                 else
                                 {
-                                    <tr>
-                                        <td><a href="/Contestant/Contestant/@c.ContestantId" title="Online: @c.AllOnlineNicknames">@c.FullName()</a><br />@c.OnlineNicknames</td>
-                                        @if (Model.NumberInTeam > 1)
-                                        {
-                                            <td>@c.Partner</td>
-                                        }
-                                        <td>@c.Junior</td>
-                                        <td><span class="btn @c.MedalStyle" style="width:72px;">@c.Medal</span></td>
-                                        <td><span class="btn @c.JuniorMedalStyle" style="width:72px;">@c.JuniorMedal.Replace(" JNR", "")</span></td>
-                                        <td>@c.Rank</td>
-                                        <td>@c.Score</td>
-                                        <td>@c.Tiebreak</td>
-                                        <td><input type="checkbox" name="AbsentString" @c.AbsentChecked /></td>
-                                        <td>@c.PentamindString</td>
-                                        <td></td>
-                                    </tr>
+                        <tr>
+                            <td><a href="/Contestant/Contestant/@c.ContestantId" title="Online: @c.AllOnlineNicknames">@c.FullName()</a><br />@c.OnlineNicknames</td>
+                            @if (Model.NumberInTeam > 1)
+                            {
+                                <td>@c.Partner</td>
+                            }
+                            <td>@c.Junior</td>
+                            <td><span class="btn @c.MedalStyle" style="width:72px;">@c.Medal</span></td>
+                            <td><span class="btn @c.JuniorMedalStyle" style="width:72px;">@c.JuniorMedal.Replace(" JNR", "")</span></td>
+                            <td>@c.Rank</td>
+                            <td>@c.Score</td>
+                            <td>@c.Tiebreak</td>
+                            <td><input type="checkbox" name="AbsentString" @c.AbsentChecked /></td>
+                            <td><input type="checkbox" name="WithdrawnString" @c.WithdrawnChecked /></td>
+                            <td>@c.PentamindString</td>
+                            <td></td>
+                        </tr>
                                 }
                             }
                         </tbody>

@@ -55,6 +55,11 @@
         window.location = "/Upload/PlayStrategy/" + eventId;
     });
 
+    $("#uploadFromBoardGameArena").on("click", function () {
+        var eventId = $("#Id").val();
+        window.location = "/Upload/BoardGameArena/" + eventId;
+    }); 
+
     $("#generateStandings").on("click", function () {
         var eventId = $("#Id").val();
         $.post("/Olympiad/FreezeEvent", { eventId: eventId }, function (data) {

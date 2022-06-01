@@ -16,6 +16,8 @@ namespace MSOCore.Reports
             public class EventScore
             {
                 public double Score { get; set; }
+
+                public int Rank { get; set; }
                 public string GameCode { get; set; }
 
                 public int? GameVariantCode { get; set; }
@@ -34,7 +36,8 @@ namespace MSOCore.Reports
                         GameCode = GameCode,
                         GameVariantCode = GameVariantCode,
                         EventCode = EventCode,
-                        GPCategory = GPCategory
+                        GPCategory = GPCategory,
+                        Rank = Rank
                     };
                 }
             }
@@ -55,6 +58,8 @@ namespace MSOCore.Reports
                 public string TotalScoreStr { get { return string.Format("{0:0.00}", TotalScore); } }
                 public List<EventScore> Scores { get; set; }
                 public bool IsValid { get; set; }
+
+                public string TieBreak { get; set; }
             }
 
             public string OlympiadTitle { get; set; }
@@ -122,17 +127,27 @@ namespace MSOCore.Reports
                     GameCode = x.e.Event.Game.Code,
                     GPCategory = x.e.Event.GPCategory,
                     GameVariantCode = x.e.Event.GameVariantId,
-                    Score = (double)x.e.Penta_Score
+                    Score = (double)x.e.Penta_Score,
+                    Rank = x.e.Rank.Value
                 }).ToList();
 
                 standing.Scores = calc.SelectEligibleScores(standing.Scores);
                 standing.TotalScore = standing.Scores.Sum(x => x.Score);
                 standing.IsValid = (standing.Scores.Any());
+                standing.TieBreak = EvaluateTiebreak(standing.Scores);
                 standings.Add(standing);
             }
 
-            vm.Standings = standings.OrderByDescending(x => x.TotalScore);
+            vm.Standings = standings.OrderByDescending(x => x.TotalScore).ThenByDescending(x => x.TieBreak);
             return vm;
+        }
+
+        private string EvaluateTiebreak(IEnumerable<GrandPrixStandingsReportVm.EventScore> scores)
+        {
+            return scores.Count(x => x.Rank == 1).ToString("00")
+                + scores.Count(x => x.Rank == 2).ToString("00")
+                + scores.Count(x => x.Rank == 3).ToString("00")
+                + scores.Count(x => x.Rank == 4).ToString("00");
         }
 
         public GrandPrixStandingsReportVm GetGPCategoryStandings(string category, int? year, DateTime? date = null)
@@ -179,16 +194,18 @@ namespace MSOCore.Reports
                     EventCode = x.e.Event.Code,
                     GameCode = x.e.Event.Game.Code,
                     GPCategory = x.e.Event.GPCategory,
-                    Score = (double)x.e.Penta_Score
+                    Score = (double)x.e.Penta_Score,
+                    Rank = x.e.Rank.Value
                 }).ToList();
 
                 standing.Scores = calc.SelectEligibleCategoryScores(standing.Scores);
                 standing.TotalScore = standing.Scores.Sum(x => x.Score);
                 standing.IsValid = (standing.Scores.Any());
+                standing.TieBreak = EvaluateTiebreak(standing.Scores);
                 standings.Add(standing);
             }
 
-            vm.Standings = standings.OrderByDescending(x => x.TotalScore);
+            vm.Standings = standings.OrderByDescending(x => x.TotalScore).ThenByDescending(x => x.TieBreak);
             return vm;
         }
     }

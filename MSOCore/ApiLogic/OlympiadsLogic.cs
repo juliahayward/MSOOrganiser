@@ -77,7 +77,11 @@ namespace MSOCore.ApiLogic
                 public int? Rank { get; set; }
                 public string Score { get; set; }
                 public bool Absent { get; set; }
+
+                public bool Withdrawn { get; set; }
                 public string AbsentChecked { get { return Absent ? "checked" : ""; } }
+
+                public string WithdrawnChecked { get { return Withdrawn ? "checked" : ""; } }
                 public string Tiebreak { get; set; }
                 public double? Pentamind { get; set; }
                 public string PentamindString { get { return Pentamind.HasValue ? Pentamind.Value.ToString("F2") : ""; } }
@@ -85,7 +89,7 @@ namespace MSOCore.ApiLogic
 
                 public string Junior { get { return IsJunior ? "JNR" : ""; } }
 
-                public string FullName() { return FirstName + " " + LastName.ToUpper(); }
+                public string FullName() { return FirstName + " " + LastName?.ToUpper(); }
 
                 public string OnlineNicknames { get; set; }
                 public string BgaNickname { get; set; }
@@ -107,6 +111,7 @@ namespace MSOCore.ApiLogic
                 public string JuniorMedal { get; set; }
                 public string Score { get; set; }
                 public bool Absent { get; set; }
+                public bool Withdrawn { get; set; } 
                 public string Tiebreak { get; set; }
                 public int Rank { get; set; }
                 public float PentaScore { get; set; }
@@ -120,6 +125,8 @@ namespace MSOCore.ApiLogic
                         throw new InvalidOperationException($"Entrants cannot be both absent and have a score");
                     if (entrant.Absent && !(string.IsNullOrEmpty(entrant.Tiebreak)))
                         throw new InvalidOperationException($"Entrants cannot be both absent and have a tiebreak");
+                    if (entrant.Absent && entrant.Withdrawn)
+                        throw new InvalidOperationException($"Entrants cannot be both absent and withdrawn");
                 }
             }
         }
@@ -201,6 +208,7 @@ namespace MSOCore.ApiLogic
                     Rank = en.Rank,
                     Score = en.Score,
                     Absent = en.Absent,
+                    Withdrawn = en.Withdrawn,
                     Tiebreak = en.Tie_break,
                     Pentamind = en.Penta_Score,
                     OnlineNicknames = en.Name.OnlineNicknames,
@@ -252,6 +260,7 @@ namespace MSOCore.ApiLogic
             {
                 var entrant = context.Entrants.First(x => x.EntryNumber == e.EntryNumber);
                 entrant.Absent = e.Absent;
+                entrant.Withdrawn = e.Withdrawn;
                 entrant.Medal = (string.IsNullOrEmpty(e.Medal)) ? null : e.Medal;
                 entrant.JuniorMedal = (string.IsNullOrEmpty(e.JuniorMedal)) ? null : e.JuniorMedal;
                 entrant.Rank = e.Rank;

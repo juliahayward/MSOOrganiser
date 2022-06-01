@@ -133,6 +133,8 @@ namespace MSOCoreTests
         public int Rank { get; set; }
         public float PentaScore { get; set; }
         public bool Absent { get; set; }
+
+        public bool Withdrawn { get; set; }
         public int Id { get; set; }
     }
 }

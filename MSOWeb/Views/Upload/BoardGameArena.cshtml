@@ -1,0 +1,23 @@
+﻿@{
+    Layout = "~/Views/Shared/_NewLayout.cshtml";
+}
+
+<h1>Upload from PlayStrategy</h1>
+<h2>@Model.Code: @Model.Name</h2>
+
+@using (Html.BeginForm("UploadBoardGameArena", "Upload", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    <input type="hidden" id="eventId" name="eventId" value="@Model.EventId" />
+    <p>Input is expected to be a URL for the BoardGameArena tournament page.</p>
+    <div class="input-group mb-3">
+        <div class="input-group-prepend">
+            <span class="input-group-text" id="basic-addon3">https://en.boardgamearena.com/tournament?id=</span>
+        </div>
+        <input type="text" class="form-control" placeholder="12345" id="url" name="url">
+    </div>
+
+    <button class="btn btn-primary" type="submit">
+        Upload
+    </button>
+}
+

@@ -40,6 +40,7 @@ warning 6002: The table/view 'mso_prod.dbo.Badges - Misc' does not have a primar
           <Property Name="Score" Type="nvarchar" MaxLength="50" />
           <Property Name="Tie-break" Type="nvarchar" MaxLength="50" />
           <Property Name="Absent" Type="bit" Nullable="false" />
+          <Property Name="Withdrawn" Type="bit" Nullable="false" />
           <Property Name="Medal" Type="nvarchar" MaxLength="50" />
           <Property Name="Penta Score" Type="real" />
           <Property Name="MustUse" Type="bit" />
@@ -976,6 +977,7 @@ FROM [dbo].[SelectedPeople] AS [SelectedPeople]</DefiningQuery>
           <Property Type="String" Name="Score" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Type="String" Name="Tie_break" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Type="Boolean" Name="Absent" Nullable="false" />
+          <Property Type="Boolean" Name="Withdrawn" Nullable="false" />
           <Property Type="String" Name="Medal" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Type="Single" Name="Penta_Score" />
           <Property Type="Boolean" Name="MustUse" />
@@ -1684,6 +1686,7 @@ FROM [dbo].[SelectedPeople] AS [SelectedPeople]</DefiningQuery>
                 <ScalarProperty Name="Penta_Score" ColumnName="Penta Score" />
                 <ScalarProperty Name="Medal" ColumnName="Medal" />
                 <ScalarProperty Name="Absent" ColumnName="Absent" />
+                <ScalarProperty Name="Withdrawn" ColumnName="Withdrawn" />
                 <ScalarProperty Name="Tie_break" ColumnName="Tie-break" />
                 <ScalarProperty Name="Score" ColumnName="Score" />
                 <ScalarProperty Name="Rank" ColumnName="Rank" />

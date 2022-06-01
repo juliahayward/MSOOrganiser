@@ -128,6 +128,7 @@ namespace MSOWeb.Controllers
             model.Entrants = new List<OlympiadsLogic.UpdateEventModel.EntrantVm>();
             var ie = form.EntryNumber.GetEnumerator();
             var ae = form.Absent.GetEnumerator();
+            var wd = form.Withdrawn.GetEnumerator();
             var se = form.Score.GetEnumerator();
             var te = form.Tiebreak.GetEnumerator();
             var me = form.Medal.GetEnumerator();
@@ -136,6 +137,7 @@ namespace MSOWeb.Controllers
             while (ie.MoveNext())
             {
                 ae.MoveNext();
+                wd.MoveNext();
                 se.MoveNext();
                 te.MoveNext();
                 me.MoveNext();
@@ -145,6 +147,7 @@ namespace MSOWeb.Controllers
                 {
                     EntryNumber = ie.Current,
                     Absent = ae.Current,
+                    Withdrawn = wd.Current,
                     Score = se.Current,
                     Tiebreak = te.Current,
                     Medal = me.Current,
@@ -181,6 +184,8 @@ namespace MSOWeb.Controllers
 
         public IEnumerable<string> AbsentString { get; set; }
 
+        public IEnumerable<string> WithdrawnString { get; set; }
+
         public EventForm()
         {
             Medal = new List<string>();
@@ -188,6 +193,7 @@ namespace MSOWeb.Controllers
             Score = new List<string>();
             Tiebreak = new List<string>();
             AbsentString = new List<string>();
+            WithdrawnString = new List<string>();
         }
 
         public IEnumerable<bool> Absent
@@ -198,6 +204,29 @@ namespace MSOWeb.Controllers
                 // front that submits "off" which we delete if we pick up the "on"
                 List<bool> result = new List<bool>();
                 foreach (var s in AbsentString)
+                {
+                    if (s == "off")
+                        result.Add(false);
+                    else if (s == "on")
+                    {
+                        result.RemoveAt(result.LastIndexOf(false));
+                        result.Add(true);
+                    }
+                    else
+                        throw new ArgumentException("Invalid SELECT value: " + s);
+                }
+                return result;
+            }
+        }
+
+        public IEnumerable<bool> Withdrawn
+        {
+            get
+            {
+                // A workround for checkboxes only submitting "on", never "off" - there's a hidden field in 
+                // front that submits "off" which we delete if we pick up the "on"
+                List<bool> result = new List<bool>();
+                foreach (var s in WithdrawnString)
                 {
                     if (s == "off")
                         result.Add(false);

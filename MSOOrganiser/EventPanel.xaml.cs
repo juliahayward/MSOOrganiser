@@ -349,6 +349,8 @@ namespace MSOOrganiser
             }
             public string Score { get; set; }
             public bool Absent { get; set; }
+
+            public bool Withdrawn { get; set; }
             public string TieBreak { get; set; }
             private float _pentaScore;
             public float PentaScore

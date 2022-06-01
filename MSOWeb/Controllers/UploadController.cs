@@ -11,6 +11,7 @@ using System.Web.Mvc.Html;
 using MSOCore;
 using MSOCore.ApiLogic;
 using MSOCore.Calculators;
+using System.Net;
 
 namespace MSOWeb.Controllers
 {
@@ -524,6 +525,128 @@ namespace MSOWeb.Controllers
                         {
                             entrant.Rank = element.Rank;
                             entrant.Score = element.Score;
+                            context.SaveChanges();
+                        }
+                    }
+                }
+                TempData["SuccessMessage"] = $"Loaded {model.Elements.Count} results from file. Ambiguous: {ambiguous}";
+            }
+            catch (Exception e)
+            {
+                TempData["FailureMessage"] = e.Message;
+            }
+            return new RedirectResult("/Olympiad/Event/" + eventId + "?editable=true");
+        }
+
+        public class BGAResultModel
+        {
+            public class BGAResultElement
+            {
+                public int Rank { get; set; }
+                public string Nickname { get; set; }
+                public string Score { get; set; }
+                public bool Withdrawn { get; set;  }
+            }
+
+            public readonly List<BGAResultElement> Elements = new List<BGAResultElement>();
+        }
+
+        [Authorize(Roles = "Superadmin, Admin")]
+        public ActionResult BoardGameArena(int id)
+        {
+            var context = DataEntitiesProvider.Provide();
+            var evt = context.Events.FirstOrDefault(x => x.EIN == id);
+            if (evt == null) throw new ArgumentException("No event with this ID");
+            if (evt.Location != "BoardGameArena") throw new ArgumentException("This is not a BoardGameArena event");
+
+            var model = new EventUploadVM() { EventId = id, Name = evt.Mind_Sport, Code = evt.Code };
+            return View(model);
+        }
+
+        [Authorize(Roles = "Superadmin, Admin")]
+        [HttpPost]
+        public ActionResult UploadBoardGameArena(int eventId, string url)
+        {
+            try
+            {
+                if (!url.Contains("boardgamearena")) // assume ID only
+                    url = "https://en.boardgamearena.com/tournament?id=" + url;
+
+                if (url == null)
+                    throw new FileNotFoundException("Please provide a URL");
+
+                BGAResultModel model = new BGAResultModel();
+
+                ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
+
+                var request = WebRequest.Create(url);
+
+                var dom = new HtmlAgilityPack.HtmlDocument();
+                dom.Load(request.GetResponse().GetResponseStream());
+                var main = dom.DocumentNode;
+                var tableRows = main.Descendants("tr").Where(x => x.Attributes["class"]?.Value?.Contains("v2tournament__players-stats-table-row") ?? false);
+                foreach (var row in tableRows)
+                {
+                    var colEnumerator = row.Descendants("td").GetEnumerator();
+                    colEnumerator.MoveNext();
+                    var ordinal = colEnumerator.Current.InnerText;
+                    colEnumerator.MoveNext();
+                    var userName = colEnumerator.Current.Descendants("a").First().InnerText;
+                    colEnumerator.MoveNext();
+                    var points = colEnumerator.Current.InnerText;
+                    colEnumerator.MoveNext();
+                    var played = colEnumerator.Current.InnerText;
+                    colEnumerator.MoveNext();
+                    var skipped = colEnumerator.Current.InnerText;
+                    // if Ordinal is empty then they didn't complete the tournament - counts as Withdrawn
+
+                    model.Elements.Add(new BGAResultModel.BGAResultElement()
+                    {
+                        Withdrawn = string.IsNullOrEmpty(ordinal),
+                        // lop off "st", "nd", ...
+                        Rank = (string.IsNullOrEmpty(ordinal)) ? -1 : int.Parse(ordinal.Substring(0, ordinal.Length-2)),
+                        Score = points,
+                        Nickname = userName
+                    }) ;
+                }
+
+                ContestantsLogic logic = new ContestantsLogic();
+                var context = DataEntitiesProvider.Provide();
+                var evt = context.Events.FirstOrDefault(x => x.EIN == eventId);
+                if (evt == null) throw new ArgumentException("No event with this ID");
+                if (evt.Location != "BoardGameArena") throw new ArgumentException("This is not a BoardGameArena event");
+                var entrants = evt.Entrants.ToList();
+
+                string ambiguous = "";
+
+                foreach (var element in model.Elements)
+                {
+                    var matchingContestants = context.Contestants.Where(x => x.OnlineNicknames.Contains(element.Nickname)).ToList();
+                    if (matchingContestants.Count() > 1)
+                    {
+                        ambiguous += element.Nickname + ",";
+                    }
+                    // Can't reconcile this user id - must be a new person
+                    else if (matchingContestants.Count() == 0)
+                    {
+                        logic.AddNewContestantWithScoreToEvent(element.Nickname, "", element.Nickname, "", element.Rank, element.Score, "-" + element.Rank, eventId, element.Withdrawn);
+                    }
+                    // We know who it is
+                    else
+                    {
+                        var entrant = entrants.FirstOrDefault(x =>
+                            x.Mind_Sport_ID == matchingContestants.Single().Mind_Sport_ID);
+                        if (entrant == null)
+                        {
+                            logic.AddContestantWithScoreToEvent(matchingContestants.Single().Mind_Sport_ID,
+                                element.Rank, element.Score, "-" + element.Rank, eventId, element.Withdrawn);
+                        }
+                        else
+                        {
+                            entrant.Rank = element.Rank;
+                            entrant.Score = element.Score;
+                            entrant.Tie_break = (element.Rank == -1) ? "" : "-" + element.Rank;
+                            entrant.Withdrawn = element.Withdrawn;
                             context.SaveChanges();
                         }
                     }

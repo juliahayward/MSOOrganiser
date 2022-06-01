@@ -44,7 +44,7 @@ namespace MSOCore.Calculators
                     EventName = fields[6], 
                     FirstName = fields[2],
                     Email = fields[4],
-                    Title = fields[7].ToTitleCase(),
+                    Title = fields[7],
                     LastName = fields[3],
                     Phone = null,
                     LocalisedNationality = fields[8],
@@ -130,7 +130,7 @@ namespace MSOCore.Calculators
                 Lastname = order.LastName ?? "",
                 Nationality = order.LocalisedNationality,
                 Title = order.Title,
-                Male = (order.Title == "Mr" || order.Title == "Master"),
+                Male = (order.Title == "MR" || order.Title == "MASTER"),
                 DateofBirth = SanitiseDateOfBirth(order.DateOfBirth),
                 OnlineNicknames = order.OnlineNickname,
                 DiscordNickname = order.DiscordNickname,
@@ -160,6 +160,7 @@ namespace MSOCore.Calculators
                 contestant.DiscordNickname = order.DiscordNickname;
             if (!string.IsNullOrEmpty(order.Email))
                 contestant.email = order.Email;
+            contestant.Male = (order.Title == "MR" || order.Title == "MASTER");
 
             context.SaveChanges();
         }
@@ -213,7 +214,7 @@ namespace MSOCore.Calculators
             get
             {
                 DateTime dob;
-                var success = DateTime.TryParseExact(DoBString, "yyyy-MM-dd", CultureInfo.InvariantCulture,
+                var success = DateTime.TryParseExact(DoBString, "d MMMM yyyy", CultureInfo.InvariantCulture,
                     System.Globalization.DateTimeStyles.None, out dob);
                 return (success) ? dob : (DateTime?) null;
             }
