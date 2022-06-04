@@ -66,6 +66,7 @@
     <Compile Include="Calculators\EurogameMetaScoreCalculator.cs" />
     <Compile Include="Calculators\CostApportioner.cs" />
     <Compile Include="Calculators\GrandPrixCalculator.cs" />
+    <Compile Include="Calculators\IContestantStanding.cs" />
     <Compile Include="Calculators\MetaEventFreezer.cs" />
     <Compile Include="Calculators\NumberListContractor.cs" />
     <Compile Include="Calculators\PaymentProcessor.cs" />

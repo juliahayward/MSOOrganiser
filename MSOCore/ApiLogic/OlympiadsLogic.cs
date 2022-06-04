@@ -288,22 +288,22 @@ namespace MSOCore.ApiLogic
             switch (evt.Code)
             {
                 case "PEWC":
-                    freezer.FreezePentamind();
+                    freezer.FreezePentamind(evt.Olympiad_Info.Id);
                     return;
                 case "MBWC":
-                    freezer.FreezeModernAbstract();
+                    freezer.FreezeModernAbstract(evt.Olympiad_Info.Id);
                     return;
                 case "EGWC":
-                    freezer.FreezeEurogames();
+                    freezer.FreezeEurogames(evt.Olympiad_Info.Id);
                     return;
                 case "POAC":
-                    freezer.FreezePoker();
+                    freezer.FreezePoker(evt.Olympiad_Info.Id);
                     return;
                 case "CHCC":
-                    freezer.FreezeChess();
+                    freezer.FreezeChess(evt.Olympiad_Info.Id);
                     return;
                 case "BACC":
-                    freezer.FreezeBackgammon();
+                    freezer.FreezeBackgammon(evt.Olympiad_Info.Id);
                     return;
             }
         }

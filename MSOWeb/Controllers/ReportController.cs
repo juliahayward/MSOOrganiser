@@ -426,14 +426,14 @@ namespace MSOWeb.Controllers
             return View(model);
         }
 
-        /* For evaluation only
-        public ActionResult PentamindStandings4Cats(int? year)
+        
+        public ActionResult FreezeMetaEvents()
         {
-            var generator = new PentamindStandings4CatsGenerator();
+            var freezer = new MetaEventFreezer();
 
-            var model = generator.GetStandings(year);
+            freezer.FreezeMetaEvents();
 
-            return View(model);
-        }*/
+            return new RedirectResult("/");
+        }
     }
 }

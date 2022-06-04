@@ -80,8 +80,9 @@ namespace MSOCore.Reports
             if (evt == null)
                 throw new ArgumentOutOfRangeException("Event " + eventCode + " did not take place in " + year);
 
+            var gpMetaEvents = new[] { "GPC", "WGPC", "JGPC", "SGPC", "DRGPC", "MPGPC", "POGPC", "CHGPC", "BAGPC", "ABGPC", "IIGPC" };
             var metaEvents = context.MetaGameDefinitions.Select(x => x.Event.Code).Distinct();
-            bool isPentamind = eventCode.StartsWith("PE") || metaEvents.Contains(eventCode);
+            bool isPentamind = eventCode.StartsWith("PE") || metaEvents.Contains(eventCode) || gpMetaEvents.Contains(eventCode);
 
             retval.EventName = evt.Mind_Sport;
             retval.Entrants = evt.Entrants

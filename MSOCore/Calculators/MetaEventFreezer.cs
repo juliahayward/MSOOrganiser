@@ -11,247 +11,155 @@ namespace MSOCore.Calculators
     {
         public void FreezeMetaEvents()
         {
-            FreezePentamind();
-            FreezeModernAbstract();
-            FreezeEurogames();
-            FreezePoker();
-            FreezeChess();
-            FreezeBackgammon();
-        }
-
-        public void FreezePentamind()
-        {
             var context = DataEntitiesProvider.Provide();
             var currentOlympiad = context.Olympiad_Infoes.First(x => x.Current);
+            if (currentOlympiad.Ruleset == "Pentamind")
+            {
+                FreezePentamind(currentOlympiad.Id);
+                FreezeModernAbstract(currentOlympiad.Id);
+                FreezeEurogames(currentOlympiad.Id);
+                FreezePoker(currentOlympiad.Id);
+                FreezeChess(currentOlympiad.Id);
+                FreezeBackgammon(currentOlympiad.Id);
+            }
+            else
+            {
+             //   FreezeGrandPrix(currentOlympiad.Id);
+             //   FreezeDraughtsGP(currentOlympiad.Id);
+             //   FreezeMultiplayerGP(currentOlympiad.Id);
+             //   FreezePokerGP(currentOlympiad.Id);
+             //   FreezeChessGP(currentOlympiad.Id);
+                FreezeBackgammonGP(currentOlympiad.Id);
+                FreezeAbstractGP(currentOlympiad.Id);
+                FreezeImperfectInfoGP(currentOlympiad.Id);
+            }
+        }
 
-            // First of all, for each pentamind qualifier make a PEWC entry
+        public void FreezePentamind(int olympiadId)
+        {
             var pentamindStandingsGenerator = new PentamindStandingsGenerator();
             var standings = pentamindStandingsGenerator.GetStandings(null);
-            int rank = 1;
-            foreach (var standing in standings.Standings)
-            {
-                if (!standing.IsValid) continue;
 
-                var contestant = context.Contestants.FirstOrDefault(x => x.Mind_Sport_ID == standing.ContestantId);
-                var evt = context.Events.FirstOrDefault(x => x.OlympiadId == currentOlympiad.Id && x.Code == "PEWC");
-                var entry = context.Entrants.FirstOrDefault(x => x.OlympiadId == currentOlympiad.Id
-                                        && x.Game_Code == "PEWC" && x.Mind_Sport_ID == standing.ContestantId);
-                if (entry == null)
-                {
-                    entry = Entrant.NewEntrant(evt.EIN, "PEWC", currentOlympiad.Id, contestant, 0m);
-                    context.Entrants.Add(entry);
-                }
-                entry.Score = standing.TotalScoreStr;
-                entry.Rank = rank;
-                entry.Medal = MedalForRank(rank);
-                rank++;
-                context.SaveChanges();
-            }
-
-            rank = 1;
-            foreach (var standing in standings.Standings.Where(x => x.IsInWomensPenta))
-            {
-                if (!standing.IsValid) continue;
-
-                var contestant = context.Contestants.FirstOrDefault(x => x.Mind_Sport_ID == standing.ContestantId);
-                var evt = context.Events.FirstOrDefault(x => x.OlympiadId == currentOlympiad.Id && x.Code == "PEWO");
-                var entry = context.Entrants.FirstOrDefault(x => x.OlympiadId == currentOlympiad.Id
-                                        && x.Game_Code == "PEWO" && x.Mind_Sport_ID == standing.ContestantId);
-                if (entry == null)
-                {
-                    entry = Entrant.NewEntrant(evt.EIN, "PEWO", currentOlympiad.Id, contestant, 0m);
-                    context.Entrants.Add(entry);
-                }
-                entry.Score = standing.TotalScoreStr;
-                entry.Rank = rank;
-                entry.Medal = MedalForRank(rank);
-                rank++;
-                context.SaveChanges();
-            }
-
-            rank = 1;
-            foreach (var standing in standings.Standings.Where(x => x.IsJunior))
-            {
-                if (!standing.IsValid) continue;
-
-                var contestant = context.Contestants.FirstOrDefault(x => x.Mind_Sport_ID == standing.ContestantId);
-                var evt = context.Events.FirstOrDefault(x => x.OlympiadId == currentOlympiad.Id && x.Code == "PEJR");
-                var entry = context.Entrants.FirstOrDefault(x => x.OlympiadId == currentOlympiad.Id
-                                        && x.Game_Code == "PEJR" && x.Mind_Sport_ID == standing.ContestantId);
-                if (entry == null)
-                {
-                    entry = Entrant.NewEntrant(evt.EIN, "PEJR", currentOlympiad.Id, contestant, 0m);
-                    context.Entrants.Add(entry);
-                }
-                entry.Score = standing.TotalScoreStr;
-                entry.Rank = rank;
-                entry.Medal = MedalForRank(rank);
-                rank++;
-                context.SaveChanges();
-            }
-
-            rank = 1;
-            foreach (var standing in standings.Standings.Where(x => x.IsSenior))
-            {
-                if (!standing.IsValid) continue;
-
-                var contestant = context.Contestants.FirstOrDefault(x => x.Mind_Sport_ID == standing.ContestantId);
-                var evt = context.Events.FirstOrDefault(x => x.OlympiadId == currentOlympiad.Id && x.Code == "PESR");
-                var entry = context.Entrants.FirstOrDefault(x => x.OlympiadId == currentOlympiad.Id
-                                        && x.Game_Code == "PESR" && x.Mind_Sport_ID == standing.ContestantId);
-                if (entry == null)
-                {
-                    entry = Entrant.NewEntrant(evt.EIN, "PESR", currentOlympiad.Id, contestant, 0m);
-                    context.Entrants.Add(entry);
-                }
-                entry.Score = standing.TotalScoreStr;
-                entry.Rank = rank;
-                entry.Medal = MedalForRank(rank);
-                rank++;
-                context.SaveChanges();
-            }
+            Freeze(olympiadId, "PEWC", standings.Standings, null);
+            Freeze(olympiadId, "PEWO", standings.Standings, x => x.IsInWomensPenta);
+            Freeze(olympiadId, "PEJR", standings.Standings, x => x.IsJunior);
+            Freeze(olympiadId, "PESR", standings.Standings, x => x.IsSenior);
         }
 
-        public void FreezeEurogames()
+        public void FreezeGrandPrix(int olympiadId)
         {
-            var context = DataEntitiesProvider.Provide();
-            var currentOlympiad = context.Olympiad_Infoes.First(x => x.Current);
+            var pentamindStandingsGenerator = new GrandPrixStandingsGenerator();
+            var standings = pentamindStandingsGenerator.GetStandings(null);
 
-            // Next a Eurogames one
+            Freeze(olympiadId, "GPC", standings.Standings, null);
+            Freeze(olympiadId, "WGPC", standings.Standings, x => x.IsInWomensPenta);
+            Freeze(olympiadId, "JGPC", standings.Standings, x => x.IsJunior);
+            Freeze(olympiadId, "SGPC", standings.Standings, x => x.IsSenior);
+        }
+
+        public void FreezeEurogames(int olympiadId)
+        {
             var pentamindStandingsGenerator = new PentamindStandingsGenerator();
             var eurostandings = pentamindStandingsGenerator.GetEuroStandings(null);
-            int rank = 1;
-            foreach (var standing in eurostandings.Standings)
-            {
-                if (!standing.IsValid) continue;
-
-                var contestant = context.Contestants.FirstOrDefault(x => x.Mind_Sport_ID == standing.ContestantId);
-                var evt = context.Events.FirstOrDefault(x => x.OlympiadId == currentOlympiad.Id && x.Code == "EGWC");
-                var entry = context.Entrants.FirstOrDefault(x => x.OlympiadId == currentOlympiad.Id
-                                        && x.Game_Code == "EGWC" && x.Mind_Sport_ID == standing.ContestantId);
-                if (entry == null)
-                {
-                    entry = Entrant.NewEntrant(evt.EIN, "EGWC", currentOlympiad.Id, contestant, 0m);
-                    context.Entrants.Add(entry);
-                }
-                entry.Score = standing.TotalScoreStr;
-                entry.Rank = rank;
-                entry.Medal = MedalForRank(rank);
-                rank++;
-                context.SaveChanges();
-            }
+            Freeze(olympiadId, "EGWC", eurostandings.Standings);
         }
 
-        public void FreezeModernAbstract()
+        public void FreezeModernAbstract(int olympiadId)
         {
-            var context = DataEntitiesProvider.Provide();
-            var currentOlympiad = context.Olympiad_Infoes.First(x => x.Current);
             var pentamindStandingsGenerator = new PentamindStandingsGenerator();
-
-            // Next a Modern Abstract one
             var modernAbstractStandings = pentamindStandingsGenerator.GetModernAbstractStandings(null);
-            int rank = 1;
-            foreach (var standing in modernAbstractStandings.Standings)
-            {
-                if (!standing.IsValid) continue;
-
-                var contestant = context.Contestants.FirstOrDefault(x => x.Mind_Sport_ID == standing.ContestantId);
-                var evt = context.Events.FirstOrDefault(x => x.OlympiadId == currentOlympiad.Id && x.Code == "MBWC");
-                var entry = context.Entrants.FirstOrDefault(x => x.OlympiadId == currentOlympiad.Id
-                                        && x.Game_Code == "MBWC" && x.Mind_Sport_ID == standing.ContestantId);
-                if (entry == null)
-                {
-                    entry = Entrant.NewEntrant(evt.EIN, "MBWC", currentOlympiad.Id, contestant, 0m);
-                    context.Entrants.Add(entry);
-                }
-                entry.Score = standing.TotalScoreStr;
-                entry.Rank = rank;
-                entry.Medal = MedalForRank(rank);
-                rank++;
-                context.SaveChanges();
-            }
+            Freeze(olympiadId, "MBWC", modernAbstractStandings.Standings);         
         }
 
-        public void FreezePoker()
+        public void FreezePoker(int olympiadId)
         {
-            var context = DataEntitiesProvider.Provide();
-            var currentOlympiad = context.Olympiad_Infoes.First(x => x.Current);
-
-            // Next a Poker one
             var pokerStandingsGenerator = new PentamindStandingsGenerator();
             var pokerstandings = pokerStandingsGenerator.GetPokerStandings(null);
-            int rank = 1;
-            foreach (var standing in pokerstandings.Standings)
-            {
-                if (!standing.IsValid) continue;
-
-                var contestant = context.Contestants.FirstOrDefault(x => x.Mind_Sport_ID == standing.ContestantId);
-                var evt = context.Events.FirstOrDefault(x => x.OlympiadId == currentOlympiad.Id && x.Code == "POAC");
-                var entry = context.Entrants.FirstOrDefault(x => x.OlympiadId == currentOlympiad.Id
-                                        && x.Game_Code == "POAC" && x.Mind_Sport_ID == standing.ContestantId);
-                if (entry == null)
-                {
-                    entry = Entrant.NewEntrant(evt.EIN, "POAC", currentOlympiad.Id, contestant, 0m);
-                    context.Entrants.Add(entry);
-                }
-                entry.Score = standing.TotalScoreStr;
-                entry.Rank = rank;
-                entry.Medal = MedalForRank(rank);
-                rank++;
-                context.SaveChanges();
-            }
+            Freeze(olympiadId, "POAC", pokerstandings.Standings);        
         }
 
-        public void FreezeChess()
+        public void FreezeChess(int olympiadId)
         {
-            var context = DataEntitiesProvider.Provide();
-            var currentOlympiad = context.Olympiad_Infoes.First(x => x.Current);
             var pentamindStandingsGenerator = new PentamindStandingsGenerator();
-
-            // Next a Modern Abstract one
-            var modernAbstractStandings = pentamindStandingsGenerator.GetChessStandings(null);
-            int rank = 1;
-            foreach (var standing in modernAbstractStandings.Standings)
-            {
-                if (!standing.IsValid) continue;
-
-                var contestant = context.Contestants.FirstOrDefault(x => x.Mind_Sport_ID == standing.ContestantId);
-                var evt = context.Events.FirstOrDefault(x => x.OlympiadId == currentOlympiad.Id && x.Code == "CHCC");
-                var entry = context.Entrants.FirstOrDefault(x => x.OlympiadId == currentOlympiad.Id
-                                        && x.Game_Code == "CHCC" && x.Mind_Sport_ID == standing.ContestantId);
-                if (entry == null)
-                {
-                    entry = Entrant.NewEntrant(evt.EIN, "CHCC", currentOlympiad.Id, contestant, 0m);
-                    context.Entrants.Add(entry);
-                }
-                entry.Score = standing.TotalScoreStr;
-                entry.Rank = rank;
-                entry.Medal = MedalForRank(rank);
-                rank++;
-                context.SaveChanges();
-            }
+            var standings = pentamindStandingsGenerator.GetChessStandings(null);
+            Freeze(olympiadId, "CHCC", standings.Standings);
         }
 
-        public void FreezeBackgammon()
+        public void FreezeBackgammon(int olympiadId)
         {
-            var context = DataEntitiesProvider.Provide();
-            var currentOlympiad = context.Olympiad_Infoes.First(x => x.Current);
             var pentamindStandingsGenerator = new PentamindStandingsGenerator();
+            var standings = pentamindStandingsGenerator.GetBackgammonStandings(null);
+            Freeze(olympiadId, "BACC", standings.Standings);
+        }
 
-            // Next a Modern Abstract one
-            var modernAbstractStandings = pentamindStandingsGenerator.GetBackgammonStandings(null);
+        public void FreezeDraughtsGP(int olympiadId)
+        {
+            var standingsGenerator = new GrandPrixStandingsGenerator();
+            var standings = standingsGenerator.GetGPCategoryStandings("draughts");
+            Freeze(olympiadId, "DRGPC", standings.Standings);
+        }
+
+        public void FreezePokerGP(int olympiadId)
+        {
+            var standingsGenerator = new GrandPrixStandingsGenerator();
+            var standings = standingsGenerator.GetGPCategoryStandings("poker");
+            Freeze(olympiadId, "POGPC", standings.Standings); 
+        }
+
+        public void FreezeMultiplayerGP(int olympiadId)
+        {
+            var standingsGenerator = new GrandPrixStandingsGenerator();
+            var standings = standingsGenerator.GetGPCategoryStandings("multiplayer");
+            Freeze(olympiadId, "MPGPC", standings.Standings);
+        }
+
+        public void FreezeChessGP(int olympiadId)
+        {
+            var standingsGenerator = new GrandPrixStandingsGenerator();
+            var standings = standingsGenerator.GetGPCategoryStandings("chess");
+            Freeze(olympiadId, "CHGPC", standings.Standings);
+        }
+
+        public void FreezeBackgammonGP(int olympiadId)
+        {
+            var standingsGenerator = new GrandPrixStandingsGenerator();
+            var standings = standingsGenerator.GetGPCategoryStandings("backgammon");
+            Freeze(olympiadId, "BAGPC", standings.Standings);
+        }
+
+        public void FreezeAbstractGP(int olympiadId)
+        {
+            var standingsGenerator = new GrandPrixStandingsGenerator();
+            var standings = standingsGenerator.GetGPCategoryStandings("abstract");
+            Freeze(olympiadId, "ABGPC", standings.Standings);
+        }
+
+        public void FreezeImperfectInfoGP(int olympiadId)
+        {
+            var standingsGenerator = new GrandPrixStandingsGenerator();
+            var standings = standingsGenerator.GetGPCategoryStandings("imperfectinfo");
+            Freeze(olympiadId, "IIGPC", standings.Standings);
+        }
+
+
+        private void Freeze(int olympiadId, string code, IEnumerable<IContestantStanding> standings,
+            Predicate<IContestantStanding> filter = null)
+        {
+            if (filter == null) filter = (x => true);
+
+            var context = DataEntitiesProvider.Provide();
             int rank = 1;
-            foreach (var standing in modernAbstractStandings.Standings)
+            foreach (var standing in standings.Where(x => filter(x)))
             {
                 if (!standing.IsValid) continue;
 
                 var contestant = context.Contestants.FirstOrDefault(x => x.Mind_Sport_ID == standing.ContestantId);
-                var evt = context.Events.FirstOrDefault(x => x.OlympiadId == currentOlympiad.Id && x.Code == "BACC");
-                var entry = context.Entrants.FirstOrDefault(x => x.OlympiadId == currentOlympiad.Id
-                                        && x.Game_Code == "BACC" && x.Mind_Sport_ID == standing.ContestantId);
+                var evt = context.Events.FirstOrDefault(x => x.OlympiadId == olympiadId && x.Code == code);
+                var entry = context.Entrants.FirstOrDefault(x => x.OlympiadId == olympiadId
+                                        && x.Game_Code == code && x.Mind_Sport_ID == standing.ContestantId);
                 if (entry == null)
                 {
-                    entry = Entrant.NewEntrant(evt.EIN, "BACC", currentOlympiad.Id, contestant, 0m);
+                    entry = Entrant.NewEntrant(evt.EIN, code, olympiadId, contestant, 0m);
                     context.Entrants.Add(entry);
                 }
                 entry.Score = standing.TotalScoreStr;

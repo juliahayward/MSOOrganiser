@@ -42,7 +42,7 @@ namespace MSOCore.Reports
                 }
             }
 
-            public class ContestantStanding
+            public class ContestantStanding : IContestantStanding
             {
                 public int ContestantId { get; set; }
                 public string Name { get; set; }
@@ -150,7 +150,7 @@ namespace MSOCore.Reports
                 + scores.Count(x => x.Rank == 4).ToString("00");
         }
 
-        public GrandPrixStandingsReportVm GetGPCategoryStandings(string category, int? year, DateTime? date = null)
+        public GrandPrixStandingsReportVm GetGPCategoryStandings(string category, int? year = null, DateTime? date = null)
         {
             DateTime? endOfDay = (date.HasValue) ? date.Value.AddDays(1) : (DateTime?)null;
 

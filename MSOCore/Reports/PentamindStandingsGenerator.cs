@@ -27,7 +27,7 @@ namespace MSOCore.Reports
                 }
             }
 
-            public class ContestantStanding
+            public class ContestantStanding : IContestantStanding
             {
                 public int ContestantId { get; set; }
                 public string Name { get; set; }
