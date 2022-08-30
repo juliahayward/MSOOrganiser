@@ -8,9 +8,11 @@ namespace MSOCore.Calculators
 {
     public class PentaCalculatorFactory
     {
-        public static IPentaCalculator Get(Olympiad_Info olympiad)
+        public static IPentaCalculator Get(Event evt)
         {
-            if (olympiad.Ruleset == "GrandPrix")
+            if (!evt.Pentamind)
+                return new CasualEventCalculator();
+            else if (evt.Olympiad_Info.Ruleset == "GrandPrix")
                 return new GrandPrixCalculator();
             else
                 return new Penta2021Calculator();

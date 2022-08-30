@@ -38,6 +38,10 @@ namespace MSOCore.Calculators
                 // 12 billing_underage,
                 // 13 billing_gardian_name,
                 // 14 billing_gardian_email
+
+                // These don't need to be logged
+                if (fields[6] == "All you can play ticket") continue;
+
                  var order = new Order2021()
                 {
                     WordpressId = int.Parse(fields[0]),
@@ -65,7 +69,7 @@ namespace MSOCore.Calculators
             var olympiad = context.Olympiad_Infoes.First(x => x.Current);
             var events = context.Events.Where(x => x.OlympiadId == olympiad.Id)
                 .ToDictionary(e => e.Code, e => e);
-            var eventsByName = context.Events.Where(x => x.OlympiadId == olympiad.Id)
+            var eventsByName = context.Events.Where(x => x.OlympiadId == olympiad.Id && x.Notes != null)
                 .ToDictionary(e => e.Notes, e => e);
 
             var entryFees = context.Fees.ToDictionary(x => x.Code, x => x);
@@ -88,10 +92,6 @@ namespace MSOCore.Calculators
                     contestant = CreateEntrant(context, order);
                 else
                     UpdateEntrant(context, contestant, order);
-
-                // because some entered both qualifier and finals
-                if (order.EventName.StartsWith("Mental Calculations"))
-                    order.EventName = "Mental Calculations WC";
 
                 // Already entered?
                 if (contestant.Entrants.Any(x =>
@@ -160,7 +160,8 @@ namespace MSOCore.Calculators
                 contestant.DiscordNickname = order.DiscordNickname;
             if (!string.IsNullOrEmpty(order.Email))
                 contestant.email = order.Email;
-            contestant.Male = (order.Title == "MR" || order.Title == "MASTER");
+            // 2021 orders don't capture the title
+            // contestant.Male = (order.Title == "MR" || order.Title == "MASTER");
 
             context.SaveChanges();
         }
@@ -182,7 +183,7 @@ namespace MSOCore.Calculators
         public bool IsSanitisedDateOfBirth(DateTime? orderDob)
         {
             if (!orderDob.HasValue)
-                return true;
+                return false;
             // Catch people who put in today's date
             if (DateTime.Now.AddYears(-2) < orderDob)
                 return false;

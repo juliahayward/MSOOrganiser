@@ -40,7 +40,6 @@ warning 6002: The table/view 'mso_prod.dbo.Badges - Misc' does not have a primar
           <Property Name="Score" Type="nvarchar" MaxLength="50" />
           <Property Name="Tie-break" Type="nvarchar" MaxLength="50" />
           <Property Name="Absent" Type="bit" Nullable="false" />
-          <Property Name="Withdrawn" Type="bit" Nullable="false" />
           <Property Name="Medal" Type="nvarchar" MaxLength="50" />
           <Property Name="Penta Score" Type="real" />
           <Property Name="MustUse" Type="bit" />
@@ -50,6 +49,7 @@ warning 6002: The table/view 'mso_prod.dbo.Badges - Misc' does not have a primar
           <Property Name="OlympiadId" Type="int" />
           <Property Name="EventId" Type="int" />
           <Property Name="JuniorMedal" Type="nvarchar" MaxLength="50" />
+          <Property Name="Withdrawn" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="EntryJsons">
           <Key>
@@ -229,6 +229,8 @@ warning 6002: The table/view 'mso_prod.dbo.MetaGameDefinition' does not have a p
           <Property Name="EventId" Type="int" Nullable="false" />
           <Property Name="Type" Type="nvarchar" MaxLength="256" Nullable="false" />
           <Property Name="SubEvents" Type="nvarchar" MaxLength="4000" Nullable="false" />
+          <Property Name="Category" Type="nvarchar" MaxLength="20" />
+          <Property Name="RequiredEvents" Type="int" />
         </EntityType>
         <EntityType Name="Names">
           <Key>
@@ -741,7 +743,9 @@ FROM [dbo].[Medal Points] AS [Medal Points]</DefiningQuery>
 [MetaGameDefinition].[Olympiadid] AS [Olympiadid], 
 [MetaGameDefinition].[EventId] AS [EventId], 
 [MetaGameDefinition].[Type] AS [Type], 
-[MetaGameDefinition].[SubEvents] AS [SubEvents]
+[MetaGameDefinition].[SubEvents] AS [SubEvents], 
+[MetaGameDefinition].[Category] AS [Category], 
+[MetaGameDefinition].[RequiredEvents] AS [RequiredEvents]
 FROM [dbo].[MetaGameDefinition] AS [MetaGameDefinition]</DefiningQuery>
           </EntitySet>
           <EntitySet Name="SelectedPeople" EntityType="Self.SelectedPeople" store:Type="Tables" store:Schema="dbo">
@@ -1567,6 +1571,8 @@ FROM [dbo].[SelectedPeople] AS [SelectedPeople]</DefiningQuery>
           <Property Name="SubEvents" Type="String" Nullable="false" MaxLength="4000" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="Event" Relationship="DataModel.FK_MetaGameDefinition_Event" FromRole="MetaGameDefinition" ToRole="Event" />
           <NavigationProperty Name="Olympiad_Info" Relationship="DataModel.FK_MetaGameDefinition_Olympiad" FromRole="MetaGameDefinition" ToRole="Olympiad_Info" />
+          <Property Name="Category" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="RequiredEvents" Type="Int32" />
         </EntityType>
         <Association Name="FK_MetaGameDefinition_Event">
           <End Type="DataModel.Event" Role="Event" Multiplicity="1" />
@@ -2072,6 +2078,8 @@ FROM [dbo].[SelectedPeople] AS [SelectedPeople]</DefiningQuery>
           <EntitySetMapping Name="MetaGameDefinitions">
             <EntityTypeMapping TypeName="DataModel.MetaGameDefinition">
               <MappingFragment StoreEntitySet="MetaGameDefinition">
+                <ScalarProperty Name="RequiredEvents" ColumnName="RequiredEvents" />
+                <ScalarProperty Name="Category" ColumnName="Category" />
                 <ScalarProperty Name="SubEvents" ColumnName="SubEvents" />
                 <ScalarProperty Name="Type" ColumnName="Type" />
                 <ScalarProperty Name="EventId" ColumnName="EventId" />

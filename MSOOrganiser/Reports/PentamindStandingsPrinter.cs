@@ -38,7 +38,7 @@ namespace MSOOrganiser.Reports
         public FlowDocument PrintEuro()
         {
             var rg = new PentamindStandingsGenerator();
-            var results = rg.GetEuroStandings(null);
+            var results = rg.GetEurogameStandings(null);
             return Print(results, "Eurogames WC Standings");
         }
 

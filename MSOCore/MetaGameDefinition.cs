@@ -19,6 +19,8 @@ namespace MSOCore
         public int EventId { get; set; }
         public string Type { get; set; }
         public string SubEvents { get; set; }
+        public string Category { get; set; }
+        public Nullable<int> RequiredEvents { get; set; }
     
         public virtual Event Event { get; set; }
         public virtual Olympiad_Info Olympiad_Info { get; set; }

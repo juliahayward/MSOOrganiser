@@ -247,7 +247,7 @@ namespace MSOCore.ApiLogic
                       if (evt.OlympiadId == 25 && evt.Code == "POH6") overridingNumberOfEntrants = 380;
                       if (evt.OlympiadId == 25 && evt.Code == "PZKK") overridingNumberOfEntrants = 380; */
 
-                var pentaCalculator = PentaCalculatorFactory.Get(evt.Olympiad_Info);
+                var pentaCalculator = PentaCalculatorFactory.Get(evt);
                 pentaCalculator.Calculate(evt.Number_in_Team, model.Entrants, evt.Pentamind, evt.PentamindFactor, overridingNumberOfEntrants);
             }
             // TODO - events with partners
@@ -304,6 +304,12 @@ namespace MSOCore.ApiLogic
                     return;
                 case "BACC":
                     freezer.FreezeBackgammon(evt.Olympiad_Info.Id);
+                    return;
+                case "MCCC":
+                    freezer.FreezeMental(evt.Olympiad_Info.Id, evt.Code);
+                    return;
+                case "IICC":
+                    freezer.FreezeImperfect(evt.Olympiad_Info.Id, evt.Code);
                     return;
             }
         }

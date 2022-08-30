@@ -37,7 +37,7 @@ namespace MSOCore.Calculators
                 counted++;
                 // Must have 2 long sessions or more
                 if (combination.Where(x => x.IsLongSession).Count() < pentaLong) continue;
-                // Must have 5 different games in the online version
+                // Must have all different games, when flag set
                 if (allDifferentGames && combination.Select(x => x.GameCode).Distinct().Count() < pentaTotal) continue;
 
                 if (combination.Sum(x => x.Score) > bestScore)

@@ -88,7 +88,7 @@ namespace MSOCore.Reports
 
             var context = DataEntitiesProvider.Provide();
             var currentOlympiad = (year.HasValue)
-                ? context.Olympiad_Infoes.Where(x => x.StartDate.HasValue && x.StartDate.Value.Year == year.Value).First()
+                ? context.Olympiad_Infoes.Where(x => x.Ruleset == "GrandPrix" && x.StartDate.HasValue && x.StartDate.Value.Year == year.Value).First()
                 : context.Olympiad_Infoes.First(x => x.Current);
 
             var vm = new GrandPrixStandingsReportVm();
@@ -156,7 +156,7 @@ namespace MSOCore.Reports
 
             var context = DataEntitiesProvider.Provide();
             var currentOlympiad = (year.HasValue)
-                ? context.Olympiad_Infoes.Where(x => x.StartDate.HasValue && x.StartDate.Value.Year == year.Value).First()
+                ? context.Olympiad_Infoes.Where(x => x.Ruleset == "GrandPrix" && x.StartDate.HasValue && x.StartDate.Value.Year == year.Value).First()
                 : context.Olympiad_Infoes.First(x => x.Current);
 
             var vm = new GrandPrixStandingsReportVm();

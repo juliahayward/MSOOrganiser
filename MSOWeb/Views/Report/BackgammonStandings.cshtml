@@ -10,7 +10,7 @@
 @if (Model.HeaderRequired)
 {
     <h1>Backgammon Championship Standings</h1>
-    <p>All standings are provisional until formally announced at the closing ceremony. Any data errors <b>must</b> be reported before midnight, end of Tuesday 7th to ensure correction</p>
+    <p>All standings are provisional until formally announced at the closing ceremony. Any data errors <b>must</b> be reported before then to ensure correction</p>
 }
 
 @{ var i = 1; }
@@ -45,4 +45,4 @@
     </tbody>
 </table>
 
-<h3>Top @Model.TopNRequired listed. Competitors need 5 events to qualify.</h3>
+<h3>Top @Model.TopNRequired listed. Competitors need @Model.EventsNeeded events to qualify.</h3>

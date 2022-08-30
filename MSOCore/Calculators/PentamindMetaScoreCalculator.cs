@@ -17,10 +17,24 @@ namespace MSOCore.Calculators
             if (pentaTotal == 0) return new List<PentamindStandingsGenerator.PentamindStandingsReportVm.EventScore>();
 
             var best = SelectBestScores1(allScores, pentaLong, pentaTotal, year);
-            if (best != null) return best.ToList();
+            // if (best != null) return best.ToList();
 
-                int reducedLongRequirement = Math.Max(pentaLong - 1, 0);
-                return SelectBestScores(allScores, reducedLongRequirement, pentaTotal - 1, year);
+            // With the introduction of limits on all categories it is possible to have a score of one-long-from-four,
+            // which beats all two-longs-from-five (because the second long forces out a good short event)
+            int reducedLongRequirement = Math.Max(pentaLong - 1, 0);
+            var bestWithOnlyOneLong = SelectBestScores(allScores, reducedLongRequirement, pentaTotal - 1, year);
+
+            if (bestWithOnlyOneLong != null && best != null)
+            {
+                if (best.Sum(x => x.Score) > bestWithOnlyOneLong.Sum(x => x.Score))
+                    return best.ToList();
+                else
+                    return bestWithOnlyOneLong.ToList();
+            }
+            else if (best != null)
+                return best.ToList();
+            else
+                return bestWithOnlyOneLong.ToList();
         }
 
 
@@ -39,10 +53,16 @@ namespace MSOCore.Calculators
                 if (combination.Select(x => x.GameCode).Distinct().Count() < pentaTotal) continue;
                 // Must have 2 long sessions or more
                 if (combination.Where(x => x.IsLongSession).Count() < pentaLong) continue;
-                // Must have max 3 Eurogames
-                if (year >= 2016 && combination.Where(x => x.IsEuroGame).Count() > 3) continue;
-                // Must have max 3 Modern Abstract
-                if (year >= 2021 && combination.Where(x => x.IsModernAbstract).Count() > 3) continue;
+
+                // From 2016 onwards, we must have max 3 Eurogames
+                // if (year >= 2016 && combination.Where(x => x.IsEuroGame).Count() > 3) continue;
+
+                // From 2021 onwards, we must have max 3 Modern Abstract
+                //if (year >= 2021 && combination.Where(x => x.IsModernAbstract).Count() > 3) continue;
+
+                // From 2022 onwards, we must have max 3 in any category
+                var gamesPerCategory = combination.GroupBy(x => x.Category);
+                if (gamesPerCategory.Any(x => x.Count() > 3)) continue;
 
                 if (combination.Sum(x => x.Score) > bestScore)
                 {

@@ -19,8 +19,10 @@ namespace MSOCore.Reports
                 public string GameCode { get; set; }
                 public string Code { get; set; }
                 public bool IsLongSession { get; set; }
-                public bool IsEuroGame { get; set; }
-                public bool IsModernAbstract { get; set; }
+               // public bool IsEuroGame { get; set; }
+              //  public bool IsModernAbstract { get; set; }
+
+                public string Category { get; set; }
                 public override string ToString()
                 {
                     return string.Format("{0}{1}: {2:0.00}", Code, (IsLongSession ? "*" : ""), Score);
@@ -81,7 +83,7 @@ namespace MSOCore.Reports
 
             var context = DataEntitiesProvider.Provide();
             var currentOlympiad = (year.HasValue)
-                ? context.Olympiad_Infoes.Where(x => x.StartDate.HasValue && x.StartDate.Value.Year == year.Value).First()
+                ? context.Olympiad_Infoes.Where(x => x.Ruleset == "Pentamind" && x.StartDate.HasValue && x.StartDate.Value.Year == year.Value).First()
                 : context.Olympiad_Infoes.First(x => x.Current);
 
             var vm = new PentamindStandingsReportVm();
@@ -125,8 +127,8 @@ namespace MSOCore.Reports
                     GameCode = x.e.Event.Game.Code,
                     Score = (double)x.e.Penta_Score,
                     IsLongSession = longSessionEvents.Contains(x.e.Event.Code),
-                    // TODO: 7 Wonders Duel is not considered a Eurogame even through the underlying Game is.
-                    IsEuroGame = (x.e.Event.Game.GameCategory.Id == 3 && x.e.Event.Code != "WODU")
+                    // TODO: 7 Wonders Duel is not considered a Eurogame even through the underlying Game is. Not relevant after 2021 when event categories took over.
+                    Category = x.e.Event.GPCategory
                 }).ToList();
 
                 standing.Scores = calc.SelectBestScores(standing.Scores, pentaLong, pentaTotal, currentOlympiad.StartDate.Value.Year);
@@ -139,6 +141,7 @@ namespace MSOCore.Reports
             return vm;
         }
 
+        #region Obsolete
         // Potential for de-duping this code
         public PentamindStandingsReportVm GetJuniorStandings(int? year)
         {
@@ -181,8 +184,7 @@ namespace MSOCore.Reports
                     Code = x.e.Event.Code,
                     GameCode = x.e.Event.Game.Code,
                     Score = (double)x.e.Penta_Score,
-                    IsLongSession = longSessionEvents.Contains(x.e.Event.Code),
-                    IsEuroGame = (x.e.Event.Game.GameCategory.Id == 3)
+                    IsLongSession = longSessionEvents.Contains(x.e.Event.Code)
                 }).ToList();
 
                 standing.Scores = calc.SelectBestScores(standing.Scores, pentaLong, pentaTotal, currentOlympiad.StartDate.Value.Year);
@@ -236,8 +238,7 @@ namespace MSOCore.Reports
                     Code = x.e.Event.Code,
                     GameCode = x.e.Event.Game.Code,
                     Score = (double)x.e.Penta_Score,
-                    IsLongSession = longSessionEvents.Contains(x.e.Event.Code),
-                    IsEuroGame = (x.e.Event.Game.GameCategory.Id == 3)
+                    IsLongSession = longSessionEvents.Contains(x.e.Event.Code)
                 }).ToList();
 
                 standing.Scores = calc.SelectBestScores(standing.Scores, pentaLong, pentaTotal, currentOlympiad.StartDate.Value.Year);
@@ -249,8 +250,10 @@ namespace MSOCore.Reports
             return vm;
         }
 
-        // Potential for de-duping this code
-        public PentamindStandingsReportVm GetEuroStandings(int? year)
+        #endregion
+
+        // This code was for up to 2021 - new category-based standings for 2022
+        public PentamindStandingsReportVm GetEuroStandingsPre2022(int? year)
         {
             var context = DataEntitiesProvider.Provide();
             var currentOlympiad = (year.HasValue)
@@ -296,7 +299,7 @@ namespace MSOCore.Reports
                     GameCode = x.e.Event.Game.Code,
                     Score = (double)x.e.Penta_Score,
                     IsLongSession = true, // No long game rule in eurogames // longSessionEvents.Contains(x.e.Game_Code),
-                    IsEuroGame = (codes.Contains(x.e.Event.Code))
+                    // IsEuroGame = (codes.Contains(x.e.Event.Code))
                 }).ToList();
 
                 standing.Scores = calc.SelectBestScores(standing.Scores, pentaLong, pentaTotal, currentOlympiad.StartDate.Value.Year, allDifferentGames);
@@ -307,71 +310,25 @@ namespace MSOCore.Reports
 
             vm.Standings = standings.OrderByDescending(x => x.TotalScore);
             return vm;
+        }
+
+        public PentamindStandingsReportVm GetEurogameStandings(int? year)
+        {
+            int pentaTotal = 5; // Todo read off event
+            int pentaLong = 0;  // length irrelevant
+            return GetMetaStandings(year, "Eurogames", pentaTotal, pentaLong);
         }
 
         public PentamindStandingsReportVm GetModernAbstractStandings(int? year)
         {
-            var context = DataEntitiesProvider.Provide();
-            var currentOlympiad = (year.HasValue)
-                ? context.Olympiad_Infoes.Where(x => x.StartDate.HasValue && x.StartDate.Value.Year == year.Value).First()
-                : context.Olympiad_Infoes.First(x => x.Current);
-
-            var def = context.MetaGameDefinitions.First(x =>
-                x.Type == "ModernAbstract" && x.OlympiadId == currentOlympiad.Id);
-            var codes = def.SubEvents.Split(',');
-
-            var vm = new PentamindStandingsReportVm();
-            vm.OlympiadTitle = currentOlympiad.FullTitle();
-            int pentaTotal = currentOlympiad.PentaTotal.Value;
-            int pentaLong = currentOlympiad.PentaLong.Value;
-            var longSessionEvents = currentOlympiad.Events.Where(x => x.No_Sessions > 1)
-                .Select(x => x.Code)
-                .ToList();
-
-            var results = context.Entrants
-                .Where(x => x.OlympiadId == currentOlympiad.Id && !x.Absent && x.Rank.HasValue && x.Penta_Score.HasValue
-                    && codes.Contains(x.Event.Code))
-                .Join(context.Contestants, e => e.Mind_Sport_ID, c => c.Mind_Sport_ID, (e, c) => new { e, c })
-                .GroupBy(x => x.c.Mind_Sport_ID)
-                .ToList();
-
-            var calc = new EurogameMetaScoreCalculator();
-            bool allDifferentGames = ((year ?? currentOlympiad.YearOf) == 2020 || (year ?? currentOlympiad.YearOf) == 2021);
-
-            var standings = new List<PentamindStandingsReportVm.ContestantStanding>();
-            foreach (var r in results)
-            {
-                var standing = new PentamindStandingsReportVm.ContestantStanding()
-                {
-                    ContestantId = r.Key,
-                    Name = r.First().c.FullName(),
-                    Nationality = r.First().c.Nationality,
-                    IsInWomensPenta = false // irrelevant for Modern Abstract
-                };
-
-                standing.Scores = r.Select(x => new PentamindStandingsReportVm.EventScore()
-                {
-                    Code = x.e.Event.Code,
-                    GameCode = x.e.Event.Game.Code,
-                    Score = (double)x.e.Penta_Score,
-                    IsLongSession = true, // No long game rule in eurogames // longSessionEvents.Contains(x.e.Game_Code),
-                    IsEuroGame = (x.e.Event.Game.GameCategory.Id == 3),
-                    IsModernAbstract = (codes.Contains(x.e.Event.Code))
-                }).ToList();
-
-                standing.Scores = calc.SelectBestScores(standing.Scores, pentaLong, pentaTotal, currentOlympiad.StartDate.Value.Year, allDifferentGames);
-                standing.TotalScore = standing.Scores.Sum(x => x.Score);
-                standing.IsValid = (standing.Scores.Count() == pentaTotal);
-                standings.Add(standing);
-            }
-
-            vm.Standings = standings.OrderByDescending(x => x.TotalScore);
-            return vm;
+            int pentaTotal = 5; // Todo read off event
+            int pentaLong = 0;  // length irrelevant
+            return GetMetaStandings(year, "ModernAbstract", pentaTotal, pentaLong);
         }
 
         public PentamindStandingsReportVm GetPokerStandings(int? year)
         {
-            int pentaTotal = (year.HasValue && year < 2020) ? 4 : 5; // Todo read off event
+            int pentaTotal = (year.HasValue && year < 2020) ? 4 : 5; 
             int pentaLong = 0;  // length irrelevant for poker
             return GetMetaStandings(year, "Poker", pentaTotal, pentaLong);
         }
@@ -394,6 +351,24 @@ namespace MSOCore.Reports
             return GetMetaStandings(year, "Backgammon", pentaTotal, pentaLong);
         }
 
+        public PentamindStandingsReportVm GetMentalStandings(int? year)
+        {
+            if (year < 2022) throw new ArgumentOutOfRangeException("No Mental meta-events before 2022");
+
+            int pentaTotal = 5; // OK for 2022, doesn't apply to other years
+            int pentaLong = 0;  // length irrelevant
+            return GetMetaStandings(year, "Mental", pentaTotal, pentaLong);
+        }
+
+        public PentamindStandingsReportVm GetImperfectStandings(int? year)
+        {
+            if (year < 2022) throw new ArgumentOutOfRangeException("No Imperfect meta-events before 2022");
+
+            int pentaTotal = 5; // OK for 2022, doesn't apply to other years
+            int pentaLong = 0;  // length irrelevant
+            return GetMetaStandings(year, "Imperfect Info", pentaTotal, pentaLong);
+        }
+
         private PentamindStandingsReportVm GetMetaStandings(int? year, string type, int pentaTotal, int pentaLong)
         { 
             var context = DataEntitiesProvider.Provide();
@@ -401,9 +376,18 @@ namespace MSOCore.Reports
                 ? context.Olympiad_Infoes.Where(x => x.StartDate.HasValue && x.StartDate.Value.Year == year.Value).First()
                 : context.Olympiad_Infoes.First(x => x.Current);
 
-            var def = context.MetaGameDefinitions.First(x =>
-                x.Type == type && x.OlympiadId == currentOlympiad.Id);
-            var codes = def.SubEvents.Split(',');
+            var def = context.MetaGameDefinitions.First(x => x.Type == type && x.OlympiadId == currentOlympiad.Id);
+            // Up to 2021, we defined the available events in the metagame definition directly. 
+            // From 2022, we read the category off the events.
+            var category = def.Category;
+            // Also from 2022, we override "pentaTotal" with the metagame definition value
+            pentaTotal = def.RequiredEvents.Value;
+            pentaLong = 0;
+
+            bool allDifferentGames = (type == "Eurogames") && ((year ?? currentOlympiad.YearOf) == 2020 || (year ?? currentOlympiad.YearOf) == 2021);
+            // Not the best way to code that you can only use one memory, but all the other events in Mental are different games.
+            allDifferentGames = allDifferentGames || (type == "Mental" && currentOlympiad.Id >= 28);
+
 
             var vm = new PentamindStandingsReportVm();
             vm.OlympiadTitle = currentOlympiad.FullTitle();
@@ -415,7 +399,7 @@ namespace MSOCore.Reports
 
             var results = context.Entrants
                 .Where(x => x.OlympiadId == currentOlympiad.Id && !x.Absent && x.Rank.HasValue && x.Penta_Score.HasValue
-                    && codes.Contains(x.Event.Code))
+                    && x.Event.GPCategory == category)
                 .Join(context.Contestants, e => e.Mind_Sport_ID, c => c.Mind_Sport_ID, (e, c) => new { e, c })
                 .GroupBy(x => x.c.Mind_Sport_ID)
                 .ToList();
@@ -430,7 +414,7 @@ namespace MSOCore.Reports
                     ContestantId = r.Key,
                     Name = r.First().c.FullName(),
                     Nationality = r.First().c.Nationality,
-                    IsInWomensPenta = false // irrelevant for Modern Abstract
+                    IsInWomensPenta = false // irrelevant here
                 };
 
                 standing.Scores = r.Select(x => new PentamindStandingsReportVm.EventScore()
@@ -438,12 +422,10 @@ namespace MSOCore.Reports
                     Code = x.e.Event.Code,
                     GameCode = x.e.Event.Game.Code,
                     Score = (double)x.e.Penta_Score,
-                    IsLongSession = true, // No long game rule in poker 
-                    IsEuroGame = (x.e.Event.Game.GameCategory.Id == 3),
-                    IsModernAbstract = (codes.Contains(x.e.Event.Code))
+                    IsLongSession = true // No long game rule  
                 }).ToList();
 
-                standing.Scores = calc.SelectBestScores(standing.Scores, pentaLong, pentaTotal, currentOlympiad.StartDate.Value.Year);
+                standing.Scores = calc.SelectBestScores(standing.Scores, pentaLong, pentaTotal, currentOlympiad.StartDate.Value.Year, allDifferentGames);
                 standing.TotalScore = standing.Scores.Sum(x => x.Score);
                 standing.IsValid = (standing.Scores.Count() == pentaTotal);
                 standings.Add(standing);

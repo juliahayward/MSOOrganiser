@@ -73,6 +73,9 @@ namespace MSOCore.ApiLogic
                 public string DiscordNickname { get; set; }
                 public string Whatsapp { get; set; }
                 public bool IsJunior { get; set; }
+
+                public string IsJuniorStr { get { return IsJunior ? "JNR" : ""; } }
+
                 public bool IsSenior { get; set; }
                 public int SeedingPoints { get; set; }
                 public int RatingPoints { get; set; }
@@ -100,6 +103,8 @@ namespace MSOCore.ApiLogic
                 public string Lastname { get; set; }
                 [XmlAttribute]
                 public int PlayerUniqueId { get; set; }
+                [XmlAttribute]
+                public string IsJuniorStr { get; set; }
             }
         }
 
@@ -181,7 +186,8 @@ namespace MSOCore.ApiLogic
                     NatId = e.Name.Mind_Sport_ID,
                     Firstname = e.Name.Firstname,
                     Lastname = e.Name.Lastname,
-                    PlayerUniqueId = i++
+                    PlayerUniqueId = i++,
+                    IsJuniorStr = e.Name.IsJuniorForOlympiad(currentOlympiad) ? "JNR" : ""
                 }).ToList());
 
             return vm;

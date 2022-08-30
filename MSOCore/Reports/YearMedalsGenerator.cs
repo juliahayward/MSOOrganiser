@@ -39,17 +39,20 @@ namespace MSOCore.Reports
             }
         }
 
-        public YearMedalsVm GetModel(int year)
+        public YearMedalsVm GetModel(int? year, int? olympiadId)
         {
             var context = DataEntitiesProvider.Provide();
 
-            // Warning - this will go wonky when I undo the 2007/7002 hack
-            var olympiad = context.Olympiad_Infoes.FirstOrDefault(x => x.YearOf == year);
+            // Warning - this will go wonky when I undo the 2007/7002 hack. If more than one in the same year, gives
+            // preference to one which is Current.
+            var olympiad = (year.HasValue) 
+                ? context.Olympiad_Infoes.OrderBy(x => x.Current ? 0 : 1).FirstOrDefault(x => x.YearOf == year.Value)
+                : context.Olympiad_Infoes.FirstOrDefault(x => x.Id == olympiadId.Value);
             if (olympiad == null)
-                throw new ArgumentException($"No olympiad was held in {year}");
-            var olympiadId = olympiad.Id;
+                throw new ArgumentException($"No matching olympiad found");
 
-            var retval = new YearMedalsVm { Year = year };
+            olympiadId = olympiad.Id;
+            var retval = new YearMedalsVm { Year = olympiad.YearOf.Value };
 
             retval.Medals = context.Entrants.Where(x => x.OlympiadId.Value == olympiadId
                     && (x.Medal != null || x.JuniorMedal != null))

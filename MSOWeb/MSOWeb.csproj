@@ -826,6 +826,8 @@
     <Content Include="Views\Report\GrandPrixStandings.cshtml" />
     <Content Include="Views\Upload\PlayStrategy.cshtml" />
     <Content Include="Views\Upload\BoardGameArena.cshtml" />
+    <Content Include="Views\Report\ImperfectStandings.cshtml" />
+    <Content Include="Views\Report\MentalStandings.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

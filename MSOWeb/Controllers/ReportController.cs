@@ -50,11 +50,11 @@ namespace MSOWeb.Controllers
             return View(model);
         }
 
-        public ActionResult YearMedals(int year)
+        public ActionResult YearMedals(int? year, int? olympiadId)
         {
             var generator = new YearMedalsGenerator();
 
-            var model = generator.GetModel(year);
+            var model = generator.GetModel(year, olympiadId);
 
             return View(model);
         }
@@ -116,14 +116,16 @@ namespace MSOWeb.Controllers
             System.Web.HttpContext.Current.Application["Chess"] = null;
             System.Web.HttpContext.Current.Application["Backgammon"] = null;
             System.Web.HttpContext.Current.Application["GrandPrix"] = null;
+            System.Web.HttpContext.Current.Application["Mental"] = null;
+            System.Web.HttpContext.Current.Application["Imperfect"] = null;
             // GP categories
-            System.Web.HttpContext.Current.Application["imperfectinfo"] = null;
-            System.Web.HttpContext.Current.Application["abstract"] = null;
-            System.Web.HttpContext.Current.Application["backgammon"] = null;
-            System.Web.HttpContext.Current.Application["chess"] = null;
-            System.Web.HttpContext.Current.Application["poker"] = null;
-            System.Web.HttpContext.Current.Application["draughts"] = null;
-            System.Web.HttpContext.Current.Application["multiplayer"] = null;
+            System.Web.HttpContext.Current.Application["GPimperfectinfo"] = null;
+            System.Web.HttpContext.Current.Application["GPabstract"] = null;
+            System.Web.HttpContext.Current.Application["GPbackgammon"] = null;
+            System.Web.HttpContext.Current.Application["GPchess"] = null;
+            System.Web.HttpContext.Current.Application["GPpoker"] = null;
+            System.Web.HttpContext.Current.Application["GPdraughts"] = null;
+            System.Web.HttpContext.Current.Application["GPmultiplayer"] = null;
             return new RedirectResult("/");
         }
 
@@ -255,7 +257,7 @@ namespace MSOWeb.Controllers
             else
             {
                 var generator = new PentamindStandingsGenerator();
-                model = generator.GetEuroStandings(year);
+                model = generator.GetEurogameStandings(year);
                 System.Web.HttpContext.Current.Application["Eurogames"] = model;
             }
             return model;
@@ -315,7 +317,7 @@ namespace MSOWeb.Controllers
         {
             var generator = new PentamindStandingsGenerator();
 
-            var model = generator.GetChessStandings(year);
+            var model = GetChessStandings(year);
             model.TopNRequired = count;
             model.HeaderRequired = header;
 
@@ -342,7 +344,7 @@ namespace MSOWeb.Controllers
         {
             var generator = new PentamindStandingsGenerator();
 
-            var model = generator.GetBackgammonStandings(year);
+            var model = GetBackgammonStandings(year);
             model.TopNRequired = count;
             model.HeaderRequired = header;
 
@@ -365,6 +367,67 @@ namespace MSOWeb.Controllers
             return model;
         }
 
+        public ActionResult MentalStandings(int? year, bool header = false, int count = 40)
+        {
+            var generator = new PentamindStandingsGenerator();
+
+            var model = GetMentalStandings(year);
+            model.TopNRequired = count;
+            model.HeaderRequired = header;
+
+            return View("MentalStandings", model);
+        }
+
+        public PentamindStandingsGenerator.PentamindStandingsReportVm GetMentalStandings(int? year)
+        {
+            PentamindStandingsGenerator.PentamindStandingsReportVm model;
+            if (System.Web.HttpContext.Current.Application["Mental"] != null)
+            {
+                model = System.Web.HttpContext.Current.Application["Mental"] as PentamindStandingsGenerator.PentamindStandingsReportVm;
+            }
+            else
+            {
+                var generator = new PentamindStandingsGenerator();
+                model = generator.GetMentalStandings(year);
+                System.Web.HttpContext.Current.Application["Mental"] = model;
+            }
+            return model;
+        }
+
+        public ActionResult ImperfectStandings(int? year, bool header = false, int count = 40)
+        {
+            var generator = new PentamindStandingsGenerator();
+
+            var model = GetImperfectStandings(year);
+            model.TopNRequired = count;
+            model.HeaderRequired = header;
+
+            return View("ImperfectStandings", model);
+        }
+
+        public PentamindStandingsGenerator.PentamindStandingsReportVm GetImperfectStandings(int? year)
+        {
+            PentamindStandingsGenerator.PentamindStandingsReportVm model;
+            if (System.Web.HttpContext.Current.Application["Imperfect"] != null)
+            {
+                model = System.Web.HttpContext.Current.Application["Imperfect"] as PentamindStandingsGenerator.PentamindStandingsReportVm;
+            }
+            else
+            {
+                var generator = new PentamindStandingsGenerator();
+                model = generator.GetImperfectStandings(year);
+                System.Web.HttpContext.Current.Application["Imperfect"] = model;
+            }
+            return model;
+        }
+
+
+
+
+
+
+
+
         public ActionResult GPCategoryStandings(string category, int? year, bool header = false, int count = 40)
         {
             var model = GetGPCategoryStandings(category, year);
@@ -377,15 +440,15 @@ namespace MSOWeb.Controllers
         public GrandPrixStandingsGenerator.GrandPrixStandingsReportVm GetGPCategoryStandings(string category, int? year)
         {
             GrandPrixStandingsGenerator.GrandPrixStandingsReportVm model;
-            if (System.Web.HttpContext.Current.Application[category] != null)
+            if (System.Web.HttpContext.Current.Application["GP"+category] != null)
             {
-                model = System.Web.HttpContext.Current.Application[category] as GrandPrixStandingsGenerator.GrandPrixStandingsReportVm;
+                model = System.Web.HttpContext.Current.Application["GP"+category] as GrandPrixStandingsGenerator.GrandPrixStandingsReportVm;
             }
             else
             {
                 var generator = new GrandPrixStandingsGenerator();
                 model = generator.GetGPCategoryStandings(category, year);
-                System.Web.HttpContext.Current.Application[category] = model;
+                System.Web.HttpContext.Current.Application["GP"+category] = model;
             }
             return model;
         }

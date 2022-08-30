@@ -115,8 +115,9 @@ I have attached my sheet again which should show all of the ratings to compare a
                 };
 
                 context.Ratings.Add(rating);
-                context.SaveChanges();
+
             }
+            context.SaveChanges();
 
             // Last 5 years
             var olympiadIds = context.Olympiad_Infoes.Where(x => x.YearOf > 2013 && x.YearOf < 7000)
@@ -160,8 +161,8 @@ I have attached my sheet again which should show all of the ratings to compare a
                 };
 
                 context.Ratings.Add(rating);
-                context.SaveChanges();
             }
+            context.SaveChanges();
         }
 
         internal struct ContestandEvent

@@ -21,14 +21,16 @@ namespace MSOCore.Calculators
                 FreezePoker(currentOlympiad.Id);
                 FreezeChess(currentOlympiad.Id);
                 FreezeBackgammon(currentOlympiad.Id);
+                FreezeMental(currentOlympiad.Id);
+                FreezeImperfect(currentOlympiad.Id);
             }
             else
             {
-             //   FreezeGrandPrix(currentOlympiad.Id);
-             //   FreezeDraughtsGP(currentOlympiad.Id);
-             //   FreezeMultiplayerGP(currentOlympiad.Id);
-             //   FreezePokerGP(currentOlympiad.Id);
-             //   FreezeChessGP(currentOlympiad.Id);
+                FreezeGrandPrix(currentOlympiad.Id);
+                FreezeDraughtsGP(currentOlympiad.Id);
+                FreezeMultiplayerGP(currentOlympiad.Id);
+                FreezePokerGP(currentOlympiad.Id);
+                FreezeChessGP(currentOlympiad.Id);
                 FreezeBackgammonGP(currentOlympiad.Id);
                 FreezeAbstractGP(currentOlympiad.Id);
                 FreezeImperfectInfoGP(currentOlympiad.Id);
@@ -60,7 +62,7 @@ namespace MSOCore.Calculators
         public void FreezeEurogames(int olympiadId)
         {
             var pentamindStandingsGenerator = new PentamindStandingsGenerator();
-            var eurostandings = pentamindStandingsGenerator.GetEuroStandings(null);
+            var eurostandings = pentamindStandingsGenerator.GetEurogameStandings(null);
             Freeze(olympiadId, "EGWC", eurostandings.Standings);
         }
 
@@ -90,6 +92,34 @@ namespace MSOCore.Calculators
             var pentamindStandingsGenerator = new PentamindStandingsGenerator();
             var standings = pentamindStandingsGenerator.GetBackgammonStandings(null);
             Freeze(olympiadId, "BACC", standings.Standings);
+        }
+
+        public void FreezeMental(int olympiadId)
+        {
+            var pentamindStandingsGenerator = new PentamindStandingsGenerator();
+            var standings = pentamindStandingsGenerator.GetMentalStandings(null);
+            Freeze(olympiadId, "MCCC", standings.Standings);
+        }
+
+        public void FreezeImperfect(int olympiadId)
+        {
+            var pentamindStandingsGenerator = new PentamindStandingsGenerator();
+            var standings = pentamindStandingsGenerator.GetImperfectStandings(null);
+            Freeze(olympiadId, "IICC", standings.Standings);
+        }
+
+        public void FreezeMental(int olympiadId, string code)
+        {
+            var pentamindStandingsGenerator = new PentamindStandingsGenerator();
+            var standings = pentamindStandingsGenerator.GetMentalStandings(null);
+            Freeze(olympiadId, code, standings.Standings);
+        }
+
+        public void FreezeImperfect(int olympiadId, string code)
+        {
+            var pentamindStandingsGenerator = new PentamindStandingsGenerator();
+            var standings = pentamindStandingsGenerator.GetImperfectStandings(null);
+            Freeze(olympiadId, code, standings.Standings);
         }
 
         public void FreezeDraughtsGP(int olympiadId)

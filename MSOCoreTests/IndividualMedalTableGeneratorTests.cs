@@ -27,7 +27,7 @@ namespace MSOCoreTests
         {
             var generator = new YearMedalsGenerator();
 
-            var data = generator.GetModel(2014);
+            var data = generator.GetModel(2014, null);
 
             Assert.IsTrue(data.Medals.Any());
         }
