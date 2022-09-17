@@ -10,7 +10,7 @@
     <div class="accordion" id="accordionExample">
         <div class="card">
             <div class="card-header" id="headingOne">
-                <h2>@Model.FullName<img style="float: right" src="~/Content/Images/Flags/@(Model.Nationality).jpg" title="@(Model.Nationality)" height="40" /></h2>   
+                <h2>@Model.FullName<img style="float: right" src="@(Model.Flag)" title="@(Model.Nationality)" height="40" /></h2>   
                 <h2 class="mb-0">
                     @if (Model.IsEditable)
                     {

@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using MSOCore.Extensions;
 
 namespace MSOCore.ApiLogic
 {
@@ -22,6 +21,8 @@ namespace MSOCore.ApiLogic
             public bool IsFemale { get { return !IsMale; } }
             public int ContestantId { get; set; }
             public string Nationality { get; set; }
+
+            public string Flag { get { return Nationality.GetFlag(); } }
 
             public string OnlineNicknames { get; set; }
             public string BgaNickname { get; set; }
