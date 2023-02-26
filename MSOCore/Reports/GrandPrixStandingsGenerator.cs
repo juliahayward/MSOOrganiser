@@ -95,7 +95,7 @@ namespace MSOCore.Reports
             vm.OlympiadTitle = currentOlympiad.FullTitle();
 
             var results = context.Entrants
-                .Where(x => x.OlympiadId == currentOlympiad.Id && !x.Absent && x.Rank.HasValue && x.Penta_Score.HasValue)
+                .Where(x => x.OlympiadId == currentOlympiad.Id && !x.Absent && x.Rank.HasValue && x.Penta_Score.HasValue && x.Event.Pentamind)
                 .Join(context.Contestants, e => e.Mind_Sport_ID, c => c.Mind_Sport_ID, (e, c) => new { e, c })
                 .ToList() // TODO This was inserted for Etan's stuff - remove with the subsequent Where
                 .Where(ec => (endOfDay == null || ec.e.Event.End < endOfDay))

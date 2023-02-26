@@ -8,7 +8,7 @@ namespace MSOCore.Calculators
 {
     public class GrandPrixCalculator : IPentaCalculator
     {
-        public void Calculate(int numberInTeam, IEnumerable<IPentaCalculable> entries, bool isInPentamind = true, float premiumFactor = 1.0f, int overridingNumberOfTeams = 0)
+        public void Calculate(int numberInTeam, IEnumerable<IPentaCalculable> entries, float premiumFactor = 1.0f, int overridingNumberOfTeams = 0)
         {
             if (entries.Any(x => x.Absent == false && x.Rank == 0))
                 throw new ArgumentException("At least one player was present but has no rank");
@@ -19,7 +19,7 @@ namespace MSOCore.Calculators
             {
                 // Withdrawn entrants score 0 regardless of where they come, but still remain in the right rank (so they
                 // don't push other entrants upwards)
-                if (entry.Absent || entry.Withdrawn || !isInPentamind)
+                if (entry.Absent || entry.Withdrawn)
                 {
                     entry.PentaScore = 0;
                     continue;

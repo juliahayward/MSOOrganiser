@@ -10,7 +10,7 @@ namespace MSOCore.Calculators
     // for pentamind / GP purposes (eg casual, demonstrations, beginners')
     public class CasualEventCalculator : IPentaCalculator
     {
-        public void Calculate(int numberInTeam, IEnumerable<IPentaCalculable> entries, bool isInPentamind = true, float premiumFactor = 1.0f, int overridingNumberOfTeams = 0)
+        public void Calculate(int numberInTeam, IEnumerable<IPentaCalculable> entries, float premiumFactor = 1.0f, int overridingNumberOfTeams = 0)
         {
             foreach (var entry in entries)
             {

@@ -10,7 +10,9 @@ namespace MSOCore.Calculators
     {
         public static IPentaCalculator Get(Event evt)
         {
-            if (!evt.Pentamind)
+            // From 2023 - events can be out of the pendamind, but still count for category meta-events. Now, we assing them points
+            // and do the filtering at the point of calculating the meta-event total.
+            if (!evt.Pentamind && string.IsNullOrEmpty(evt.GPCategory))
                 return new CasualEventCalculator();
             else if (evt.Olympiad_Info.Ruleset == "GrandPrix")
                 return new GrandPrixCalculator();
@@ -34,7 +36,7 @@ namespace MSOCore.Calculators
 
     public interface IPentaCalculator
     {
-        void Calculate(int numberInTeam, IEnumerable<IPentaCalculable> entries, bool isInPentamind = true, float premiumFactor = 1.0f, int overridingNumberOfTeams = 0);
+        void Calculate(int numberInTeam, IEnumerable<IPentaCalculable> entries, float premiumFactor = 1.0f, int overridingNumberOfTeams = 0);
 
     }
 
@@ -42,7 +44,7 @@ namespace MSOCore.Calculators
     {
         public abstract double Formula(int numberOfTeams, double myPosition);
 
-        public void Calculate(int numberInTeam, IEnumerable<IPentaCalculable> entries, bool isInPentamind = true, float premiumFactor = 1.0f, int overridingNumberOfTeams=0)
+        public void Calculate(int numberInTeam, IEnumerable<IPentaCalculable> entries, float premiumFactor = 1.0f, int overridingNumberOfTeams=0)
         {
             if (entries.Any(x => x.Absent == false && x.Rank == 0))
                 throw new ArgumentException("At least one player was present but has no rank");
@@ -51,7 +53,7 @@ namespace MSOCore.Calculators
 
             foreach (var entry in entries)
             {
-                if (entry.Absent || entry.Withdrawn || !isInPentamind)
+                if (entry.Absent || entry.Withdrawn)
                 {
                     entry.PentaScore = 0;
                     continue;

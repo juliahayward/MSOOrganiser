@@ -248,7 +248,7 @@ namespace MSOCore.ApiLogic
                       if (evt.OlympiadId == 25 && evt.Code == "PZKK") overridingNumberOfEntrants = 380; */
 
                 var pentaCalculator = PentaCalculatorFactory.Get(evt);
-                pentaCalculator.Calculate(evt.Number_in_Team, model.Entrants, evt.Pentamind, evt.PentamindFactor, overridingNumberOfEntrants);
+                pentaCalculator.Calculate(evt.Number_in_Team, model.Entrants, evt.PentamindFactor, overridingNumberOfEntrants);
             }
             // TODO - events with partners
 

@@ -178,8 +178,7 @@ namespace MSOOrganiser
             var calculator = new Penta2018Calculator();
             try
             {
-                calculator.Calculate(ViewModel.NumberInTeam, ViewModel.Entrants, ViewModel.Pentamind,
-                    ViewModel.PentamindFactor);
+                calculator.Calculate(ViewModel.NumberInTeam, ViewModel.Entrants, ViewModel.PentamindFactor);
             }
             catch (Exception ex)
             {
